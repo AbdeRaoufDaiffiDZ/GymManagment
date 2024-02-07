@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "511171532932",
+    "firebase_url": "https://dawini-cec17-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "dawini-cec17",
+    "storage_bucket": "dawini-cec17.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:511171532932:android:1ad8a43f4d69fc4ee78ad1",
+        "android_client_info": {
+          "package_name": "com.app.dawini"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "511171532932-eemv0efbl8i5b2b9svivieqr2h4sjvqv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0C59kNz1qQgI8U6rBqssR6Z1zXcx2h14"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "511171532932-eemv0efbl8i5b2b9svivieqr2h4sjvqv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:511171532932:android:a15c966779b50226e78ad1",
+        "android_client_info": {
+          "package_name": "com.dawini.app.dawini_full"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "511171532932-eemv0efbl8i5b2b9svivieqr2h4sjvqv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0C59kNz1qQgI8U6rBqssR6Z1zXcx2h14"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "511171532932-eemv0efbl8i5b2b9svivieqr2h4sjvqv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
