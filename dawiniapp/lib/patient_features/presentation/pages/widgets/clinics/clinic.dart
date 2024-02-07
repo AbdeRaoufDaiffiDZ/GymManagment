@@ -93,7 +93,7 @@ class _ClinicWidgetState extends State<ClinicWidget> {
                         height: 100.h, // 20.h
                         child: const FittedBox(
                           fit: BoxFit.scaleDown,
-                          child: const Text("Coomming Soon...",
+                          child: const Text("Coomming Soon....",
                               // widget.clinics[index].ClinicName,
                               style: TextStyle(
                                   fontFamily: 'Nunito',
