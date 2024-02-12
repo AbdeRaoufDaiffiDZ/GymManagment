@@ -4,17 +4,14 @@ import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/bloc/
 import 'package:dawini_full/patient_features/presentation/pages/widgets/doctors/doctorsList.dart';
 import 'package:flutter/material.dart';
 
-Widget DoctorStateConditions(DoctorState state, List<DoctorEntity> data) {
+Widget DoctorStateConditions(DoctorState state, List<DoctorEntity> data,
+    {required device}) {
   if (state is DoctorLoading) {
     return Loading();
   } else if (state is SeeAllDoctors) {
-    return Doctors(
-      doctors: data,
-    );
+    return Doctors(doctors: data, device: device);
   } else if (state is DoctorLoaded) {
-    return Doctors(
-      doctors: data,
-    );
+    return Doctors(doctors: data, device: device);
   } else if (state is FilterByWilaya) {
     List<DoctorEntity> doctors;
 
@@ -26,9 +23,7 @@ Widget DoctorStateConditions(DoctorState state, List<DoctorEntity> data) {
               element.wilaya.toLowerCase().contains(state.wilaya.toLowerCase()))
           .toList();
     }
-    return Doctors(
-      doctors: doctors,
-    );
+    return Doctors(doctors: doctors, device: device);
   } else if (state is DoctorSearchName) {
     List<DoctorEntity>? doctors;
     doctors = data
@@ -43,9 +38,7 @@ Widget DoctorStateConditions(DoctorState state, List<DoctorEntity> data) {
           .toList();
     }
 
-    return Doctors(
-      doctors: doctors,
-    );
+    return Doctors(doctors: doctors, device: device);
   } else if (state is DoctorFilterSpeciality) {
     final doctors = data
         .where((element) => element.speciality
@@ -53,9 +46,7 @@ Widget DoctorStateConditions(DoctorState state, List<DoctorEntity> data) {
             .contains(state.speciality.toLowerCase()))
         .toList();
 
-    return Doctors(
-      doctors: doctors,
-    );
+    return Doctors(doctors: doctors, device: device);
   } else if (state is DoctorLoadingFailure) {
     return ErrorWidget(state.message);
   } else {

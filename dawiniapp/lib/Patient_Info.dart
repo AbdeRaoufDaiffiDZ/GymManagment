@@ -5,6 +5,7 @@ import 'package:dawini_full/patient_features/domain/entities/doctor.dart';
 import 'package:dawini_full/patient_features/domain/entities/patient.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -33,13 +34,19 @@ class _Patient_infoState extends State<Patient_info> {
   String datetimeTomrrow =
       DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: 1)));
 
-  Widget buildInputField({
-    required TextEditingController controller,
-    required String hintText,
-  }) {
+  Widget buildInputField(List<TextInputFormatter>? textInputFormatter,
+      {required TextEditingController controller,
+      required String hintText,
+      required TextInputType textInputType}) {
     return Expanded(
       child: TextFormField(
         controller: controller,
+        keyboardType: textInputType,
+        onEditingComplete: () {
+          // Move focus to the next field when "Next" is pressed
+          FocusScope.of(context).nextFocus();
+        },
+        inputFormatters: textInputFormatter,
         decoration: InputDecoration(
           filled: true,
           fillColor: const Color(0XFFECF2F2),
@@ -133,26 +140,26 @@ class _Patient_infoState extends State<Patient_info> {
                     mainAxisAlignment:
                         MainAxisAlignment.spaceBetween, // Use spaceBetween
                     children: [
-                      buildInputField(
-                        controller: _firstNameController,
-                        hintText: 'Your first name ',
-                      ),
-                      buildInputField(
-                        controller: _lastNameController,
-                        hintText: 'Your family name ',
-                      ),
-                      buildInputField(
-                        controller: _ageController,
-                        hintText: 'Your age',
-                      ),
-                      buildInputField(
-                        controller: _phoneNumberController,
-                        hintText: 'Phone number ',
-                      ),
-                      buildInputField(
-                        controller: _addressController,
-                        hintText: 'Home address',
-                      ),
+                      buildInputField(null,
+                          controller: _firstNameController,
+                          hintText: 'Your first name ',
+                          textInputType: TextInputType.name),
+                      buildInputField(null,
+                          controller: _lastNameController,
+                          hintText: 'Your family name ',
+                          textInputType: TextInputType.name),
+                      buildInputField(null,
+                          controller: _ageController,
+                          hintText: 'Your age',
+                          textInputType: TextInputType.number),
+                      buildInputField(null,
+                          controller: _phoneNumberController,
+                          hintText: 'Phone number ',
+                          textInputType: TextInputType.number),
+                      buildInputField(null,
+                          controller: _addressController,
+                          hintText: 'Home address',
+                          textInputType: TextInputType.streetAddress),
                     ],
                   ),
                 ),
@@ -165,10 +172,12 @@ class _Patient_infoState extends State<Patient_info> {
                     if (_lastNameController.text.isEmpty) {
                       missing = missing + " Last Name,";
                     }
-                    if (_ageController.text.isEmpty) {
+                    if (_ageController.text.isEmpty ||
+                        int.parse(_ageController.text) > 130) {
                       missing = missing + " age,";
                     }
-                    if (_phoneNumberController.text.isEmpty) {
+                    if (_phoneNumberController.text.isEmpty ||
+                        _phoneNumberController.text.length < 10) {
                       missing = missing + " Phone Number,";
                     }
                     if (_addressController.text.isEmpty) {
@@ -176,6 +185,8 @@ class _Patient_infoState extends State<Patient_info> {
                     }
                     if (_firstNameController.text.isEmpty ||
                         _lastNameController.text.isEmpty ||
+                        _phoneNumberController.text.length < 10 ||
+                        int.parse(_ageController.text) > 130 ||
                         _ageController.text.isEmpty ||
                         _phoneNumberController.text.isEmpty ||
                         _addressController.text.isEmpty) {

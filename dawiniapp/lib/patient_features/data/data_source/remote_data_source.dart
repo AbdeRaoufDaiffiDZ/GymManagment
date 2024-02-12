@@ -46,11 +46,33 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
     }
   }
 
+  static String patientInfoUrl(PatientModel patientInfo) =>
+      'https://dawini-cec17-default-rtdb.europe-west1.firebasedatabase.app/user_data/Doctors/${patientInfo.uid}/Cabin_info/Patients/${patientInfo.AppointmentDate}.json';
+
+  Future<List<DoctorModel>> getDoctorPatients(PatientModel patientInfo) async {
+    try {
+      final response = await client.get(Uri.parse(patientInfoUrl(patientInfo)));
+      if (response.statusCode == 200) {
+        List<DoctorModel> users =
+            (json.decode(response.body) as List).map((data) {
+          return DoctorModel.fromJson(data);
+        }).toList();
+        return users;
+      } else {
+        throw ServerException();
+      }
+    } catch (e) {
+      print(e.toString());
+      throw ServerException();
+    }
+  }
+
   @override
   Future<bool> SetDoctorAppointment(PatientModel patientInfo) async {
     // DateTime date = DateTime.parse(patientInfo.AppointmentDate);
     final refs = _databaseReference.ref().child(
         "/user_data/Doctors/${patientInfo.uid}/Cabin_info/Patients/${patientInfo.AppointmentDate}");
+    // var data = await getDoctorPatients(patientInfo);
     final DatabaseReference newChildRef = refs.push();
     final String? idkey = newChildRef.key;
     final DatabaseEvent snapshot =

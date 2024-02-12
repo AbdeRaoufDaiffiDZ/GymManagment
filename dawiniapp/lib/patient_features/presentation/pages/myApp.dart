@@ -6,7 +6,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class Mypage extends StatefulWidget {
-  Mypage({Key? key}) : super(key: key);
+  final device;
+  Mypage({Key? key, this.device}) : super(key: key);
 
   @override
   State<Mypage> createState() => _MypageState();
@@ -45,6 +46,7 @@ class _MypageState extends State<Mypage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _scaffoldKey, body: isConnected ? Weather() : Loading());
+        key: _scaffoldKey,
+        body: isConnected ? Weather(device: widget.device) : Loading());
   }
 }

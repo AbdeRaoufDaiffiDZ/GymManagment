@@ -15,8 +15,9 @@ import 'package:share/share.dart';
 
 class doctorDetails extends StatefulWidget {
   final String uid;
+  final device;
 
-  const doctorDetails({super.key, required this.uid});
+  const doctorDetails({super.key, required this.uid, this.device});
 
   @override
   State<doctorDetails> createState() => _doctorDetailsState();
@@ -467,7 +468,8 @@ class _doctorDetailsState extends State<doctorDetails>
                                 InkWell(
                                   onTap: () {
                                     setState(() {
-                                      if (today || !today && tomorrow) {
+                                      if (today && tomorrow ||
+                                          !today && tomorrow) {
                                         isTodaySelected =
                                             false; // Deselect the other option
                                       }

@@ -10,7 +10,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DoctorsList extends StatefulWidget {
-  const DoctorsList({super.key});
+  // ignore: prefer_typing_uninitialized_variables
+  final device;
+  const DoctorsList({super.key, this.device});
 
   @override
   State<DoctorsList> createState() => _DoctorsListState();
@@ -38,7 +40,7 @@ class _DoctorsListState extends State<DoctorsList> {
             }
             return BlocBuilder<DoctorBloc, DoctorState>(
                 builder: (context, state) {
-              return DoctorStateConditions(state, data);
+              return DoctorStateConditions(state, data, device: widget.device);
             });
           }
         });
@@ -46,9 +48,10 @@ class _DoctorsListState extends State<DoctorsList> {
 }
 
 class Doctors extends StatefulWidget {
+  final device;
   final List<DoctorEntity> doctors;
 
-  const Doctors({super.key, required this.doctors});
+  const Doctors({super.key, required this.doctors, this.device});
 
   @override
   State<Doctors> createState() => _DoctorsState();
@@ -82,8 +85,9 @@ class _DoctorsState extends State<Doctors> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            doctorDetails(uid: widget.doctors[index].uid)),
+                        builder: (context) => doctorDetails(
+                            uid: widget.doctors[index].uid,
+                            device: widget.device)),
                   );
                 },
                 child: Container(

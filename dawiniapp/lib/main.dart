@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:dawini_full/firebase_options.dart';
 import 'package:dawini_full/injection_container.dart';
@@ -8,8 +10,10 @@ import 'package:dawini_full/patient_features/presentation/bloc/clinics_bloc/bloc
 import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/bloc/doctor_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/pages/myApp.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,6 +23,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
+  final device = await deviceInfo.androidInfo;
   AwesomeNotifications().initialize(
       null,
       [
@@ -41,13 +48,18 @@ Future<void> main() async {
   ]);
 
   runApp(
-    const MyApp(), // Wrap your app
+    MyApp(
+      device: device.fingerprint,
+    ), // Wrap your app
   );
 }
 
 class MyApp extends StatelessWidget {
+  // ignore: prefer_typing_uninitialized_variables
+  final device;
   const MyApp({
     Key? key,
+    this.device,
   }) : super(key: key);
 
   @override
@@ -79,14 +91,15 @@ class MyApp extends StatelessWidget {
                 localizationsDelegates: AppLocalizations.localizationsDelegates,
                 supportedLocales: AppLocalizations.supportedLocales,
                 debugShowCheckedModeBanner: false,
-                home: MyWidget(),
+                home: MyWidget(device: device),
               );
             }));
   }
 }
 
 class MyWidget extends StatefulWidget {
-  const MyWidget({super.key});
+  final device;
+  const MyWidget({super.key, this.device});
 
   @override
   State<MyWidget> createState() => _MyWidgetState();
@@ -109,8 +122,12 @@ class _MyWidgetState extends State<MyWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (kDebugMode) {
+      print(widget.device);
+    }
+
     if (status) {
-      return Mypage();
+      return Mypage(device: widget.device);
     } else {
       return PagesShower();
     }
