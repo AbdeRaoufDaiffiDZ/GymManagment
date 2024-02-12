@@ -55,19 +55,19 @@ class _ClinicWidgetState extends State<ClinicWidget> {
           });
         },
         controller: mycon,
-        itemCount: widget.clinics.length,
+        itemCount: 4, //widget.clinics.length,
         itemBuilder: (context, index) {
           double scale = selectedindex == index ? 1 : 0.9;
 
           return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        ClinicsDetails(uid: widget.clinics[index].uid)),
-              );
-            },
+            // onTap: () {
+            //   Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (context) =>
+            //             ClinicsDetails(uid: widget.clinics[index].uid)),
+            //   );
+            // },
             child: TweenAnimationBuilder(
               tween: Tween<double>(begin: scale, end: scale),
               duration: const Duration(milliseconds: 350),

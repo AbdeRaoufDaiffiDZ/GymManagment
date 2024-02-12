@@ -5,6 +5,7 @@ import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/bloc/
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Myappointment/appointments.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/appBar.dart';
+import 'package:dawini_full/patient_features/presentation/pages/widgets/clinics/clinic.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/clinics/clinicsList.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/doctors/doctorsList.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/favorite/favourites.dart';
@@ -118,38 +119,41 @@ class _DoctorPageState extends State<Weather> {
                                 fontSize: 19.sp,
                                 fontWeight: FontWeight.w600)),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Scaffold(
-                                  appBar: AppBar(),
-                                  body: Column(
-                                    children: [
-                                      SearchMenuClinics(),
-                                      SizedBox(
-                                        height: 20.h,
-                                      ),
-                                      ClinicsList(),
-                                    ],
-                                  ),
-                                ),
-                              ));
-                        },
-                        child: SizedBox(
-                          width: 80.w,
-                          height: 20.h,
-                          child: Center(
-                            child: AutoSizeText(text.see_all,
-                                style: TextStyle(
-                                    fontFamily: 'Nunito',
-                                    fontSize: 20.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: const Color(0xFF2CDBC6))),
-                          ),
-                        ),
-                      )
+                      //   GestureDetector(
+                      //     onTap: () {
+                      //       Navigator.push(
+                      //           context,
+                      //           MaterialPageRoute(
+                      //             builder: (context) => Scaffold(
+                      //               appBar: AppBar(),
+                      //               body: Column(
+                      //                 children: [
+                      //                   SearchMenuClinics(),
+                      //                   SizedBox(
+                      //                     height: 20.h,
+                      //                   ),
+                      //                   // ClinicsList(),
+                      //                   ClinicWidget(
+                      //                     clinics: [],
+                      //                   )
+                      //                 ],
+                      //               ),
+                      //             ),
+                      //           ));
+                      //     },
+                      //     child: SizedBox(
+                      //       width: 80.w,
+                      //       height: 20.h,
+                      //       child: Center(
+                      //         child: AutoSizeText(text.see_all,
+                      //             style: TextStyle(
+                      //                 fontFamily: 'Nunito',
+                      //                 fontSize: 20.sp,
+                      //                 fontWeight: FontWeight.w600,
+                      //                 color: const Color(0xFF2CDBC6))),
+                      //       ),
+                      //     ),
+                      //   )
                     ],
                   ),
                 ),
@@ -230,16 +234,7 @@ class _DoctorPageState extends State<Weather> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => Scaffold(
-                                    appBar: AppBar(),
-                                    body: Column(
-                                      children: [
-                                        SearchMenu(),
-                                        DoctorsList(device: widget.device),
-                                      ],
-                                    ),
-                                  ),
-                                ));
+                                    builder: (context) => doctors()));
                           },
                           child: Container(
                             width: 80.w,
@@ -271,5 +266,27 @@ class _DoctorPageState extends State<Weather> {
       default:
         return Container();
     }
+  }
+}
+
+class doctors extends StatefulWidget {
+  const doctors({super.key});
+
+  @override
+  State<doctors> createState() => _doctorsState();
+}
+
+class _doctorsState extends State<doctors> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: ListView(
+        children: [
+          SearchMenu(),
+          DoctorsList(device: "widget.device"),
+        ],
+      ),
+    );
   }
 }
