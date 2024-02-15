@@ -59,10 +59,11 @@ class PatientRepositoryImpl implements PatientsRepository {
   }
 
   @override
-  Future<bool> DeleteDoctorAppointment(PatientEntity patientInfo) async {
+  Future<bool> DeleteDoctorAppointment(
+      PatientEntity patientInfo, context) async {
     try {
       final result = doctorRemoteDataSource.RemoveDoctorAppointment(
-          PatientModel.fromMap(patientInfo.toMap()));
+          PatientModel.fromMap(patientInfo.toMap()), context);
 
       return result;
     } catch (e) {

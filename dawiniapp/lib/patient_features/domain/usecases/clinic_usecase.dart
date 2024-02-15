@@ -3,17 +3,16 @@ import 'package:dawini_full/core/error/failure.dart';
 import 'package:dawini_full/patient_features/data/repositories/clinic_repository_impl.dart';
 import 'package:dawini_full/patient_features/domain/entities/clinic.dart';
 import 'package:dawini_full/patient_features/domain/repositories/clinic_repository.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
-class ClinicAuthStateUseCase {
-  final ClinicRepository repository;
+// class ClinicAuthStateUseCase {
+//   final ClinicRepository repository;
 
-  ClinicAuthStateUseCase({required this.repository});
+//   ClinicAuthStateUseCase({required this.repository});
 
-  Future<Either<Failure, UserCredential>> execute(email, password) async {
-    return repository.authClinic(email, password);
-  }
-}
+//   Future<Either<Failure, UserCredential>> execute(email, password) async {
+//     return repository.authClinic(email, password);
+//   }
+// }
 
 class GetClinicsInfoUseCase {
   final ClinicRepository clinicRepository;

@@ -75,8 +75,8 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
         }
       } else if (event is onPatientsAppointmentDelete) {
         try {
-          final result =
-              await deletAppointmentLocalusecase.excute(event.patients);
+          final result = await deletAppointmentLocalusecase.excute(
+              event.patients, event.context);
           if (result) {
             ScaffoldMessenger.of(event.context).showSnackBar(const SnackBar(
                 content: Text("appointment removed sucessusfuly"),

@@ -1,6 +1,7 @@
-import 'dart:io';
+import 'dart:async';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:dawini_full/auth/welcomePage.dart';
 import 'package:dawini_full/firebase_options.dart';
 import 'package:dawini_full/injection_container.dart';
 import 'package:dawini_full/introduction_feature/presentation/bloc/bloc/introduction_bloc.dart';
@@ -12,6 +13,7 @@ import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/pati
 import 'package:dawini_full/patient_features/presentation/pages/myApp.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +41,24 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await FirebaseAppCheck.instance.activate(
+    // You can also use a `ReCaptchaEnterpriseProvider` provider instance as an
+    // argument for `webProvider`
+    webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
+    // Default provider for Android is the Play Integrity provider. You can use the "AndroidProvider" enum to choose
+    // your preferred provider. Choose from:
+    // 1. Debug provider
+    // 2. Safety Net provider
+    // 3. Play Integrity provider
+    androidProvider: AndroidProvider.debug,
+    // Default provider for iOS/macOS is the Device Check provider. You can use the "AppleProvider" enum to choose
+    // your preferred provider. Choose from:
+    // 1. Debug provider
+    // 2. Device Check provider
+    // 3. App Attest provider
+    // 4. App Attest provider with fallback to Device Check provider (App Attest provider is only available on iOS 14.0+, macOS 14.0+)
+    appleProvider: AppleProvider.appAttest,
+  );
 
   setupLocator();
 
@@ -64,6 +84,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // FirebaseAuth.instance.authStateChanges().listen((user) {
+    //   if (user == null) {
+    //     print("disconnected");
+    //   } else {
+    //     print("connected");
+    //   }
+    // });
+
     return MultiBlocProvider(
         providers: [
           BlocProvider(
@@ -86,13 +114,15 @@ class MyApp extends StatelessWidget {
             splitScreenMode: true,
             builder: (context, child) {
               return MaterialApp(
-                locale: DevicePreview.locale(context),
-                builder: DevicePreview.appBuilder,
-                localizationsDelegates: AppLocalizations.localizationsDelegates,
-                supportedLocales: AppLocalizations.supportedLocales,
-                debugShowCheckedModeBanner: false,
-                home: MyWidget(device: device),
-              );
+                  locale: DevicePreview.locale(context),
+                  builder: DevicePreview.appBuilder,
+                  localizationsDelegates:
+                      AppLocalizations.localizationsDelegates,
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  debugShowCheckedModeBanner: false,
+                  home: WelcomePage()
+                  // MyWidget(device: device),
+                  );
             }));
   }
 }

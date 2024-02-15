@@ -5,7 +5,7 @@ class DoctorEntity extends Equatable {
   final String date;
   final String experience;
   final String description;
-
+  final int numberInList;
   final String uid;
   final String firstName;
   final String lastName;
@@ -16,8 +16,9 @@ class DoctorEntity extends Equatable {
   final bool atSerivce;
   final int turn;
 
-  DoctorEntity(
-      {required this.location,
+  const DoctorEntity(
+      {required this.numberInList,
+      required this.location,
       required this.date,
       required this.experience,
       required this.description,
@@ -34,6 +35,7 @@ class DoctorEntity extends Equatable {
   @override
   // TODO: implement props
   List<Object?> get props => [
+        numberInList,
         location,
         date,
         experience,

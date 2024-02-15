@@ -15,7 +15,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "511171532932-eemv0efbl8i5b2b9svivieqr2h4sjvqv.apps.googleusercontent.com",
+          "client_id": "511171532932-4eajvmbre1krtm5plrem0hpn587nsq39.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.dawini",
+            "certificate_hash": "b8d0773fe51b6109bb06ec160d3f444f8a5e6c76"
+          }
+        },
+        {
+          "client_id": "511171532932-29ct837kbqh67vod90gu8t9v4cnk22pm.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -28,8 +36,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "511171532932-eemv0efbl8i5b2b9svivieqr2h4sjvqv.apps.googleusercontent.com",
+              "client_id": "511171532932-29ct837kbqh67vod90gu8t9v4cnk22pm.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "511171532932-d98c9deunb5aj4vvuqcvk0o40rqpaoco.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dawini.app.dawiniFull.RunnerTests"
+              }
             }
           ]
         }
@@ -44,7 +59,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "511171532932-eemv0efbl8i5b2b9svivieqr2h4sjvqv.apps.googleusercontent.com",
+          "client_id": "511171532932-hrvb9dtb0u4dthra96qd8vffk8d7u72g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dawini.app.dawini_full",
+            "certificate_hash": "65585f1f433a4878615011d434f69062105084ac"
+          }
+        },
+        {
+          "client_id": "511171532932-29ct837kbqh67vod90gu8t9v4cnk22pm.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -57,8 +80,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "511171532932-eemv0efbl8i5b2b9svivieqr2h4sjvqv.apps.googleusercontent.com",
+              "client_id": "511171532932-29ct837kbqh67vod90gu8t9v4cnk22pm.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "511171532932-d98c9deunb5aj4vvuqcvk0o40rqpaoco.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dawini.app.dawiniFull.RunnerTests"
+              }
             }
           ]
         }

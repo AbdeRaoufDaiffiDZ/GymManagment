@@ -1,9 +1,10 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, avoid_print
 
 import 'dart:convert';
 
 import 'package:dawini_full/core/constants/constants.dart';
 import 'package:dawini_full/core/error/exception.dart';
+import 'package:dawini_full/patient_features/data/data_source/authentification.dart';
 import 'package:dawini_full/patient_features/data/data_source/local_data_source.dart';
 import 'package:dawini_full/patient_features/data/models/clinic_model.dart';
 import 'package:dawini_full/patient_features/data/models/doctor_model.dart';
@@ -19,7 +20,10 @@ abstract class DoctorRemoteDataSource {
   Stream<List<DoctorEntity>> streamDoctors();
   Future<UserCredential> authDoctor(email, password);
   Future<bool> SetDoctorAppointment(PatientModel patientInfo);
-  Future<bool> RemoveDoctorAppointment(PatientModel patientInfo);
+  Future<bool> RemoveDoctorAppointment(PatientModel patientInfo, context);
+  Stream<List<PatientModel>> getDoctorPatientsStream(String uid);
+  Future turnUpdate(int numberInList, int turn);
+  Future updatedoctorState(int numberInList, bool state);
 }
 
 class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
@@ -48,24 +52,6 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
 
   static String patientInfoUrl(PatientModel patientInfo) =>
       'https://dawini-cec17-default-rtdb.europe-west1.firebasedatabase.app/user_data/Doctors/${patientInfo.uid}/Cabin_info/Patients/${patientInfo.AppointmentDate}.json';
-
-  Future<List<DoctorModel>> getDoctorPatients(PatientModel patientInfo) async {
-    try {
-      final response = await client.get(Uri.parse(patientInfoUrl(patientInfo)));
-      if (response.statusCode == 200) {
-        List<DoctorModel> users =
-            (json.decode(response.body) as List).map((data) {
-          return DoctorModel.fromJson(data);
-        }).toList();
-        return users;
-      } else {
-        throw ServerException();
-      }
-    } catch (e) {
-      print(e.toString());
-      throw ServerException();
-    }
-  }
 
   @override
   Future<bool> SetDoctorAppointment(PatientModel patientInfo) async {
@@ -130,17 +116,81 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
   }
 
   @override
-  Future<bool> RemoveDoctorAppointment(PatientModel patientInfo) async {
+  Future<bool> RemoveDoctorAppointment(
+      PatientModel patientInfo, context) async {
+    FirebaseAuthMethods _auth = FirebaseAuthMethods();
+    _auth.loginWithEmail(
+        email: "deleteAppointment@gmail.com",
+        password: "deleteAppointment",
+        context: context);
+    String uid = "";
+    getDoctorsInfo().then((value) {
+      DoctorModel doctor = value.singleWhere(
+          (element) => element.firstName == patientInfo.DoctorName);
+      uid = doctor.uid;
+    });
+    String date = patientInfo.AppointmentDate;
+    String id = patientInfo.turn.toString();
+    await _databaseReference
+        .ref("/user_data/Doctors/$uid/Cabin_info/Patients/$date/$id")
+        .remove()
+        .then((value) => print("done!"))
+        .catchError((e) => print("error"));
     await localDataSourcePatients.DeleteDoctorAppointmentLocal(
         PatientModel.fromMap(patientInfo.toMap()));
+
+    _auth.signOut(context);
     return true;
+  }
+
+  @override
+  Future turnUpdate(int numberInList, int turn) async {
+    if (turn < 0) {
+      turn = 0;
+    } else {
+      turn = turn;
+    }
+    await _databaseReference
+        .ref()
+        .update({"/doctorsList/$numberInList/numberInList": turn})
+        .then((value) => print("done!"))
+        .catchError((e) => print("error"));
+  }
+
+  @override
+  Future updatedoctorState(int numberInList, bool state) async {
+    await _databaseReference
+        .ref()
+        .update({"/doctorsList/$numberInList/atSerivce": state})
+        .then((value) => print("done!"))
+        .catchError((e) => print("error"));
+  }
+
+  @override
+  Stream<List<PatientModel>> getDoctorPatientsStream(String uid) {
+    List<PatientModel> resulted = [];
+    final result = _databaseReference
+        .ref()
+        .child('/user_data/Doctors/$uid/Cabin_info/Patients')
+        .onValue
+        .map((event) {
+      resulted.clear();
+
+      List currapted = event.snapshot.value as List;
+      final data = currapted.map((e) {
+        return PatientModel.fromJson(e);
+      }).toList();
+
+      return data;
+    });
+
+    return result;
   }
 }
 
 abstract class ClinicsRemoteDataSource {
   Future<List<ClinicModel>> getClincsInfo();
   Stream<List<ClinicEntity>> streamClincss();
-  Future<UserCredential> authClinic(email, password);
 }
 
 class ClinicsRemoteDataSourceImpl implements ClinicsRemoteDataSource {
@@ -177,12 +227,5 @@ class ClinicsRemoteDataSourceImpl implements ClinicsRemoteDataSource {
       return data;
     });
     return result;
-  }
-
-  @override
-  Future<UserCredential> authClinic(email, password) async {
-    final response =
-        await auth.signInWithEmailAndPassword(email: email, password: password);
-    return response;
   }
 }

@@ -6,7 +6,6 @@ import 'package:dawini_full/core/error/failure.dart';
 import 'package:dawini_full/patient_features/data/data_source/remote_data_source.dart';
 import 'package:dawini_full/patient_features/domain/entities/clinic.dart';
 import 'package:dawini_full/patient_features/domain/repositories/clinic_repository.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class ClinicRepositoryImpl implements ClinicRepository {
   static final ClinicsRemoteDataSource clinicsRemoteDataSource =
@@ -37,13 +36,13 @@ class ClinicRepositoryImpl implements ClinicRepository {
     }
   }
 
-  @override
-  Future<Either<Failure, UserCredential>> authClinic(email, password) async {
-    try {
-      final result = await clinicsRemoteDataSource.authClinic(email, password);
-      return Right(result);
-    } on FirebaseAuthException catch (e) {
-      return Left(AuthenticatinFailure(message: e.code));
-    }
-  }
+  // @override
+  // Future<Either<Failure, UserCredential>> authClinic(email, password) async {
+  //   try {
+  //     final result = await clinicsRemoteDataSource.authClinic(email, password);
+  //     return Right(result);
+  //   } on FirebaseAuthException catch (e) {
+  //     return Left(AuthenticatinFailure(message: e.code));
+  //   }
+  // }
 }

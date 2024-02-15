@@ -65,8 +65,8 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton(
       () => GetClinicsInfoUseCase(clinicRepository: locator()));
   locator.registerLazySingleton(() => GetClinicsStreamInfoUseCase());
-  locator.registerLazySingleton(
-      () => ClinicAuthStateUseCase(repository: locator()));
+  // locator.registerLazySingleton(
+  //     () => ClinicAuthStateUseCase(repository: locator()));
 
   locator.registerLazySingleton(
       () => CheckWatchingStatusUseCase(repository: locator()));

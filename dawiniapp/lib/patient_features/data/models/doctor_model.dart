@@ -1,6 +1,9 @@
+// ignore_for_file: annotate_overrides, overridden_fields
+
 import 'package:dawini_full/patient_features/domain/entities/doctor.dart';
 
 class DoctorModel extends DoctorEntity {
+  final int numberInList;
   final String location;
   final String date;
   final String experience;
@@ -15,8 +18,9 @@ class DoctorModel extends DoctorEntity {
   final int turn;
   final String uid;
 
-  DoctorModel(
-      {required this.location,
+  const DoctorModel(
+      {required this.numberInList,
+      required this.location,
       required this.date,
       required this.experience,
       required this.description,
@@ -30,6 +34,7 @@ class DoctorModel extends DoctorEntity {
       required this.lastName,
       required this.phoneNumber})
       : super(
+            numberInList: numberInList,
             location: location,
             date: date,
             description: description,
@@ -81,6 +86,7 @@ class DoctorModel extends DoctorEntity {
 
   factory DoctorModel.fromJson(Map<dynamic, dynamic> json) {
     return DoctorModel(
+        numberInList: json['numberInList'],
         firstName: json['firstName'],
         lastName: json['lastName'],
         phoneNumber: json['phoneNumber'],
@@ -111,5 +117,6 @@ class DoctorModel extends DoctorEntity {
       location: location,
       date: date,
       experience: experience,
-      description: description);
+      description: description,
+      numberInList: numberInList);
 }
