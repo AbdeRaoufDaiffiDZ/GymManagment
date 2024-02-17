@@ -1,7 +1,5 @@
 // ignore_for_file: void_checks
 
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 
 import 'package:dawini_full/patient_features/domain/entities/doctor.dart';

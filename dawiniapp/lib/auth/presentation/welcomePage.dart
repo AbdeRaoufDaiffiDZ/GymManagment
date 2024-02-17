@@ -1,9 +1,62 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, camel_case_types, library_private_types_in_public_api
 
-import 'package:dawini_full/auth/loginPage.dart';
-import 'package:dawini_full/auth/signup.dart';
+import 'package:dawini_full/auth/data/FirebaseAuth/authentification.dart';
+import 'package:dawini_full/auth/presentation/loginPage.dart';
+import 'package:dawini_full/auth/presentation/signup.dart';
+import 'package:dawini_full/main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+class doctorsideHome extends StatefulWidget {
+  const doctorsideHome({super.key});
+
+  @override
+  State<doctorsideHome> createState() => _doctorsideHomeState();
+}
+
+class _doctorsideHomeState extends State<doctorsideHome> {
+  @override
+  Widget build(BuildContext context) {
+    FirebaseAuthMethods auth = FirebaseAuthMethods();
+
+    final Stream<User?> user = auth.authState;
+
+    return StreamBuilder(
+        stream: user,
+        builder: (context, snapshot) {
+          return SafeArea(
+            child: Column(
+              children: [
+                MaterialButton(
+                  color: Colors.white,
+                  onPressed: () {
+                    auth.signOut();
+                  },
+                  child: Text("clickTo Disconnect"),
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                MaterialButton(
+                  color: Colors.white,
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              MyWidget(device: 'device'),
+                        ));
+                  },
+                  child: Text("go to patient side"),
+                ),
+              ],
+            ),
+          );
+        });
+  }
+}
 
 class WelcomePage extends StatefulWidget {
   WelcomePage({Key? key, this.title}) : super(key: key);

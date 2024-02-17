@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:dawini_full/patient_features/domain/entities/clinic.dart';
-import 'package:dawini_full/patient_features/presentation/pages/pages/clinicDetails/clinics_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

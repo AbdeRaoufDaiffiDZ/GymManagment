@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:dawini_full/auth/signup.dart';
-import 'package:dawini_full/patient_features/data/data_source/authentification.dart';
+import 'package:dawini_full/auth/data/FirebaseAuth/authentification.dart';
+import 'package:dawini_full/auth/presentation/signup.dart';
 import 'package:flutter/material.dart';
 
 import 'Widget/bezierContainer.dart';
@@ -267,12 +267,14 @@ class _LoginPageState extends State<LoginPage> {
                           passwordController.text.isNotEmpty) {
                         try {
                           // users.signInWithGoogle(context);
-                          // users.signIn(
-                          //     emailController.text, passwordController.text);
+                          users.loginWithEmail(
+                              context: context,
+                              email: emailController.text,
+                              password: passwordController.text);
 
-                          showSnackBar(context, "hello");
+                          // showSnackBar(context, "hello");
                         } catch (e) {
-                          showSnackBar(context, e.toString());
+                          // showSnackBar(context, e.toString());
                         }
                       }
                     },
@@ -284,9 +286,9 @@ class _LoginPageState extends State<LoginPage> {
                         try {
                           // users.resetPassword(emailController.text);
 
-                          showSnackBar(context, "hello");
+                          // showSnackBar(context, "hello");
                         } catch (e) {
-                          showSnackBar(context, e.toString());
+                          // showSnackBar(context, e.toString());
                         }
                       }
                     },

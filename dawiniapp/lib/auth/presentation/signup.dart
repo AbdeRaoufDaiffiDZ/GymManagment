@@ -1,5 +1,5 @@
-import 'package:dawini_full/auth/Widget/bezierContainer.dart';
-import 'package:dawini_full/auth/loginPage.dart';
+import 'package:dawini_full/auth/presentation/Widget/bezierContainer.dart';
+import 'package:dawini_full/auth/presentation/loginPage.dart';
 import 'package:flutter/material.dart';
 
 class SignUpPage extends StatefulWidget {

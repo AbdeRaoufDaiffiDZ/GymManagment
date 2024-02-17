@@ -54,7 +54,7 @@ class IntroductionBloc extends Bloc<IntroductionEvent, IntroductionState> {
             break;
 
           default:
-            final result = await ignorIntroductionUseCase
+            await ignorIntroductionUseCase
                 .execute(true); ///// will be changed later
             String Screen = '';
 
@@ -68,7 +68,7 @@ class IntroductionBloc extends Bloc<IntroductionEvent, IntroductionState> {
         print(result);
         emit(LanguageState(language: event.language));
       } else if (event is onTypeChoose) {
-        final result = await setTypeUseCase.execute(event.type);
+        await setTypeUseCase.execute(event.type);
         emit(TypeState(type: event.type));
       }
     });

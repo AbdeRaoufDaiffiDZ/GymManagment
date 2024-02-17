@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:dawini_full/auth/welcomePage.dart';
 import 'package:dawini_full/firebase_options.dart';
 import 'package:dawini_full/injection_container.dart';
 import 'package:dawini_full/introduction_feature/presentation/bloc/bloc/introduction_bloc.dart';
@@ -114,15 +113,13 @@ class MyApp extends StatelessWidget {
             splitScreenMode: true,
             builder: (context, child) {
               return MaterialApp(
-                  locale: DevicePreview.locale(context),
-                  builder: DevicePreview.appBuilder,
-                  localizationsDelegates:
-                      AppLocalizations.localizationsDelegates,
-                  supportedLocales: AppLocalizations.supportedLocales,
-                  debugShowCheckedModeBanner: false,
-                  home: WelcomePage()
-                  // MyWidget(device: device),
-                  );
+                locale: DevicePreview.locale(context),
+                builder: DevicePreview.appBuilder,
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
+                supportedLocales: AppLocalizations.supportedLocales,
+                debugShowCheckedModeBanner: false,
+                home: MyWidget(device: device),
+              );
             }));
   }
 }
@@ -137,7 +134,7 @@ class MyWidget extends StatefulWidget {
 
 class _MyWidgetState extends State<MyWidget> {
   bool isConnected = false;
-
+  bool isAuthuntificated = false;
   bool status = false;
   @override
   void initState() {
@@ -152,6 +149,7 @@ class _MyWidgetState extends State<MyWidget> {
 
   @override
   Widget build(BuildContext context) {
+    // _isAuth();
     if (kDebugMode) {
       print(widget.device);
     }
@@ -159,7 +157,7 @@ class _MyWidgetState extends State<MyWidget> {
     if (status) {
       return Mypage(device: widget.device);
     } else {
-      return PagesShower();
+      return const PagesShower();
     }
   }
 
@@ -169,4 +167,18 @@ class _MyWidgetState extends State<MyWidget> {
       status = (prefs.getBool('ignore') ?? false);
     });
   }
+
+  // Future<void> _isAuth() async {
+  //   FirebaseAuth.instance.authStateChanges().listen((user) {
+  //     if (user == null) {
+  //       setState(() {
+  //         isAuthuntificated = false;
+  //       });
+  //     } else {
+  //       setState(() {
+  //         isAuthuntificated = true;
+  //       });
+  //     }
+  //   });
+  // }
 }

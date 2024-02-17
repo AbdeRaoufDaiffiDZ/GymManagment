@@ -1,3 +1,4 @@
+import 'package:dawini_full/auth/presentation/welcomePage.dart';
 import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/introduction_feature/presentation/bloc/bloc/introduction_bloc.dart';
 import 'package:dawini_full/introduction_feature/presentation/screens/pages/localization.dart';
@@ -33,8 +34,10 @@ class _PagesShowerState extends State<PagesShower> {
         } else if (state is IgnoreIntorductionState) {
           if (state.Screen == 'patient') {
             return Mypage();
-          } else {
+          } else if (state.Screen == 'doctor') {
+            return doctorsideHome();
             /////////////////////////////////////    here you will go to patients screen
+          } else {
             bloc.add(NextPage(id: 1));
             return Center();
           }

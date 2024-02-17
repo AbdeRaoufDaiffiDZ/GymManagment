@@ -28,3 +28,7 @@ final class DoctorAuthFailed extends DoctorAuthState {
   @override
   List<Object> get props => [error];
 }
+
+final class DoctorAuthDisconnect extends DoctorAuthState {}
+
+final class DoctorPasswordReset extends DoctorAuthState {}

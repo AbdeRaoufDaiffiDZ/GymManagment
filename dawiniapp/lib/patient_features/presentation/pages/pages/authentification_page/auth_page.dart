@@ -69,7 +69,8 @@ Widget LoginScreen(context, {showSnackBar = false, message = ''}) {
             onPressed: () {
               final email = emailController.text;
               final password = passwordController.text;
-              authBloc.add(onSignIn(email: email, password: password));
+              authBloc.add(
+                  onSignIn(email: email, password: password, context: context));
             },
             child: const Text('Login'),
           ),

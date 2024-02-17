@@ -2,9 +2,9 @@
 
 import 'dart:convert';
 
+import 'package:dawini_full/auth/data/FirebaseAuth/authentification.dart';
 import 'package:dawini_full/core/constants/constants.dart';
 import 'package:dawini_full/core/error/exception.dart';
-import 'package:dawini_full/patient_features/data/data_source/authentification.dart';
 import 'package:dawini_full/patient_features/data/data_source/local_data_source.dart';
 import 'package:dawini_full/patient_features/data/models/clinic_model.dart';
 import 'package:dawini_full/patient_features/data/models/doctor_model.dart';

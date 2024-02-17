@@ -1,11 +1,11 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, sort_child_properties_last
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:dawini_full/auth/presentation/welcomePage.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/bloc/doctor_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Myappointment/appointments.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/appBar.dart';
-import 'package:dawini_full/patient_features/presentation/pages/widgets/clinics/clinic.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/clinics/clinicsList.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/doctors/doctorsList.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/favorite/favourites.dart';
@@ -190,11 +190,7 @@ class _DoctorPageState extends State<Weather> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Scaffold(
-                                  appBar: AppBar(),
-                                  body: Center(child: Text("Specialities")),
-                                ),
-                              ));
+                                  builder: (context) => doctorsideHome()));
                         },
                         child: Container(
                           width: 80.w,
