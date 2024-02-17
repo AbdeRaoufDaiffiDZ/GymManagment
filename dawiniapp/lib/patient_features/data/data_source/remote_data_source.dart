@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:dawini_full/auth/data/FirebaseAuth/authentification.dart';
+import 'package:dawini_full/auth/data/models/auth_model.dart';
 import 'package:dawini_full/core/constants/constants.dart';
 import 'package:dawini_full/core/error/exception.dart';
 import 'package:dawini_full/patient_features/data/data_source/local_data_source.dart';
@@ -119,10 +120,9 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
   Future<bool> RemoveDoctorAppointment(
       PatientModel patientInfo, context) async {
     FirebaseAuthMethods _auth = FirebaseAuthMethods();
-    _auth.loginWithEmail(
-        email: "deleteAppointment@gmail.com",
-        password: "deleteAppointment",
-        context: context);
+    final AuthModel auth = AuthModel(
+        email: "deleteAppointment@gmail.com", password: "deleteAppointment");
+    _auth.loginWithEmail(authData: auth);
     String uid = "";
     getDoctorsInfo().then((value) {
       DoctorModel doctor = value.singleWhere(
@@ -139,7 +139,7 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
     await localDataSourcePatients.DeleteDoctorAppointmentLocal(
         PatientModel.fromMap(patientInfo.toMap()));
 
-    _auth.signOut(context);
+    _auth.signOut();
     return true;
   }
 

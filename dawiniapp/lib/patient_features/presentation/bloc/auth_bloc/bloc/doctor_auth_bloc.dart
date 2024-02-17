@@ -12,8 +12,7 @@ part 'doctor_auth_event.dart';
 part 'doctor_auth_state.dart';
 
 class DoctorAuthBloc extends Bloc<DoctorAuthEvent, DoctorAuthState> {
-  final DoctorAuthStateUseCase doctorAuthStateUseCase;
-  DoctorAuthBloc(this.doctorAuthStateUseCase) : super(DoctorAuthInitial()) {
+  DoctorAuthBloc() : super(DoctorAuthInitial()) {
     on<DoctorAuthEvent>((event, emit) async {
       if (event is onSignIn) {
         emit(DoctorAuthLoading());
@@ -57,41 +56,5 @@ class DoctorAuthBloc extends Bloc<DoctorAuthEvent, DoctorAuthState> {
         }, (r) => emit(DoctorAuthDisconnect()));
       }
     });
-  }
-
-  void showSnackBar(BuildContext context, String text) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(text),
-      ),
-    );
-  }
-
-  void showOTPDialog({
-    required BuildContext context,
-    required TextEditingController codeController,
-    required VoidCallback onPressed,
-  }) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        title: const Text("Enter OTP"),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            TextField(
-              controller: codeController,
-            ),
-          ],
-        ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: onPressed,
-            child: const Text("Done"),
-          )
-        ],
-      ),
-    );
   }
 }

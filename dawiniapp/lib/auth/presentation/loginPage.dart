@@ -267,10 +267,10 @@ class _LoginPageState extends State<LoginPage> {
                           passwordController.text.isNotEmpty) {
                         try {
                           // users.signInWithGoogle(context);
-                          users.loginWithEmail(
-                              context: context,
-                              email: emailController.text,
-                              password: passwordController.text);
+                          // users.loginWithEmail(
+                          //     context: context,
+                          //     email: emailController.text,
+                          //     password: passwordController.text);
 
                           // showSnackBar(context, "hello");
                         } catch (e) {

@@ -1,35 +1,30 @@
-import 'dart:async';
-import 'dart:developer' as developer;
+// ignore_for_file: depend_on_referenced_packages, camel_case_types
 
-import 'package:dawini_full/auth/presentation/bloc/auth_bloc.dart';
-import 'package:dawini_full/auth/presentation/bloc/auth_state.dart';
-import 'package:meta/meta.dart';
+import 'package:dawini_full/auth/domain/entity/auth_entity.dart';
+import 'package:dawini_full/patient_features/domain/entities/doctor.dart';
+import 'package:flutter/material.dart';
 
-@immutable
-abstract class AuthEvent {
-  Stream<AuthState> applyAsync({AuthState currentState, AuthBloc bloc});
+abstract class AuthEvent {}
+
+class onLoginEvent extends AuthEvent {
+  final AuthEntity data;
+  final BuildContext context;
+
+  onLoginEvent({required this.context, required this.data});
 }
 
-class UnAuthEvent extends AuthEvent {
-  @override
-  Stream<AuthState> applyAsync(
-      {AuthState? currentState, AuthBloc? bloc}) async* {
-    yield UnAuthState();
-  }
+class onRegisterEvent extends AuthEvent {
+  final AuthEntity data;
+  final DoctorEntity doctorData;
+  final BuildContext context;
+
+  onRegisterEvent(
+      {required this.context, required this.data, required this.doctorData});
 }
 
-class LoadAuthEvent extends AuthEvent {
-  @override
-  Stream<AuthState> applyAsync(
-      {AuthState? currentState, AuthBloc? bloc}) async* {
-    try {
-      yield UnAuthState();
-      await Future.delayed(const Duration(seconds: 1));
-      yield InAuthState('Hello world');
-    } catch (_, stackTrace) {
-      developer.log('$_',
-          name: 'LoadAuthEvent', error: _, stackTrace: stackTrace);
-      yield ErrorAuthState(_.toString());
-    }
-  }
+class onResetPassEvent extends AuthEvent {
+  final AuthEntity data;
+  final BuildContext context;
+
+  onResetPassEvent({required this.context, required this.data});
 }

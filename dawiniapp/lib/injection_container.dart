@@ -1,3 +1,4 @@
+import 'package:dawini_full/auth/domain/usecases/auth_usecase.dart';
 import 'package:dawini_full/introduction_feature/data/data_source/local_data_source.dart';
 import 'package:dawini_full/introduction_feature/data/repositoryImpl/itroduction_repository_impl.dart';
 import 'package:dawini_full/introduction_feature/domain/repository/introductionRepository.dart';
@@ -19,7 +20,6 @@ import 'package:dawini_full/patient_features/domain/repositories/patients_reposi
 import 'package:dawini_full/patient_features/domain/usecases/clinic_usecase.dart';
 import 'package:dawini_full/patient_features/domain/usecases/doctor_usecase.dart';
 import 'package:dawini_full/patient_features/domain/usecases/patients_usecase.dart';
-import 'package:dawini_full/patient_features/presentation/bloc/auth_bloc/bloc/doctor_auth_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/clinics_bloc/bloc/clinics_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/bloc/doctor_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
@@ -39,7 +39,6 @@ Future<void> setupLocator() async {
       ));
   locator.registerFactory(() => PatientsBloc(
       locator(), locator(), locator(), locator(), locator(), locator()));
-  locator.registerFactory(() => DoctorAuthBloc(locator()));
   locator.registerFactory(() => IntroductionBloc(locator(), locator(),
       locator(), locator(), locator(), locator(), locator()));
   locator.registerFactory(() => ClinicsBloc(getClinicsInfoUseCase: locator()));
@@ -59,8 +58,7 @@ Future<void> setupLocator() async {
 
   //////////////
   locator.registerLazySingleton(() => GetDoctorsStreamInfoUseCase());
-  locator.registerLazySingleton(
-      () => DoctorAuthStateUseCase(repository: locator()));
+  locator.registerLazySingleton(() => DoctorAuthStateUseCase());
   // clinics part
   locator.registerLazySingleton(
       () => GetClinicsInfoUseCase(clinicRepository: locator()));
