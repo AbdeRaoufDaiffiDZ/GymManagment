@@ -2,8 +2,8 @@
 
 import 'package:dawini_full/Patient_Info.dart';
 import 'package:dawini_full/core/loading/loading.dart';
-import 'package:dawini_full/patient_features/domain/entities/doctor.dart';
-import 'package:dawini_full/patient_features/domain/usecases/doctor_usecase.dart';
+import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
+import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart';
 import 'package:dawini_full/patient_features/domain/usecases/patients_usecase.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
 import 'package:flutter/material.dart';

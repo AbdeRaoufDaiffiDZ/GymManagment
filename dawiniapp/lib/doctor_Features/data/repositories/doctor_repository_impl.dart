@@ -3,13 +3,13 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:dawini_full/core/error/exception.dart';
 import 'package:dawini_full/core/error/failure.dart';
-import 'package:dawini_full/patient_features/data/data_source/remote_data_source.dart';
-import 'package:dawini_full/patient_features/domain/entities/doctor.dart';
-import 'package:dawini_full/patient_features/domain/repositories/doctor_repository.dart';
+import 'package:dawini_full/doctor_Features/data/data_source/doctor_cabin_data_source.dart';
+import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
+import 'package:dawini_full/doctor_Features/domain/repositories/doctor_repository.dart';
 
 class DcotrRepositoryImpl implements DoctorRepository {
-  static final DoctorRemoteDataSource doctorRemoteDataSource =
-      DoctorRemoteDataSourceImpl();
+  static final DoctorCabinDataSource doctorRemoteDataSource =
+      DoctorCabinDataSourceImp();
 
   @override
   Future<Either<Failure, List<DoctorEntity>>> getDoctorsInfo() async {

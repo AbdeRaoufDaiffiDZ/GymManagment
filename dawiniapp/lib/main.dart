@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:dawini_full/auth/presentation/bloc/auth_bloc.dart';
 import 'package:dawini_full/firebase_options.dart';
 import 'package:dawini_full/injection_container.dart';
 import 'package:dawini_full/introduction_feature/presentation/bloc/bloc/introduction_bloc.dart';
 import 'package:dawini_full/introduction_feature/presentation/screens/pages_shower.dart';
-import 'package:dawini_full/patient_features/presentation/bloc/auth_bloc/bloc/doctor_auth_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/clinics_bloc/bloc/clinics_bloc.dart';
-import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/bloc/doctor_bloc.dart';
+import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/pages/myApp.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -96,7 +96,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (_) => locator<ClinicsBloc>()..add(ClinicinitialEvent()),
           ),
-          BlocProvider(create: (_) => locator<DoctorAuthBloc>()),
+          BlocProvider(create: (_) => locator<AuthBloc>()),
           BlocProvider(
             create: (_) => locator<DoctorBloc>()..add(DoctorinitialEvent()),
           ),

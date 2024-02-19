@@ -1,6 +1,6 @@
 // ignore_for_file: annotate_overrides, overridden_fields
 
-import 'package:dawini_full/patient_features/domain/entities/doctor.dart';
+import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 
 class DoctorModel extends DoctorEntity {
   final int numberInList;

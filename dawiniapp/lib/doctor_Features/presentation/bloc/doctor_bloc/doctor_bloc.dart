@@ -2,8 +2,8 @@
 
 import 'package:bloc/bloc.dart';
 
-import 'package:dawini_full/patient_features/domain/entities/doctor.dart';
-import 'package:dawini_full/patient_features/domain/usecases/doctor_usecase.dart';
+import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
+import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart';
 import 'package:equatable/equatable.dart';
 
 part 'doctor_event.dart';

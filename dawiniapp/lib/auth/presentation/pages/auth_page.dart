@@ -1,6 +1,9 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:dawini_full/patient_features/presentation/bloc/auth_bloc/bloc/doctor_auth_bloc.dart';
+import 'package:dawini_full/auth/domain/entity/auth_entity.dart';
+import 'package:dawini_full/auth/presentation/bloc/auth_bloc.dart';
+import 'package:dawini_full/auth/presentation/bloc/auth_event.dart';
+import 'package:dawini_full/auth/presentation/bloc/auth_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,22 +18,21 @@ class DoctgorAuthPage extends StatelessWidget {
           alignment: AlignmentDirectional.center,
           padding: const EdgeInsets.all(1),
           color: Colors.white,
-          child: BlocBuilder<DoctorAuthBloc, DoctorAuthState>(
-              builder: (context, state) {
-            if (state is DoctorAuthLoading) {
+          child: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+            if (state is LoadAuthState) {
               return const Center(child: CircularProgressIndicator());
             }
-            if (state is DoctorAuthSuccessful) {
+            if (state is SuccessasfulLogin) {
               return Scaffold(
                 appBar: AppBar(
                   title: const Text("hello"),
                 ),
               );
             }
-            if (state is DoctorAuthInitial) {
+            if (state is LoginState) {
               return LoginScreen(context);
             }
-            if (state is DoctorAuthFailed) {
+            if (state is ErrorAuthState) {
               return LoginScreen(context,
                   showSnackBar: true, message: state.error);
             }
@@ -41,7 +43,7 @@ class DoctgorAuthPage extends StatelessWidget {
 }
 
 Widget LoginScreen(context, {showSnackBar = false, message = ''}) {
-  final DoctorAuthBloc authBloc = BlocProvider.of<DoctorAuthBloc>(context);
+  final AuthBloc authBloc = BlocProvider.of<AuthBloc>(context);
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   if (showSnackBar) {
@@ -67,10 +69,11 @@ Widget LoginScreen(context, {showSnackBar = false, message = ''}) {
           const SizedBox(height: 16.0),
           ElevatedButton(
             onPressed: () {
-              final email = emailController.text;
-              final password = passwordController.text;
-              authBloc.add(
-                  onSignIn(email: email, password: password, context: context));
+              final AuthEntity data = AuthEntity(
+                  email: emailController.text,
+                  password: passwordController.text);
+
+              authBloc.add(onLoginEvent(context: context, data: data));
             },
             child: const Text('Login'),
           ),

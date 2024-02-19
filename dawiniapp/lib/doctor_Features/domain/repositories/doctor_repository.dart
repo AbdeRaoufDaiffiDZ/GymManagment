@@ -2,7 +2,7 @@
 
 import 'package:dartz/dartz.dart';
 import 'package:dawini_full/core/error/failure.dart';
-import 'package:dawini_full/patient_features/domain/entities/doctor.dart';
+import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 
 abstract class DoctorRepository {
   Future<Either<Failure, List<DoctorEntity>>> getDoctorsInfo();

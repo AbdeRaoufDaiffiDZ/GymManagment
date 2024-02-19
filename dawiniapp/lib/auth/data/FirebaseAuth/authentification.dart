@@ -79,7 +79,7 @@ class FirebaseAuthMethods {
       _auth.currentUser!.sendEmailVerification();
       return const Right('Email verification sent!');
     } on FirebaseAuthException catch (e) {
-      return Left(Failure(message: e.message.toString()));
+      return Left(ServerFailure(message: e.message.toString()));
     }
   }
 
@@ -214,7 +214,7 @@ class FirebaseAuthMethods {
       await _auth.signOut();
       return const Right(null);
     } on FirebaseAuthException catch (e) {
-      return Left(Failure(message: e.code));
+      return Left(ServerFailure(message: e.code));
     }
   }
 
@@ -224,7 +224,7 @@ class FirebaseAuthMethods {
       await _auth.currentUser!.delete();
       return const Right(null);
     } on FirebaseAuthException catch (e) {
-      return Left(Failure(message: e.code));
+      return Left(ServerFailure(message: e.code));
       // showSnackBar(context, e.message!); // Displaying the error message
       // if an error of requires-recent-login is thrown, make sure to log
       // in user again and then delete account.

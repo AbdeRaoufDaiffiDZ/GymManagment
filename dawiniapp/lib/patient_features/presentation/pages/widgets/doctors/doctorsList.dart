@@ -1,8 +1,8 @@
 import 'package:dawini_full/core/loading/loading.dart';
-import 'package:dawini_full/patient_features/domain/entities/doctor.dart';
-import 'package:dawini_full/patient_features/domain/usecases/doctor_usecase.dart';
-import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/bloc/Condtions/doctor_state_conditions.dart';
-import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/bloc/doctor_bloc.dart';
+import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
+import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart';
+import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_bloc/Condtions/doctor_state_conditions.dart';
+import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/doctors/details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

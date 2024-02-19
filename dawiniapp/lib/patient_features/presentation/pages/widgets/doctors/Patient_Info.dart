@@ -3,7 +3,7 @@
 import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:dawini_full/patient_features/domain/entities/doctor.dart';
+import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/patient_features/domain/entities/patient.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
 import 'package:flutter/material.dart';

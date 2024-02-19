@@ -9,6 +9,7 @@ abstract class AuthState extends Equatable {
 
 /// UnInitialized
 class LoginState extends AuthState {}
+class SuccessasfulLogin extends AuthState {}
 
 /// Initialized
 class RegisterState extends AuthState {}
