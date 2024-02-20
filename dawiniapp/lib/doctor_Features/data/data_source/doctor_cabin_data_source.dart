@@ -12,8 +12,8 @@ import 'package:http/http.dart' as http;
 abstract class DoctorCabinDataSource {
   Future<List<DoctorModel>> getDoctorsInfo();
   Stream<List<DoctorEntity>> streamDoctors();
-  Future turnUpdate(int numberInList, int turn);
-  Future updatedoctorState(int numberInList, bool state);
+  Future<void> turnUpdate(int numberInList, int turn);
+  Future<void> updatedoctorState(int numberInList, bool state);
 }
 
 class DoctorCabinDataSourceImp implements DoctorCabinDataSource {

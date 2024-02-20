@@ -1,0 +1,16 @@
+{
+    "helloWorld": "مرحبا ياعالم",
+    "home":"الرئيسية",
+    "my_Appointement":"مواعيدي",
+    "favorite":"المفضل",
+    "recommended_clinics":"Recommended clinics",
+    "see_all":"الجميع",
+    "specialty":"التخصص",
+    "search":"بحث",
+    "recommended_doctors":"Recommended doctors",
+    "at_service":"في الخدمة",
+    "not_at_service":"خارج الخدمة",
+    "internet_Restored":"عودة الاتصال بالانترنت",
+    "no_Interne_Connection":"لايوجد اتصال بالانترنت"
+
+  }

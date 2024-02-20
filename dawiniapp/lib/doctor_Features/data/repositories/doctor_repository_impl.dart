@@ -35,4 +35,9 @@ class DcotrRepositoryImpl implements DoctorRepository {
       throw ConnectionFailure(message: 'Failed to connect to the network');
     }
   }
+
+  Future<Either<Failure, void>> turnUpdate(int numberInList, int turn) {}
+
+  Future<Either<Failure, void>> updatedoctorState(
+      int numberInList, bool state) {}
 }
