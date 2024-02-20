@@ -1,8 +1,11 @@
+import 'package:dawini_full/auth/presentation/loginPage.dart';
+import 'package:dawini_full/auth/presentation/welcomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class myAppbar extends StatelessWidget implements PreferredSizeWidget {
-  const myAppbar({Key? key}) : super(key: key);
+  final String? uid;
+  const myAppbar({Key? key, this.uid}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +23,19 @@ class myAppbar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                if (uid == null) {
+                  print("null uid");
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LoginPage()));
+                } else {
+                  print("null uid");
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => doctorsideHome()));
+                }
+              },
               icon: Icon(
                 Icons.menu,
                 size: 30.w,

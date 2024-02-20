@@ -36,8 +36,24 @@ class DcotrRepositoryImpl implements DoctorRepository {
     }
   }
 
-  Future<Either<Failure, void>> turnUpdate(int numberInList, int turn) {}
+  @override
+  Future<Either<Failure, void>> turnUpdate(int numberInList, int turn) async {
+    try {
+      doctorRemoteDataSource.turnUpdate(numberInList, turn);
+      return const Right(null);
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
 
+  @override
   Future<Either<Failure, void>> updatedoctorState(
-      int numberInList, bool state) {}
+      int numberInList, bool state) async {
+    try {
+      doctorRemoteDataSource.updatedoctorState(numberInList, state);
+      return const Right(null);
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
 }

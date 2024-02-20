@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, sort_child_properties_last
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, sort_child_properties_last, prefer_typing_uninitialized_variables
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dawini_full/auth/presentation/welcomePage.dart';
@@ -7,7 +7,7 @@ import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/pati
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Myappointment/appointments.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/appBar.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/clinics/clinicsList.dart';
-import 'package:dawini_full/patient_features/presentation/pages/widgets/doctors/doctorsList.dart';
+import 'package:dawini_full/doctor_Features/presentation/pages/doctors/doctorsList.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/favorite/favourites.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/serachMenu.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/specialityList.dart';
@@ -18,9 +18,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Weather extends StatefulWidget {
   final device;
+  final String? uid;
   const Weather({
     super.key,
     this.device,
+    this.uid,
   });
 
   @override
@@ -98,7 +100,7 @@ class _DoctorPageState extends State<Weather> {
       case 0:
         return ListView(
           children: [
-            myAppbar(),
+            myAppbar(uid: widget.uid),
             Container(
               child: Column(children: [
                 SearchMenu(),
@@ -256,7 +258,7 @@ class _DoctorPageState extends State<Weather> {
         );
       case 1:
         patientsBloc.add(onPatientsReload());
-        return Myappointemtns();
+        return Myappointemtns(uid: widget.uid);
       case 2:
         return favorite();
       default:
@@ -276,7 +278,6 @@ class _doctorsState extends State<doctors> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: ListView(
         children: [
           SearchMenu(),

@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Myappointemtns extends StatefulWidget {
-  const Myappointemtns({super.key});
+  final String? uid;
+  const Myappointemtns({super.key, this.uid});
 
   @override
   State<Myappointemtns> createState() => _MyappointemtnsState();

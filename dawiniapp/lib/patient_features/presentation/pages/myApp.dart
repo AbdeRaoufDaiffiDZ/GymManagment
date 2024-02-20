@@ -1,3 +1,4 @@
+import 'package:dawini_full/auth/domain/usecases/auth_usecase.dart';
 import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/patient_features/domain/usecases/patients_usecase.dart';
 import 'package:dawini_full/patient_features/presentation/pages/weather_pag.dart';
@@ -7,7 +8,8 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class Mypage extends StatefulWidget {
   final device;
-  Mypage({Key? key, this.device}) : super(key: key);
+  final String? uid;
+  const Mypage({Key? key, this.device, this.uid}) : super(key: key);
 
   @override
   State<Mypage> createState() => _MypageState();
@@ -18,6 +20,7 @@ class _MypageState extends State<Mypage> {
   bool isConnected = false;
 
   bool status = false;
+
   @override
   void initState() {
     super.initState();
@@ -42,11 +45,28 @@ class _MypageState extends State<Mypage> {
 
   final GetAppointmentLocalusecase getAppointmentLocalusecase =
       GetAppointmentLocalusecase();
+  DoctorAuthStateUseCase doctorAuthStateUseCase = DoctorAuthStateUseCase();
 
   @override
   Widget build(BuildContext context) {
+    // if (widget.uid == null) {
+    //   return doctorsideHome();
+    // } else {
+    //   return Column(
+    //     children: [
+    //       Text(widget.uid!),
+    //       MaterialButton(
+    //           color: Colors.white,
+    //           onPressed: () {
+    //             doctorAuthStateUseCase.signOutDoctor();
+    //           })
+    //     ],
+    //   );
+    // }
     return Scaffold(
         key: _scaffoldKey,
-        body: isConnected ? Weather(device: widget.device) : Loading());
+        body: isConnected
+            ? Weather(device: widget.device, uid: widget.uid)
+            : Loading());
   }
 }

@@ -1,7 +1,7 @@
 import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
-import 'package:dawini_full/patient_features/presentation/pages/widgets/doctors/doctorsList.dart';
+import 'package:dawini_full/doctor_Features/presentation/pages/doctors/doctorsList.dart';
 import 'package:flutter/material.dart';
 
 Widget DoctorStateConditions(DoctorState state, List<DoctorEntity> data,

@@ -34,9 +34,7 @@ final locator = GetIt.instance;
 Future<void> setupLocator() async {
   final sharedPreferences = await SharedPreferences.getInstance();
 
-  locator.registerFactory(() => DoctorBloc(
-        locator(),
-      ));
+  locator.registerFactory(() => DoctorBloc(locator(), locator()));
   locator.registerFactory(() => PatientsBloc(
       locator(), locator(), locator(), locator(), locator(), locator()));
   locator.registerFactory(() => IntroductionBloc(locator(), locator(),
@@ -48,6 +46,7 @@ Future<void> setupLocator() async {
   //     () => GetCurrentWeatherUseCase(weatherRepository: locator()));
   locator.registerLazySingleton(
       () => GetDoctorsInfoUseCase(doctorRepository: locator()));
+  locator.registerLazySingleton(() => UpdateDoctorCabinData());
   locator.registerLazySingleton(() => BookDoctorAppointmentUseCase());
   ////////////
   locator.registerLazySingleton(() => GetAppointmentLocalusecase());

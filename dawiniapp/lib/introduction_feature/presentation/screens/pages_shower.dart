@@ -1,3 +1,5 @@
+// ignore_for_file: no_logic_in_create_state
+
 import 'package:dawini_full/auth/presentation/welcomePage.dart';
 import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/introduction_feature/presentation/bloc/bloc/introduction_bloc.dart';
@@ -8,15 +10,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PagesShower extends StatefulWidget {
+  final String? uid;
   const PagesShower({
     super.key,
+    this.uid,
   });
 
   @override
-  State<PagesShower> createState() => _PagesShowerState();
+  State<PagesShower> createState() => _PagesShowerState(uid: uid);
 }
 
 class _PagesShowerState extends State<PagesShower> {
+  final String? uid;
+
+  _PagesShowerState({required this.uid});
   @override
   Widget build(BuildContext context) {
     final IntroductionBloc bloc = BlocProvider.of<IntroductionBloc>(context);
@@ -35,7 +42,11 @@ class _PagesShowerState extends State<PagesShower> {
           if (state.Screen == 'patient') {
             return Mypage();
           } else if (state.Screen == 'doctor') {
-            return doctorsideHome();
+            if (uid == null) {
+              return doctorsideHome();
+            } else {
+              return Text(uid!);
+            }
             /////////////////////////////////////    here you will go to patients screen
           } else {
             bloc.add(NextPage(id: 1));

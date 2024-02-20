@@ -3,7 +3,6 @@
 import 'package:dawini_full/auth/data/FirebaseAuth/authentification.dart';
 import 'package:dawini_full/auth/presentation/loginPage.dart';
 import 'package:dawini_full/auth/presentation/signup.dart';
-import 'package:dawini_full/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,40 +25,46 @@ class _doctorsideHomeState extends State<doctorsideHome> {
     return StreamBuilder(
         stream: user,
         builder: (context, snapshot) {
-          return SafeArea(
-            child: Column(
-              children: [
-                MaterialButton(
-                  color: Colors.white,
-                  onPressed: () {
-                    auth.signOut();
-                  },
-                  child: Text("clickTo Disconnect"),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                MaterialButton(
-                  color: Colors.white,
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              MyWidget(device: 'device'),
-                        ));
-                  },
-                  child: Text("go to patient side"),
-                ),
-              ],
-            ),
-          );
+          if (snapshot.data?.uid == null) {
+            return LoginPage();
+          } else {
+            return SafeArea(
+              child: Column(
+                children: [
+                  MaterialButton(
+                    color: Colors.white,
+                    onPressed: () {
+                      auth.signOut();
+                    },
+                    child: Text("clickTo Disconnect"),
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  MaterialButton(
+                    color: Colors.white,
+                    onPressed: () {
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (BuildContext context) =>
+                      //           MyWidget(device: 'device'),
+                      //     ));
+
+                      auth.signOut();
+                    },
+                    child: Text("connect"),
+                  ),
+                ],
+              ),
+            );
+          }
         });
   }
 }
 
 class WelcomePage extends StatefulWidget {
-  WelcomePage({Key? key, this.title}) : super(key: key);
+  const WelcomePage({Key? key, this.title}) : super(key: key);
 
   final String? title;
 

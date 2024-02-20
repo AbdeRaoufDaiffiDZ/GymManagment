@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types
+
 part of 'doctor_bloc.dart';
 
 sealed class DoctorEvent extends Equatable {
@@ -10,7 +12,7 @@ sealed class DoctorEvent extends Equatable {
 class onDoctorChoose extends DoctorEvent {
   final DoctorEntity doctor;
 
-  onDoctorChoose({
+  const onDoctorChoose({
     required this.doctor,
   });
 
@@ -32,7 +34,7 @@ class doctorsInfoUpdated extends DoctorEvent {
 class onDoctorsearchByName extends DoctorEvent {
   final String doctorName;
 
-  onDoctorsearchByName({required this.doctorName});
+  const onDoctorsearchByName({required this.doctorName});
 
   @override
   List<Object> get props => [doctorName];
@@ -41,7 +43,8 @@ class onDoctorsearchByName extends DoctorEvent {
 class onDoctorsearchByspeciality extends DoctorEvent {
   final String speciality;
   final List<DoctorEntity> doctors;
-  onDoctorsearchByspeciality({required this.doctors, required this.speciality});
+  const onDoctorsearchByspeciality(
+      {required this.doctors, required this.speciality});
 
   @override
   List<Object> get props => [speciality];
@@ -50,7 +53,7 @@ class onDoctorsearchByspeciality extends DoctorEvent {
 class onDoctorsearchByWilaya extends DoctorEvent {
   final String wilaya;
 
-  onDoctorsearchByWilaya({required this.wilaya});
+  const onDoctorsearchByWilaya({required this.wilaya});
 
   @override
   List<Object> get props => [wilaya];
@@ -58,4 +61,23 @@ class onDoctorsearchByWilaya extends DoctorEvent {
 
 class DoctorinitialEvent extends DoctorEvent {}
 
-final class onSeeAllDoctors extends DoctorEvent {}
+class onSeeAllDoctors extends DoctorEvent {}
+
+class onTurnUpdate extends DoctorEvent {
+  final int turn;
+  final DoctorEntity doctor;
+
+  const onTurnUpdate({required this.doctor, required this.turn});
+
+  @override
+  List<Object> get props => [turn];
+}
+
+class onStateUpdate extends DoctorEvent {
+  final bool state;
+  final DoctorEntity doctor;
+  const onStateUpdate({required this.doctor, required this.state});
+
+  @override
+  List<Object> get props => [state];
+}

@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:dawini_full/auth/data/FirebaseAuth/authentification.dart';
+import 'package:dawini_full/auth/data/models/auth_model.dart';
+import 'package:dawini_full/auth/domain/entity/auth_entity.dart';
 import 'package:dawini_full/auth/presentation/signup.dart';
 import 'package:flutter/material.dart';
 
@@ -265,12 +267,13 @@ class _LoginPageState extends State<LoginPage> {
                     onTap: () {
                       if (emailController.text.isNotEmpty &&
                           passwordController.text.isNotEmpty) {
+                        AuthEntity auth = AuthEntity(
+                            email: emailController.text,
+                            password: passwordController.text);
                         try {
                           // users.signInWithGoogle(context);
-                          // users.loginWithEmail(
-                          //     context: context,
-                          //     email: emailController.text,
-                          //     password: passwordController.text);
+                          users.loginWithEmail(
+                              authData: AuthModel.fromMap(auth.toMap()));
 
                           // showSnackBar(context, "hello");
                         } catch (e) {
@@ -284,7 +287,7 @@ class _LoginPageState extends State<LoginPage> {
                       if (emailController.text.isNotEmpty &&
                           passwordController.text.isNotEmpty) {
                         try {
-                          // users.resetPassword(emailController.text);
+                          // users.(emailController.text);
 
                           // showSnackBar(context, "hello");
                         } catch (e) {

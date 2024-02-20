@@ -25,3 +25,15 @@ class GetDoctorsStreamInfoUseCase {
     return doctorRepository.streamDoctors();
   }
 }
+
+class UpdateDoctorCabinData {
+  final DoctorRepository doctorRepository = DcotrRepositoryImpl();
+
+  Future<Either<Failure, void>> updateTurn(int numberInList, int turn) {
+    return doctorRepository.turnUpdate(numberInList, turn);
+  }
+
+  Future<Either<Failure, void>> updateState(int numberInList, bool state) {
+    return doctorRepository.updatedoctorState(numberInList, state);
+  }
+}
