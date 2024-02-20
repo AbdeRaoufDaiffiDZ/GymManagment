@@ -112,7 +112,7 @@ class _DoctorPageState extends State<Weather> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
+                      SizedBox(
                         width: 200.w,
                         height: 20.h,
                         child: AutoSizeText(text.recommended_clinics,
@@ -175,7 +175,7 @@ class _DoctorPageState extends State<Weather> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
+                      SizedBox(
                         width: 80.w,
                         height: 20.h,
                         child: Center(
@@ -194,7 +194,7 @@ class _DoctorPageState extends State<Weather> {
                               MaterialPageRoute(
                                   builder: (context) => doctorsideHome()));
                         },
-                        child: Container(
+                        child: SizedBox(
                           width: 80.w,
                           height: 20.h,
                           child: Center(
@@ -234,7 +234,7 @@ class _DoctorPageState extends State<Weather> {
                                 MaterialPageRoute(
                                     builder: (context) => doctors()));
                           },
-                          child: Container(
+                          child: SizedBox(
                             width: 80.w,
                             height: 20.h,
                             child: Center(

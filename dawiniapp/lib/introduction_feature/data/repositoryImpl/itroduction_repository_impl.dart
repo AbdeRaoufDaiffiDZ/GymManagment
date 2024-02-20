@@ -7,7 +7,6 @@ class IntroductionRepositoryImpl implements IntroductionRepository {
   IntroductionRepositoryImpl({required this.dataSource});
   @override
   Future<bool> isWatched() {
-    // TODO: implement getIntroductionInfo
     return dataSource.isWatched();
   }
 

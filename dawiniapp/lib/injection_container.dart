@@ -71,7 +71,7 @@ Future<void> setupLocator() async {
       .registerLazySingleton(() => SetLanguageUseCase(repository: locator()));
   locator.registerLazySingleton(
       () => ChossenLanguageUseCase(repository: locator()));
-  locator.registerLazySingleton(() => SetTypeUseCase(repository: locator()));
+  locator.registerLazySingleton(() => SetTypeUseCase());
   locator.registerLazySingleton(() => UserTypeUseCase(repository: locator()));
   locator.registerLazySingleton(
       () => IgnorIntroductionUseCase(repository: locator()));
@@ -94,8 +94,7 @@ Future<void> setupLocator() async {
 
   locator.registerLazySingleton<DoctorRemoteDataSource>(
       () => DoctorRemoteDataSourceImpl());
-  locator.registerLazySingleton<LocalDataSource>(
-      () => LocalDataSourceImpl(prefs: locator()));
+  locator.registerLazySingleton<LocalDataSource>(() => LocalDataSourceImpl());
 
   locator.registerLazySingleton<ClinicsRemoteDataSource>(
       () => ClinicsRemoteDataSourceImpl());

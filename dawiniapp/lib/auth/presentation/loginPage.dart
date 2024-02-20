@@ -21,6 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final FirebaseAuthMethods users = FirebaseAuthMethods();
+
   Widget _backButton() {
     return InkWell(
       onTap: () {

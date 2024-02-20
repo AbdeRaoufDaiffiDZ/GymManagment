@@ -12,12 +12,10 @@ abstract class LocalDataSource {
 }
 
 class LocalDataSourceImpl extends LocalDataSource {
-  final SharedPreferences prefs;
-
-  LocalDataSourceImpl({required this.prefs});
-
   @override
   Future<bool> isWatched() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
     final bool? status = prefs.getBool('ignore');
     if (status == null) {
       return false;
@@ -28,6 +26,8 @@ class LocalDataSourceImpl extends LocalDataSource {
 
   @override
   Future<String> ignorIntroduction(bool ignore) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
     try {
       prefs.setBool('ignore', ignore);
       return 'ignore done';
@@ -38,6 +38,8 @@ class LocalDataSourceImpl extends LocalDataSource {
 
   @override
   Future<String> setLanguage(String language) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
     try {
       prefs.setString('language', language);
       return 'lanuage setting done';
@@ -48,6 +50,8 @@ class LocalDataSourceImpl extends LocalDataSource {
 
   @override
   Stream<String> choosenLanguage() async* {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
     final String? status = prefs.getString('language');
     if (status == null) {
       yield 'English';
@@ -58,6 +62,8 @@ class LocalDataSourceImpl extends LocalDataSource {
 
   @override
   Future<String> setType(String type) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
     try {
       prefs.setString('type', type);
       return 'type setting done';
@@ -68,6 +74,8 @@ class LocalDataSourceImpl extends LocalDataSource {
 
   @override
   Stream<String> getType() async* {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
     final String? status = prefs.getString('type');
     if (status == null) {
       yield 'noon';

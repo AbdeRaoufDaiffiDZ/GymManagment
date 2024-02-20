@@ -3,6 +3,8 @@
 import 'package:dawini_full/auth/data/FirebaseAuth/authentification.dart';
 import 'package:dawini_full/auth/presentation/loginPage.dart';
 import 'package:dawini_full/auth/presentation/signup.dart';
+import 'package:dawini_full/introduction_feature/domain/usecases/set_type_usecase.dart';
+import 'package:dawini_full/patient_features/presentation/pages/weather_pag.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,6 +23,7 @@ class _doctorsideHomeState extends State<doctorsideHome> {
     FirebaseAuthMethods auth = FirebaseAuthMethods();
 
     final Stream<User?> user = auth.authState;
+    final SetTypeUseCase setTypeUseCase = SetTypeUseCase();
 
     return StreamBuilder(
         stream: user,
@@ -43,17 +46,18 @@ class _doctorsideHomeState extends State<doctorsideHome> {
                   ),
                   MaterialButton(
                     color: Colors.white,
-                    onPressed: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       builder: (BuildContext context) =>
-                      //           MyWidget(device: 'device'),
-                      //     ));
-
-                      auth.signOut();
+                    onPressed: () async {
+                      await setTypeUseCase.execute("patient");
+                      // final routeName = ModalRoute.of(context)!.settings.name;
+                      // print("Current route name: $routeName");
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => Weather(
+                                device: 'device', uid: snapshot.data?.uid),
+                          ));
                     },
-                    child: Text("connect"),
+                    child: Text("patients side"),
                   ),
                 ],
               ),

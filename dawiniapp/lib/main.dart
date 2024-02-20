@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:dawini_full/auth/domain/usecases/auth_usecase.dart';
 import 'package:dawini_full/auth/presentation/bloc/auth_bloc.dart';
+import 'package:dawini_full/auth/presentation/welcomePage.dart';
 import 'package:dawini_full/firebase_options.dart';
 import 'package:dawini_full/injection_container.dart';
 import 'package:dawini_full/introduction_feature/presentation/bloc/bloc/introduction_bloc.dart';
@@ -157,6 +158,8 @@ class _MyWidgetState extends State<MyWidget> {
   bool isConnected = false;
   bool isAuthuntificated = false;
   bool status = false;
+  late String type;
+
   DoctorAuthStateUseCase doctorAuthStateUseCase = DoctorAuthStateUseCase();
   @override
   void initState() {

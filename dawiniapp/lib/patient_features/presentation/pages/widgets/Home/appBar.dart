@@ -1,11 +1,15 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:dawini_full/auth/presentation/loginPage.dart';
 import 'package:dawini_full/auth/presentation/welcomePage.dart';
+import 'package:dawini_full/introduction_feature/domain/usecases/set_type_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class myAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String? uid;
-  const myAppbar({Key? key, this.uid}) : super(key: key);
+  myAppbar({Key? key, this.uid}) : super(key: key);
+  final SetTypeUseCase setTypeUseCase = SetTypeUseCase();
 
   @override
   Widget build(BuildContext context) {
@@ -23,17 +27,24 @@ class myAppbar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
             IconButton(
-              onPressed: () {
+              onPressed: () async {
+                // final routeName = ModalRoute.of(context)!.settings.name;
+                // print("Current route name: $routeName");
+                if (await Navigator.maybePop(context, const doctorsideHome())) {
+                  print("yes");
+                  // Navigator.popUntil(context, ModalRoute.withName("TargetPage"));
+                } else {
+                  // Handle the case where popping to the target page is not possible
+                }
                 if (uid == null) {
-                  print("null uid");
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LoginPage()));
                 } else {
-                  print("null uid");
+                  await setTypeUseCase.execute("doctor");
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => doctorsideHome()));
+                          builder: (context) => const doctorsideHome()));
                 }
               },
               icon: Icon(

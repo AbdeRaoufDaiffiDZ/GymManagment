@@ -1,10 +1,12 @@
 import 'package:dawini_full/auth/domain/usecases/auth_usecase.dart';
+import 'package:dawini_full/auth/presentation/welcomePage.dart';
 import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/patient_features/domain/usecases/patients_usecase.dart';
 import 'package:dawini_full/patient_features/presentation/pages/weather_pag.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Mypage extends StatefulWidget {
   final device;
@@ -18,12 +20,14 @@ class Mypage extends StatefulWidget {
 class _MypageState extends State<Mypage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool isConnected = false;
+  late String type;
 
   bool status = false;
 
   @override
   void initState() {
     super.initState();
+    _loadType();
     InternetConnectionChecker().onStatusChange.listen((status) {
       final hasInternet = status == InternetConnectionStatus.connected;
       setState(() {
@@ -63,10 +67,23 @@ class _MypageState extends State<Mypage> {
     //     ],
     //   );
     // }
-    return Scaffold(
-        key: _scaffoldKey,
-        body: isConnected
-            ? Weather(device: widget.device, uid: widget.uid)
-            : Loading());
+    if (isConnected) {
+      if (type == "patient") {
+        return Scaffold(
+            key: _scaffoldKey,
+            body: Weather(device: widget.device, uid: widget.uid));
+      } else {
+        return doctorsideHome();
+      }
+    } else {
+      return const Loading();
+    }
+  }
+
+  Future<void> _loadType() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      type = (prefs.getString('type') ?? "patient");
+    });
   }
 }
