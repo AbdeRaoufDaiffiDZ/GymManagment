@@ -64,6 +64,14 @@ class DoctorBloc extends Bloc<DoctorEvent, DoctorState> {
         }, (r) async {
           emit(DoctorLoaded());
         });
+      } else if (event is onDataUpdate) {
+        final result = await updateDoctorCabinData.updatedoctorData(
+            event.numberInList, event.data, event.infoToUpdate);
+        result.fold((l) {
+          emit(DoctorLoadingFailure(message: l.message));
+        }, (r) async {
+          emit(DoctorLoaded());
+        });
       }
     });
   }

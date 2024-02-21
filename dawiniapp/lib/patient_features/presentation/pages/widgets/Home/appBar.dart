@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, camel_case_types
 
 import 'package:dawini_full/auth/presentation/loginPage.dart';
 import 'package:dawini_full/auth/presentation/welcomePage.dart';
@@ -8,7 +8,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class myAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String? uid;
-  myAppbar({Key? key, this.uid}) : super(key: key);
+  final bool popOrNot;
+  myAppbar({Key? key, this.uid, required this.popOrNot}) : super(key: key);
   final SetTypeUseCase setTypeUseCase = SetTypeUseCase();
 
   @override
@@ -28,23 +29,21 @@ class myAppbar extends StatelessWidget implements PreferredSizeWidget {
             ),
             IconButton(
               onPressed: () async {
-                // final routeName = ModalRoute.of(context)!.settings.name;
-                // print("Current route name: $routeName");
-                if (await Navigator.maybePop(context, const doctorsideHome())) {
-                  print("yes");
-                  // Navigator.popUntil(context, ModalRoute.withName("TargetPage"));
-                } else {
-                  // Handle the case where popping to the target page is not possible
-                }
                 if (uid == null) {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LoginPage()));
                 } else {
                   await setTypeUseCase.execute("doctor");
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const doctorsideHome()));
+                  if (popOrNot) {
+                    Navigator.pop(context);
+                  } else {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const doctorsideHome(
+                                  popOrNot: true,
+                                )));
+                  }
                 }
               },
               icon: Icon(

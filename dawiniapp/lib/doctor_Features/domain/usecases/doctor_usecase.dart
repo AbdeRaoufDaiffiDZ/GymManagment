@@ -36,4 +36,9 @@ class UpdateDoctorCabinData {
   Future<Either<Failure, void>> updateState(int numberInList, bool state) {
     return doctorRepository.updatedoctorState(numberInList, state);
   }
+
+  Future<Either<Failure, void>> updatedoctorData(
+      int numberInList, dynamic data, String infoToUpdate) {
+    return doctorRepository.updatedoctorData(numberInList, data, infoToUpdate);
+  }
 }

@@ -40,22 +40,26 @@ class _PagesShowerState extends State<PagesShower> {
           return const Loading();
         } else if (state is IgnoreIntorductionState) {
           if (state.Screen == 'patient') {
-            return Mypage();
+            return const Mypage(
+              popOrNot: false,
+            );
           } else if (state.Screen == 'doctor') {
             if (uid == null) {
-              return doctorsideHome();
+              return const doctorsideHome(
+                popOrNot: false,
+              );
             } else {
               return Text(uid!);
             }
             /////////////////////////////////////    here you will go to patients screen
           } else {
             bloc.add(NextPage(id: 1));
-            return Center();
+            return const Center();
           }
         } else {
           bloc.add(NextPage(id: 1));
 
-          return Center();
+          return const Center();
         }
       },
     );

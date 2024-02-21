@@ -14,6 +14,8 @@ abstract class DoctorCabinDataSource {
   Stream<List<DoctorEntity>> streamDoctors();
   Future<void> turnUpdate(int numberInList, int turn);
   Future<void> updatedoctorState(int numberInList, bool state);
+  Future<void> updateDoctorInfo(
+      int numberInList, dynamic data, String infoToUpdate);
 }
 
 class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
@@ -66,8 +68,8 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
       turn = turn;
     }
     await _databaseReference
-        .ref()
-        .update({"/doctorsList/$numberInList/numberInList": turn})
+        .ref("/doctorsList/$numberInList/")
+        .update({"turn": turn})
         .then((value) => print("done!"))
         .catchError((e) => print("error"));
   }
@@ -77,6 +79,16 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
     await _databaseReference
         .ref()
         .update({"/doctorsList/$numberInList/atSerivce": state})
+        .then((value) => print("done!"))
+        .catchError((e) => print("error"));
+  }
+
+  @override
+  Future<void> updateDoctorInfo(
+      int numberInList, dynamic data, String infoToUpdate) async {
+    await _databaseReference
+        .ref()
+        .update({"/doctorsList/$numberInList/$infoToUpdate": data})
         .then((value) => print("done!"))
         .catchError((e) => print("error"));
   }

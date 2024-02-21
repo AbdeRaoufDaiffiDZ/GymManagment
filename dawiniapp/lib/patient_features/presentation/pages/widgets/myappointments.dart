@@ -48,7 +48,10 @@ class _MyappointemtnsState extends State<Myappointemtns>
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Mypage()),
+                        MaterialPageRoute(
+                            builder: (context) => const Mypage(
+                                  popOrNot: false,
+                                )),
                       );
                     },
                     icon: Icon(
@@ -60,7 +63,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                 ),
               ),
               SizedBox(width: 35.w),
-              Container(
+              SizedBox(
                 width: 190.w,
                 child: const FittedBox(
                   fit: BoxFit.fill,
@@ -100,7 +103,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                 child: BlocBuilder<PatientsBloc, PatientsState>(
                     builder: (context, state) {
                   if (state is PatientsLoading) {
-                    return Loading();
+                    return const Loading();
                   } else if (state is PatientsLoaded) {
                     return ListView.builder(
                         itemCount: state.patients.length,
@@ -126,23 +129,21 @@ class _MyappointemtnsState extends State<Myappointemtns>
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Container(
+                                      SizedBox(
                                         width: 150.w,
                                         height: 25.h,
                                         child: FittedBox(
                                           fit: BoxFit.scaleDown,
                                           alignment: Alignment.topLeft,
                                           child: Text(
-                                              "Dr. " +
-                                                  state.patients[index]
-                                                      .DoctorName,
-                                              style: TextStyle(
+                                              "Dr. ${state.patients[index].DoctorName}",
+                                              style: const TextStyle(
                                                   fontSize: 20,
                                                   fontWeight: FontWeight.w800,
                                                   color: Color(0XFF202020))),
                                         ),
                                       ),
-                                      Container(
+                                      SizedBox(
                                         width: 80.w,
                                         height: 20.h,
                                         child: const FittedBox(
@@ -155,7 +156,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                                                   color: Color(0XFF202020))),
                                         ),
                                       ),
-                                      Container(
+                                      SizedBox(
                                         width: 160.w,
                                         height: 20.h,
                                         child: const FittedBox(
@@ -182,7 +183,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                                               fit: BoxFit.scaleDown,
                                               child: Text(
                                                   state.patients[index].address,
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       fontSize: 16,
                                                       fontWeight:
                                                           FontWeight.w600,
@@ -219,7 +220,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                                                           EdgeInsets.symmetric(
                                                               vertical: 10.h,
                                                               horizontal: 10.w),
-                                                      content: Container(
+                                                      content: SizedBox(
                                                         height: 150.h,
                                                         child: Column(
                                                           mainAxisAlignment:
@@ -346,7 +347,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                                               color: const Color(0XFFECF2F2),
                                               borderRadius:
                                                   BorderRadius.circular(10)),
-                                          child: Container(
+                                          child: SizedBox(
                                             width: 80.w,
                                             height: 20.h,
                                             child: Center(
@@ -384,10 +385,10 @@ class _MyappointemtnsState extends State<Myappointemtns>
                                               vertical: 7.h),
                                           child: Column(
                                             children: [
-                                              Container(
+                                              SizedBox(
                                                 width: 80.w,
                                                 height: 15.h,
-                                                child: FittedBox(
+                                                child: const FittedBox(
                                                   fit: BoxFit.scaleDown,
                                                   child: Text("my turn",
                                                       style: TextStyle(
@@ -398,7 +399,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                                                               0XFF202020))),
                                                 ),
                                               ),
-                                              Container(
+                                              SizedBox(
                                                 width: 80.w,
                                                 height: 20.h,
                                                 child: FittedBox(
@@ -437,7 +438,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                           );
                         });
                   } else {
-                    return Loading();
+                    return const Loading();
                   }
                 }),
               ),
@@ -449,7 +450,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
+                    SizedBox(
                       width: 150.w,
                       height: 25.h,
                       child: const FittedBox(
@@ -462,7 +463,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                                 color: Color(0XFF202020))),
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: 80.w,
                       height: 20.h,
                       child: const FittedBox(
@@ -475,7 +476,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                                 color: Color(0XFF202020))),
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: 160.w,
                       height: 20.h,
                       child: const FittedBox(
@@ -528,7 +529,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                                   child: AlertDialog(
                                     contentPadding: EdgeInsets.symmetric(
                                         vertical: 10.h, horizontal: 10.w),
-                                    content: Container(
+                                    content: SizedBox(
                                       height: 150.h,
                                       child: Column(
                                         mainAxisAlignment:
@@ -619,7 +620,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                         decoration: BoxDecoration(
                             color: const Color(0XFFECF2F2),
                             borderRadius: BorderRadius.circular(10)),
-                        child: Container(
+                        child: SizedBox(
                           width: 80.w,
                           height: 20.h,
                           child: Center(
@@ -674,9 +675,8 @@ class _MyappointemtnsState extends State<Myappointemtns>
                         color: const Color.fromRGBO(32, 32, 32, 0.8)),
                     children: [
                       TextSpan(
-                          text: !doctors.isEmpty
-                              ? " " + doctors.first.turn.toString()
-                              : "",
+                          text:
+                              !doctors.isEmpty ? " ${doctors.first.turn}" : "",
                           style: TextStyle(
                               fontFamily: "Nunito",
                               fontWeight: FontWeight.w800,

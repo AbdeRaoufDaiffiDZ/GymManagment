@@ -81,3 +81,16 @@ class onStateUpdate extends DoctorEvent {
   @override
   List<Object> get props => [state];
 }
+
+class onDataUpdate extends DoctorEvent {
+  final int numberInList;
+  final dynamic data;
+  final String infoToUpdate;
+
+  const onDataUpdate(
+      {required this.numberInList,
+      required this.data,
+      required this.infoToUpdate});
+  @override
+  List<Object> get props => [numberInList, data, infoToUpdate];
+}

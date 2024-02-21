@@ -56,4 +56,15 @@ class DcotrRepositoryImpl implements DoctorRepository {
       return Left(ServerFailure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> updatedoctorData(
+      int numberInList, dynamic data, String infoToUpdate) async {
+    try {
+      doctorRemoteDataSource.updateDoctorInfo(numberInList, data, infoToUpdate);
+      return const Right(null);
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
 }

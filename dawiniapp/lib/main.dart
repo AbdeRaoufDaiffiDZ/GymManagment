@@ -180,7 +180,11 @@ class _MyWidgetState extends State<MyWidget> {
     }
 
     if (status) {
-      return Mypage(device: widget.device, uid: widget.uid);
+      return Mypage(
+        device: widget.device,
+        uid: widget.uid,
+        popOrNot: false,
+      );
     } else {
       return PagesShower(uid: widget.uid);
     }

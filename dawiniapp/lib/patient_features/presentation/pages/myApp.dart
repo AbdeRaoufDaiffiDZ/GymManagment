@@ -11,7 +11,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Mypage extends StatefulWidget {
   final device;
   final String? uid;
-  const Mypage({Key? key, this.device, this.uid}) : super(key: key);
+  final bool popOrNot;
+
+  const Mypage({Key? key, this.device, this.uid, required this.popOrNot})
+      : super(key: key);
 
   @override
   State<Mypage> createState() => _MypageState();
@@ -27,7 +30,7 @@ class _MypageState extends State<Mypage> {
   @override
   void initState() {
     super.initState();
-    _loadType();
+    loadType();
     InternetConnectionChecker().onStatusChange.listen((status) {
       final hasInternet = status == InternetConnectionStatus.connected;
       setState(() {
@@ -71,16 +74,22 @@ class _MypageState extends State<Mypage> {
       if (type == "patient") {
         return Scaffold(
             key: _scaffoldKey,
-            body: Weather(device: widget.device, uid: widget.uid));
+            body: Weather(
+              device: widget.device,
+              uid: widget.uid,
+              popOrNot: widget.popOrNot,
+            ));
       } else {
-        return doctorsideHome();
+        return const doctorsideHome(
+          popOrNot: false,
+        );
       }
     } else {
       return const Loading();
     }
   }
 
-  Future<void> _loadType() async {
+  Future<void> loadType() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       type = (prefs.getString('type') ?? "patient");

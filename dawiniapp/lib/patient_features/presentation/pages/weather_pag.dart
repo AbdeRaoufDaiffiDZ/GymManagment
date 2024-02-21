@@ -19,10 +19,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class Weather extends StatefulWidget {
   final device;
   final String? uid;
+  final bool popOrNot;
+
   const Weather({
     super.key,
     this.device,
     this.uid,
+    required this.popOrNot,
   });
 
   @override
@@ -100,7 +103,10 @@ class _DoctorPageState extends State<Weather> {
       case 0:
         return ListView(
           children: [
-            myAppbar(uid: widget.uid),
+            myAppbar(
+              uid: widget.uid,
+              popOrNot: widget.popOrNot,
+            ),
             Container(
               child: Column(children: [
                 SearchMenu(),
@@ -192,7 +198,9 @@ class _DoctorPageState extends State<Weather> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => doctorsideHome()));
+                                  builder: (context) => doctorsideHome(
+                                        popOrNot: true,
+                                      )));
                         },
                         child: SizedBox(
                           width: 80.w,

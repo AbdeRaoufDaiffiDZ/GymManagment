@@ -1,17 +1,17 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, camel_case_types, library_private_types_in_public_api
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, camel_case_types, library_private_types_in_public_api, use_build_context_synchronously
 
 import 'package:dawini_full/auth/data/FirebaseAuth/authentification.dart';
 import 'package:dawini_full/auth/presentation/loginPage.dart';
 import 'package:dawini_full/auth/presentation/signup.dart';
-import 'package:dawini_full/introduction_feature/domain/usecases/set_type_usecase.dart';
-import 'package:dawini_full/patient_features/presentation/pages/weather_pag.dart';
+import 'package:dawini_full/doctor_Features/presentation/pages/doctor_cabinSide.dart/cabin_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class doctorsideHome extends StatefulWidget {
-  const doctorsideHome({super.key});
+  final bool popOrNot;
+
+  const doctorsideHome({super.key, required this.popOrNot});
 
   @override
   State<doctorsideHome> createState() => _doctorsideHomeState();
@@ -23,7 +23,6 @@ class _doctorsideHomeState extends State<doctorsideHome> {
     FirebaseAuthMethods auth = FirebaseAuthMethods();
 
     final Stream<User?> user = auth.authState;
-    final SetTypeUseCase setTypeUseCase = SetTypeUseCase();
 
     return StreamBuilder(
         stream: user,
@@ -31,37 +30,27 @@ class _doctorsideHomeState extends State<doctorsideHome> {
           if (snapshot.data?.uid == null) {
             return LoginPage();
           } else {
-            return SafeArea(
-              child: Column(
-                children: [
-                  MaterialButton(
-                    color: Colors.white,
-                    onPressed: () {
-                      auth.signOut();
-                    },
-                    child: Text("clickTo Disconnect"),
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  MaterialButton(
-                    color: Colors.white,
-                    onPressed: () async {
-                      await setTypeUseCase.execute("patient");
-                      // final routeName = ModalRoute.of(context)!.settings.name;
-                      // print("Current route name: $routeName");
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) => Weather(
-                                device: 'device', uid: snapshot.data?.uid),
-                          ));
-                    },
-                    child: Text("patients side"),
-                  ),
-                ],
-              ),
+            return DoctorCabinInfo(
+              uid: snapshot.data!.uid,
+              popOrNot: widget.popOrNot,
             );
+            //   SafeArea(
+            //     child: Column(
+            //       children: [
+            //         MaterialButton(
+            //           color: Colors.white,
+            //           onPressed: () {
+            //             auth.signOut();
+            //           },
+            //           child: Text("clickTo Disconnect"),
+            //         ),
+            //         SizedBox(
+            //           height: 20.h,
+            //         ),
+
+            //     ],
+            //   ),
+            // );
           }
         });
   }

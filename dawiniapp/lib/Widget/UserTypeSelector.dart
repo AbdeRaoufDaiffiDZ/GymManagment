@@ -58,7 +58,9 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
                         duration: const Duration(milliseconds: 400),
                         reverseDuration: const Duration(milliseconds: 400),
                         type: PageTransitionType.rightToLeft,
-                        child: Mypage(),
+                        child: const Mypage(
+                          popOrNot: false,
+                        ),
                       ));
                 },
                 child: Container(

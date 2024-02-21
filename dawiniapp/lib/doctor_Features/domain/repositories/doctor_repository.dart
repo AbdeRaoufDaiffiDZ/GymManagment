@@ -9,4 +9,6 @@ abstract class DoctorRepository {
   Stream<List<DoctorEntity>> streamDoctors();
   Future<Either<Failure, void>> updatedoctorState(int numberInList, bool state);
   Future<Either<Failure, void>> turnUpdate(int numberInList, int turn);
+  Future<Either<Failure, void>> updatedoctorData(
+      int numberInList, dynamic data, String infoToUpdate);
 }
