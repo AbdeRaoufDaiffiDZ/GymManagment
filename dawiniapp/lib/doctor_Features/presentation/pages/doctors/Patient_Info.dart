@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_final_fields, camel_case_types
+// ignore_for_file: prefer_final_fields, camel_case_types, file_names
 
 import 'dart:ui';
 
@@ -32,8 +32,8 @@ class _Patient_infoState extends State<Patient_info> {
   TextEditingController _addressController = TextEditingController();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String datetimeToday = DateFormat("yyyy-MM-dd").format(DateTime.now());
-  String datetimeTomrrow =
-      DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: 1)));
+  String datetimeTomrrow = DateFormat("yyyy-MM-dd")
+      .format(DateTime.now().add(const Duration(days: 1)));
 
   Widget buildInputField({
     required TextEditingController controller,
@@ -165,19 +165,19 @@ class _Patient_infoState extends State<Patient_info> {
                         _phoneNumberController =
                             _addressController = _firstNameController;
                     if (_firstNameController.text.isEmpty) {
-                      missing = missing + " First Name,";
+                      missing = "$missing First Name,";
                     }
                     if (_lastNameController.text.isEmpty) {
-                      missing = missing + " Last Name,";
+                      missing = "$missing Last Name,";
                     }
                     if (_ageController.text.isEmpty) {
-                      missing = missing + " age,";
+                      missing = "$missing age,";
                     }
                     if (_phoneNumberController.text.isEmpty) {
-                      missing = missing + " Phone Number,";
+                      missing = "$missing Phone Number,";
                     }
                     if (_addressController.text.isEmpty) {
-                      missing = missing + " Home address,";
+                      missing = "$missing Home address,";
                     }
                     if (_firstNameController.text.isEmpty ||
                         _lastNameController.text.isEmpty ||
@@ -200,9 +200,8 @@ class _Patient_infoState extends State<Patient_info> {
                           lastName: _lastNameController.text,
                           phoneNumber: _phoneNumberController.text,
                           today: true,
-                          DoctorName: 'dr.' +
-                              widget.doctorEntity.lastName +
-                              widget.doctorEntity.firstName,
+                          DoctorName:
+                              'dr.${widget.doctorEntity.lastName}${widget.doctorEntity.firstName}',
                           uid: widget.doctorEntity.uid);
                       dataBloc.add(onPatientsSetAppointments(context,
                           patients: patient));
@@ -262,45 +261,41 @@ Future<Object?> showlDialog(context) {
           child: FadeTransition(
             opacity: Tween<double>(begin: 0.4, end: 1).animate(a1),
             child: AlertDialog(
-              title: Container(
-                child: Center(
-                  child: Text.rich(
-                    TextSpan(
-                      text: "Your appointment has been booked",
-                      style: TextStyle(
-                        fontFamily: "Nunito",
-                        fontWeight: FontWeight.w800,
-                        fontSize: screenWidth * 0.05, // Responsive font size
-                        color: const Color.fromRGBO(32, 32, 32, 0.8),
-                      ),
-                      children: [
-                        TextSpan(
-                          text: " successfully",
-                          style: TextStyle(
-                            fontFamily: "Nunito",
-                            fontWeight: FontWeight.w900,
-                            fontSize:
-                                screenWidth * 0.05, // Responsive font size
-                            color: const Color(0XFF0AA9A9),
-                          ),
-                        ),
-                        TextSpan(
-                          text:
-                              " , you can follow your turn at my appointment section ",
-                          style: TextStyle(
-                            fontFamily: "Nunito",
-                            fontWeight: FontWeight.w800,
-                            fontSize:
-                                screenWidth * 0.05, // Responsive font size
-                            color: const Color.fromRGBO(32, 32, 32, 0.8),
-                          ),
-                        ),
-                      ],
+              title: Center(
+                child: Text.rich(
+                  TextSpan(
+                    text: "Your appointment has been booked",
+                    style: TextStyle(
+                      fontFamily: "Nunito",
+                      fontWeight: FontWeight.w800,
+                      fontSize: screenWidth * 0.05, // Responsive font size
+                      color: const Color.fromRGBO(32, 32, 32, 0.8),
                     ),
+                    children: [
+                      TextSpan(
+                        text: " successfully",
+                        style: TextStyle(
+                          fontFamily: "Nunito",
+                          fontWeight: FontWeight.w900,
+                          fontSize: screenWidth * 0.05, // Responsive font size
+                          color: const Color(0XFF0AA9A9),
+                        ),
+                      ),
+                      TextSpan(
+                        text:
+                            " , you can follow your turn at my appointment section ",
+                        style: TextStyle(
+                          fontFamily: "Nunito",
+                          fontWeight: FontWeight.w800,
+                          fontSize: screenWidth * 0.05, // Responsive font size
+                          color: const Color.fromRGBO(32, 32, 32, 0.8),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              content: Container(
+              content: SizedBox(
                 height: screenHeight * 0.08,
                 child: GestureDetector(
                   onTap: () {

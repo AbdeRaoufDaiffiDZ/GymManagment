@@ -1,4 +1,4 @@
-// ignore_for_file: sort_child_properties_last
+// ignore_for_file: sort_child_properties_last, non_constant_identifier_names, prefer_interpolation_to_compose_strings
 
 import 'dart:ui';
 
@@ -170,29 +170,25 @@ class _MyappointemtnsState extends State<Myappointemtns>
                                                   color: Color(0XFF202020))),
                                         ),
                                       ),
-                                      Container(
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              Icons.location_on,
-                                              size: 15.h,
-                                              color: const Color(0XFF202020)
-                                                  .withOpacity(0.6),
-                                            ),
-                                            FittedBox(
-                                              alignment: Alignment.topLeft,
-                                              fit: BoxFit.scaleDown,
-                                              child: Text(
-                                                  state.patients[index].address,
-                                                  style: const TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color:
-                                                          Color(0XFF202020))),
-                                            ),
-                                          ],
-                                        ),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.location_on,
+                                            size: 15.h,
+                                            color: const Color(0XFF202020)
+                                                .withOpacity(0.6),
+                                          ),
+                                          FittedBox(
+                                            alignment: Alignment.topLeft,
+                                            fit: BoxFit.scaleDown,
+                                            child: Text(
+                                                state.patients[index].address,
+                                                style: const TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Color(0XFF202020))),
+                                          ),
+                                        ],
                                       ),
                                       SizedBox(height: 2.h),
                                       GestureDetector(
@@ -490,25 +486,23 @@ class _MyappointemtnsState extends State<Myappointemtns>
                                 color: Color(0XFF202020))),
                       ),
                     ),
-                    Container(
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.location_on,
-                            size: 15.h,
-                            color: const Color(0XFF202020).withOpacity(0.6),
-                          ),
-                          const FittedBox(
-                            alignment: Alignment.topLeft,
-                            fit: BoxFit.scaleDown,
-                            child: Text("Algeria , bab zouar",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0XFF202020))),
-                          ),
-                        ],
-                      ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.location_on,
+                          size: 15.h,
+                          color: const Color(0XFF202020).withOpacity(0.6),
+                        ),
+                        const FittedBox(
+                          alignment: Alignment.topLeft,
+                          fit: BoxFit.scaleDown,
+                          child: Text("Algeria , bab zouar",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0XFF202020))),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 2.h),
                     GestureDetector(
@@ -649,7 +643,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
             stream: GetDoctorsStreamInfoUseCase.excute(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Loading();
+                return const Loading();
               }
               if (snapshot.hasError) {
                 return ErrorPage(
@@ -670,7 +664,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
               List<DoctorEntity> doctors = data
                   .where((element) => element.uid == state.patients[index].uid)
                   .toList();
-              if (!doctors.isEmpty) {
+              if (doctors.isNotEmpty) {
                 if (state.patients[index].today) {
                   notificationConditions(state, index, doctors);
                 }
@@ -685,8 +679,9 @@ class _MyappointemtnsState extends State<Myappointemtns>
                         color: const Color.fromRGBO(32, 32, 32, 0.8)),
                     children: [
                       TextSpan(
-                          text:
-                              !doctors.isEmpty ? " ${doctors.first.turn}" : "",
+                          text: doctors.isNotEmpty
+                              ? " ${doctors.first.turn}"
+                              : "",
                           style: TextStyle(
                               fontFamily: "Nunito",
                               fontWeight: FontWeight.w800,
@@ -704,8 +699,8 @@ class _MyappointemtnsState extends State<Myappointemtns>
         content: NotificationContent(
             id: index,
             channelKey: 'basic_channel',
-            title: "your turn ${body}",
-            body: "${patientName} turn at ${doctorName} ${body}"));
+            title: "your turn $body",
+            body: "$patientName turn at $doctorName $body"));
   }
 
   notificationConditions(state, index, doctors) {

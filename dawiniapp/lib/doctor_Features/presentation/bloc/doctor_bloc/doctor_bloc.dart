@@ -1,4 +1,4 @@
-// ignore_for_file: void_checks
+// ignore_for_file: void_checks, depend_on_referenced_packages
 
 import 'package:bloc/bloc.dart';
 

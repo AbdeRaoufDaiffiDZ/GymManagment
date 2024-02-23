@@ -11,6 +11,5 @@ class IntroductionEntity extends Equatable {
       this.isShowed = false});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [language, whoAreYou, isShowed];
 }

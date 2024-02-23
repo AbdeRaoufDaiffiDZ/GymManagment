@@ -17,9 +17,9 @@ class DcotrRepositoryImpl implements DoctorRepository {
       final result = await doctorRemoteDataSource.getDoctorsInfo();
       return Right(result);
     } on ServerException {
-      return Left(ServerFailure(message: 'An error has occured'));
+      return const Left(ServerFailure(message: 'An error has occured'));
     } on SocketException {
-      return Left(
+      return const Left(
           ConnectionFailure(message: 'Failed to connect to the network'));
     }
   }
@@ -30,9 +30,10 @@ class DcotrRepositoryImpl implements DoctorRepository {
       final result = doctorRemoteDataSource.streamDoctors();
       return result;
     } on ServerException {
-      throw ServerFailure(message: 'An error has occured');
+      throw const ServerFailure(message: 'An error has occured');
     } on SocketException {
-      throw ConnectionFailure(message: 'Failed to connect to the network');
+      throw const ConnectionFailure(
+          message: 'Failed to connect to the network');
     }
   }
 

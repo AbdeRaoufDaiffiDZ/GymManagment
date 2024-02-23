@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, file_names, library_private_types_in_public_api
 
 import 'package:dawini_full/auth/data/FirebaseAuth/authentification.dart';
 import 'package:dawini_full/auth/data/models/auth_model.dart';
@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'Widget/bezierContainer.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key? key, this.title}) : super(key: key);
+  const LoginPage({Key? key, this.title}) : super(key: key);
 
   final String? title;
 

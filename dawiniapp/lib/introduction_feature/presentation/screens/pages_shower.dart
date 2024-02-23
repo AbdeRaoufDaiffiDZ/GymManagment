@@ -53,11 +53,11 @@ class _PagesShowerState extends State<PagesShower> {
             }
             /////////////////////////////////////    here you will go to patients screen
           } else {
-            bloc.add(NextPage(id: 1));
+            bloc.add(const NextPage(id: 1));
             return const Center();
           }
         } else {
-          bloc.add(NextPage(id: 1));
+          bloc.add(const NextPage(id: 1));
 
           return const Center();
         }

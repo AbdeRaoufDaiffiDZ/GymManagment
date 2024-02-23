@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, avoid_print
+// ignore_for_file: non_constant_identifier_names, avoid_print, deprecated_member_use
 
 import 'dart:convert';
 
@@ -71,10 +71,10 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
   @override
   Future<bool> RemoveDoctorAppointment(
       PatientModel patientInfo, context) async {
-    FirebaseAuthMethods _auth = FirebaseAuthMethods();
+    FirebaseAuthMethods auth0 = FirebaseAuthMethods();
     final AuthModel auth = AuthModel(
         email: "deleteAppointment@gmail.com", password: "deleteAppointment");
-    _auth.loginWithEmail(authData: auth);
+    auth0.loginWithEmail(authData: auth);
     String uid = "";
     doctorCabinDataSource.getDoctorsInfo().then((value) {
       DoctorModel doctor = value.singleWhere(
@@ -91,7 +91,7 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
     await localDataSourcePatients.DeleteDoctorAppointmentLocal(
         PatientModel.fromMap(patientInfo.toMap()));
 
-    _auth.signOut();
+    auth0.signOut();
     return true;
   }
 

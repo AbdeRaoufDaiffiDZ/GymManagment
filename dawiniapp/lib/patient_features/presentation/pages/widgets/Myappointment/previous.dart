@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types
+
 import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -30,7 +32,7 @@ class _previousappointmState extends State<previousappointm> {
               String datetime =
                   DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
               String datetimeTomorrow = DateFormat("yyyy-MM-dd")
-                  .format(DateTime.now().add(Duration(days: 1)))
+                  .format(DateTime.now().add(const Duration(days: 1)))
                   .toString();
               final dataa = state.patients
                   .where((element) => element.AppointmentDate != datetime)
@@ -46,9 +48,9 @@ class _previousappointmState extends State<previousappointm> {
                   return StreamBuilder<List<DoctorEntity>>(
                       stream: GetDoctorsStreamInfoUseCase.excute(),
                       builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
+                        if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return Loading();
+                          return const Loading();
                         }
                         if (snapshot.hasError) {
                           return ErrorPage(
@@ -93,7 +95,7 @@ class _previousappointmState extends State<previousappointm> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Container(
+                                          SizedBox(
                                             width: 150.w,
                                             height: 25.h,
                                             child: FittedBox(
@@ -109,7 +111,7 @@ class _previousappointmState extends State<previousappointm> {
                                                           Color(0XFF202020))),
                                             ),
                                           ),
-                                          Container(
+                                          SizedBox(
                                             width: 80.w,
                                             height: 20.h,
                                             child: FittedBox(
@@ -126,30 +128,28 @@ class _previousappointmState extends State<previousappointm> {
                                                           Color(0XFF202020))),
                                             ),
                                           ),
-                                          Container(
-                                            child: Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.location_on,
-                                                  size: 13.h,
-                                                  color: const Color(0XFF202020)
-                                                      .withOpacity(0.6),
-                                                ),
-                                                FittedBox(
-                                                  alignment: Alignment.topLeft,
-                                                  fit: BoxFit.scaleDown,
-                                                  child: Text(
-                                                      '${doctors.first.city}, ${doctors.first.wilaya}',
-                                                      style: const TextStyle(
-                                                          fontFamily: 'Nunito',
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color: Color(
-                                                              0XFF202020))),
-                                                ),
-                                              ],
-                                            ),
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.location_on,
+                                                size: 13.h,
+                                                color: const Color(0XFF202020)
+                                                    .withOpacity(0.6),
+                                              ),
+                                              FittedBox(
+                                                alignment: Alignment.topLeft,
+                                                fit: BoxFit.scaleDown,
+                                                child: Text(
+                                                    '${doctors.first.city}, ${doctors.first.wilaya}',
+                                                    style: const TextStyle(
+                                                        fontFamily: 'Nunito',
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color:
+                                                            Color(0XFF202020))),
+                                              ),
+                                            ],
                                           ),
                                           SizedBox(height: 2.h),
                                           GestureDetector(
@@ -184,7 +184,7 @@ class _previousappointmState extends State<previousappointm> {
                                                                           10.h,
                                                                       horizontal:
                                                                           10.w),
-                                                          content: Container(
+                                                          content: SizedBox(
                                                             height: 150.h,
                                                             child: Column(
                                                               mainAxisAlignment:
@@ -316,7 +316,7 @@ class _previousappointmState extends State<previousappointm> {
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           10)),
-                                              child: Container(
+                                              child: SizedBox(
                                                 width: 80.w,
                                                 height: 20.h,
                                                 child: Center(
@@ -388,7 +388,7 @@ class _previousappointmState extends State<previousappointm> {
                             ],
                           );
                         } else {
-                          return Loading();
+                          return const Loading();
                         }
                       });
                 },

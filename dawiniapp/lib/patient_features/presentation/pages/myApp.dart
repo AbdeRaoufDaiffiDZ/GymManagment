@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:dawini_full/auth/domain/usecases/auth_usecase.dart';
 import 'package:dawini_full/auth/presentation/welcomePage.dart';
 import 'package:dawini_full/core/loading/loading.dart';

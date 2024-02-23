@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types
+
 import 'package:dawini_full/core/error/ErrorWidget.dart';
 import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
@@ -9,7 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class myfavdoctors extends StatefulWidget {
-  myfavdoctors({
+  const myfavdoctors({
     Key? key,
   }) : super(key: key);
 
@@ -34,7 +36,7 @@ class _favoriteState extends State<myfavdoctors> with TickerProviderStateMixin {
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return Loading();
+                          return const Loading();
                         }
                         if (snapshot.hasError) {
                           return ErrorPage(
@@ -54,11 +56,11 @@ class _favoriteState extends State<myfavdoctors> with TickerProviderStateMixin {
                             return const Loading();
                           } else {
                             for (var uid in uids.data!) {
-                              snapshot.data!.forEach((element) {
+                              for (var element in snapshot.data!) {
                                 if (element.uid == uid) {
                                   doctor.add(element);
                                 }
-                              });
+                              }
                             }
 
                             if (doctor.isEmpty) {

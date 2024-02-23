@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, non_constant_identifier_names, duplicate_ignore
+
 import 'package:dawini_full/introduction_feature/presentation/bloc/bloc/introduction_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,13 +36,13 @@ class _LanguageScreenState extends State<LanguageScreen> {
               return Text(
                 // language,
                 widget.Language,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 24.0,
                   fontWeight: FontWeight.bold,
                 ),
               );
             }),
-            SizedBox(
+            const SizedBox(
               height: 0.05,
             ),
             MaterialButton(
@@ -48,38 +50,38 @@ class _LanguageScreenState extends State<LanguageScreen> {
               onPressed: () {
                 // Add the action you want to perform when the button is pressed
                 // For example, you can show a dialog or navigate to another screen.
-                bloc.add(onLanguageChoose(language: "Arabic"));
+                bloc.add(const onLanguageChoose(language: "Arabic"));
               },
-              child: Text('Arabic'),
+              child: const Text('Arabic'),
             ),
             MaterialButton(
               color: "English" == widget.Language ? Colors.green : Colors.grey,
               onPressed: () {
                 // Add the action you want to perform when the button is pressed
                 // For example, you can show a dialog or navigate to another screen.
-                bloc.add(onLanguageChoose(language: "English"));
+                bloc.add(const onLanguageChoose(language: "English"));
               },
-              child: Text('English'),
+              child: const Text('English'),
             ),
             MaterialButton(
               color: "French" == widget.Language ? Colors.green : Colors.grey,
               onPressed: () {
                 // Add the action you want to perform when the button is pressed
                 // For example, you can show a dialog or navigate to another screen.
-                bloc.add(onLanguageChoose(language: "French"));
+                bloc.add(const onLanguageChoose(language: "French"));
               },
-              child: Text('French'),
+              child: const Text('French'),
             ),
-            SizedBox(height: 0.05), // Add spacing between text and button
+            const SizedBox(height: 0.05), // Add spacing between text and button
             SizedBox(
               width: 0.5,
               child: ElevatedButton(
                 onPressed: () {
                   // Add the action you want to perform when the button is pressed
                   // For example, you can show a dialog or navigate to another screen.
-                  bloc.add(NextPage(id: 2));
+                  bloc.add(const NextPage(id: 2));
                 },
-                child: Text('next'),
+                child: const Text('next'),
               ),
             ),
           ],

@@ -12,7 +12,6 @@ class AuthRepositoryImp implements AuthRepository {
 
   @override
   Future<Either<Failure, void>> forgetPassword(AuthEntity authData) {
-    // TODO: implement forgetPassword
     throw UnimplementedError();
   }
 

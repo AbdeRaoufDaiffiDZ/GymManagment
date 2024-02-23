@@ -122,7 +122,7 @@ class MyApp extends StatelessWidget {
                     stream: FirebaseAuth.instance.authStateChanges(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Loading();
+                        return const Loading();
                       }
                       if (snapshot.hasError) {
                         return ErrorPage(
@@ -135,7 +135,7 @@ class MyApp extends StatelessWidget {
 
                       return user != null
                           ? MyWidget(device: device, uid: snapshot.data!.uid)
-                          : LoginPage();
+                          : const LoginPage();
                     }),
               );
             }));

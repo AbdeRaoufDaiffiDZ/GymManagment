@@ -33,7 +33,7 @@ class _LocalisationState extends State<Localisation> {
             InkWell(
               onTap: () {
                 if (isSelected) {
-                  bloc.add(NextPage(id: 2));
+                  bloc.add(const NextPage(id: 2));
                 }
               },
               child: Container(
@@ -41,8 +41,8 @@ class _LocalisationState extends State<Localisation> {
                 height: 50.h,
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? Color(0xFF2CDBC6)
-                      : Color.fromARGB(108, 44, 219, 199),
+                      ? const Color(0xFF2CDBC6)
+                      : const Color.fromARGB(108, 44, 219, 199),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Center(

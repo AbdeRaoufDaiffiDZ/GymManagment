@@ -34,13 +34,13 @@ class LocalDataSourceImplDoctor extends LocalDataSourceDoctors {
       List<PatientModel> patients = patientMapList
           .map((patientMap) => PatientModel.fromJson(patientMap))
           .toList();
-      patients.forEach((element) {
+      for (var element in patients) {
         if (element.AppointmentDate == datetime) {
           element.today = true;
         } else {
           element.today = false;
         }
-      });
+      }
       return patients;
     }
   }

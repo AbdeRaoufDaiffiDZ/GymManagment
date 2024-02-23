@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, prefer_typing_uninitialized_variables, duplicate_ignore
+
 import 'package:dawini_full/core/error/ErrorWidget.dart';
 import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
@@ -26,7 +28,7 @@ class _DoctorsListState extends State<DoctorsList> {
         stream: GetDoctorsStreamInfoUseCase.excute(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Loading();
+            return const Loading();
           }
           if (snapshot.hasError) {
             return ErrorPage(

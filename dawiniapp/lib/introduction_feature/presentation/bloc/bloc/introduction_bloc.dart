@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages, non_constant_identifier_names
+
 import 'package:bloc/bloc.dart';
 import 'package:dawini_full/introduction_feature/domain/usecases/check_status_is_watched_usecase.dart';
 import 'package:dawini_full/introduction_feature/domain/usecases/choosen_language_ucecase.dart';
@@ -7,6 +9,7 @@ import 'package:dawini_full/introduction_feature/domain/usecases/set_language_us
 import 'package:dawini_full/introduction_feature/domain/usecases/set_type_usecase.dart';
 import 'package:dawini_full/introduction_feature/domain/usecases/user_type_usecase.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 
 part 'introduction_event.dart';
 part 'introduction_state.dart';
@@ -37,7 +40,7 @@ class IntroductionBloc extends Bloc<IntroductionEvent, IntroductionState> {
             break;
           case 1:
             String languageData = '';
-            await chossenLanguageUseCase.execute().listen((language) {
+            chossenLanguageUseCase.execute().listen((language) {
               languageData = language;
             });
             emit(LanguageState(language: languageData));
@@ -45,9 +48,11 @@ class IntroductionBloc extends Bloc<IntroductionEvent, IntroductionState> {
           case 2:
             String Screen = '';
 
-            await userTypeUseCase.execute().listen((screen) {
+            userTypeUseCase.execute().listen((screen) {
               Screen = screen;
-              print(screen);
+              if (kDebugMode) {
+                print(screen);
+              }
             });
             emit(TypeState(type: Screen));
 
@@ -58,14 +63,16 @@ class IntroductionBloc extends Bloc<IntroductionEvent, IntroductionState> {
                 .execute(true); ///// will be changed later
             String Screen = '';
 
-            await userTypeUseCase.execute().listen((screen) {
+            userTypeUseCase.execute().listen((screen) {
               Screen = screen;
             });
             emit(IgnoreIntorductionState(Screen: Screen));
         }
       } else if (event is onLanguageChoose) {
         final result = await setLanguageUseCase.execute(event.language);
-        print(result);
+        if (kDebugMode) {
+          print(result);
+        }
         emit(LanguageState(language: event.language));
       } else if (event is onTypeChoose) {
         await setTypeUseCase.execute(event.type);

@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types, prefer_const_constructors
+// ignore_for_file: camel_case_types, prefer_const_constructors, prefer_typing_uninitialized_variables, deprecated_member_use
 
 import 'package:dawini_full/core/error/ErrorWidget.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Myappointment/Patient_Info.dart';
@@ -214,7 +214,7 @@ class _doctorDetailsState extends State<doctorDetails>
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.topLeft,
                                   child: Text(
-                                    "Dr." + doctor.first.lastName,
+                                    "Dr.${doctor.first.lastName}",
                                     style: TextStyle(
                                         overflow: TextOverflow.ellipsis,
                                         fontSize: 22,
@@ -291,7 +291,7 @@ class _doctorDetailsState extends State<doctorDetails>
                                           size: 15.sp,
                                         ),
                                         Text(
-                                          " " + doctor.first.phoneNumber,
+                                          " ${doctor.first.phoneNumber}",
                                           style: TextStyle(
                                             color: const Color(0XFF202020)
                                                 .withOpacity(0.7),
@@ -303,7 +303,7 @@ class _doctorDetailsState extends State<doctorDetails>
                                       ],
                                     ),
                                   ),
-                                  Container(
+                                  SizedBox(
                                     height: 20.h,
                                     width: 200.w,
                                     child: FittedBox(
@@ -317,7 +317,7 @@ class _doctorDetailsState extends State<doctorDetails>
                                             size: 15.sp,
                                           ),
                                           Text(
-                                            " " + doctor.first.phoneNumber,
+                                            " ${doctor.first.phoneNumber}",
                                             style: TextStyle(
                                               color: const Color(0XFF202020)
                                                   .withOpacity(0.7),
@@ -335,8 +335,7 @@ class _doctorDetailsState extends State<doctorDetails>
                             ),
                             GestureDetector(
                               onTap: () async {
-                                final url = doctor.first
-                                    .location; // TODO: add Link location to database
+                                final url = doctor.first.location;
                                 if (await canLaunch(url)) {
                                   await launch(url);
                                 }
@@ -376,7 +375,7 @@ class _doctorDetailsState extends State<doctorDetails>
                             height: 50.h,
                             child: SingleChildScrollView(
                               child: Text(
-                                "Description : ${doctor.first.description}", //TODO: add description to entty and model and database
+                                "Description : ${doctor.first.description}",
                                 style: TextStyle(
                                     color: Color(0XFF202020),
                                     fontFamily: "Nunito",
@@ -390,7 +389,7 @@ class _doctorDetailsState extends State<doctorDetails>
                             child: FittedBox(
                                 alignment: Alignment.topLeft,
                                 child: Text(
-                                  "Experience : ${doctor.first.experience}", //TODO: add exprince to database
+                                  "Experience : ${doctor.first.experience}",
                                   style: TextStyle(
                                       color: Color(0XFF202020),
                                       fontFamily: "Nunito",

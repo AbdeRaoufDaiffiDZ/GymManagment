@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, camel_case_types, library_private_types_in_public_api, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, camel_case_types, library_private_types_in_public_api, use_build_context_synchronously, file_names
 
 import 'package:dawini_full/auth/data/FirebaseAuth/authentification.dart';
 import 'package:dawini_full/auth/presentation/loginPage.dart';
@@ -165,7 +165,7 @@ class _WelcomePageState extends State<WelcomePage> {
       text: TextSpan(
           text: 'd',
           style: GoogleFonts.portLligatSans(
-            textStyle: Theme.of(context).textTheme.headline1,
+            textStyle: Theme.of(context).textTheme.displayLarge,
             fontSize: 30,
             fontWeight: FontWeight.w700,
             color: Colors.white,

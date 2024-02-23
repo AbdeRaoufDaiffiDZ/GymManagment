@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types
+// ignore_for_file: camel_case_types, use_build_context_synchronously
 
 import 'package:dawini_full/core/error/ErrorWidget.dart';
 import 'package:dawini_full/core/loading/loading.dart';
@@ -8,7 +8,6 @@ import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_bloc/doctor
 import 'package:dawini_full/introduction_feature/domain/usecases/set_type_usecase.dart';
 import 'package:dawini_full/patient_features/presentation/pages/weather_pag.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -63,7 +62,7 @@ class _DoctorCabinInfoState extends State<DoctorCabinInfo>
           stream: GetDoctorsStreamInfoUseCase.excute(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Loading();
+              return const Loading();
             }
             if (snapshot.hasError) {
               return ErrorPage(

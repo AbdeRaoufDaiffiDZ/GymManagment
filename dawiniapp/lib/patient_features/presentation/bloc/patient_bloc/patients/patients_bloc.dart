@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, depend_on_referenced_packages
 
 import 'package:bloc/bloc.dart';
 import 'package:dawini_full/patient_features/domain/entities/patient.dart';

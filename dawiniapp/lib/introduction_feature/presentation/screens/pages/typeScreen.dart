@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, non_constant_identifier_names
+
 import 'package:dawini_full/introduction_feature/presentation/bloc/bloc/introduction_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,37 +31,37 @@ class _TypeScreenState extends State<TypeScreen> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 0.2),
+            const SizedBox(height: 0.2),
             MaterialButton(
               color: "patient" == widget.type ? Colors.green : Colors.grey,
               onPressed: () {
                 // Add the action you want to perform when the button is pressed
                 // For example, you can show a dialog or navigate to another screen.
-                bloc.add(onTypeChoose(type: "patient"));
+                bloc.add(const onTypeChoose(type: "patient"));
               },
-              child: Text('Looking for a Doctor'),
+              child: const Text('Looking for a Doctor'),
             ), // Add spacing between text and button
 
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             MaterialButton(
               color: "doctor" == widget.type ? Colors.green : Colors.grey,
               onPressed: () {
                 // Add the action you want to perform when the button is pressed
                 // For example, you can show a dialog or navigate to another screen.
-                bloc.add(onTypeChoose(type: "doctor"));
+                bloc.add(const onTypeChoose(type: "doctor"));
               },
-              child: Text("I'm a Doctor"),
+              child: const Text("I'm a Doctor"),
             ), // Add spacing between text and button
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             SizedBox(
               width: 0.5,
               child: ElevatedButton(
                 onPressed: () {
                   // Add the action you want to perform when the button is pressed
                   // For example, you can show a dialog or navigate to another screen.
-                  bloc.add(NextPage(id: 3));
+                  bloc.add(const NextPage(id: 3));
                 },
-                child: Text('next'),
+                child: const Text('next'),
               ),
             ),
             // ElevatedButton(
@@ -119,12 +121,11 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
               SizedBox(
                 height: 20.h,
               ),
-              Container(
-                  child: Image.asset(
+              Image.asset(
                 "assets/images/dawini.png",
                 width: 140.w,
                 height: 36.h,
-              )),
+              ),
               Text(
                 "For effortless Appointment Booking",
                 style: TextStyle(
@@ -148,7 +149,7 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
               InkWell(
                 onTap: () {
                   if (isSelected) {
-                    bloc.add(NextPage(id: 3));
+                    bloc.add(const NextPage(id: 3));
                   }
                 },
                 child: Container(
@@ -157,8 +158,8 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
                   height: 50.h,
                   decoration: BoxDecoration(
                     color: isSelected
-                        ? Color(0xFF2CDBC6)
-                        : Color.fromARGB(108, 44, 219, 199),
+                        ? const Color(0xFF2CDBC6)
+                        : const Color.fromARGB(108, 44, 219, 199),
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Center(
@@ -185,9 +186,9 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
     return InkWell(
       onTap: () {
         if (MyType == "Looking for a doctor") {
-          bloc.add(onTypeChoose(type: "patient"));
+          bloc.add(const onTypeChoose(type: "patient"));
         } else if (MyType == "Im doctor") {
-          bloc.add(onTypeChoose(type: "doctor"));
+          bloc.add(const onTypeChoose(type: "doctor"));
         }
         isSelected = true;
         setState(() {

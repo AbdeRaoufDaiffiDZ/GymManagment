@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:dawini_full/patient_features/domain/entities/clinic.dart';
 import 'package:dawini_full/patient_features/presentation/pages/pages/clinicDetails/clinics_details.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +70,7 @@ class _ClinicWidgetListState extends State<ClinicWidgetList> {
                         padding: EdgeInsets.only(left: 8.w),
                         child: Text(
                           data.isNotEmpty
-                              ? "Clinic. " + data[index].ClinicName
+                              ? "Clinic. ${data[index].ClinicName}"
                               : "",
                           style: TextStyle(
                               fontSize: 14.sp, fontWeight: FontWeight.w800),
@@ -98,13 +100,11 @@ class _ClinicWidgetListState extends State<ClinicWidgetList> {
                               color: Colors.black45,
                             ),
                             SizedBox(width: 5.w),
-                            Container(
+                            SizedBox(
                               width: 120.w,
                               child: Text(
                                 data.isNotEmpty
-                                    ? data[index].city +
-                                        ", " +
-                                        data[index].wilaya
+                                    ? "${data[index].city}, ${data[index].wilaya}"
                                     : "",
                                 style: TextStyle(
                                     color: Colors.black45,
@@ -126,7 +126,7 @@ class _ClinicWidgetListState extends State<ClinicWidgetList> {
                                     ? data[index].atSerivce
                                         ? Colors.teal
                                         : const Color.fromARGB(255, 150, 0, 0)
-                                    : Color.fromARGB(0, 150, 0, 0)),
+                                    : const Color.fromARGB(0, 150, 0, 0)),
                             SizedBox(width: 5.h),
                             Text(
                               data.isNotEmpty

@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, camel_case_types
+// ignore_for_file: use_build_context_synchronously, camel_case_types, file_names
 
 import 'package:dawini_full/auth/presentation/loginPage.dart';
 import 'package:dawini_full/auth/presentation/welcomePage.dart';
@@ -30,8 +30,10 @@ class myAppbar extends StatelessWidget implements PreferredSizeWidget {
             IconButton(
               onPressed: () async {
                 if (uid == null) {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => LoginPage()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginPage()));
                 } else {
                   await setTypeUseCase.execute("doctor");
                   if (popOrNot) {

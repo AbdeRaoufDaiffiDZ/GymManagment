@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types, file_names
+
 import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -24,15 +26,15 @@ class Patient_info extends StatefulWidget {
 }
 
 class _Patient_infoState extends State<Patient_info> {
-  TextEditingController _firstNameController = TextEditingController();
-  TextEditingController _lastNameController = TextEditingController();
-  TextEditingController _ageController = TextEditingController();
-  TextEditingController _phoneNumberController = TextEditingController();
-  TextEditingController _addressController = TextEditingController();
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String datetimeToday = DateFormat("yyyy-MM-dd").format(DateTime.now());
-  String datetimeTomrrow =
-      DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: 1)));
+  String datetimeTomrrow = DateFormat("yyyy-MM-dd")
+      .format(DateTime.now().add(const Duration(days: 1)));
 
   Widget buildInputField(List<TextInputFormatter>? textInputFormatter,
       {required TextEditingController controller,
@@ -167,21 +169,21 @@ class _Patient_infoState extends State<Patient_info> {
                   onTap: () {
                     String missing = "Please Write your";
                     if (_firstNameController.text.isEmpty) {
-                      missing = missing + " First Name,";
+                      missing = "$missing First Name,";
                     }
                     if (_lastNameController.text.isEmpty) {
-                      missing = missing + " Last Name,";
+                      missing = "$missing Last Name,";
                     }
                     if (_ageController.text.isEmpty ||
                         int.parse(_ageController.text) > 130) {
-                      missing = missing + " age,";
+                      missing = "$missing age,";
                     }
                     if (_phoneNumberController.text.isEmpty ||
                         _phoneNumberController.text.length < 10) {
-                      missing = missing + " Phone Number,";
+                      missing = "$missing Phone Number,";
                     }
                     if (_addressController.text.isEmpty) {
-                      missing = missing + " Home address,";
+                      missing = "$missing Home address,";
                     }
                     if (_firstNameController.text.isEmpty ||
                         _lastNameController.text.isEmpty ||
@@ -266,45 +268,41 @@ Future<Object?> showlDialog(context) {
           child: FadeTransition(
             opacity: Tween<double>(begin: 0.4, end: 1).animate(a1),
             child: AlertDialog(
-              title: Container(
-                child: Center(
-                  child: Text.rich(
-                    TextSpan(
-                      text: "Your appointment has been booked",
-                      style: TextStyle(
-                        fontFamily: "Nunito",
-                        fontWeight: FontWeight.w800,
-                        fontSize: screenWidth * 0.05, // Responsive font size
-                        color: const Color.fromRGBO(32, 32, 32, 0.8),
-                      ),
-                      children: [
-                        TextSpan(
-                          text: " successfully",
-                          style: TextStyle(
-                            fontFamily: "Nunito",
-                            fontWeight: FontWeight.w900,
-                            fontSize:
-                                screenWidth * 0.05, // Responsive font size
-                            color: const Color(0XFF0AA9A9),
-                          ),
-                        ),
-                        TextSpan(
-                          text:
-                              " , you can follow your turn at my appointment section ",
-                          style: TextStyle(
-                            fontFamily: "Nunito",
-                            fontWeight: FontWeight.w800,
-                            fontSize:
-                                screenWidth * 0.05, // Responsive font size
-                            color: const Color.fromRGBO(32, 32, 32, 0.8),
-                          ),
-                        ),
-                      ],
+              title: Center(
+                child: Text.rich(
+                  TextSpan(
+                    text: "Your appointment has been booked",
+                    style: TextStyle(
+                      fontFamily: "Nunito",
+                      fontWeight: FontWeight.w800,
+                      fontSize: screenWidth * 0.05, // Responsive font size
+                      color: const Color.fromRGBO(32, 32, 32, 0.8),
                     ),
+                    children: [
+                      TextSpan(
+                        text: " successfully",
+                        style: TextStyle(
+                          fontFamily: "Nunito",
+                          fontWeight: FontWeight.w900,
+                          fontSize: screenWidth * 0.05, // Responsive font size
+                          color: const Color(0XFF0AA9A9),
+                        ),
+                      ),
+                      TextSpan(
+                        text:
+                            " , you can follow your turn at my appointment section ",
+                        style: TextStyle(
+                          fontFamily: "Nunito",
+                          fontWeight: FontWeight.w800,
+                          fontSize: screenWidth * 0.05, // Responsive font size
+                          color: const Color.fromRGBO(32, 32, 32, 0.8),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              content: Container(
+              content: SizedBox(
                 height: screenHeight * 0.08,
                 child: GestureDetector(
                   onTap: () {

@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types, prefer_const_constructors_in_immutables
+
 import 'package:dawini_full/patient_features/presentation/pages/widgets/favorite/clinics.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/favorite/doctor.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +72,7 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
                           ),
                         ),
                         Tab(
-                          child: Container(
+                          child: SizedBox(
                             width: 130.w,
                             height: 30.h,
                             child: const FittedBox(
@@ -89,7 +91,7 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
                   Expanded(
                       child: TabBarView(
                           controller: tabcontroller,
-                          children: [myfavdoctors(), myfavclincs()])),
+                          children: const [myfavdoctors(), myfavclincs()])),
                 ]))),
       ),
     );

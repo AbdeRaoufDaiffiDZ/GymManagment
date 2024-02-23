@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables, file_names
+
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -6,7 +8,7 @@ import 'package:flutter/material.dart';
 class ErrorPage extends StatelessWidget {
   final error;
 
-  const ErrorPage({required this.error});
+  const ErrorPage({super.key, required this.error});
 
   @override
   Widget build(BuildContext context) {
@@ -14,22 +16,22 @@ class ErrorPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Error"),
+        title: const Text("Error"),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               "An error occurred:",
               style: TextStyle(fontSize: 20),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               errorMessage,
-              style: TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             // Add retry button or other actions if needed
           ],
         ),
