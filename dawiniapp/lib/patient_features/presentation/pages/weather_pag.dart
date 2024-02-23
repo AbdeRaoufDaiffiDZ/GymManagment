@@ -1,12 +1,10 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, sort_child_properties_last, prefer_typing_uninitialized_variables
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:dawini_full/auth/presentation/welcomePage.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Myappointment/appointments.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/appBar.dart';
-import 'package:dawini_full/patient_features/presentation/pages/widgets/clinics/clinicsList.dart';
 import 'package:dawini_full/doctor_Features/presentation/pages/doctors/doctorsList.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/favorite/favourites.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/serachMenu.dart';
@@ -112,65 +110,65 @@ class _DoctorPageState extends State<Weather> {
                 SearchMenu(),
                 SizedBox(height: 10.h),
 
-                Container(
-                  margin: EdgeInsets.only(top: 4.h),
-                  padding: EdgeInsets.only(left: 9.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: 200.w,
-                        height: 20.h,
-                        child: AutoSizeText(text.recommended_clinics,
-                            style: TextStyle(
-                                fontFamily: 'Nunito',
-                                fontSize: 19.sp,
-                                fontWeight: FontWeight.w600)),
-                      ),
-                      //   GestureDetector(
-                      //     onTap: () {
-                      //       Navigator.push(
-                      //           context,
-                      //           MaterialPageRoute(
-                      //             builder: (context) => Scaffold(
-                      //               appBar: AppBar(),
-                      //               body: Column(
-                      //                 children: [
-                      //                   SearchMenuClinics(),
-                      //                   SizedBox(
-                      //                     height: 20.h,
-                      //                   ),
-                      //                   // ClinicsList(),
-                      //                   ClinicWidget(
-                      //                     clinics: [],
-                      //                   )
-                      //                 ],
-                      //               ),
-                      //             ),
-                      //           ));
-                      //     },
-                      //     child: SizedBox(
-                      //       width: 80.w,
-                      //       height: 20.h,
-                      //       child: Center(
-                      //         child: AutoSizeText(text.see_all,
-                      //             style: TextStyle(
-                      //                 fontFamily: 'Nunito',
-                      //                 fontSize: 20.sp,
-                      //                 fontWeight: FontWeight.w600,
-                      //                 color: const Color(0xFF2CDBC6))),
-                      //       ),
-                      //     ),
-                      //   )
-                    ],
-                  ),
-                ),
+                // Container(
+                //   margin: EdgeInsets.only(top: 4.h),
+                //   padding: EdgeInsets.only(left: 9.w),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       SizedBox(
+                //         width: 200.w,
+                //         height: 20.h,
+                //         child: AutoSizeText(text.recommended_clinics,
+                //             style: TextStyle(
+                //                 fontFamily: 'Nunito',
+                //                 fontSize: 19.sp,
+                //                 fontWeight: FontWeight.w600)),
+                //       ),
+                //       //   GestureDetector(
+                //       //     onTap: () {
+                //       //       Navigator.push(
+                //       //           context,
+                //       //           MaterialPageRoute(
+                //       //             builder: (context) => Scaffold(
+                //       //               appBar: AppBar(),
+                //       //               body: Column(
+                //       //                 children: [
+                //       //                   SearchMenuClinics(),
+                //       //                   SizedBox(
+                //       //                     height: 20.h,
+                //       //                   ),
+                //       //                   // ClinicsList(),
+                //       //                   ClinicWidget(
+                //       //                     clinics: [],
+                //       //                   )
+                //       //                 ],
+                //       //               ),
+                //       //             ),
+                //       //           ));
+                //       //     },
+                //       //     child: SizedBox(
+                //       //       width: 80.w,
+                //       //       height: 20.h,
+                //       //       child: Center(
+                //       //         child: AutoSizeText(text.see_all,
+                //       //             style: TextStyle(
+                //       //                 fontFamily: 'Nunito',
+                //       //                 fontSize: 20.sp,
+                //       //                 fontWeight: FontWeight.w600,
+                //       //                 color: const Color(0xFF2CDBC6))),
+                //       //       ),
+                //       //     ),
+                //       //   )
+                //     ],
+                //   ),
+                // ),
 
-                SizedBox(height: 10.h),
-                Container(
-                    //  CLinics card
-                    child: ClinicsList()),
-                SizedBox(height: 16.h),
+                // SizedBox(height: 10.h),
+                // Container(
+                //     //  CLinics card
+                //     child: ClinicsList()),
+                // SizedBox(height: 16.h),
 
                 // Specaility search scroll
                 //crossAxisAlignment: CrossAxisAlignment.start,
@@ -193,28 +191,28 @@ class _DoctorPageState extends State<Weather> {
                                   color: const Color(0xFF2CDBC6))),
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => doctorsideHome(
-                                        popOrNot: true,
-                                      )));
-                        },
-                        child: SizedBox(
-                          width: 80.w,
-                          height: 20.h,
-                          child: Center(
-                            child: AutoSizeText(text.search,
-                                style: TextStyle(
-                                    fontFamily: 'Nunito',
-                                    fontSize: 20.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: const Color(0xFF2CDBC6))),
-                          ),
-                        ),
-                      ),
+                      //   GestureDetector(     ///  this is search speciality button
+                      //     onTap: () {
+                      //       Navigator.push(
+                      //           context,
+                      //           MaterialPageRoute(
+                      //               builder: (context) => doctorsideHome(
+                      //                     popOrNot: true,
+                      //                   )));
+                      //     },
+                      //     child: SizedBox(
+                      //       width: 80.w,
+                      //       height: 20.h,
+                      //       child: Center(
+                      //         child: AutoSizeText(text.search,
+                      //             style: TextStyle(
+                      //                 fontFamily: 'Nunito',
+                      //                 fontSize: 20.sp,
+                      //                 fontWeight: FontWeight.w600,
+                      //                 color: const Color(0xFF2CDBC6))),
+                      //       ),
+                      //     ),
+                      //   ),
                     ],
                   ),
                 ),

@@ -1,3 +1,4 @@
+import 'package:dawini_full/core/error/ErrorWidget.dart';
 import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart';
@@ -31,6 +32,17 @@ class _favoriteState extends State<myfavdoctors> with TickerProviderStateMixin {
                   return StreamBuilder<List<DoctorEntity>>(
                       stream: GetDoctorsStreamInfoUseCase.excute(),
                       builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Loading();
+                        }
+                        if (snapshot.hasError) {
+                          return ErrorPage(
+                            error: snapshot.error,
+                          );
+                          // Text('Error: ${snapshot.error}');
+                        }
+
                         // final uids =
                         List<DoctorEntity> doctor = [];
                         if (snapshot.data == null) {

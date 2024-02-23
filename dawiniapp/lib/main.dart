@@ -5,7 +5,9 @@ import 'dart:async';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:dawini_full/auth/domain/usecases/auth_usecase.dart';
 import 'package:dawini_full/auth/presentation/bloc/auth_bloc.dart';
-import 'package:dawini_full/auth/presentation/welcomePage.dart';
+import 'package:dawini_full/auth/presentation/loginPage.dart';
+import 'package:dawini_full/core/error/ErrorWidget.dart';
+import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/firebase_options.dart';
 import 'package:dawini_full/injection_container.dart';
 import 'package:dawini_full/introduction_feature/presentation/bloc/bloc/introduction_bloc.dart';
@@ -46,21 +48,8 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseAppCheck.instance.activate(
-    // You can also use a `ReCaptchaEnterpriseProvider` provider instance as an
-    // argument for `webProvider`
     webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
-    // Default provider for Android is the Play Integrity provider. You can use the "AndroidProvider" enum to choose
-    // your preferred provider. Choose from:
-    // 1. Debug provider
-    // 2. Safety Net provider
-    // 3. Play Integrity provider
     androidProvider: AndroidProvider.debug,
-    // Default provider for iOS/macOS is the Device Check provider. You can use the "AppleProvider" enum to choose
-    // your preferred provider. Choose from:
-    // 1. Debug provider
-    // 2. Device Check provider
-    // 3. App Attest provider
-    // 4. App Attest provider with fallback to Device Check provider (App Attest provider is only available on iOS 14.0+, macOS 14.0+)
     appleProvider: AppleProvider.appAttest,
   );
 
@@ -74,7 +63,7 @@ Future<void> main() async {
   runApp(
     MyApp(
       device: device.fingerprint,
-    ), // Wrap your app
+    ),
   );
 }
 
@@ -132,13 +121,21 @@ class MyApp extends StatelessWidget {
                 home: StreamBuilder<User?>(
                     stream: FirebaseAuth.instance.authStateChanges(),
                     builder: (context, snapshot) {
-                      // if (snapshot.hasData) {
-                      //   print(snapshot.data!.uid);
-                      //   return DoctorCabinInfo(uid: snapshot.data!.uid);
-                      // } else {
-                      //   return Placeholder();
-                      // }
-                      return MyWidget(device: device, uid: snapshot.data?.uid);
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Loading();
+                      }
+                      if (snapshot.hasError) {
+                        return ErrorPage(
+                          error: snapshot.error,
+                        );
+                        // Text('Error: ${snapshot.error}');
+                      }
+
+                      final user = snapshot.data;
+
+                      return user != null
+                          ? MyWidget(device: device, uid: snapshot.data!.uid)
+                          : LoginPage();
                     }),
               );
             }));
@@ -174,16 +171,17 @@ class _MyWidgetState extends State<MyWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // _isAuth();
     if (kDebugMode) {
       print(widget.device);
     }
 
     if (status) {
-      return Mypage(
-        device: widget.device,
-        uid: widget.uid,
-        popOrNot: false,
+      return Scaffold(
+        body: Mypage(
+          device: widget.device,
+          uid: widget.uid,
+          popOrNot: false,
+        ),
       );
     } else {
       return PagesShower(uid: widget.uid);
@@ -196,18 +194,4 @@ class _MyWidgetState extends State<MyWidget> {
       status = (prefs.getBool('ignore') ?? false);
     });
   }
-
-  // Future<void> _isAuth() async {
-  //   FirebaseAuth.instance.authStateChanges().listen((user) {
-  //     if (user == null) {
-  //       setState(() {
-  //         isAuthuntificated = false;
-  //       });
-  //     } else {
-  //       setState(() {
-  //         isAuthuntificated = true;
-  //       });
-  //     }
-  //   });
-  // }
 }

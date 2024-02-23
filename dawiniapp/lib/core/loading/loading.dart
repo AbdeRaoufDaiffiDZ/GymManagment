@@ -14,8 +14,10 @@ class _LoadingState extends State<Loading> {
     return Container(
       color: Colors.white,
       child: Center(
-          child: LoadingAnimationWidget.waveDots(
-              color: Color(0xFF04CBCB), size: 200)),
+          child: LoadingAnimationWidget.horizontalRotatingDots(
+              //hexagonDots, hexagonDots
+              color: Color(0xFF04CBCB),
+              size: 200)),
     );
   }
 }

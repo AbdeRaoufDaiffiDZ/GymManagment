@@ -1,6 +1,7 @@
 // ignore_for_file: sort_child_properties_last
 
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:dawini_full/core/error/ErrorWidget.dart';
 import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart';
@@ -157,6 +158,15 @@ class _AppointmentsWidgetState extends State<AppointmentsWidget> {
           child: StreamBuilder<List<DoctorEntity>>(
               stream: GetDoctorsStreamInfoUseCase.excute(),
               builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Loading();
+                }
+                if (snapshot.hasError) {
+                  return ErrorPage(
+                    error: snapshot.error,
+                  );
+                  // Text('Error: ${snapshot.error}');
+                }
                 late final List<DoctorEntity> data;
                 if (snapshot.data == null) {
                   data = [];

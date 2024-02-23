@@ -13,6 +13,7 @@ import 'package:dawini_full/patient_features/presentation/pages/myApp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:dawini_full/core/error/ErrorWidget.dart';
 
 class Myappointemtns extends StatefulWidget {
   const Myappointemtns({super.key});
@@ -647,6 +648,15 @@ class _MyappointemtnsState extends State<Myappointemtns>
         StreamBuilder<List<DoctorEntity>>(
             stream: GetDoctorsStreamInfoUseCase.excute(),
             builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Loading();
+              }
+              if (snapshot.hasError) {
+                return ErrorPage(
+                  error: snapshot.error,
+                );
+                // Text('Error: ${snapshot.error}');
+              }
               late final List<DoctorEntity> data;
               if (snapshot.data == null) {
                 data = [];

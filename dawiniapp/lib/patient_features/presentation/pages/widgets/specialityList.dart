@@ -1,3 +1,5 @@
+import 'package:dawini_full/core/error/ErrorWidget.dart';
+import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
@@ -28,6 +30,15 @@ class _SpecialityListState extends State<SpecialityList> {
     return StreamBuilder<List<DoctorEntity>>(
         stream: GetDoctorsStreamInfoUseCase.excute(),
         builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Loading();
+          }
+          if (snapshot.hasError) {
+            return ErrorPage(
+              error: snapshot.error,
+            );
+            // Text('Error: ${snapshot.error}');
+          }
           late final List<DoctorEntity> data;
           if (snapshot.data == null) {
             data = [];

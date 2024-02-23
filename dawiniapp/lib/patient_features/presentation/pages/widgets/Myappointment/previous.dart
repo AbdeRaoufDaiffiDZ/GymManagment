@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:dawini_full/core/error/ErrorWidget.dart';
 
 class previousappointm extends StatefulWidget {
   const previousappointm({super.key});
@@ -45,6 +46,16 @@ class _previousappointmState extends State<previousappointm> {
                   return StreamBuilder<List<DoctorEntity>>(
                       stream: GetDoctorsStreamInfoUseCase.excute(),
                       builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Loading();
+                        }
+                        if (snapshot.hasError) {
+                          return ErrorPage(
+                            error: snapshot.error,
+                          );
+                          // Text('Error: ${snapshot.error}');
+                        }
                         late final List<DoctorEntity> doctor;
                         if (snapshot.data == null) {
                           doctor = [];

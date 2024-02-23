@@ -3,6 +3,7 @@
 import 'package:dawini_full/auth/data/FirebaseAuth/authentification.dart';
 import 'package:dawini_full/auth/presentation/loginPage.dart';
 import 'package:dawini_full/auth/presentation/signup.dart';
+import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/presentation/pages/doctor_cabinSide.dart/cabin_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,36 +23,50 @@ class _doctorsideHomeState extends State<doctorsideHome> {
   Widget build(BuildContext context) {
     FirebaseAuthMethods auth = FirebaseAuthMethods();
 
-    final Stream<User?> user = auth.authState;
-
-    return StreamBuilder(
-        stream: user,
+    return StreamBuilder<User?>(
+        stream: auth.authState,
         builder: (context, snapshot) {
-          if (snapshot.data?.uid == null) {
-            return LoginPage();
-          } else {
-            return DoctorCabinInfo(
-              uid: snapshot.data!.uid,
-              popOrNot: widget.popOrNot,
-            );
-            //   SafeArea(
-            //     child: Column(
-            //       children: [
-            //         MaterialButton(
-            //           color: Colors.white,
-            //           onPressed: () {
-            //             auth.signOut();
-            //           },
-            //           child: Text("clickTo Disconnect"),
-            //         ),
-            //         SizedBox(
-            //           height: 20.h,
-            //         ),
-
-            //     ],
-            //   ),
-            // );
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Loading();
           }
+          if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          }
+
+          final user = snapshot.data;
+          return user != null
+              ? DoctorCabinInfo(
+                  uid: snapshot.data!.uid,
+                  popOrNot: widget.popOrNot,
+                )
+              : LoginPage();
+//           if (snapshot.data == null) {
+//             return LoginPage();
+//           } else {
+//             final user = snapshot.data;
+// if(user != null){}
+//             return DoctorCabinInfo(
+//               uid: snapshot.data!.uid,
+//               popOrNot: widget.popOrNot,
+//             );
+//             //   SafeArea(
+//             //     child: Column(
+//             //       children: [
+//             //         MaterialButton(
+//             //           color: Colors.white,
+//             //           onPressed: () {
+//             //             auth.signOut();
+//             //           },
+//             //           child: Text("clickTo Disconnect"),
+//             //         ),
+//             //         SizedBox(
+//             //           height: 20.h,
+//             //         ),
+
+//             //     ],
+//             //   ),
+//             // );
+//           }
         });
   }
 }
