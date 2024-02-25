@@ -17,7 +17,10 @@ class DeleteDoctorAppointmentUseCase {
   static final PatientsRepository patientsRepository = PatientRepositoryImpl();
 
   Future<bool> excute(PatientEntity patientEntity, context) {
-    return patientsRepository.DeleteDoctorAppointment(patientEntity, context);
+    return patientsRepository.DeleteDoctorAppointment(
+      patientEntity,
+      context,
+    );
   }
 }
 

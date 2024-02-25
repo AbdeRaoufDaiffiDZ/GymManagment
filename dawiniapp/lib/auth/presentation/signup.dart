@@ -5,8 +5,9 @@ import 'package:dawini_full/auth/presentation/loginPage.dart';
 import 'package:flutter/material.dart';
 
 class SignUpPage extends StatefulWidget {
-  const SignUpPage({Key? key, this.title}) : super(key: key);
-
+  const SignUpPage({Key? key, this.title, required this.popOrNot})
+      : super(key: key);
+  final bool popOrNot;
   final String? title;
 
   @override
@@ -84,11 +85,15 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  Widget _loginAccountLabel() {
+  Widget _loginAccountLabel(popOrNot) {
     return InkWell(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const LoginPage()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => LoginPage(
+                      popOrNot: popOrNot,
+                    )));
       },
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 20),
@@ -180,7 +185,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     _submitButton(),
                     SizedBox(height: height * .14),
-                    _loginAccountLabel(),
+                    _loginAccountLabel(widget.popOrNot),
                   ],
                 ),
               ),

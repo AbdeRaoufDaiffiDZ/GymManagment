@@ -12,5 +12,8 @@ abstract class PatientsRepository {
   Future<bool> DeleteFavoriteDoctor(String uid);
 
   Future<bool> SetDoctorAppointment(PatientEntity patientInfo);
-  Future<bool> DeleteDoctorAppointment(PatientEntity patientInfo, context);
+  Future<bool> DeleteDoctorAppointment(
+    PatientEntity patientInfo,
+    context,
+  );
 }

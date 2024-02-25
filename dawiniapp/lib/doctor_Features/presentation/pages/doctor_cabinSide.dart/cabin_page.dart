@@ -5,6 +5,7 @@ import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
+import 'package:dawini_full/doctor_Features/presentation/pages/doctors/Patient_Info.dart';
 import 'package:dawini_full/introduction_feature/domain/usecases/set_type_usecase.dart';
 import 'package:dawini_full/patient_features/presentation/pages/weather_pag.dart';
 import 'package:flutter/material.dart';
@@ -136,10 +137,10 @@ class _DoctorCabinInfoState extends State<DoctorCabinInfo>
                         children: [
                           MaterialButton(
                               color: const Color.fromARGB(255, 109, 184, 245),
-                              child: const Text("all day"),
+                              child: const Text("today"),
                               onPressed: () {
                                 doctorBloc.add(onDataUpdate(
-                                    data: "all-day",
+                                    data: "today",
                                     infoToUpdate: "date",
                                     numberInList: doctor.numberInList));
                               }),
@@ -148,14 +149,24 @@ class _DoctorCabinInfoState extends State<DoctorCabinInfo>
                           ),
                           MaterialButton(
                               color: const Color.fromARGB(255, 109, 184, 245),
-                              child: const Text("update Info"),
+                              child: const Text("all day"),
                               onPressed: () {
-                                if (data.text.isNotEmpty) {
-                                  doctorBloc.add(onDataUpdate(
-                                      data: data.text,
-                                      infoToUpdate: "description",
-                                      numberInList: doctor.numberInList));
-                                }
+                                doctorBloc.add(onDataUpdate(
+                                    data: "all",
+                                    infoToUpdate: "date",
+                                    numberInList: doctor.numberInList));
+                              }),
+                          SizedBox(
+                            width: 10.w,
+                          ),
+                          MaterialButton(
+                              color: const Color.fromARGB(255, 109, 184, 245),
+                              child: const Text("tomorrow"),
+                              onPressed: () {
+                                doctorBloc.add(onDataUpdate(
+                                    data: "tomorrow",
+                                    infoToUpdate: "date",
+                                    numberInList: doctor.numberInList));
                               }),
                         ],
                       ),
@@ -171,9 +182,9 @@ class _DoctorCabinInfoState extends State<DoctorCabinInfo>
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (BuildContext context) => Weather(
+                                  builder: (BuildContext context) =>
+                                      const Weather(
                                     device: 'device',
-                                    uid: widget.uid,
                                     popOrNot: true,
                                   ),
                                 ));
@@ -181,6 +192,30 @@ class _DoctorCabinInfoState extends State<DoctorCabinInfo>
                         },
                         child: const Text("patients side"),
                       ),
+                      MaterialButton(
+                        color: const Color.fromARGB(255, 109, 184, 245),
+                        onPressed: () async {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      Patient_info(
+                                        doctorEntity: doctor,
+                                        today: true,
+                                        ifADoctor: true,
+                                      )));
+                        },
+                        child: const Text("add patient"),
+                      ),
+                      MaterialButton(
+                          color: const Color.fromARGB(255, 109, 184, 245),
+                          child: const Text("recommended"),
+                          onPressed: () {
+                            doctorBloc.add(onDataUpdate(
+                                data: 1,
+                                infoToUpdate: "recommendNumber",
+                                numberInList: doctor.numberInList));
+                          }),
                     ],
                   ),
                 ),

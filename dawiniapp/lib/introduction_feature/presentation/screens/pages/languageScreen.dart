@@ -46,7 +46,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
               height: 0.05,
             ),
             MaterialButton(
-              color: "Arabic" == widget.Language ? Colors.green : Colors.grey,
+              color: "Arabic" == widget.Language ? Colors.red : Colors.grey,
               onPressed: () {
                 // Add the action you want to perform when the button is pressed
                 // For example, you can show a dialog or navigate to another screen.

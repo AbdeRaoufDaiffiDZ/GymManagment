@@ -98,7 +98,6 @@ class UserTypeSelector extends StatefulWidget {
 }
 
 class _UserTypeSelectorState extends State<UserTypeSelector> {
-  String MyTypeIs = "";
   bool isSelected = false;
   @override
   Widget build(BuildContext context) {
@@ -141,8 +140,8 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
                       fontWeight: FontWeight.w600,
                       color: Colors.black45)),
               SizedBox(height: 20.h),
-              usertypeContainer("Looking for a doctor", bloc),
-              usertypeContainer("Im doctor", bloc),
+              usertypeContainer("Looking for a doctor", "patient", bloc),
+              usertypeContainer("Im doctor", "doctor", bloc),
               SizedBox(
                 height: 20.h,
               ),
@@ -182,7 +181,7 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
     );
   }
 
-  Widget usertypeContainer(String MyType, IntroductionBloc bloc) {
+  Widget usertypeContainer(String MyType, String type, IntroductionBloc bloc) {
     return InkWell(
       onTap: () {
         if (MyType == "Looking for a doctor") {
@@ -191,9 +190,6 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
           bloc.add(const onTypeChoose(type: "doctor"));
         }
         isSelected = true;
-        setState(() {
-          MyTypeIs = MyType;
-        });
       },
       child: Container(
         margin: const EdgeInsets.all(8),
@@ -201,7 +197,7 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
         height: 40.h,
         decoration: BoxDecoration(
           border: Border.all(
-            color: MyTypeIs == MyType
+            color: widget.type == type
                 ? const Color(0xFF2CDBC6)
                 : Colors.grey.shade300,
             width: 2.w,

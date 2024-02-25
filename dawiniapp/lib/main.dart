@@ -5,9 +5,7 @@ import 'dart:async';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:dawini_full/auth/domain/usecases/auth_usecase.dart';
 import 'package:dawini_full/auth/presentation/bloc/auth_bloc.dart';
-import 'package:dawini_full/auth/presentation/loginPage.dart';
-import 'package:dawini_full/core/error/ErrorWidget.dart';
-import 'package:dawini_full/core/loading/loading.dart';
+
 import 'package:dawini_full/firebase_options.dart';
 import 'package:dawini_full/injection_container.dart';
 import 'package:dawini_full/introduction_feature/presentation/bloc/bloc/introduction_bloc.dart';
@@ -19,7 +17,6 @@ import 'package:dawini_full/patient_features/presentation/pages/myApp.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -75,22 +72,6 @@ class MyApp extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    // String? uid;
-
-    // FirebaseAuth.instance.authStateChanges().listen((user) {
-    //   if (user == null) {
-    //     uid = null;
-    //     if (kDebugMode) {
-    //       print("disconnected");
-    //     }
-    //   } else {
-    //     uid = user.uid;
-    //     if (kDebugMode) {
-    //       print("connected");
-    //     }
-    //   }
-    // });
-
     return MultiBlocProvider(
         providers: [
           BlocProvider(
@@ -113,39 +94,20 @@ class MyApp extends StatelessWidget {
             splitScreenMode: true,
             builder: (context, child) {
               return MaterialApp(
-                locale: DevicePreview.locale(context),
-                builder: DevicePreview.appBuilder,
-                localizationsDelegates: AppLocalizations.localizationsDelegates,
-                supportedLocales: AppLocalizations.supportedLocales,
-                debugShowCheckedModeBanner: false,
-                home: StreamBuilder<User?>(
-                    stream: FirebaseAuth.instance.authStateChanges(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Loading();
-                      }
-                      if (snapshot.hasError) {
-                        return ErrorPage(
-                          error: snapshot.error,
-                        );
-                        // Text('Error: ${snapshot.error}');
-                      }
-
-                      final user = snapshot.data;
-
-                      return user != null
-                          ? MyWidget(device: device, uid: snapshot.data!.uid)
-                          : const LoginPage();
-                    }),
-              );
+                  locale: DevicePreview.locale(context),
+                  builder: DevicePreview.appBuilder,
+                  localizationsDelegates:
+                      AppLocalizations.localizationsDelegates,
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  debugShowCheckedModeBanner: false,
+                  home: MyWidget(device: device));
             }));
   }
 }
 
 class MyWidget extends StatefulWidget {
   final device;
-  final String? uid;
-  const MyWidget({super.key, this.device, this.uid});
+  const MyWidget({super.key, this.device});
 
   @override
   State<MyWidget> createState() => _MyWidgetState();
@@ -179,12 +141,11 @@ class _MyWidgetState extends State<MyWidget> {
       return Scaffold(
         body: Mypage(
           device: widget.device,
-          uid: widget.uid,
           popOrNot: false,
         ),
       );
     } else {
-      return PagesShower(uid: widget.uid);
+      return const PagesShower();
     }
   }
 

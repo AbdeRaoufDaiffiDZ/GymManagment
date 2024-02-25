@@ -16,13 +16,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Weather extends StatefulWidget {
   final device;
-  final String? uid;
   final bool popOrNot;
 
   const Weather({
     super.key,
     this.device,
-    this.uid,
     required this.popOrNot,
   });
 
@@ -102,7 +100,6 @@ class _DoctorPageState extends State<Weather> {
         return ListView(
           children: [
             myAppbar(
-              uid: widget.uid,
               popOrNot: widget.popOrNot,
             ),
             Container(
@@ -229,9 +226,6 @@ class _DoctorPageState extends State<Weather> {
                                 fontFamily: 'Nunito',
                                 fontSize: 19.sp,
                                 fontWeight: FontWeight.w600)),
-                        /*SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.18,
-                          ),*/
                         GestureDetector(
                           onTap: () {
                             dataBloc.add(onSeeAllDoctors());
@@ -264,7 +258,7 @@ class _DoctorPageState extends State<Weather> {
         );
       case 1:
         patientsBloc.add(onPatientsReload());
-        return Myappointemtns(uid: widget.uid);
+        return Myappointemtns();
       case 2:
         return favorite();
       default:

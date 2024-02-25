@@ -39,21 +39,23 @@ class IntroductionBloc extends Bloc<IntroductionEvent, IntroductionState> {
             emit(WelcomeState());
             break;
           case 1:
-            String languageData = '';
-            chossenLanguageUseCase.execute().listen((language) {
-              languageData = language;
-            });
+            String languageData = await chossenLanguageUseCase.execute().first;
+            // chossenLanguageUseCase.execute().listen((language) {
+            //   languageData = language;
+            // });
             emit(LanguageState(language: languageData));
             break;
           case 2:
-            String Screen = '';
+            String Screen = await userTypeUseCase.execute().first;
 
-            userTypeUseCase.execute().listen((screen) {
-              Screen = screen;
-              if (kDebugMode) {
-                print(screen);
-              }
-            });
+            // userTypeUseCase.execute().listen((screen) {
+            //   // emit(TypeState(type: screen));
+
+            //   Screen = screen;
+            //   if (kDebugMode) {
+            //     print(screen);
+            //   }
+            // });
             emit(TypeState(type: Screen));
 
             break;
@@ -61,11 +63,11 @@ class IntroductionBloc extends Bloc<IntroductionEvent, IntroductionState> {
           default:
             await ignorIntroductionUseCase
                 .execute(true); ///// will be changed later
-            String Screen = '';
+            String Screen = await userTypeUseCase.execute().first;
 
-            userTypeUseCase.execute().listen((screen) {
-              Screen = screen;
-            });
+            // userTypeUseCase.execute().listen((screen) {
+            //   Screen = screen;
+            // });
             emit(IgnoreIntorductionState(Screen: Screen));
         }
       } else if (event is onLanguageChoose) {

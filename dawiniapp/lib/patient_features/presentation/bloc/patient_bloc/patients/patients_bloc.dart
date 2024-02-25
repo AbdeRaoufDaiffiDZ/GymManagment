@@ -5,6 +5,7 @@ import 'package:dawini_full/patient_features/domain/entities/patient.dart';
 import 'package:dawini_full/patient_features/domain/usecases/patients_usecase.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'patients_event.dart';
 part 'patients_state.dart';
@@ -17,6 +18,7 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
   final GetFavoriteDoctorsUseCase getfavoriteDoctorsUseCase;
   final SetFavoriteDoctorsUseCase setFavoriteDoctorsUseCase;
   final DeleteFavoriteDoctorsUseCase deleteFavoriteDoctorsUseCase;
+  DateTime? lastPressedTime;
 
   PatientsBloc(
       this.getAppointmentLocalusecase,
@@ -55,19 +57,22 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
       // }
       else if (event is onPatientsSetAppointments) {
         try {
-          final done =
-              await bookDoctorAppointmentUseCase.excute(event.patients);
-          if (done) {
-            ScaffoldMessenger.of(event.context).showSnackBar(const SnackBar(
-                content: Text("done"), backgroundColor: Colors.green));
-          } else {
-            ScaffoldMessenger.of(event.context).showSnackBar(const SnackBar(
-                content: Text("try again"), backgroundColor: Colors.red));
+          if (canPressButton(event.ifADoctor)) {
+            saveLastPressedTime();
+            final done =
+                await bookDoctorAppointmentUseCase.excute(event.patients);
+            if (done) {
+              ScaffoldMessenger.of(event.context).showSnackBar(const SnackBar(
+                  content: Text("done"), backgroundColor: Colors.green));
+            } else {
+              ScaffoldMessenger.of(event.context).showSnackBar(const SnackBar(
+                  content: Text("try again"), backgroundColor: Colors.red));
+            }
+            final List<PatientEntity> patients =
+                await getAppointmentLocalusecase.excute();
+            emit(PatientsLoading());
+            emit(PatientsLoaded(patients));
           }
-          final List<PatientEntity> patients =
-              await getAppointmentLocalusecase.excute();
-          emit(PatientsLoading());
-          emit(PatientsLoaded(patients));
         } catch (e) {
           ScaffoldMessenger.of(event.context).showSnackBar(const SnackBar(
               content: Text("try again"), backgroundColor: Colors.red));
@@ -75,8 +80,15 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
         }
       } else if (event is onPatientsAppointmentDelete) {
         try {
+          emit(PatientsLoading());
+
           final result = await deletAppointmentLocalusecase.excute(
               event.patients, event.context);
+
+          final List<PatientEntity> patients =
+              await getAppointmentLocalusecase.excute();
+
+          emit(PatientsLoaded(patients));
           if (result) {
             ScaffoldMessenger.of(event.context).showSnackBar(const SnackBar(
                 content: Text("appointment removed sucessusfuly"),
@@ -86,11 +98,6 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
                 content: Text("please, try again"),
                 backgroundColor: Colors.red));
           }
-
-          final List<PatientEntity> patients =
-              await getAppointmentLocalusecase.excute();
-          emit(PatientsLoading());
-          emit(PatientsLoaded(patients));
         } catch (e) {
           ScaffoldMessenger.of(event.context).showSnackBar(const SnackBar(
               content: Text("try again"), backgroundColor: Colors.red));
@@ -98,11 +105,12 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
         }
       } else if (event is onSetFavoriteDoctor) {
         try {
+          emit(PatientsLoading());
+
           await setFavoriteDoctorsUseCase.excute(event.doctorUid);
 
           final List<PatientEntity> patients =
               await getAppointmentLocalusecase.excute();
-          emit(PatientsLoading());
           emit(PatientsLoaded(patients));
         } catch (e) {
           ScaffoldMessenger.of(event.context).showSnackBar(SnackBar(
@@ -111,11 +119,12 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
         }
       } else if (event is onDeleteFavoriteDoctor) {
         try {
+          emit(PatientsLoading());
+
           await deleteFavoriteDoctorsUseCase.excute(event.doctorUid);
 
           final List<PatientEntity> patients =
               await getAppointmentLocalusecase.excute();
-          emit(PatientsLoading());
           emit(PatientsLoaded(patients));
         } catch (e) {
           ScaffoldMessenger.of(event.context).showSnackBar(SnackBar(
@@ -124,5 +133,31 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
         }
       }
     });
+  }
+
+  void saveLastPressedTime() async {
+    // Save to shared preferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("lastPressedTime", DateTime.now().toString());
+  }
+
+  void loadLastPressedTime() async {
+    // Load from shared preferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    lastPressedTime = prefs.getString("lastPressedTime") != null
+        ? DateTime.parse(prefs.getString("lastPressedTime")!)
+        : null;
+  }
+
+  bool canPressButton(ifADoctor) {
+    if (lastPressedTime == null) {
+      return true;
+    } else {
+      final difference = DateTime.now().difference(lastPressedTime!);
+
+      return ifADoctor
+          ? difference.inSeconds >= 20
+          : difference.inMinutes >= 5; // Change 1 to your desired limit
+    }
   }
 }

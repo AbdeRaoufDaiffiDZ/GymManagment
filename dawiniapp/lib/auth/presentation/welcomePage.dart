@@ -39,7 +39,9 @@ class _doctorsideHomeState extends State<doctorsideHome> {
                   uid: snapshot.data!.uid,
                   popOrNot: widget.popOrNot,
                 )
-              : LoginPage();
+              : LoginPage(
+                  popOrNot: widget.popOrNot,
+                );
 //           if (snapshot.data == null) {
 //             return LoginPage();
 //           } else {
@@ -72,7 +74,9 @@ class _doctorsideHomeState extends State<doctorsideHome> {
 }
 
 class WelcomePage extends StatefulWidget {
-  const WelcomePage({Key? key, this.title}) : super(key: key);
+  const WelcomePage({Key? key, this.title, required this.popOrNot})
+      : super(key: key);
+  final bool popOrNot;
 
   final String? title;
 
@@ -81,11 +85,15 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
-  Widget _submitButton() {
+  Widget _submitButton(popOrNot) {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LoginPage()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => LoginPage(
+                      popOrNot: popOrNot,
+                    )));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -109,11 +117,13 @@ class _WelcomePageState extends State<WelcomePage> {
     );
   }
 
-  Widget _signUpButton() {
+  Widget _signUpButton(popOrNot) {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => SignUpPage()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => SignUpPage(popOrNot: popOrNot)));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -211,11 +221,11 @@ class _WelcomePageState extends State<WelcomePage> {
               SizedBox(
                 height: 80,
               ),
-              _submitButton(),
+              _submitButton(widget.popOrNot),
               SizedBox(
                 height: 20,
               ),
-              _signUpButton(),
+              _signUpButton(widget.popOrNot),
               SizedBox(
                 height: 20,
               ),

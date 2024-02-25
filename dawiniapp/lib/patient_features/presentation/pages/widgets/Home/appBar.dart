@@ -2,14 +2,15 @@
 
 import 'package:dawini_full/auth/presentation/loginPage.dart';
 import 'package:dawini_full/auth/presentation/welcomePage.dart';
+import 'package:dawini_full/core/error/ErrorWidget.dart';
 import 'package:dawini_full/introduction_feature/domain/usecases/set_type_usecase.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class myAppbar extends StatelessWidget implements PreferredSizeWidget {
-  final String? uid;
   final bool popOrNot;
-  myAppbar({Key? key, this.uid, required this.popOrNot}) : super(key: key);
+  myAppbar({Key? key, required this.popOrNot}) : super(key: key);
   final SetTypeUseCase setTypeUseCase = SetTypeUseCase();
 
   @override
@@ -27,33 +28,51 @@ class myAppbar extends StatelessWidget implements PreferredSizeWidget {
                 width: 110.w,
               ),
             ),
-            IconButton(
-              onPressed: () async {
-                if (uid == null) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const LoginPage()));
-                } else {
-                  await setTypeUseCase.execute("doctor");
-                  if (popOrNot) {
-                    Navigator.pop(context);
-                  } else {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const doctorsideHome(
-                                  popOrNot: true,
-                                )));
+            StreamBuilder<User?>(
+                stream: FirebaseAuth.instance.authStateChanges(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return ErrorPage(
+                      error: snapshot.error,
+                    );
+                    // Text('Error: ${snapshot.error}');
                   }
-                }
-              },
-              icon: Icon(
-                Icons.menu,
-                size: 30.w,
-                color: Colors.black,
-              ),
-            )
+                  final user = snapshot.data;
+
+                  return IconButton(
+                    onPressed:
+                        snapshot.connectionState == ConnectionState.active
+                            ? () async {
+                                if (user == null) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => LoginPage(
+                                                popOrNot: popOrNot,
+                                              )));
+                                } else {
+                                  await setTypeUseCase.execute("doctor");
+                                  if (popOrNot) {
+                                    Navigator.pop(context);
+                                  } else {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const doctorsideHome(
+                                                  popOrNot: true,
+                                                )));
+                                  }
+                                }
+                              }
+                            : () {},
+                    icon: Icon(
+                      Icons.menu,
+                      size: 30.w,
+                      color: Colors.black,
+                    ),
+                  );
+                })
           ],
         ),
       ),
