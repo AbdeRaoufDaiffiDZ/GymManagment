@@ -105,11 +105,6 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Container(
-                                                  child: Image.asset(
-                                                    "assets/images/maleDoctor.png",
-                                                    alignment: Alignment.center,
-                                                    scale: 4,
-                                                  ),
                                                   height: 62.w,
                                                   width: 62.w,
                                                   decoration: BoxDecoration(
@@ -118,7 +113,12 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                           color:
                                                               Color(0xff202020)
                                                                   .withOpacity(
-                                                                      0.4)))),
+                                                                      0.4))),
+                                                  child: Image.asset(
+                                                    "assets/images/maleDoctor.png",
+                                                    alignment: Alignment.center,
+                                                    scale: 4,
+                                                  )),
                                             ],
                                           ),
                                         ),
@@ -133,7 +133,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                 fit: BoxFit.scaleDown,
                                                 alignment: Alignment.topLeft,
                                                 child: Text(
-                                                    "Dr. ${doctors[index].lastName}",
+                                                    "Dr. ${doctor[index].lastName}",
                                                     style: const TextStyle(
                                                         fontSize: 19,
                                                         fontWeight:
