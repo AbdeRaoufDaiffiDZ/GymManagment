@@ -1,7 +1,10 @@
+// ignore_for_file: prefer_typing_uninitialized_variables, non_constant_identifier_names, file_names
+
 import 'dart:developer';
 
 import 'package:dawini_full/core/error/failure.dart';
 import 'package:dawini_full/patient_features/data/data_source/db_helper/constants.dart';
+import 'package:flutter/foundation.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
 class MongoDataBase {
@@ -24,7 +27,9 @@ class MongoDataBase {
         throw ServerFailure(message: result.toString());
       }
     } catch (e) {
-      print(e.toString());
+      if (kDebugMode) {
+        print(e.toString());
+      }
       throw Exception(
           "can not insert data to collection $userCollection, ${e.toString()}");
     }
@@ -38,7 +43,9 @@ class MongoDataBase {
       final result = userCollection.find();
       return result;
     } catch (e) {
-      print(e.toString());
+      if (kDebugMode) {
+        print(e.toString());
+      }
       throw Exception(
           "can not retrive data from collection $userCollection, ${e.toString()}");
     }

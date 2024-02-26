@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/patient_features/domain/entities/clinic.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/clinics_bloc/bloc/clinics_bloc.dart';
@@ -7,7 +9,7 @@ import 'package:flutter/material.dart';
 
 Widget ClinicsStateConditions(ClinicsState state, List<ClinicEntity> data) {
   if (state is ClinicLoading) {
-    return Loading();
+    return const Loading();
   } else if (state is SeeAllClinics) {
     return ClinicWidgetList(
       clinics: data,

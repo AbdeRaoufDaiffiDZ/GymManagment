@@ -4,10 +4,11 @@ import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_bloc/doctor
 import 'package:dawini_full/doctor_Features/presentation/pages/doctors/doctorsList.dart';
 import 'package:flutter/material.dart';
 
+// ignore: non_constant_identifier_names
 Widget DoctorStateConditions(DoctorState state, List<DoctorEntity> data,
     {required device}) {
   if (state is DoctorLoading) {
-    return Loading();
+    return const Loading();
   } else if (state is SeeAllDoctors) {
     return Doctors(doctors: data, device: device);
   } else if (state is DoctorLoaded) {

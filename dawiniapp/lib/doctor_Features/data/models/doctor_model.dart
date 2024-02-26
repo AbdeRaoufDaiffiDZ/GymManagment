@@ -50,7 +50,6 @@ class DoctorModel extends DoctorEntity {
             wilaya: wilaya);
 
   @override
-  // TODO: implement props
   List<Object?> get props => [
         location,
         date,

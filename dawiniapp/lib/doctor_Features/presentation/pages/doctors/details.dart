@@ -1,9 +1,10 @@
-// ignore_for_file: camel_case_types, prefer_const_constructors
+// ignore_for_file: camel_case_types, prefer_const_constructors, prefer_typing_uninitialized_variables, deprecated_member_use
 
-import 'package:dawini_full/Patient_Info.dart';
+import 'package:dawini_full/core/error/ErrorWidget.dart';
 import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart';
+import 'package:dawini_full/doctor_Features/presentation/pages/doctors/Patient_Info.dart';
 import 'package:dawini_full/patient_features/domain/usecases/patients_usecase.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +57,12 @@ class _doctorDetailsState extends State<doctorDetails>
       child: StreamBuilder<List<DoctorEntity>>(
           stream: GetDoctorsStreamInfoUseCase.excute(),
           builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return ErrorPage(
+                error: snapshot.error,
+              );
+              // Text('Error: ${snapshot.error}');
+            }
             late final List<DoctorEntity> data;
             late final bool today, tomorrow;
             if (snapshot.data == null) {
@@ -518,7 +525,7 @@ class _doctorDetailsState extends State<doctorDetails>
                                       context,
                                       MaterialPageRoute(
                                           builder: (BuildContext context) =>
-                                              Patient_inf(
+                                              Patient_info(
                                                 doctorEntity: doctor.first,
                                                 today: isTodaySelected,
                                               )));

@@ -1,8 +1,9 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, camel_case_types, library_private_types_in_public_api, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, camel_case_types, library_private_types_in_public_api, use_build_context_synchronously, file_names
 
 import 'package:dawini_full/auth/data/FirebaseAuth/authentification.dart';
 import 'package:dawini_full/auth/presentation/loginPage.dart';
 import 'package:dawini_full/auth/presentation/signup.dart';
+import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/presentation/pages/doctor_cabinSide.dart/cabin_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,42 +23,60 @@ class _doctorsideHomeState extends State<doctorsideHome> {
   Widget build(BuildContext context) {
     FirebaseAuthMethods auth = FirebaseAuthMethods();
 
-    final Stream<User?> user = auth.authState;
-
-    return StreamBuilder(
-        stream: user,
+    return StreamBuilder<User?>(
+        stream: auth.authState,
         builder: (context, snapshot) {
-          if (snapshot.data?.uid == null) {
-            return LoginPage();
-          } else {
-            return DoctorCabinInfo(
-              uid: snapshot.data!.uid,
-              popOrNot: widget.popOrNot,
-            );
-            //   SafeArea(
-            //     child: Column(
-            //       children: [
-            //         MaterialButton(
-            //           color: Colors.white,
-            //           onPressed: () {
-            //             auth.signOut();
-            //           },
-            //           child: Text("clickTo Disconnect"),
-            //         ),
-            //         SizedBox(
-            //           height: 20.h,
-            //         ),
-
-            //     ],
-            //   ),
-            // );
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Loading();
           }
+          if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          }
+
+          final user = snapshot.data;
+          return user != null
+              ? DoctorCabinInfo(
+                  uid: snapshot.data!.uid,
+                  popOrNot: widget.popOrNot,
+                )
+              : LoginPage(
+                  popOrNot: widget.popOrNot,
+                );
+//           if (snapshot.data == null) {
+//             return LoginPage();
+//           } else {
+//             final user = snapshot.data;
+// if(user != null){}
+//             return DoctorCabinInfo(
+//               uid: snapshot.data!.uid,
+//               popOrNot: widget.popOrNot,
+//             );
+//             //   SafeArea(
+//             //     child: Column(
+//             //       children: [
+//             //         MaterialButton(
+//             //           color: Colors.white,
+//             //           onPressed: () {
+//             //             auth.signOut();
+//             //           },
+//             //           child: Text("clickTo Disconnect"),
+//             //         ),
+//             //         SizedBox(
+//             //           height: 20.h,
+//             //         ),
+
+//             //     ],
+//             //   ),
+//             // );
+//           }
         });
   }
 }
 
 class WelcomePage extends StatefulWidget {
-  const WelcomePage({Key? key, this.title}) : super(key: key);
+  const WelcomePage({Key? key, this.title, required this.popOrNot})
+      : super(key: key);
+  final bool popOrNot;
 
   final String? title;
 
@@ -66,11 +85,15 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
-  Widget _submitButton() {
+  Widget _submitButton(popOrNot) {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LoginPage()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => LoginPage(
+                      popOrNot: popOrNot,
+                    )));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -94,11 +117,13 @@ class _WelcomePageState extends State<WelcomePage> {
     );
   }
 
-  Widget _signUpButton() {
+  Widget _signUpButton(popOrNot) {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => SignUpPage()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => SignUpPage(popOrNot: popOrNot)));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -150,7 +175,7 @@ class _WelcomePageState extends State<WelcomePage> {
       text: TextSpan(
           text: 'd',
           style: GoogleFonts.portLligatSans(
-            textStyle: Theme.of(context).textTheme.headline1,
+            textStyle: Theme.of(context).textTheme.displayLarge,
             fontSize: 30,
             fontWeight: FontWeight.w700,
             color: Colors.white,
@@ -196,11 +221,11 @@ class _WelcomePageState extends State<WelcomePage> {
               SizedBox(
                 height: 80,
               ),
-              _submitButton(),
+              _submitButton(widget.popOrNot),
               SizedBox(
                 height: 20,
               ),
-              _signUpButton(),
+              _signUpButton(widget.popOrNot),
               SizedBox(
                 height: 20,
               ),

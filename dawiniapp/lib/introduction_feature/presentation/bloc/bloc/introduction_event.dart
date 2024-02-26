@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types
+
 part of 'introduction_bloc.dart';
 
 sealed class IntroductionEvent extends Equatable {
@@ -10,7 +12,7 @@ sealed class IntroductionEvent extends Equatable {
 class NextPage extends IntroductionEvent {
   final int id;
 
-  NextPage({required this.id});
+  const NextPage({required this.id});
 
   @override
   List<Object> get props => [id];
@@ -19,7 +21,7 @@ class NextPage extends IntroductionEvent {
 class onLanguageChoose extends IntroductionEvent {
   final String language;
 
-  onLanguageChoose({required this.language});
+  const onLanguageChoose({required this.language});
   @override
   List<Object> get props => [language];
 }
@@ -27,7 +29,7 @@ class onLanguageChoose extends IntroductionEvent {
 class onTypeChoose extends IntroductionEvent {
   final String type;
 
-  onTypeChoose({required this.type});
+  const onTypeChoose({required this.type});
   @override
   List<Object> get props => [type];
 }

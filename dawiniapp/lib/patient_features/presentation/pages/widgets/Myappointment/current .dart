@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, prefer_interpolation_to_compose_strings
+// ignore_for_file: non_constant_identifier_names, prefer_interpolation_to_compose_strings, camel_case_types, file_names
 
 import 'dart:ui';
 
@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:dawini_full/core/error/ErrorWidget.dart';
 
 import '../../../../../doctor_Features/domain/entities/doctor.dart';
 import '../../../../../doctor_Features/domain/usecases/doctor_usecase.dart';
@@ -48,6 +49,15 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                 return StreamBuilder<List<DoctorEntity>>(
                     stream: GetDoctorsStreamInfoUseCase.excute(),
                     builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Loading();
+                      }
+                      if (snapshot.hasError) {
+                        return ErrorPage(
+                          error: snapshot.error,
+                        );
+                        // Text('Error: ${snapshot.error}');
+                      }
                       late final List<DoctorEntity> doctor;
                       if (snapshot.data == null) {
                         doctor = [];
@@ -475,8 +485,8 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
         content: NotificationContent(
             id: index,
             channelKey: 'basic_channel',
-            title: "your turn ${body}",
-            body: "${patientName} turn at ${doctorName} ${body}"));
+            title: "your turn $body",
+            body: "$patientName turn at $doctorName $body"));
   }
 
   notificationConditions(state, index, doctors) {

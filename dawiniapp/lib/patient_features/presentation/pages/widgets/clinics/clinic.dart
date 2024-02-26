@@ -44,7 +44,7 @@ class _ClinicWidgetState extends State<ClinicWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Color(0XFFFAFAFA),
       height: 150.h,
       width: double.infinity,
       child: PageView.builder(
@@ -82,17 +82,18 @@ class _ClinicWidgetState extends State<ClinicWidget> {
                       borderRadius: BorderRadius.circular(16),
                       color: Colors.white,
                       border: Border.all(
-                        color: Color.fromARGB(72, 146, 146, 146),
+                        color: const Color.fromARGB(72, 146, 146, 146),
                         width: 2.w,
                       ),
                     ),
                     child: Center(
+                      // ignore: sized_box_for_whitespace
                       child: Container(
                         width: 150.w, // 90.h
                         height: 100.h, // 20.h
                         child: const FittedBox(
                           fit: BoxFit.scaleDown,
-                          child: const Text("Coomming Soon...",
+                          child: Text("Coomming Soon...",
                               // widget.clinics[index].ClinicName,
                               style: TextStyle(
                                   fontFamily: 'Nunito',

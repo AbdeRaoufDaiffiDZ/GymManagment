@@ -16,7 +16,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         result.fold((l) {
           showSnackBar(event.context, l.message);
           emit(ErrorAuthState(error: l.message));
-        }, (r) => emit(SuccessasfulLogin())); // TODO:
+        }, (r) => emit(SuccessasfulLogin()));
       } else if (event is onRegisterEvent) {
         emit(LoadAuthState());
         final result =
@@ -24,7 +24,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         result.fold((l) {
           showSnackBar(event.context, l.message);
           emit(ErrorAuthState(error: l.message));
-        }, (r) => emit(LoginState())); // TODO:
+        }, (r) => emit(LoginState()));
       } else if (event is onResetPassEvent) {
         emit(LoadAuthState());
         final result = await authStateUseCase.forgetPassword(event.data);
@@ -33,7 +33,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             showSnackBar(event.context, l.message);
             emit(ErrorAuthState(error: l.message));
           }
-        }, (r) => emit(LoginState())); // TODO:
+        }, (r) => emit(LoginState()));
       }
     });
   }

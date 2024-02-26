@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -15,7 +17,7 @@ class _LoadingState extends State<Loading> {
       color: Colors.white,
       child: Center(
           child: LoadingAnimationWidget.waveDots(
-              color: Color(0xFF04CBCB), size: 150)),
+              color: Color(0xFF04CBCB), size: 200)),
     );
   }
 }

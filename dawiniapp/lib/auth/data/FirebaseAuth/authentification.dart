@@ -42,11 +42,11 @@ class FirebaseAuthMethods {
         if (kDebugMode) {
           print('The password provided is too weak.');
         }
-        return Left(AuthenticatinFailure(
+        return const Left(AuthenticatinFailure(
             message: "The password provided is too weak."));
       } else if (e.code == 'email-already-in-use') {
         print('The account already exists for that email.');
-        return Left(AuthenticatinFailure(
+        return const Left(AuthenticatinFailure(
             message: "The account already exists for that email."));
       } else {
         return Left(AuthenticatinFailure(message: e.code));

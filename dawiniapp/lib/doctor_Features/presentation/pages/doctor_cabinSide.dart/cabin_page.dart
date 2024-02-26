@@ -1,13 +1,14 @@
-// ignore_for_file: camel_case_types
+// ignore_for_file: camel_case_types, use_build_context_synchronously
 
+import 'package:dawini_full/core/error/ErrorWidget.dart';
 import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
+import 'package:dawini_full/doctor_Features/presentation/pages/doctors/Patient_Info.dart';
 import 'package:dawini_full/introduction_feature/domain/usecases/set_type_usecase.dart';
 import 'package:dawini_full/patient_features/presentation/pages/weather_pag.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -29,21 +30,21 @@ class _DoctorCabinInfoState extends State<DoctorCabinInfo>
   Widget _entryField(String title, TextEditingController controller,
       {bool isPassword = false}) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
             title,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           TextField(
               controller: controller,
               obscureText: isPassword,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   border: InputBorder.none,
                   fillColor: Color(0xfff3f3f4),
                   filled: true))
@@ -61,6 +62,15 @@ class _DoctorCabinInfoState extends State<DoctorCabinInfo>
       child: StreamBuilder<List<DoctorEntity>>(
           stream: GetDoctorsStreamInfoUseCase.excute(),
           builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Loading();
+            }
+            if (snapshot.hasError) {
+              return ErrorPage(
+                error: snapshot.error,
+              );
+              // Text('Error: ${snapshot.error}');
+            }
             if (snapshot.hasData) {
               DoctorEntity doctor = snapshot.requireData
                   .where((element) => element.uid == widget.uid)
@@ -89,7 +99,7 @@ class _DoctorCabinInfoState extends State<DoctorCabinInfo>
                       Text(doctor.speciality.toString()),
                       MaterialButton(
                           color: const Color.fromARGB(255, 109, 184, 245),
-                          child: Text("update turn +"),
+                          child: const Text("update turn +"),
                           onPressed: () {
                             doctorBloc.add(onTurnUpdate(
                                 doctor: doctor, turn: doctor.turn + 1));
@@ -97,7 +107,7 @@ class _DoctorCabinInfoState extends State<DoctorCabinInfo>
                       SizedBox(width: 200.w, child: _entryField("data", data)),
                       MaterialButton(
                           color: const Color.fromARGB(255, 109, 184, 245),
-                          child: Text("update Info"),
+                          child: const Text("update Info"),
                           onPressed: () {
                             if (data.text.isNotEmpty) {
                               doctorBloc.add(onDataUpdate(
@@ -108,20 +118,58 @@ class _DoctorCabinInfoState extends State<DoctorCabinInfo>
                           }),
                       MaterialButton(
                           color: const Color.fromARGB(255, 109, 184, 245),
-                          child: Text("update turn -"),
+                          child: const Text("update turn -"),
                           onPressed: () {
                             doctorBloc.add(onTurnUpdate(
                                 doctor: doctor, turn: doctor.turn - 1));
                           }),
                       MaterialButton(
-                          color: !doctor.atSerivce
-                              ? Color.fromARGB(255, 109, 184, 245)
+                          color: doctor.atSerivce
+                              ? const Color.fromARGB(255, 109, 184, 245)
                               : Colors.red,
-                          child: Text("stateUpdate"),
+                          child: const Text("stateUpdate"),
                           onPressed: () {
                             doctorBloc.add(onStateUpdate(
                                 doctor: doctor, state: !doctor.atSerivce));
                           }),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          MaterialButton(
+                              color: const Color.fromARGB(255, 109, 184, 245),
+                              child: const Text("today"),
+                              onPressed: () {
+                                doctorBloc.add(onDataUpdate(
+                                    data: "today",
+                                    infoToUpdate: "date",
+                                    numberInList: doctor.numberInList));
+                              }),
+                          SizedBox(
+                            width: 10.w,
+                          ),
+                          MaterialButton(
+                              color: const Color.fromARGB(255, 109, 184, 245),
+                              child: const Text("all day"),
+                              onPressed: () {
+                                doctorBloc.add(onDataUpdate(
+                                    data: "all",
+                                    infoToUpdate: "date",
+                                    numberInList: doctor.numberInList));
+                              }),
+                          SizedBox(
+                            width: 10.w,
+                          ),
+                          MaterialButton(
+                              color: const Color.fromARGB(255, 109, 184, 245),
+                              child: const Text("tomorrow"),
+                              onPressed: () {
+                                doctorBloc.add(onDataUpdate(
+                                    data: "tomorrow",
+                                    infoToUpdate: "date",
+                                    numberInList: doctor.numberInList));
+                              }),
+                        ],
+                      ),
                       MaterialButton(
                         color: const Color.fromARGB(255, 109, 184, 245),
                         onPressed: () async {
@@ -134,22 +182,46 @@ class _DoctorCabinInfoState extends State<DoctorCabinInfo>
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (BuildContext context) => Weather(
+                                  builder: (BuildContext context) =>
+                                      const Weather(
                                     device: 'device',
-                                    uid: widget.uid,
                                     popOrNot: true,
                                   ),
                                 ));
                           }
                         },
-                        child: Text("patients side"),
+                        child: const Text("patients side"),
                       ),
+                      MaterialButton(
+                        color: const Color.fromARGB(255, 109, 184, 245),
+                        onPressed: () async {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      Patient_info(
+                                        doctorEntity: doctor,
+                                        today: true,
+                                        ifADoctor: true,
+                                      )));
+                        },
+                        child: const Text("add patient"),
+                      ),
+                      MaterialButton(
+                          color: const Color.fromARGB(255, 109, 184, 245),
+                          child: const Text("recommended"),
+                          onPressed: () {
+                            doctorBloc.add(onDataUpdate(
+                                data: 1,
+                                infoToUpdate: "recommendNumber",
+                                numberInList: doctor.numberInList));
+                          }),
                     ],
                   ),
                 ),
               );
             }
-            return Loading();
+            return const Loading();
           }),
     ));
   }

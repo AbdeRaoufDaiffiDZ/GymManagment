@@ -45,21 +45,8 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseAppCheck.instance.activate(
-    // You can also use a `ReCaptchaEnterpriseProvider` provider instance as an
-    // argument for `webProvider`
     webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
-    // Default provider for Android is the Play Integrity provider. You can use the "AndroidProvider" enum to choose
-    // your preferred provider. Choose from:
-    // 1. Debug provider
-    // 2. Safety Net provider
-    // 3. Play Integrity provider
     androidProvider: AndroidProvider.debug,
-    // Default provider for iOS/macOS is the Device Check provider. You can use the "AppleProvider" enum to choose
-    // your preferred provider. Choose from:
-    // 1. Debug provider
-    // 2. Device Check provider
-    // 3. App Attest provider
-    // 4. App Attest provider with fallback to Device Check provider (App Attest provider is only available on iOS 14.0+, macOS 14.0+)
     appleProvider: AppleProvider.appAttest,
   );
 
@@ -73,7 +60,7 @@ Future<void> main() async {
   runApp(
     MyApp(
       device: device.fingerprint,
-    ), // Wrap your app
+    ),
   );
 }
 
@@ -85,22 +72,6 @@ class MyApp extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    // String? uid;
-
-    // FirebaseAuth.instance.authStateChanges().listen((user) {
-    //   if (user == null) {
-    //     uid = null;
-    //     if (kDebugMode) {
-    //       print("disconnected");
-    //     }
-    //   } else {
-    //     uid = user.uid;
-    //     if (kDebugMode) {
-    //       print("connected");
-    //     }
-    //   }
-    // });
-
     return MultiBlocProvider(
         providers: [
           BlocProvider(
@@ -139,8 +110,7 @@ class MyApp extends StatelessWidget {
 
 class MyWidget extends StatefulWidget {
   final device;
-  final String? uid;
-  const MyWidget({super.key, this.device, this.uid});
+  const MyWidget({super.key, this.device});
 
   @override
   State<MyWidget> createState() => _MyWidgetState();
@@ -166,19 +136,19 @@ class _MyWidgetState extends State<MyWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // _isAuth();
     if (kDebugMode) {
       print(widget.device);
     }
 
     if (status) {
-      return Mypage(
-        device: widget.device,
-        uid: widget.uid,
-        popOrNot: false,
+      return Scaffold(
+        body: Mypage(
+          device: widget.device,
+          popOrNot: false,
+        ),
       );
     } else {
-      return PagesShower(uid: widget.uid);
+      return const PagesShower();
     }
   }
 
@@ -188,18 +158,4 @@ class _MyWidgetState extends State<MyWidget> {
       status = (prefs.getBool('ignore') ?? false);
     });
   }
-
-  // Future<void> _isAuth() async {
-  //   FirebaseAuth.instance.authStateChanges().listen((user) {
-  //     if (user == null) {
-  //       setState(() {
-  //         isAuthuntificated = false;
-  //       });
-  //     } else {
-  //       setState(() {
-  //         isAuthuntificated = true;
-  //       });
-  //     }
-  //   });
-  // }
 }

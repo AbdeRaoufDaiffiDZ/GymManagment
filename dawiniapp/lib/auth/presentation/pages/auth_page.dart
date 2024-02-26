@@ -4,6 +4,7 @@ import 'package:dawini_full/auth/domain/entity/auth_entity.dart';
 import 'package:dawini_full/auth/presentation/bloc/auth_bloc.dart';
 import 'package:dawini_full/auth/presentation/bloc/auth_event.dart';
 import 'package:dawini_full/auth/presentation/bloc/auth_state.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -47,7 +48,9 @@ Widget LoginScreen(context, {showSnackBar = false, message = ''}) {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   if (showSnackBar) {
-    print("error");
+    if (kDebugMode) {
+      print("error");
+    }
   }
   return Scaffold(
     appBar: AppBar(

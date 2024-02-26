@@ -11,11 +11,12 @@ import 'package:intl/intl.dart';
 
 class Patient_inf extends StatefulWidget {
   final DoctorEntity doctorEntity;
+  final bool ifAdoctor;
   final bool today;
   const Patient_inf({
     Key? key,
     required this.doctorEntity,
-    required this.today,
+    required this.today, required this.ifAdoctor,
   }) : super(key: key);
 
   @override
@@ -198,7 +199,7 @@ class _Patient_infoState extends State<Patient_inf> {
                           today: true,
                           DoctorName: widget.doctorEntity.lastName,
                           uid: widget.doctorEntity.uid);
-                      dataBloc.add(onPatientsSetAppointments(context,
+                      dataBloc.add(onPatientsSetAppointments(context  ,widget.ifAdoctor,
                           patients: patient));
                       showlDialog(context);
                     }

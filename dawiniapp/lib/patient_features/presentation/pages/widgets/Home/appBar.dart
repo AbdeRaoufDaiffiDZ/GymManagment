@@ -1,17 +1,15 @@
-// ignore_for_file: use_build_context_synchronously, camel_case_types
+// ignore_for_file: use_build_context_synchronously, camel_case_types, file_names
 
+import 'package:dawini_full/auth/presentation/loginPage.dart';
+import 'package:dawini_full/auth/presentation/welcomePage.dart';
 import 'package:dawini_full/introduction_feature/domain/usecases/set_type_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class myAppbar extends StatelessWidget implements PreferredSizeWidget {
-  // final String? uid;
-  //final bool popOrNot;
-  myAppbar({
-    Key? key,
-    //this.uid,
-    //required this.popOrNot
-  }) : super(key: key);
+  final String? uid;
+  final bool popOrNot;
+  myAppbar({Key? key, this.uid, required this.popOrNot}) : super(key: key);
   final SetTypeUseCase setTypeUseCase = SetTypeUseCase();
 
   @override
@@ -19,21 +17,25 @@ class myAppbar extends StatelessWidget implements PreferredSizeWidget {
     return SafeArea(
       child: PreferredSize(
         preferredSize: Size.fromHeight(50.h),
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Padding(
-            padding: EdgeInsets.only(left: 11.w),
-            child: Image.asset(
-              "assets/images/dawini.png",
-              width: 110.w,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 11.w),
+              child: Image.asset(
+                "assets/images/dawini.png",
+                width: 110.w,
+              ),
             ),
-          ),
-          IconButton(
-            onPressed: () {},
-            /*  onPressed: () async {
+            IconButton(
+              onPressed: () async {
                 if (uid == null) {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => LoginPage()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => LoginPage(
+                                popOrNot: false,
+                              )));
                 } else {
                   await setTypeUseCase.execute("doctor");
                   if (popOrNot) {
@@ -47,14 +49,15 @@ class myAppbar extends StatelessWidget implements PreferredSizeWidget {
                                 )));
                   }
                 }
-              },*/
-            icon: Icon(
-              Icons.menu,
-              size: 30.w,
-              color: Colors.black,
-            ),
-          )
-        ]),
+              },
+              icon: Icon(
+                Icons.menu,
+                size: 30.w,
+                color: Colors.black,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

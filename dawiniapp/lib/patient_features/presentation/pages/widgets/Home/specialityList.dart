@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, sized_box_for_whitespace
+
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_bloc/doctor_bloc.dart';

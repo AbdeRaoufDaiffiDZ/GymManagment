@@ -46,7 +46,7 @@ final class ChossenClinic extends ClinicsState {}
 final class ClinicLoadingFailure extends ClinicsState {
   final String message;
 
-  ClinicLoadingFailure({required this.message});
+  const ClinicLoadingFailure({required this.message});
 
   @override
   List<Object> get props => [message];

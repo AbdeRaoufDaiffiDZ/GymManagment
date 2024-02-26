@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages, non_constant_identifier_names
+
 import 'package:bloc/bloc.dart';
 import 'package:dawini_full/introduction_feature/domain/usecases/check_status_is_watched_usecase.dart';
 import 'package:dawini_full/introduction_feature/domain/usecases/choosen_language_ucecase.dart';
@@ -7,6 +9,7 @@ import 'package:dawini_full/introduction_feature/domain/usecases/set_language_us
 import 'package:dawini_full/introduction_feature/domain/usecases/set_type_usecase.dart';
 import 'package:dawini_full/introduction_feature/domain/usecases/user_type_usecase.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 
 part 'introduction_event.dart';
 part 'introduction_state.dart';
@@ -36,19 +39,23 @@ class IntroductionBloc extends Bloc<IntroductionEvent, IntroductionState> {
             emit(WelcomeState());
             break;
           case 1:
-            String languageData = '';
-            await chossenLanguageUseCase.execute().listen((language) {
-              languageData = language;
-            });
+            String languageData = await chossenLanguageUseCase.execute().first;
+            // chossenLanguageUseCase.execute().listen((language) {
+            //   languageData = language;
+            // });
             emit(LanguageState(language: languageData));
             break;
           case 2:
-            String Screen = '';
+            String Screen = await userTypeUseCase.execute().first;
 
-            await userTypeUseCase.execute().listen((screen) {
-              Screen = screen;
-              print(screen);
-            });
+            // userTypeUseCase.execute().listen((screen) {
+            //   // emit(TypeState(type: screen));
+
+            //   Screen = screen;
+            //   if (kDebugMode) {
+            //     print(screen);
+            //   }
+            // });
             emit(TypeState(type: Screen));
 
             break;
@@ -56,16 +63,18 @@ class IntroductionBloc extends Bloc<IntroductionEvent, IntroductionState> {
           default:
             await ignorIntroductionUseCase
                 .execute(true); ///// will be changed later
-            String Screen = '';
+            String Screen = await userTypeUseCase.execute().first;
 
-            await userTypeUseCase.execute().listen((screen) {
-              Screen = screen;
-            });
+            // userTypeUseCase.execute().listen((screen) {
+            //   Screen = screen;
+            // });
             emit(IgnoreIntorductionState(Screen: Screen));
         }
       } else if (event is onLanguageChoose) {
         final result = await setLanguageUseCase.execute(event.language);
-        print(result);
+        if (kDebugMode) {
+          print(result);
+        }
         emit(LanguageState(language: event.language));
       } else if (event is onTypeChoose) {
         await setTypeUseCase.execute(event.type);

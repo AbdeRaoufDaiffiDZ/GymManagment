@@ -1,15 +1,18 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, file_names, library_private_types_in_public_api
 
 import 'package:dawini_full/auth/data/FirebaseAuth/authentification.dart';
 import 'package:dawini_full/auth/data/models/auth_model.dart';
 import 'package:dawini_full/auth/domain/entity/auth_entity.dart';
 import 'package:dawini_full/auth/presentation/signup.dart';
+import 'package:dawini_full/auth/presentation/welcomePage.dart';
 import 'package:flutter/material.dart';
 
 import 'Widget/bezierContainer.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key? key, this.title}) : super(key: key);
+  const LoginPage({Key? key, this.title, required this.popOrNot})
+      : super(key: key);
+  final bool popOrNot;
 
   final String? title;
 
@@ -175,11 +178,15 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _createAccountLabel() {
+  Widget _createAccountLabel(popOrNot) {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => SignUpPage()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => SignUpPage(
+                      popOrNot: widget.popOrNot,
+                    )));
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 20),
@@ -276,6 +283,25 @@ class _LoginPageState extends State<LoginPage> {
                           users.loginWithEmail(
                               authData: AuthModel.fromMap(auth.toMap()));
 
+                          if (users.user.emailVerified) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => doctorsideHome(
+                                          popOrNot: widget.popOrNot,
+                                        )));
+                          }
+                          // result.then((value) {
+                          //   value.fold(
+                          //     (l) => null,
+                          //     (r) => Navigator.push(
+                          //         context,
+                          //         MaterialPageRoute(
+                          //             builder: (context) => doctorsideHome(
+                          //                   popOrNot: widget.popOrNot,
+                          //                 ))),
+                          //   );
+                          // });
                           // showSnackBar(context, "hello");
                         } catch (e) {
                           // showSnackBar(context, e.toString());
@@ -311,7 +337,7 @@ class _LoginPageState extends State<LoginPage> {
                       },
                       child: _facebookButton()),
                   SizedBox(height: height * .055),
-                  _createAccountLabel(),
+                  _createAccountLabel(widget.popOrNot),
                 ],
               ),
             ),

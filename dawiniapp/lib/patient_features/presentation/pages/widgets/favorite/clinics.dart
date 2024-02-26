@@ -1,9 +1,11 @@
+// ignore_for_file: camel_case_types
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // ignore: must_be_immutable
 class myfavclincs extends StatefulWidget {
-  myfavclincs({
+  const myfavclincs({
     Key? key,
   }) : super(key: key);
 
@@ -17,12 +19,12 @@ class _favoriteState extends State<myfavclincs> with TickerProviderStateMixin {
     return Scaffold(
         body: SafeArea(
       child: Center(
-        child: Container(
+        child: SizedBox(
           width: 200.w, // 90.h
           height: 100.h, // 20.h
           child: const FittedBox(
             fit: BoxFit.scaleDown,
-            child: const Text("Coomming Soon...",
+            child: Text("Coomming Soon...",
                 // widget.clinics[index].ClinicName,
                 style: TextStyle(
                     fontFamily: 'Nunito',

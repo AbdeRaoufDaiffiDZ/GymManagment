@@ -33,7 +33,6 @@ class DoctorEntity extends Equatable {
       required this.phoneNumber});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [
         numberInList,
         location,

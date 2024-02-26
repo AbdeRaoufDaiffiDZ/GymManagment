@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:dawini_full/auth/domain/usecases/auth_usecase.dart';
 import 'package:dawini_full/introduction_feature/data/data_source/local_data_source.dart';
 import 'package:dawini_full/introduction_feature/data/repositoryImpl/itroduction_repository_impl.dart';

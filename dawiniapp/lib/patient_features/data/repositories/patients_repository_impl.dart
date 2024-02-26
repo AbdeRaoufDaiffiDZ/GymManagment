@@ -24,9 +24,9 @@ class PatientRepositoryImpl implements PatientsRepository {
       final result = await localDataSourcePatients.MyFavoriteDoctors();
       return Right(result);
     } on ServerException {
-      return Left(ServerFailure(message: 'An error has occured'));
+      return const Left(ServerFailure(message: 'An error has occured'));
     } on SocketException {
-      return Left(
+      return const Left(
           ConnectionFailure(message: 'Failed to connect to the network'));
     }
   }
@@ -37,9 +37,9 @@ class PatientRepositoryImpl implements PatientsRepository {
       final result = await localDataSourcePatients.MyDoctorsAppointments();
       return Right(result);
     } on ServerException {
-      return Left(ServerFailure(message: 'An error has occured'));
+      return const Left(ServerFailure(message: 'An error has occured'));
     } on SocketException {
-      return Left(
+      return const Left(
           ConnectionFailure(message: 'Failed to connect to the network'));
     }
   }
@@ -106,7 +106,6 @@ class PatientRepositoryImpl implements PatientsRepository {
   @override
   Future<Either<Failure, bool>> DeleteAdoctorAppointment(
       PatientEntity patient) {
-    // TODO: implement DeleteAdoctorAppointment
     throw UnimplementedError();
   }
 }

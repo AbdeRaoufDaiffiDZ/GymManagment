@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:equatable/equatable.dart';
 
 class PatientEntity extends Equatable {
@@ -12,7 +14,7 @@ class PatientEntity extends Equatable {
   final int turn;
   final String DoctorName;
   final String uid;
-  PatientEntity(
+  const PatientEntity(
       {required this.DoctorName,
       required this.uid,
       required this.today,
@@ -25,7 +27,6 @@ class PatientEntity extends Equatable {
       required this.phoneNumber});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [
         DoctorName,
         uid,

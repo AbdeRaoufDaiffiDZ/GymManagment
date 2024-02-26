@@ -5,7 +5,7 @@ import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/introduction_feature/presentation/bloc/bloc/introduction_bloc.dart';
 import 'package:dawini_full/introduction_feature/presentation/screens/pages/localization.dart';
 import 'package:dawini_full/introduction_feature/presentation/screens/pages/typeScreen.dart';
-import 'package:dawini_full/patient_features/presentation/pages/myApp.dart';
+import 'package:dawini_full/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -39,25 +39,20 @@ class _PagesShowerState extends State<PagesShower> {
         } else if (state is LoadingState) {
           return const Loading();
         } else if (state is IgnoreIntorductionState) {
-          if (state.Screen == 'patient') {
-            return const Mypage(
-              popOrNot: false,
-            );
-          } else if (state.Screen == 'doctor') {
+          if (state.Screen == 'doctor') {
             if (uid == null) {
               return const doctorsideHome(
                 popOrNot: false,
               );
             } else {
-              return Text(uid!);
+              return const WelcomePage(popOrNot: false);
             }
             /////////////////////////////////////    here you will go to patients screen
           } else {
-            bloc.add(NextPage(id: 1));
-            return const Center();
+            return const MyWidget();
           }
         } else {
-          bloc.add(NextPage(id: 1));
+          bloc.add(const NextPage(id: 1));
 
           return const Center();
         }

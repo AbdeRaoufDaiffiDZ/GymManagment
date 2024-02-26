@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, avoid_print
+// ignore_for_file: non_constant_identifier_names, avoid_print, deprecated_member_use
 
 import 'dart:convert';
 
@@ -71,16 +71,22 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
   @override
   Future<bool> RemoveDoctorAppointment(
       PatientModel patientInfo, context) async {
-    FirebaseAuthMethods _auth = FirebaseAuthMethods();
+    FirebaseAuthMethods auth0 = FirebaseAuthMethods();
     final AuthModel auth = AuthModel(
         email: "deleteAppointment@gmail.com", password: "deleteAppointment");
-    _auth.loginWithEmail(authData: auth);
+
+    if (await auth0.authState.isEmpty) {
+      auth0.loginWithEmail(authData: auth);
+    }
     String uid = "";
-    doctorCabinDataSource.getDoctorsInfo().then((value) {
-      DoctorModel doctor = value.singleWhere(
-          (element) => element.firstName == patientInfo.DoctorName);
-      uid = doctor.uid;
-    });
+    List<DoctorModel> doctors = await doctorCabinDataSource.getDoctorsInfo();
+    doctors.where((element) => element.uid == patientInfo.DoctorName);
+    // doctorCabinDataSource.getDoctorsInfo().then((value) {
+    //   DoctorModel doctor = value.singleWhere(
+    //       (element) => element.firstName == patientInfo.DoctorName);
+    // });
+    uid = patientInfo.uid;
+
     String date = patientInfo.AppointmentDate;
     String id = patientInfo.turn.toString();
     await _databaseReference
@@ -90,8 +96,9 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
         .catchError((e) => print("error"));
     await localDataSourcePatients.DeleteDoctorAppointmentLocal(
         PatientModel.fromMap(patientInfo.toMap()));
-
-    _auth.signOut();
+    if (auth0.user.uid == "4OCo8desYHfXftOWtkY7DRHRFLm2") {
+      auth0.signOut();
+    }
     return true;
   }
 

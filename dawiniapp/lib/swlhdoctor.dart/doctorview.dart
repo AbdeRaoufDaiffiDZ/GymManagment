@@ -26,7 +26,7 @@ class _LanguageScreenState extends State<doctorview> {
     return Scaffold(
         body: ListView(
       children: [
-        myAppbar(),
+        myAppbar(popOrNot:false ,),
         Row(
           children: [
             Padding(
