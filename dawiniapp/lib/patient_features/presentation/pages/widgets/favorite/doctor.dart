@@ -1,8 +1,8 @@
 import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart';
-import 'package:dawini_full/patient_features/domain/usecases/patients_usecase.dart';
 import 'package:dawini_full/doctor_Features/presentation/pages/doctors/details.dart';
+import 'package:dawini_full/patient_features/domain/usecases/patients_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

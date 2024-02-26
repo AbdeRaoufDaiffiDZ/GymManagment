@@ -518,7 +518,7 @@ class _doctorDetailsState extends State<doctorDetails>
                                       context,
                                       MaterialPageRoute(
                                           builder: (BuildContext context) =>
-                                              Patient_info(
+                                              Patient_inf(
                                                 doctorEntity: doctor.first,
                                                 today: isTodaySelected,
                                               )));

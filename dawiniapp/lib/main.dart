@@ -5,19 +5,18 @@ import 'dart:async';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:dawini_full/auth/domain/usecases/auth_usecase.dart';
 import 'package:dawini_full/auth/presentation/bloc/auth_bloc.dart';
-import 'package:dawini_full/auth/presentation/welcomePage.dart';
+import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
+import 'package:dawini_full/swlhdoctor.dart/doctorview.dart';
 import 'package:dawini_full/firebase_options.dart';
 import 'package:dawini_full/injection_container.dart';
 import 'package:dawini_full/introduction_feature/presentation/bloc/bloc/introduction_bloc.dart';
 import 'package:dawini_full/introduction_feature/presentation/screens/pages_shower.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/clinics_bloc/bloc/clinics_bloc.dart';
-import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/pages/myApp.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -129,17 +128,10 @@ class MyApp extends StatelessWidget {
                 localizationsDelegates: AppLocalizations.localizationsDelegates,
                 supportedLocales: AppLocalizations.supportedLocales,
                 debugShowCheckedModeBanner: false,
-                home: StreamBuilder<User?>(
-                    stream: FirebaseAuth.instance.authStateChanges(),
-                    builder: (context, snapshot) {
-                      // if (snapshot.hasData) {
-                      //   print(snapshot.data!.uid);
-                      //   return DoctorCabinInfo(uid: snapshot.data!.uid);
-                      // } else {
-                      //   return Placeholder();
-                      // }
-                      return MyWidget(device: device, uid: snapshot.data?.uid);
-                    }),
+                home: doctorview(
+                    //uid: widget.uid, popOrNot: null,
+
+                    ),
               );
             }));
   }

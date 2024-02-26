@@ -3,14 +3,14 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dawini_full/auth/presentation/welcomePage.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
-import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
-import 'package:dawini_full/patient_features/presentation/pages/widgets/Myappointment/appointments.dart';
-import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/appBar.dart';
-import 'package:dawini_full/patient_features/presentation/pages/widgets/clinics/clinicsList.dart';
 import 'package:dawini_full/doctor_Features/presentation/pages/doctors/doctorsList.dart';
-import 'package:dawini_full/patient_features/presentation/pages/widgets/favorite/favourites.dart';
+import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
+import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/appBar.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/serachMenu.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/specialityList.dart';
+import 'package:dawini_full/patient_features/presentation/pages/widgets/Myappointment/appointments.dart';
+import 'package:dawini_full/patient_features/presentation/pages/widgets/clinics/clinicsList.dart';
+import 'package:dawini_full/patient_features/presentation/pages/widgets/favorite/favourites.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -47,6 +47,7 @@ class _DoctorPageState extends State<Weather> {
     AppLocalizations text = AppLocalizations.of(context)!;
 
     return Scaffold(
+        backgroundColor: Colors.white,
         bottomNavigationBar: Container(
           decoration: BoxDecoration(
             boxShadow: [
@@ -72,9 +73,9 @@ class _DoctorPageState extends State<Weather> {
                 topRight: Radius.circular(25.r)),
             child: BottomNavigationBar(
                 backgroundColor: Colors.white,
-                iconSize: 23.h,
-                unselectedFontSize: 14.sp,
-                selectedFontSize: 14.sp,
+                iconSize: 21.sp,
+                unselectedFontSize: 13.sp,
+                selectedFontSize: 13.sp,
                 currentIndex: selectedindex2,
                 onTap: (value) {
                   setState(() {
@@ -104,9 +105,9 @@ class _DoctorPageState extends State<Weather> {
         return ListView(
           children: [
             myAppbar(
-              uid: widget.uid,
-              popOrNot: widget.popOrNot,
-            ),
+                // uid: widget.uid,
+                //popOrNot: widget.popOrNot,
+                ),
             Container(
               child: Column(children: [
                 SearchMenu(),

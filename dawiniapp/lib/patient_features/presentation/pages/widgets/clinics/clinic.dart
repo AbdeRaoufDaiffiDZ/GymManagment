@@ -44,7 +44,7 @@ class _ClinicWidgetState extends State<ClinicWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0XFFFAFAFA),
+      color: Colors.white,
       height: 150.h,
       width: double.infinity,
       child: PageView.builder(
