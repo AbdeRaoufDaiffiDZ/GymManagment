@@ -1,7 +1,11 @@
+// ignore_for_file: camel_case_types, sized_box_for_whitespace
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class firstConatiner extends StatefulWidget {
+  const firstConatiner({super.key});
+
   @override
   State<firstConatiner> createState() => _firstConatinerState();
 }
@@ -25,8 +29,8 @@ class _firstConatinerState extends State<firstConatiner> {
                 width: 57.w,
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border:
-                        Border.all(color: Color(0xff202020).withOpacity(0.4))),
+                    border: Border.all(
+                        color: const Color(0xff202020).withOpacity(0.4))),
                 child: Image.asset(
                   "assets/images/maleDoctor.png",
                   alignment: Alignment.center,
@@ -39,7 +43,7 @@ class _firstConatinerState extends State<firstConatiner> {
                 Container(
                   width: 180.w,
                   height: 25.h,
-                  child: FittedBox(
+                  child: const FittedBox(
                     fit: BoxFit.scaleDown,
                     alignment: Alignment.topLeft,
                     child: Text(
@@ -61,7 +65,7 @@ class _firstConatinerState extends State<firstConatiner> {
                         text: "max number of patients : ",
                         style: TextStyle(
                             fontFamily: "Nunito",
-                            color: Color(0xff202020).withOpacity(0.7),
+                            color: const Color(0xff202020).withOpacity(0.7),
                             fontSize: 12,
                             fontWeight: FontWeight.w600),
                         children: [
@@ -69,7 +73,7 @@ class _firstConatinerState extends State<firstConatiner> {
                             text: "25",
                             style: TextStyle(
                                 fontFamily: "Nunito",
-                                color: Color(0xff0AA9A9).withOpacity(0.7),
+                                color: const Color(0xff0AA9A9).withOpacity(0.7),
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600),
                           )
@@ -86,7 +90,7 @@ class _firstConatinerState extends State<firstConatiner> {
                         text: "Booking period : ",
                         style: TextStyle(
                             fontFamily: "Nunito",
-                            color: Color(0xff202020).withOpacity(0.7),
+                            color: const Color(0xff202020).withOpacity(0.7),
                             fontSize: 12,
                             fontWeight: FontWeight.w600),
                         children: [
@@ -94,7 +98,7 @@ class _firstConatinerState extends State<firstConatiner> {
                             text: "today",
                             style: TextStyle(
                                 fontFamily: "Nunito",
-                                color: Color(0xff0AA9A9).withOpacity(0.7),
+                                color: const Color(0xff0AA9A9).withOpacity(0.7),
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600),
                           )
@@ -109,9 +113,9 @@ class _firstConatinerState extends State<firstConatiner> {
                 height: 20.w,
                 width: 42.w,
                 decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xff0AA9A9)),
+                    border: Border.all(color: const Color(0xff0AA9A9)),
                     borderRadius: BorderRadius.circular(12)),
-                child: Center(
+                child: const Center(
                     child: Text(
                   "Edit",
                   style: TextStyle(

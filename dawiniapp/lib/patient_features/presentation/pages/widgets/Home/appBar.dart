@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously, camel_case_types, file_names
 
-import 'package:dawini_full/auth/presentation/loginPage.dart';
 import 'package:dawini_full/auth/presentation/welcomePage.dart';
 import 'package:dawini_full/introduction_feature/domain/usecases/set_type_usecase.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +32,7 @@ class myAppbar extends StatelessWidget implements PreferredSizeWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => LoginPage(
+                          builder: (context) => const doctorsideHome(
                                 popOrNot: false,
                               )));
                 } else {

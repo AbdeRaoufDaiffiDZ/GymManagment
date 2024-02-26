@@ -1,5 +1,6 @@
 // ignore_for_file: camel_case_types, use_build_context_synchronously
 
+import 'package:dawini_full/Widget/swlhdoctor.dart/doctorview.dart';
 import 'package:dawini_full/core/error/ErrorWidget.dart';
 import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
@@ -170,6 +171,19 @@ class _DoctorCabinInfoState extends State<DoctorCabinInfo>
                               }),
                         ],
                       ),
+                      MaterialButton(
+                          color: const Color.fromARGB(255, 109, 184, 245),
+                          child: const Text("SWLH tbib"),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) => doctorview(
+                                    uid: widget.uid,
+                                    popOrNot: widget.popOrNot,
+                                  ),
+                                ));
+                          }),
                       MaterialButton(
                         color: const Color.fromARGB(255, 109, 184, 245),
                         onPressed: () async {

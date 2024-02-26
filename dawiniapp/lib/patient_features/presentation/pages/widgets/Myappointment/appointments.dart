@@ -1,11 +1,12 @@
+// ignore_for_file: sized_box_for_whitespace
+
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Myappointment/current%20.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Myappointment/previous.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Myappointemtns extends StatefulWidget {
-  Myappointemtns({Key? key, String? uid}) : super(key: key);
- 
+  const Myappointemtns({Key? key, String? uid}) : super(key: key);
 
   @override
   State<Myappointemtns> createState() => _MyappointemtnsState();
@@ -91,7 +92,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                   Expanded(
                       child: TabBarView(
                           controller: tabcontroller,
-                          children: [newcurrent(), previousappointm()])),
+                          children: const [newcurrent(), previousappointm()])),
                 ]))),
       ),
     );

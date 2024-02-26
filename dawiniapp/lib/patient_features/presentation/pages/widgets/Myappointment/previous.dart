@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types
+// ignore_for_file: camel_case_types, sized_box_for_whitespace
 
 import 'dart:ui';
 
@@ -130,33 +130,28 @@ class _previousappointmState extends State<previousappointm> {
                                                             Color(0XFF202020))),
                                               ),
                                             ),
-                                            Container(
-                                              child: Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.location_on,
-                                                    size: 13.h,
-                                                    color:
-                                                        const Color(0XFF202020)
-                                                            .withOpacity(0.6),
-                                                  ),
-                                                  FittedBox(
-                                                    alignment:
-                                                        Alignment.topLeft,
-                                                    fit: BoxFit.scaleDown,
-                                                    child: Text(
-                                                        '${doctors.first.city}, ${doctors.first.wilaya}',
-                                                        style: const TextStyle(
-                                                            fontFamily:
-                                                                'Nunito',
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            color: Color(
-                                                                0XFF202020))),
-                                                  ),
-                                                ],
-                                              ),
+                                            Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.location_on,
+                                                  size: 13.h,
+                                                  color: const Color(0XFF202020)
+                                                      .withOpacity(0.6),
+                                                ),
+                                                FittedBox(
+                                                  alignment: Alignment.topLeft,
+                                                  fit: BoxFit.scaleDown,
+                                                  child: Text(
+                                                      '${doctors.first.city}, ${doctors.first.wilaya}',
+                                                      style: const TextStyle(
+                                                          fontFamily: 'Nunito',
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: Color(
+                                                              0XFF202020))),
+                                                ),
+                                              ],
                                             ),
                                             SizedBox(height: 2.h),
                                             GestureDetector(

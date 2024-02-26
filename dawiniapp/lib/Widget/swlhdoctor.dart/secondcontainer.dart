@@ -1,7 +1,11 @@
+// ignore_for_file: camel_case_types, sized_box_for_whitespace
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class secondConatiner extends StatefulWidget {
+  const secondConatiner({super.key});
+
   @override
   State<secondConatiner> createState() => _secondConatinerState();
 }
@@ -19,6 +23,13 @@ class _secondConatinerState extends State<secondConatiner> {
         child: Row(
           children: [
             Container(
+              width: 66.w,
+              decoration: const BoxDecoration(
+                color: Color(0xff00C8D5),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(12),
+                    bottomLeft: Radius.circular(12)),
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -47,13 +58,6 @@ class _secondConatinerState extends State<secondConatiner> {
                   )
                 ],
               ),
-              width: 66.w,
-              decoration: BoxDecoration(
-                color: Color(0xff00C8D5),
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(12),
-                    bottomLeft: Radius.circular(12)),
-              ),
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 6.w),
@@ -63,7 +67,7 @@ class _secondConatinerState extends State<secondConatiner> {
                   Container(
                     width: 190.w,
                     height: 22.h,
-                    child: FittedBox(
+                    child: const FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.topLeft,
                       child: Text(
@@ -78,7 +82,7 @@ class _secondConatinerState extends State<secondConatiner> {
                   Container(
                     width: 140.w,
                     height: 15.h,
-                    child: FittedBox(
+                    child: const FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.topLeft,
                       child: Text(
@@ -93,7 +97,7 @@ class _secondConatinerState extends State<secondConatiner> {
                   Container(
                     width: 100.w,
                     height: 14.h,
-                    child: FittedBox(
+                    child: const FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.topLeft,
                       child: Text(
@@ -105,7 +109,7 @@ class _secondConatinerState extends State<secondConatiner> {
                       ),
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Row(
                     children: [
                       Container(
@@ -116,15 +120,15 @@ class _secondConatinerState extends State<secondConatiner> {
                             alignment: Alignment.topLeft,
                             child: Row(
                               children: [
-                                Icon(Icons.phone, size: 15),
+                                const Icon(Icons.phone, size: 15),
                                 Text(
                                   "0557902660",
                                   style: TextStyle(
                                       fontFamily: 'Nunito',
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
-                                      color:
-                                          Color(0xff202020).withOpacity(0.85)),
+                                      color: const Color(0xff202020)
+                                          .withOpacity(0.85)),
                                 ),
                               ],
                             )),
@@ -133,7 +137,7 @@ class _secondConatinerState extends State<secondConatiner> {
                       Container(
                         width: 100.w,
                         height: 15.h,
-                        child: FittedBox(
+                        child: const FittedBox(
                           fit: BoxFit.scaleDown,
                           alignment: Alignment.topRight,
                           child: Text("afternoon ",

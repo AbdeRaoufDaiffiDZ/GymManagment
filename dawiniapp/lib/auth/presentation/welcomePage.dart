@@ -39,7 +39,7 @@ class _doctorsideHomeState extends State<doctorsideHome> {
                   uid: snapshot.data!.uid,
                   popOrNot: widget.popOrNot,
                 )
-              : LoginPage(
+              : WelcomePage(
                   popOrNot: widget.popOrNot,
                 );
 //           if (snapshot.data == null) {
