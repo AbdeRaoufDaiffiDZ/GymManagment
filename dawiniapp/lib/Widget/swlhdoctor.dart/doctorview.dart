@@ -1,6 +1,6 @@
+import 'package:dawini_full/Widget/swlhdoctor.dart/firstcontainer.dart';
+import 'package:dawini_full/Widget/swlhdoctor.dart/secondcontainer.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/appBar.dart';
-import 'package:dawini_full/swlhdoctor.dart/firstcontainer.dart';
-import 'package:dawini_full/swlhdoctor.dart/secondcontainer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

@@ -333,7 +333,7 @@ class _Patient_infoState extends State<Patient_info> {
                       children: [
                         TextSpan(
                           text: text
-                              ? " successfully"
+                              ? " successfully !"
                               : ", you already booked an appointment",
                           style: TextStyle(
                             fontFamily: "Nunito",
@@ -345,7 +345,7 @@ class _Patient_infoState extends State<Patient_info> {
                         ),
                         TextSpan(
                           text: text
-                              ? " , you can follow your turn at my appointment section "
+                              ? " with the turn "
                               : ifADoctor
                                   ? ", try again after 5 sec "
                                   : ", try again after 10 minutes ",
