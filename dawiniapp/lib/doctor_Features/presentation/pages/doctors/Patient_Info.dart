@@ -110,7 +110,7 @@ class _Patient_infoState extends State<Patient_info> {
 
       return widget.ifADoctor
           ? difference.inSeconds >= 5
-          : difference.inMinutes >= 5; // Change 1 to your desired limit
+          : difference.inSeconds >= 5; // Change 1 to your desired limit
     }
   }
 
@@ -320,6 +320,7 @@ class _Patient_infoState extends State<Patient_info> {
               child: AlertDialog(
                 title: Center(
                   child: Text.rich(
+                    textAlign: TextAlign.center,
                     TextSpan(
                       text: text
                           ? "Your appointment has been booked"
