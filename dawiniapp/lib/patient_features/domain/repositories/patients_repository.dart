@@ -2,7 +2,6 @@
 
 import 'package:dartz/dartz.dart';
 import 'package:dawini_full/core/error/failure.dart';
-import 'package:dawini_full/patient_features/domain/entities/doctor.dart';
 import 'package:dawini_full/patient_features/domain/entities/patient.dart';
 
 abstract class PatientsRepository {
@@ -13,5 +12,8 @@ abstract class PatientsRepository {
   Future<bool> DeleteFavoriteDoctor(String uid);
 
   Future<bool> SetDoctorAppointment(PatientEntity patientInfo);
-  Future<bool> DeleteDoctorAppointment(PatientEntity patientInfo);
+  Future<bool> DeleteDoctorAppointment(
+    PatientEntity patientInfo,
+    context,
+  );
 }

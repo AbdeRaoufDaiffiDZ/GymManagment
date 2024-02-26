@@ -1,56 +1,42 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, avoid_print, deprecated_member_use
 
 import 'dart:convert';
 
+import 'package:dawini_full/auth/data/FirebaseAuth/authentification.dart';
+import 'package:dawini_full/auth/data/models/auth_model.dart';
 import 'package:dawini_full/core/constants/constants.dart';
 import 'package:dawini_full/core/error/exception.dart';
+import 'package:dawini_full/doctor_Features/data/data_source/doctor_cabin_data_source.dart';
 import 'package:dawini_full/patient_features/data/data_source/local_data_source.dart';
 import 'package:dawini_full/patient_features/data/models/clinic_model.dart';
-import 'package:dawini_full/patient_features/data/models/doctor_model.dart';
+import 'package:dawini_full/doctor_Features/data/models/doctor_model.dart';
 import 'package:dawini_full/patient_features/data/models/patient_model.dart';
 import 'package:dawini_full/patient_features/domain/entities/clinic.dart';
-import 'package:dawini_full/patient_features/domain/entities/doctor.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:http/http.dart' as http;
 
 abstract class DoctorRemoteDataSource {
-  Future<List<DoctorModel>> getDoctorsInfo();
-  Stream<List<DoctorEntity>> streamDoctors();
-  Future<UserCredential> authDoctor(email, password);
   Future<bool> SetDoctorAppointment(PatientModel patientInfo);
-  Future<bool> RemoveDoctorAppointment(PatientModel patientInfo);
+  Future<bool> RemoveDoctorAppointment(PatientModel patientInfo, context);
+  Stream<List<PatientModel>> getDoctorPatientsStream(String uid);
 }
 
 class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
-  static final http.Client client = http.Client();
-  static final FirebaseDatabase _databaseReference = FirebaseDatabase.instance;
-  static final FirebaseAuth auth = FirebaseAuth.instance;
-  static final LocalDataSourceDoctors localDataSourcePatients =
+  final http.Client client = http.Client();
+  final FirebaseDatabase _databaseReference = FirebaseDatabase.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final LocalDataSourceDoctors localDataSourcePatients =
       LocalDataSourceImplDoctor();
-  @override
-  Future<List<DoctorModel>> getDoctorsInfo() async {
-    try {
-      final response = await client.get(Uri.parse(Urls.doctorInfoUrl()));
-      if (response.statusCode == 200) {
-        List<DoctorModel> users =
-            (json.decode(response.body) as List).map((data) {
-          return DoctorModel.fromJson(data);
-        }).toList();
-        return users;
-      } else {
-        throw ServerException();
-      }
-    } catch (e) {
-      throw ServerException();
-    }
-  }
+  final DoctorCabinDataSource doctorCabinDataSource =
+      DoctorCabinDataSourceImp();
 
   @override
   Future<bool> SetDoctorAppointment(PatientModel patientInfo) async {
     // DateTime date = DateTime.parse(patientInfo.AppointmentDate);
     final refs = _databaseReference.ref().child(
         "/user_data/Doctors/${patientInfo.uid}/Cabin_info/Patients/${patientInfo.AppointmentDate}");
+    // var data = await getDoctorPatients(patientInfo);
     final DatabaseReference newChildRef = refs.push();
     final String? idkey = newChildRef.key;
     final DatabaseEvent snapshot =
@@ -83,15 +69,52 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
   }
 
   @override
-  Stream<List<DoctorModel>> streamDoctors() {
-    List<DoctorModel> resulted = [];
-    final result =
-        _databaseReference.ref().child('doctorsList').onValue.map((event) {
+  Future<bool> RemoveDoctorAppointment(
+      PatientModel patientInfo, context) async {
+    FirebaseAuthMethods auth0 = FirebaseAuthMethods();
+    final AuthModel auth = AuthModel(
+        email: "deleteAppointment@gmail.com", password: "deleteAppointment");
+
+    if (await auth0.authState.isEmpty) {
+      auth0.loginWithEmail(authData: auth);
+    }
+    String uid = "";
+    List<DoctorModel> doctors = await doctorCabinDataSource.getDoctorsInfo();
+    doctors.where((element) => element.uid == patientInfo.DoctorName);
+    // doctorCabinDataSource.getDoctorsInfo().then((value) {
+    //   DoctorModel doctor = value.singleWhere(
+    //       (element) => element.firstName == patientInfo.DoctorName);
+    // });
+    uid = patientInfo.uid;
+
+    String date = patientInfo.AppointmentDate;
+    String id = patientInfo.turn.toString();
+    await _databaseReference
+        .ref("/user_data/Doctors/$uid/Cabin_info/Patients/$date/$id")
+        .remove()
+        .then((value) => print("done!"))
+        .catchError((e) => print("error"));
+    await localDataSourcePatients.DeleteDoctorAppointmentLocal(
+        PatientModel.fromMap(patientInfo.toMap()));
+    if (auth0.user.uid == "4OCo8desYHfXftOWtkY7DRHRFLm2") {
+      auth0.signOut();
+    }
+    return true;
+  }
+
+  @override
+  Stream<List<PatientModel>> getDoctorPatientsStream(String uid) {
+    List<PatientModel> resulted = [];
+    final result = _databaseReference
+        .ref()
+        .child('/user_data/Doctors/$uid/Cabin_info/Patients')
+        .onValue
+        .map((event) {
       resulted.clear();
 
       List currapted = event.snapshot.value as List;
       final data = currapted.map((e) {
-        return DoctorModel.fromJson(e);
+        return PatientModel.fromJson(e);
       }).toList();
 
       return data;
@@ -99,26 +122,11 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
 
     return result;
   }
-
-  @override
-  Future<UserCredential> authDoctor(email, password) async {
-    final response =
-        await auth.signInWithEmailAndPassword(email: email, password: password);
-    return response;
-  }
-
-  @override
-  Future<bool> RemoveDoctorAppointment(PatientModel patientInfo) async {
-    await localDataSourcePatients.DeleteDoctorAppointmentLocal(
-        PatientModel.fromMap(patientInfo.toMap()));
-    return true;
-  }
 }
 
 abstract class ClinicsRemoteDataSource {
   Future<List<ClinicModel>> getClincsInfo();
   Stream<List<ClinicEntity>> streamClincss();
-  Future<UserCredential> authClinic(email, password);
 }
 
 class ClinicsRemoteDataSourceImpl implements ClinicsRemoteDataSource {
@@ -155,12 +163,5 @@ class ClinicsRemoteDataSourceImpl implements ClinicsRemoteDataSource {
       return data;
     });
     return result;
-  }
-
-  @override
-  Future<UserCredential> authClinic(email, password) async {
-    final response =
-        await auth.signInWithEmailAndPassword(email: email, password: password);
-    return response;
   }
 }

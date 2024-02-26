@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, overridden_fields, annotate_overrides
+
 import 'package:dawini_full/patient_features/domain/entities/clinic.dart';
 
 class ClinicModel extends ClinicEntity {
@@ -8,7 +10,7 @@ class ClinicModel extends ClinicEntity {
   final String speciality;
   final bool atSerivce;
   final String uid;
-  ClinicModel(
+  const ClinicModel(
       {required this.uid,
       required this.speciality,
       required this.city,
@@ -26,7 +28,6 @@ class ClinicModel extends ClinicEntity {
             speciality: speciality);
 
   @override
-  // TODO: implement props
   List<Object?> get props =>
       [ClinicName, city, atSerivce, wilaya, phoneNumber, speciality, uid];
 

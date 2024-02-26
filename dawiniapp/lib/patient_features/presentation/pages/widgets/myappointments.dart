@@ -1,4 +1,4 @@
-// ignore_for_file: sort_child_properties_last
+// ignore_for_file: sort_child_properties_last, non_constant_identifier_names, prefer_interpolation_to_compose_strings
 
 import 'dart:ui';
 
@@ -6,13 +6,14 @@ import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:dawini_full/core/loading/loading.dart';
-import 'package:dawini_full/patient_features/domain/entities/doctor.dart';
-import 'package:dawini_full/patient_features/domain/usecases/doctor_usecase.dart';
+import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
+import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/pages/myApp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:dawini_full/core/error/ErrorWidget.dart';
 
 class Myappointemtns extends StatefulWidget {
   const Myappointemtns({super.key});
@@ -48,7 +49,10 @@ class _MyappointemtnsState extends State<Myappointemtns>
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Mypage()),
+                        MaterialPageRoute(
+                            builder: (context) => const Mypage(
+                                  popOrNot: false,
+                                )),
                       );
                     },
                     icon: Icon(
@@ -60,7 +64,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                 ),
               ),
               SizedBox(width: 35.w),
-              Container(
+              SizedBox(
                 width: 190.w,
                 child: const FittedBox(
                   fit: BoxFit.fill,
@@ -100,7 +104,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                 child: BlocBuilder<PatientsBloc, PatientsState>(
                     builder: (context, state) {
                   if (state is PatientsLoading) {
-                    return Loading();
+                    return const Loading();
                   } else if (state is PatientsLoaded) {
                     return ListView.builder(
                         itemCount: state.patients.length,
@@ -126,23 +130,21 @@ class _MyappointemtnsState extends State<Myappointemtns>
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Container(
+                                      SizedBox(
                                         width: 150.w,
                                         height: 25.h,
                                         child: FittedBox(
                                           fit: BoxFit.scaleDown,
                                           alignment: Alignment.topLeft,
                                           child: Text(
-                                              "Dr. " +
-                                                  state.patients[index]
-                                                      .DoctorName,
-                                              style: TextStyle(
+                                              "Dr. ${state.patients[index].DoctorName}",
+                                              style: const TextStyle(
                                                   fontSize: 20,
                                                   fontWeight: FontWeight.w800,
                                                   color: Color(0XFF202020))),
                                         ),
                                       ),
-                                      Container(
+                                      SizedBox(
                                         width: 80.w,
                                         height: 20.h,
                                         child: const FittedBox(
@@ -155,7 +157,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                                                   color: Color(0XFF202020))),
                                         ),
                                       ),
-                                      Container(
+                                      SizedBox(
                                         width: 160.w,
                                         height: 20.h,
                                         child: const FittedBox(
@@ -168,29 +170,25 @@ class _MyappointemtnsState extends State<Myappointemtns>
                                                   color: Color(0XFF202020))),
                                         ),
                                       ),
-                                      Container(
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              Icons.location_on,
-                                              size: 15.h,
-                                              color: const Color(0XFF202020)
-                                                  .withOpacity(0.6),
-                                            ),
-                                            FittedBox(
-                                              alignment: Alignment.topLeft,
-                                              fit: BoxFit.scaleDown,
-                                              child: Text(
-                                                  state.patients[index].address,
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color:
-                                                          Color(0XFF202020))),
-                                            ),
-                                          ],
-                                        ),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.location_on,
+                                            size: 15.h,
+                                            color: const Color(0XFF202020)
+                                                .withOpacity(0.6),
+                                          ),
+                                          FittedBox(
+                                            alignment: Alignment.topLeft,
+                                            fit: BoxFit.scaleDown,
+                                            child: Text(
+                                                state.patients[index].address,
+                                                style: const TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Color(0XFF202020))),
+                                          ),
+                                        ],
                                       ),
                                       SizedBox(height: 2.h),
                                       GestureDetector(
@@ -219,7 +217,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                                                           EdgeInsets.symmetric(
                                                               vertical: 10.h,
                                                               horizontal: 10.w),
-                                                      content: Container(
+                                                      content: SizedBox(
                                                         height: 150.h,
                                                         child: Column(
                                                           mainAxisAlignment:
@@ -346,7 +344,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                                               color: const Color(0XFFECF2F2),
                                               borderRadius:
                                                   BorderRadius.circular(10)),
-                                          child: Container(
+                                          child: SizedBox(
                                             width: 80.w,
                                             height: 20.h,
                                             child: Center(
@@ -384,10 +382,10 @@ class _MyappointemtnsState extends State<Myappointemtns>
                                               vertical: 7.h),
                                           child: Column(
                                             children: [
-                                              Container(
+                                              SizedBox(
                                                 width: 80.w,
                                                 height: 15.h,
-                                                child: FittedBox(
+                                                child: const FittedBox(
                                                   fit: BoxFit.scaleDown,
                                                   child: Text("my turn",
                                                       style: TextStyle(
@@ -398,7 +396,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                                                               0XFF202020))),
                                                 ),
                                               ),
-                                              Container(
+                                              SizedBox(
                                                 width: 80.w,
                                                 height: 20.h,
                                                 child: FittedBox(
@@ -437,7 +435,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                           );
                         });
                   } else {
-                    return Loading();
+                    return const Loading();
                   }
                 }),
               ),
@@ -449,7 +447,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
+                    SizedBox(
                       width: 150.w,
                       height: 25.h,
                       child: const FittedBox(
@@ -462,7 +460,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                                 color: Color(0XFF202020))),
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: 80.w,
                       height: 20.h,
                       child: const FittedBox(
@@ -475,7 +473,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                                 color: Color(0XFF202020))),
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: 160.w,
                       height: 20.h,
                       child: const FittedBox(
@@ -488,25 +486,23 @@ class _MyappointemtnsState extends State<Myappointemtns>
                                 color: Color(0XFF202020))),
                       ),
                     ),
-                    Container(
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.location_on,
-                            size: 15.h,
-                            color: const Color(0XFF202020).withOpacity(0.6),
-                          ),
-                          const FittedBox(
-                            alignment: Alignment.topLeft,
-                            fit: BoxFit.scaleDown,
-                            child: Text("Algeria , bab zouar",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0XFF202020))),
-                          ),
-                        ],
-                      ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.location_on,
+                          size: 15.h,
+                          color: const Color(0XFF202020).withOpacity(0.6),
+                        ),
+                        const FittedBox(
+                          alignment: Alignment.topLeft,
+                          fit: BoxFit.scaleDown,
+                          child: Text("Algeria , bab zouar",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0XFF202020))),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 2.h),
                     GestureDetector(
@@ -528,7 +524,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                                   child: AlertDialog(
                                     contentPadding: EdgeInsets.symmetric(
                                         vertical: 10.h, horizontal: 10.w),
-                                    content: Container(
+                                    content: SizedBox(
                                       height: 150.h,
                                       child: Column(
                                         mainAxisAlignment:
@@ -619,7 +615,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                         decoration: BoxDecoration(
                             color: const Color(0XFFECF2F2),
                             borderRadius: BorderRadius.circular(10)),
-                        child: Container(
+                        child: SizedBox(
                           width: 80.w,
                           height: 20.h,
                           child: Center(
@@ -646,6 +642,15 @@ class _MyappointemtnsState extends State<Myappointemtns>
         StreamBuilder<List<DoctorEntity>>(
             stream: GetDoctorsStreamInfoUseCase.excute(),
             builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Loading();
+              }
+              if (snapshot.hasError) {
+                return ErrorPage(
+                  error: snapshot.error,
+                );
+                // Text('Error: ${snapshot.error}');
+              }
               late final List<DoctorEntity> data;
               if (snapshot.data == null) {
                 data = [];
@@ -659,7 +664,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
               List<DoctorEntity> doctors = data
                   .where((element) => element.uid == state.patients[index].uid)
                   .toList();
-              if (!doctors.isEmpty) {
+              if (doctors.isNotEmpty) {
                 if (state.patients[index].today) {
                   notificationConditions(state, index, doctors);
                 }
@@ -674,8 +679,8 @@ class _MyappointemtnsState extends State<Myappointemtns>
                         color: const Color.fromRGBO(32, 32, 32, 0.8)),
                     children: [
                       TextSpan(
-                          text: !doctors.isEmpty
-                              ? " " + doctors.first.turn.toString()
+                          text: doctors.isNotEmpty
+                              ? " ${doctors.first.turn}"
                               : "",
                           style: TextStyle(
                               fontFamily: "Nunito",
@@ -694,8 +699,8 @@ class _MyappointemtnsState extends State<Myappointemtns>
         content: NotificationContent(
             id: index,
             channelKey: 'basic_channel',
-            title: "your turn ${body}",
-            body: "${patientName} turn at ${doctorName} ${body}"));
+            title: "your turn $body",
+            body: "$patientName turn at $doctorName $body"));
   }
 
   notificationConditions(state, index, doctors) {

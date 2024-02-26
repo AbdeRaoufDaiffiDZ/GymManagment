@@ -1,0 +1,16 @@
+{
+    "helloWorld": "Hello World!",
+    "home":"home",
+    "my_Appointement":"My Appointement",
+    "favorite":"Favorite",
+    "recommended_clinics":"Recommended clinics",
+    "see_all":"See All",
+    "specialty":"Specialty",
+    "search":"Search",
+    "recommended_doctors":"Recommended doctors",
+    "at_service":"At service",
+    "not_at_service":"Not At service",
+    "internet_Restored":"Internet Restored",
+    "no_Interne_Connection":"No Internet Connection"
+
+  }

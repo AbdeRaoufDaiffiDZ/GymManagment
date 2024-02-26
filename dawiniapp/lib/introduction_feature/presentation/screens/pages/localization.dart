@@ -13,7 +13,6 @@ class Localisation extends StatefulWidget {
 }
 
 class _LocalisationState extends State<Localisation> {
-  String selectedLanguage = '';
   bool isSelected = false;
   @override
   Widget build(BuildContext context) {
@@ -30,21 +29,21 @@ class _LocalisationState extends State<Localisation> {
             languageContainer("English", bloc, widget.languageSys),
             languageContainer("French", bloc, widget.languageSys),
             languageContainer("Arabic", bloc, widget.languageSys),
-            InkWell(
-              onTap: () {
-                if (isSelected) {
-                  bloc.add(NextPage(id: 2));
-                }
-              },
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 50.w, vertical: 16.h),
-                height: 50.h,
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? Color(0xFF2CDBC6)
-                      : Color.fromARGB(108, 44, 219, 199),
-                  borderRadius: BorderRadius.circular(16),
-                ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 50.w, vertical: 16.h),
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? const Color(0xFF2CDBC6)
+                    : const Color.fromARGB(108, 44, 219, 199),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: InkWell(
+                onTap: () {
+                  if (isSelected) {
+                    bloc.add(const NextPage(id: 2));
+                  }
+                },
                 child: Center(
                   child: Text(
                     "Next",
@@ -66,27 +65,26 @@ class _LocalisationState extends State<Localisation> {
 
   Widget languageContainer(
       String language, IntroductionBloc bloc, String languageSys) {
-    return InkWell(
-      onTap: () {
-        bloc.add(onLanguageChoose(language: language));
-        setState(() {
-          selectedLanguage = language;
-          isSelected = true;
-        });
-      },
-      child: Container(
-        margin: const EdgeInsets.all(8),
-        width: 150.w,
-        height: 40.h,
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: selectedLanguage == language
-                ? const Color(0xFF2CDBC6)
-                : Colors.grey.shade300,
-            width: 2.w,
-          ),
-          borderRadius: BorderRadius.circular(16),
+    return Container(
+      margin: const EdgeInsets.all(8),
+      width: 150.w,
+      height: 40.h,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: languageSys == language
+              ? const Color(0xFF2CDBC6)
+              : Colors.grey.shade300,
+          width: 2.w,
         ),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: InkWell(
+        onTap: () {
+          bloc.add(onLanguageChoose(language: language));
+          setState(() {
+            isSelected = true;
+          });
+        },
         child: Center(
           child: Text(
             language,

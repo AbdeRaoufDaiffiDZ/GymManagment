@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:dawini_full/patient_features/domain/entities/clinic.dart';
-import 'package:dawini_full/patient_features/presentation/pages/pages/clinicDetails/clinics_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -55,19 +54,19 @@ class _ClinicWidgetState extends State<ClinicWidget> {
           });
         },
         controller: mycon,
-        itemCount: widget.clinics.length,
+        itemCount: 4, //widget.clinics.length,
         itemBuilder: (context, index) {
           double scale = selectedindex == index ? 1 : 0.9;
 
           return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        ClinicsDetails(uid: widget.clinics[index].uid)),
-              );
-            },
+            // onTap: () {
+            //   Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (context) =>
+            //             ClinicsDetails(uid: widget.clinics[index].uid)),
+            //   );
+            // },
             child: TweenAnimationBuilder(
               tween: Tween<double>(begin: scale, end: scale),
               duration: const Duration(milliseconds: 350),
@@ -83,17 +82,18 @@ class _ClinicWidgetState extends State<ClinicWidget> {
                       borderRadius: BorderRadius.circular(16),
                       color: Colors.white,
                       border: Border.all(
-                        color: Color.fromARGB(72, 146, 146, 146),
+                        color: const Color.fromARGB(72, 146, 146, 146),
                         width: 2.w,
                       ),
                     ),
                     child: Center(
+                      // ignore: sized_box_for_whitespace
                       child: Container(
                         width: 150.w, // 90.h
                         height: 100.h, // 20.h
                         child: const FittedBox(
                           fit: BoxFit.scaleDown,
-                          child: const Text("Coomming Soon...",
+                          child: Text("Coomming Soon...",
                               // widget.clinics[index].ClinicName,
                               style: TextStyle(
                                   fontFamily: 'Nunito',

@@ -24,9 +24,9 @@ class PatientRepositoryImpl implements PatientsRepository {
       final result = await localDataSourcePatients.MyFavoriteDoctors();
       return Right(result);
     } on ServerException {
-      return Left(ServerFailure(message: 'An error has occured'));
+      return const Left(ServerFailure(message: 'An error has occured'));
     } on SocketException {
-      return Left(
+      return const Left(
           ConnectionFailure(message: 'Failed to connect to the network'));
     }
   }
@@ -37,9 +37,9 @@ class PatientRepositoryImpl implements PatientsRepository {
       final result = await localDataSourcePatients.MyDoctorsAppointments();
       return Right(result);
     } on ServerException {
-      return Left(ServerFailure(message: 'An error has occured'));
+      return const Left(ServerFailure(message: 'An error has occured'));
     } on SocketException {
-      return Left(
+      return const Left(
           ConnectionFailure(message: 'Failed to connect to the network'));
     }
   }
@@ -59,10 +59,11 @@ class PatientRepositoryImpl implements PatientsRepository {
   }
 
   @override
-  Future<bool> DeleteDoctorAppointment(PatientEntity patientInfo) async {
+  Future<bool> DeleteDoctorAppointment(
+      PatientEntity patientInfo, context) async {
     try {
       final result = doctorRemoteDataSource.RemoveDoctorAppointment(
-          PatientModel.fromMap(patientInfo.toMap()));
+          PatientModel.fromMap(patientInfo.toMap()), context);
 
       return result;
     } catch (e) {
@@ -105,7 +106,6 @@ class PatientRepositoryImpl implements PatientsRepository {
   @override
   Future<Either<Failure, bool>> DeleteAdoctorAppointment(
       PatientEntity patient) {
-    // TODO: implement DeleteAdoctorAppointment
     throw UnimplementedError();
   }
 }

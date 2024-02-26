@@ -1,3 +1,6 @@
+// ignore_for_file: deprecated_member_use
+
+import 'package:dawini_full/auth/domain/usecases/auth_usecase.dart';
 import 'package:dawini_full/introduction_feature/data/data_source/local_data_source.dart';
 import 'package:dawini_full/introduction_feature/data/repositoryImpl/itroduction_repository_impl.dart';
 import 'package:dawini_full/introduction_feature/domain/repository/introductionRepository.dart';
@@ -11,17 +14,16 @@ import 'package:dawini_full/introduction_feature/domain/usecases/user_type_useca
 import 'package:dawini_full/introduction_feature/presentation/bloc/bloc/introduction_bloc.dart';
 import 'package:dawini_full/patient_features/data/data_source/remote_data_source.dart';
 import 'package:dawini_full/patient_features/data/repositories/clinic_repository_impl.dart';
-import 'package:dawini_full/patient_features/data/repositories/doctor_repository_impl.dart';
+import 'package:dawini_full/doctor_Features/data/repositories/doctor_repository_impl.dart';
 import 'package:dawini_full/patient_features/data/repositories/patients_repository_impl.dart';
 import 'package:dawini_full/patient_features/domain/repositories/clinic_repository.dart';
-import 'package:dawini_full/patient_features/domain/repositories/doctor_repository.dart';
+import 'package:dawini_full/doctor_Features/domain/repositories/doctor_repository.dart';
 import 'package:dawini_full/patient_features/domain/repositories/patients_repository.dart';
 import 'package:dawini_full/patient_features/domain/usecases/clinic_usecase.dart';
-import 'package:dawini_full/patient_features/domain/usecases/doctor_usecase.dart';
+import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart';
 import 'package:dawini_full/patient_features/domain/usecases/patients_usecase.dart';
-import 'package:dawini_full/patient_features/presentation/bloc/auth_bloc/bloc/doctor_auth_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/clinics_bloc/bloc/clinics_bloc.dart';
-import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/bloc/doctor_bloc.dart';
+import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -34,12 +36,9 @@ final locator = GetIt.instance;
 Future<void> setupLocator() async {
   final sharedPreferences = await SharedPreferences.getInstance();
 
-  locator.registerFactory(() => DoctorBloc(
-        locator(),
-      ));
+  locator.registerFactory(() => DoctorBloc(locator(), locator()));
   locator.registerFactory(() => PatientsBloc(
       locator(), locator(), locator(), locator(), locator(), locator()));
-  locator.registerFactory(() => DoctorAuthBloc(locator()));
   locator.registerFactory(() => IntroductionBloc(locator(), locator(),
       locator(), locator(), locator(), locator(), locator()));
   locator.registerFactory(() => ClinicsBloc(getClinicsInfoUseCase: locator()));
@@ -49,6 +48,7 @@ Future<void> setupLocator() async {
   //     () => GetCurrentWeatherUseCase(weatherRepository: locator()));
   locator.registerLazySingleton(
       () => GetDoctorsInfoUseCase(doctorRepository: locator()));
+  locator.registerLazySingleton(() => UpdateDoctorCabinData());
   locator.registerLazySingleton(() => BookDoctorAppointmentUseCase());
   ////////////
   locator.registerLazySingleton(() => GetAppointmentLocalusecase());
@@ -59,14 +59,13 @@ Future<void> setupLocator() async {
 
   //////////////
   locator.registerLazySingleton(() => GetDoctorsStreamInfoUseCase());
-  locator.registerLazySingleton(
-      () => DoctorAuthStateUseCase(repository: locator()));
+  locator.registerLazySingleton(() => DoctorAuthStateUseCase());
   // clinics part
   locator.registerLazySingleton(
       () => GetClinicsInfoUseCase(clinicRepository: locator()));
   locator.registerLazySingleton(() => GetClinicsStreamInfoUseCase());
-  locator.registerLazySingleton(
-      () => ClinicAuthStateUseCase(repository: locator()));
+  // locator.registerLazySingleton(
+  //     () => ClinicAuthStateUseCase(repository: locator()));
 
   locator.registerLazySingleton(
       () => CheckWatchingStatusUseCase(repository: locator()));
@@ -74,7 +73,7 @@ Future<void> setupLocator() async {
       .registerLazySingleton(() => SetLanguageUseCase(repository: locator()));
   locator.registerLazySingleton(
       () => ChossenLanguageUseCase(repository: locator()));
-  locator.registerLazySingleton(() => SetTypeUseCase(repository: locator()));
+  locator.registerLazySingleton(() => SetTypeUseCase());
   locator.registerLazySingleton(() => UserTypeUseCase(repository: locator()));
   locator.registerLazySingleton(
       () => IgnorIntroductionUseCase(repository: locator()));
@@ -97,8 +96,7 @@ Future<void> setupLocator() async {
 
   locator.registerLazySingleton<DoctorRemoteDataSource>(
       () => DoctorRemoteDataSourceImpl());
-  locator.registerLazySingleton<LocalDataSource>(
-      () => LocalDataSourceImpl(prefs: locator()));
+  locator.registerLazySingleton<LocalDataSource>(() => LocalDataSourceImpl());
 
   locator.registerLazySingleton<ClinicsRemoteDataSource>(
       () => ClinicsRemoteDataSourceImpl());

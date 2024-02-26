@@ -1,5 +1,7 @@
+// ignore_for_file: file_names, non_constant_identifier_names
+
 import 'package:dawini_full/patient_features/presentation/bloc/clinics_bloc/bloc/clinics_bloc.dart';
-import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/bloc/doctor_bloc.dart';
+import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,7 +32,7 @@ class _SearchMenuState extends State<SearchMenu> {
   ];
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _textController = TextEditingController();
+    final TextEditingController textController = TextEditingController();
     final DoctorBloc dataBloc = BlocProvider.of<DoctorBloc>(context);
     // final ClinicsBloc clinicBloc = BlocProvider.of<ClinicsBloc>(context);
 
@@ -46,7 +48,7 @@ class _SearchMenuState extends State<SearchMenu> {
                   height: 40.h,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                    color: Color(0XFFECF2F2),
+                    color: const Color(0XFFECF2F2),
                   ),
                   child: Container(
                     padding: EdgeInsets.only(left: 2.w),
@@ -61,7 +63,7 @@ class _SearchMenuState extends State<SearchMenu> {
                           child: Padding(
                             padding: EdgeInsets.only(left: 4.w),
                             child: TextField(
-                              controller: _textController,
+                              controller: textController,
                               onChanged: (text) {
                                 dataBloc.add(
                                     onDoctorsearchByName(doctorName: text));
@@ -74,7 +76,7 @@ class _SearchMenuState extends State<SearchMenu> {
                                 hintText: 'Search for a doctor',
                                 hintStyle: TextStyle(
                                   fontSize: _calculateFontSize(
-                                      _textController.text.length),
+                                      textController.text.length),
                                 ),
                               ),
                             ),
@@ -94,10 +96,10 @@ class _SearchMenuState extends State<SearchMenu> {
                   hint: Row(
                     children: [
                       Expanded(
-                        child: Container(
+                        child: SizedBox(
                           width: 30.w,
                           height: 20.h,
-                          child: FittedBox(
+                          child: const FittedBox(
                             fit: BoxFit.scaleDown,
                             child: Text("Province",
                                 style: TextStyle(
@@ -112,14 +114,14 @@ class _SearchMenuState extends State<SearchMenu> {
                   items: items
                       .map((String item) => DropdownMenuItem<String>(
                             value: item,
-                            child: Container(
+                            child: SizedBox(
                               width: 100.w,
                               height: 20.h,
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,
                                 child: Text(item,
                                     overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white)),
@@ -202,7 +204,7 @@ class _SearchMenuClinicsState extends State<SearchMenuClinics> {
   ];
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _textController = TextEditingController();
+    final TextEditingController textController = TextEditingController();
     final ClinicsBloc ClinicsdataBloc = BlocProvider.of<ClinicsBloc>(context);
     // final ClinicsBloc clinicBloc = BlocProvider.of<ClinicsBloc>(context);
 
@@ -230,7 +232,7 @@ class _SearchMenuClinicsState extends State<SearchMenuClinics> {
                       ),
                       Expanded(
                         child: TextField(
-                          controller: _textController,
+                          controller: textController,
                           onChanged: (text) {
                             ClinicsdataBloc.add(
                                 onClinicsearchByName(clinicName: text));

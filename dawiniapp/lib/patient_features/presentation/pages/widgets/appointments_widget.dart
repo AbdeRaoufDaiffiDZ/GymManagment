@@ -1,9 +1,10 @@
-// ignore_for_file: sort_child_properties_last
+// ignore_for_file: sort_child_properties_last, non_constant_identifier_names, prefer_interpolation_to_compose_strings
 
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:dawini_full/core/error/ErrorWidget.dart';
 import 'package:dawini_full/core/loading/loading.dart';
-import 'package:dawini_full/patient_features/domain/entities/doctor.dart';
-import 'package:dawini_full/patient_features/domain/usecases/doctor_usecase.dart';
+import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
+import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,7 +24,7 @@ class _AppointmentsWidgetState extends State<AppointmentsWidget> {
 
     return BlocBuilder<PatientsBloc, PatientsState>(builder: (context, state) {
       if (state is PatientsLoading) {
-        return Loading();
+        return const Loading();
       } else if (state is PatientsLoaded) {
         return ListView.builder(
           itemCount: state.patients.length,
@@ -35,7 +36,7 @@ class _AppointmentsWidgetState extends State<AppointmentsWidget> {
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.white,
                 border: Border.all(
-                  color: Color.fromARGB(
+                  color: const Color.fromARGB(
                       255, 212, 212, 212), // Set the border color
                   width: 2.w, // Set the border width
                 ),
@@ -48,7 +49,7 @@ class _AppointmentsWidgetState extends State<AppointmentsWidget> {
                       Padding(
                         padding: EdgeInsets.only(left: 10.w),
                         child: Text(
-                          "Dr. " + state.patients[index].DoctorName,
+                          "Dr. ${state.patients[index].DoctorName}",
                           style: TextStyle(
                               fontSize: 14.sp, fontWeight: FontWeight.w800),
                         ),
@@ -56,9 +57,7 @@ class _AppointmentsWidgetState extends State<AppointmentsWidget> {
                       Padding(
                         padding: EdgeInsets.only(left: 10.w),
                         child: Text(
-                          state.patients[index].firstName +
-                              " " +
-                              state.patients[index].lastName,
+                          "${state.patients[index].firstName} ${state.patients[index].lastName}",
                           style: TextStyle(
                               fontSize: 14.sp, fontWeight: FontWeight.w800),
                         ),
@@ -77,7 +76,7 @@ class _AppointmentsWidgetState extends State<AppointmentsWidget> {
                           },
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
-                          color: Color.fromARGB(54, 177, 177, 177),
+                          color: const Color.fromARGB(54, 177, 177, 177),
                           onPressed: () {},
                           child: Center(
                             child: Text(
@@ -106,9 +105,9 @@ class _AppointmentsWidgetState extends State<AppointmentsWidget> {
           },
         );
       } else if (state is PatientsLoadingError) {
-        return Loading();
+        return const Loading();
       } else {
-        return Loading();
+        return const Loading();
       }
     });
   }
@@ -118,8 +117,8 @@ class _AppointmentsWidgetState extends State<AppointmentsWidget> {
         content: NotificationContent(
             id: index,
             channelKey: 'basic_channel',
-            title: "your turn ${body}",
-            body: "${patientName} turn at ${doctorName} ${body}"));
+            title: "your turn $body",
+            body: "$patientName turn at $doctorName $body"));
   }
 
   notificationConditions(state, index, doctors) {
@@ -157,6 +156,15 @@ class _AppointmentsWidgetState extends State<AppointmentsWidget> {
           child: StreamBuilder<List<DoctorEntity>>(
               stream: GetDoctorsStreamInfoUseCase.excute(),
               builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Loading();
+                }
+                if (snapshot.hasError) {
+                  return ErrorPage(
+                    error: snapshot.error,
+                  );
+                  // Text('Error: ${snapshot.error}');
+                }
                 late final List<DoctorEntity> data;
                 if (snapshot.data == null) {
                   data = [];
@@ -171,14 +179,14 @@ class _AppointmentsWidgetState extends State<AppointmentsWidget> {
                     .where(
                         (element) => element.uid == state.patients[index].uid)
                     .toList();
-                if (!doctors.isEmpty) {
+                if (doctors.isNotEmpty) {
                   if (state.patients[index].today) {
                     notificationConditions(state, index, doctors);
                   }
                 }
                 return Center(
                     child: Text(
-                  !doctors.isEmpty ? doctors.first.turn.toString() : "",
+                  doctors.isNotEmpty ? doctors.first.turn.toString() : "",
                   style: TextStyle(
                     fontSize: 30.sp,
                     fontWeight: FontWeight.w400,
@@ -187,9 +195,10 @@ class _AppointmentsWidgetState extends State<AppointmentsWidget> {
               }),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: Color.fromARGB(38, 158, 158, 158),
+            color: const Color.fromARGB(38, 158, 158, 158),
             border: Border.all(
-              color: Color.fromARGB(0, 158, 158, 158), // Set the border color
+              color: const Color.fromARGB(
+                  0, 158, 158, 158), // Set the border color
               width: 3.w, // Set the border width
             ),
           ),

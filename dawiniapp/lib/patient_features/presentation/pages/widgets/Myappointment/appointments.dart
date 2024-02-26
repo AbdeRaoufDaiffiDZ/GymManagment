@@ -1,11 +1,11 @@
-//The new design for appointement
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Myappointment/current%20.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Myappointment/previous.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Myappointemtns extends StatefulWidget {
-  const Myappointemtns({super.key});
+  Myappointemtns({Key? key, String? uid}) : super(key: key);
+ 
 
   @override
   State<Myappointemtns> createState() => _MyappointemtnsState();
@@ -18,51 +18,82 @@ class _MyappointemtnsState extends State<Myappointemtns>
     TabController tabcontroller = TabController(length: 2, vsync: this);
 
     return DefaultTabController(
-        length: 2,
-        child: Scaffold(
-            body: SafeArea(
-                child: Column(children: [
-          Container(
-            margin: EdgeInsets.only(top: 20.h),
-            width: 190.w,
-            child: const FittedBox(
-              fit: BoxFit.fill,
-              child: Text("My appointments",
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0.0,
+          backgroundColor: const Color(0XFFFAFAFA),
+          title: Center(
+            child: Container(
+              margin: EdgeInsets.only(top: 12.h),
+              width: 200.w,
+              height: 30.h,
+              child: const FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  "My appointments",
                   style: TextStyle(
-                      fontFamily: 'Nunito',
-                      fontSize: 16,
+                      color: Color(0XFF202020),
+                      fontSize: 30,
                       fontWeight: FontWeight.w700,
-                      color: Color(0XFF202020))),
+                      fontFamily: 'Nunito'),
+                ),
+              ),
             ),
           ),
-          SizedBox(height: 10.h),
-          TabBar(
-            labelStyle: TextStyle(
-                fontSize: 25.sp,
-                fontFamily: 'Nunito',
-                fontWeight: FontWeight.w600),
-            indicator: const UnderlineTabIndicator(
-                borderSide: BorderSide(width: 2.0, color: Color(0XFF04CBCB)),
-                insets: EdgeInsets.symmetric(horizontal: 25.0)),
-            controller: tabcontroller,
-            labelColor: const Color(0xFF202020),
-            unselectedLabelColor: const Color(0XFF202020).withOpacity(0.4),
-            tabs: const [
-              Tab(
-                text: 'Current',
-              ),
-              Tab(text: 'Previous'),
-            ],
-            indicatorColor: const Color(0XFF04CBCB),
-          ),
-          Expanded(
-            // ignore: prefer_const_literals_to_create_immutables
-            child: TabBarView(controller: tabcontroller, children: [
-              const currentappointm(),
-              // Content for the 'Previous' tab
-              const previousappointm()
-            ]),
-          )
-        ]))));
+        ),
+        body: SafeArea(
+            child: Container(
+                color: const Color(0XFFFAFAFA),
+                child: Column(children: [
+                  TabBar(
+                      controller: tabcontroller,
+                      labelColor: Colors.black,
+                      unselectedLabelColor: Colors.grey,
+                      indicator: UnderlineTabIndicator(
+                          borderSide: BorderSide(
+                              width: 2.w, color: const Color(0XFF04CBCB)),
+                          insets: EdgeInsets.symmetric(horizontal: 28.w)),
+                      tabs: [
+                        Tab(
+                          child: SizedBox(
+                            width: 130.w,
+                            height: 30.h,
+                            child: const FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                "Current",
+                                style: TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily: "Nunito"),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Tab(
+                          child: Container(
+                            width: 130.w,
+                            height: 30.h,
+                            child: const FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                "Previous",
+                                style: TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily: "Nunito"),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ]),
+                  Expanded(
+                      child: TabBarView(
+                          controller: tabcontroller,
+                          children: [newcurrent(), previousappointm()])),
+                ]))),
+      ),
+    );
   }
 }

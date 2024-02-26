@@ -1,4 +1,4 @@
-import 'dart:async';
+// ignore_for_file: depend_on_referenced_packages
 
 import 'package:bloc/bloc.dart';
 import 'package:dawini_full/patient_features/domain/entities/clinic.dart';

@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types
+
 part of 'clinics_bloc.dart';
 
 sealed class ClinicsEvent extends Equatable {
@@ -10,7 +12,7 @@ sealed class ClinicsEvent extends Equatable {
 class onClinicChoose extends ClinicsEvent {
   final ClinicEntity clinics;
 
-  onClinicChoose({required this.clinics});
+  const onClinicChoose({required this.clinics});
 
   @override
   List<Object> get props => [clinics];
@@ -28,7 +30,7 @@ class ClinicInfoUpdated extends ClinicsEvent {
 class onClinicsearchByName extends ClinicsEvent {
   final String clinicName;
 
-  onClinicsearchByName({required this.clinicName});
+  const onClinicsearchByName({required this.clinicName});
 
   @override
   List<Object> get props => [clinicName];
@@ -39,7 +41,7 @@ final class onSeeAllClinics extends ClinicsEvent {}
 class onClinicsearchByWilaya extends ClinicsEvent {
   final String wilaya;
 
-  onClinicsearchByWilaya({required this.wilaya});
+  const onClinicsearchByWilaya({required this.wilaya});
 
   @override
   List<Object> get props => [wilaya];

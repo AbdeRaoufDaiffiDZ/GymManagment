@@ -1,8 +1,16 @@
+// ignore_for_file: use_build_context_synchronously, camel_case_types, file_names
+
+import 'package:dawini_full/auth/presentation/loginPage.dart';
+import 'package:dawini_full/auth/presentation/welcomePage.dart';
+import 'package:dawini_full/introduction_feature/domain/usecases/set_type_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class myAppbar extends StatelessWidget implements PreferredSizeWidget {
-  const myAppbar({Key? key}) : super(key: key);
+  final String? uid;
+  final bool popOrNot;
+  myAppbar({Key? key, this.uid, required this.popOrNot}) : super(key: key);
+  final SetTypeUseCase setTypeUseCase = SetTypeUseCase();
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +28,28 @@ class myAppbar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () async {
+                if (uid == null) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => LoginPage(
+                                popOrNot: false,
+                              )));
+                } else {
+                  await setTypeUseCase.execute("doctor");
+                  if (popOrNot) {
+                    Navigator.pop(context);
+                  } else {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const doctorsideHome(
+                                  popOrNot: true,
+                                )));
+                  }
+                }
+              },
               icon: Icon(
                 Icons.menu,
                 size: 30.w,

@@ -1,23 +1,27 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, sort_child_properties_last
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, sort_child_properties_last, prefer_typing_uninitialized_variables, camel_case_types
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/bloc/doctor_bloc.dart';
+import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
+import 'package:dawini_full/doctor_Features/presentation/pages/doctors/doctorsList.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
-import 'package:dawini_full/patient_features/presentation/pages/widgets/Myappointment/appointments.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/appBar.dart';
-import 'package:dawini_full/patient_features/presentation/pages/widgets/clinics/clinicsList.dart';
-import 'package:dawini_full/patient_features/presentation/pages/widgets/doctors/doctorsList.dart';
-import 'package:dawini_full/patient_features/presentation/pages/widgets/favorite/favourites.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/serachMenu.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/specialityList.dart';
+import 'package:dawini_full/patient_features/presentation/pages/widgets/Myappointment/appointments.dart';
+import 'package:dawini_full/patient_features/presentation/pages/widgets/favorite/favourites.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Weather extends StatefulWidget {
+  final device;
+  final bool popOrNot;
+
   const Weather({
     super.key,
+    this.device,
+    required this.popOrNot,
   });
 
   @override
@@ -39,6 +43,7 @@ class _DoctorPageState extends State<Weather> {
     AppLocalizations text = AppLocalizations.of(context)!;
 
     return Scaffold(
+        backgroundColor: Colors.white,
         bottomNavigationBar: Container(
           decoration: BoxDecoration(
             boxShadow: [
@@ -64,9 +69,9 @@ class _DoctorPageState extends State<Weather> {
                 topRight: Radius.circular(25.r)),
             child: BottomNavigationBar(
                 backgroundColor: Colors.white,
-                iconSize: 23.h,
-                unselectedFontSize: 14.sp,
-                selectedFontSize: 14.sp,
+                iconSize: 21.sp,
+                unselectedFontSize: 13.sp,
+                selectedFontSize: 13.sp,
                 currentIndex: selectedindex2,
                 onTap: (value) {
                   setState(() {
@@ -95,68 +100,73 @@ class _DoctorPageState extends State<Weather> {
       case 0:
         return ListView(
           children: [
-            myAppbar(),
+            myAppbar(
+              popOrNot: widget.popOrNot,
+                ),
             Container(
               child: Column(children: [
                 SearchMenu(),
                 SizedBox(height: 10.h),
 
-                Container(
-                  margin: EdgeInsets.only(top: 4.h),
-                  padding: EdgeInsets.only(left: 9.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: 200.w,
-                        height: 20.h,
-                        child: AutoSizeText(text.recommended_clinics,
-                            style: TextStyle(
-                                fontFamily: 'Nunito',
-                                fontSize: 19.sp,
-                                fontWeight: FontWeight.w600)),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Scaffold(
-                                  appBar: AppBar(),
-                                  body: Column(
-                                    children: [
-                                      SearchMenuClinics(),
-                                      SizedBox(
-                                        height: 20.h,
-                                      ),
-                                      ClinicsList(),
-                                    ],
-                                  ),
-                                ),
-                              ));
-                        },
-                        child: SizedBox(
-                          width: 80.w,
-                          height: 20.h,
-                          child: Center(
-                            child: AutoSizeText(text.see_all,
-                                style: TextStyle(
-                                    fontFamily: 'Nunito',
-                                    fontSize: 20.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: const Color(0xFF2CDBC6))),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                // Container(
+                //   margin: EdgeInsets.only(top: 4.h),
+                //   padding: EdgeInsets.only(left: 9.w),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       SizedBox(
+                //         width: 200.w,
+                //         height: 20.h,
+                //         child: AutoSizeText(text.recommended_clinics,
+                //             style: TextStyle(
+                //                 fontFamily: 'Nunito',
+                //                 fontSize: 19.sp,
+                //                 fontWeight: FontWeight.w600)),
+                //       ),
+                //       //   GestureDetector(
+                //       //     onTap: () {
+                //       //       Navigator.push(
+                //       //           context,
+                //       //           MaterialPageRoute(
+                //       //             builder: (context) => Scaffold(
+                //       //               appBar: AppBar(),
+                //       //               body: Column(
+                //       //                 children: [
+                //       //                   SearchMenuClinics(),
+                //       //                   SizedBox(
+                //       //                     height: 20.h,
+                //       //                   ),
+                //       //                   // ClinicsList(),
+                //       //                   ClinicWidget(
+                //       //                     clinics: [],
+                //       //                   )
+                //       //                 ],
+                //       //               ),
+                //       //             ),
+                //       //           ));
+                //       //     },
+                //       //     child: SizedBox(
+                //       //       width: 80.w,
+                //       //       height: 20.h,
+                //       //       child: Center(
+                //       //         child: AutoSizeText(text.see_all,
+                //       //             style: TextStyle(
+                //       //                 fontFamily: 'Nunito',
+                //       //                 fontSize: 20.sp,
+                //       //                 fontWeight: FontWeight.w600,
+                //       //                 color: const Color(0xFF2CDBC6))),
+                //       //       ),
+                //       //     ),
+                //       //   )
+                //     ],
+                //   ),
+                // ),
 
-                SizedBox(height: 10.h),
-                Container(
-                    //  CLinics card
-                    child: ClinicsList()),
-                SizedBox(height: 16.h),
+                // SizedBox(height: 10.h),
+                // Container(
+                //     //  CLinics card
+                //     child: ClinicsList()),
+                // SizedBox(height: 16.h),
 
                 // Specaility search scroll
                 //crossAxisAlignment: CrossAxisAlignment.start,
@@ -167,7 +177,7 @@ class _DoctorPageState extends State<Weather> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
+                      SizedBox(
                         width: 80.w,
                         height: 20.h,
                         child: Center(
@@ -179,30 +189,28 @@ class _DoctorPageState extends State<Weather> {
                                   color: const Color(0xFF2CDBC6))),
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Scaffold(
-                                  appBar: AppBar(),
-                                  body: Center(child: Text("Specialities")),
-                                ),
-                              ));
-                        },
-                        child: Container(
-                          width: 80.w,
-                          height: 20.h,
-                          child: Center(
-                            child: AutoSizeText(text.search,
-                                style: TextStyle(
-                                    fontFamily: 'Nunito',
-                                    fontSize: 20.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: const Color(0xFF2CDBC6))),
-                          ),
-                        ),
-                      ),
+                      //   GestureDetector(     ///  this is search speciality button
+                      //     onTap: () {
+                      //       Navigator.push(
+                      //           context,
+                      //           MaterialPageRoute(
+                      //               builder: (context) => doctorsideHome(
+                      //                     popOrNot: true,
+                      //                   )));
+                      //     },
+                      //     child: SizedBox(
+                      //       width: 80.w,
+                      //       height: 20.h,
+                      //       child: Center(
+                      //         child: AutoSizeText(text.search,
+                      //             style: TextStyle(
+                      //                 fontFamily: 'Nunito',
+                      //                 fontSize: 20.sp,
+                      //                 fontWeight: FontWeight.w600,
+                      //                 color: const Color(0xFF2CDBC6))),
+                      //       ),
+                      //     ),
+                      //   ),
                     ],
                   ),
                 ),
@@ -219,27 +227,15 @@ class _DoctorPageState extends State<Weather> {
                                 fontFamily: 'Nunito',
                                 fontSize: 19.sp,
                                 fontWeight: FontWeight.w600)),
-                        /*SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.18,
-                          ),*/
                         GestureDetector(
                           onTap: () {
                             dataBloc.add(onSeeAllDoctors());
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => Scaffold(
-                                    appBar: AppBar(),
-                                    body: Column(
-                                      children: [
-                                        SearchMenu(),
-                                        DoctorsList(),
-                                      ],
-                                    ),
-                                  ),
-                                ));
+                                    builder: (context) => doctors()));
                           },
-                          child: Container(
+                          child: SizedBox(
                             width: 80.w,
                             height: 20.h,
                             child: Center(
@@ -269,5 +265,26 @@ class _DoctorPageState extends State<Weather> {
       default:
         return Container();
     }
+  }
+}
+
+class doctors extends StatefulWidget {
+  const doctors({super.key});
+
+  @override
+  State<doctors> createState() => _doctorsState();
+}
+
+class _doctorsState extends State<doctors> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: ListView(
+        children: [
+          SearchMenu(),
+          DoctorsList(device: "widget.device"),
+        ],
+      ),
+    );
   }
 }
