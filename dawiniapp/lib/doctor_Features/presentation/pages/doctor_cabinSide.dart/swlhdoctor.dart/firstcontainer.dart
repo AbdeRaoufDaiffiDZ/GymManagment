@@ -1,7 +1,9 @@
 // ignore_for_file: camel_case_types, sized_box_for_whitespace
 
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
+import 'package:dawini_full/doctor_Features/presentation/bloc/bloc_for_patients_data_from_doctor/doctor_patients_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class firstConatiner extends StatefulWidget {
@@ -15,6 +17,8 @@ class firstConatiner extends StatefulWidget {
 class _firstConatinerState extends State<firstConatiner> {
   @override
   Widget build(BuildContext context) {
+    final DoctorPatientsBloc doctorPatientsBloc =
+        BlocProvider.of<DoctorPatientsBloc>(context);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
       child: Container(
@@ -33,10 +37,13 @@ class _firstConatinerState extends State<firstConatiner> {
                     shape: BoxShape.circle,
                     border: Border.all(
                         color: const Color(0xff202020).withOpacity(0.4))),
-                child: Image.asset(
-                  "assets/images/maleDoctor.png",
-                  alignment: Alignment.center,
-                  scale: 4.3,
+                child: GestureDetector(
+                  onTap: () {},
+                  child: Image.asset(
+                    "assets/images/maleDoctor.png",
+                    alignment: Alignment.center,
+                    scale: 4.3,
+                  ),
                 )),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -35,3 +35,12 @@ class onDataUpdate extends DoctorPatientsEvent {
   @override
   List<Object> get props => [numberInList, data, infoToUpdate];
 }
+
+class onGetPatinets extends DoctorPatientsEvent {
+  final String uid;
+
+  onGetPatinets({required this.uid});
+
+  @override
+  List<Object> get props => [uid];
+}

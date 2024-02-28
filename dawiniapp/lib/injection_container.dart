@@ -51,8 +51,7 @@ Future<void> setupLocator() async {
   // usecase
   // locator.registerLazySingleton(
   //     () => GetCurrentWeatherUseCase(weatherRepository: locator()));
-  locator.registerLazySingleton(
-      () => GetDoctorsInfoUseCase(doctorRepository: locator()));
+  locator.registerLazySingleton(() => GetDoctorsInfoUseCase());
   locator.registerLazySingleton(() => UpdateDoctorCabinData());
   locator.registerLazySingleton(() => BookDoctorAppointmentUseCase());
   ////////////

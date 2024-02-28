@@ -58,12 +58,12 @@ class _DoctorCabinInfoState extends State<DoctorCabinInfo>
   @override
   Widget build(BuildContext context) {
     final DoctorBloc doctorBloc = BlocProvider.of<DoctorBloc>(context);
-
+    final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
     TextEditingController data = TextEditingController();
     return Scaffold(
         body: SafeArea(
       child: StreamBuilder<List<DoctorEntity>>(
-          stream: GetDoctorsStreamInfoUseCase.excute(),
+          stream: getDoctorsInfoUseCase.streamDoctorInfo(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Loading();

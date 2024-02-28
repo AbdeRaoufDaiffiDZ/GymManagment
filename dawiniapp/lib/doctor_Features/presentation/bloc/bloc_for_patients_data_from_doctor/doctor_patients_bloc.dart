@@ -13,7 +13,8 @@ class DoctorPatientsBloc
   final DoctorCabinDataSource doctorCabinDataSource =
       DoctorCabinDataSourceImp();
   final UpdateDoctorCabinData updateDoctorCabinData;
-
+  final GetDoctorPatinetsInfousecase getDoctorPatinetsInfo =
+      GetDoctorPatinetsInfousecase();
   DoctorPatientsBloc(this.updateDoctorCabinData) : super(patintsInfoLoading()) {
     on<DoctorPatientsEvent>((event, emit) async {
       if (event is LoadedDataDoctorPatinetsEvent) {
@@ -31,6 +32,19 @@ class DoctorPatientsBloc
           final data = await doctorCabinDataSource.getDoctorsInfo();
 
           emit(patintsInfoLoaded(data)); //         });
+        } catch (e) {
+          emit(patintsInfoLoadingError(e.toString()));
+        }
+      } else if (event is onGetPatinets) {
+        try {
+          print("pressed in event");
+
+          // updateDoctorCabinData.updateState(
+          //     event.doctor.numberInList, event.state);
+          await doctorCabinDataSource.patinetsInfotest(event.uid);
+          final data = await doctorCabinDataSource.getDoctorsInfo();
+
+          emit(patintsInfoLoaded(data));
         } catch (e) {
           emit(patintsInfoLoadingError(e.toString()));
         }

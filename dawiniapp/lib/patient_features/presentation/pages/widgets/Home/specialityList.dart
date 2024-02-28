@@ -6,6 +6,7 @@ import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_bloc/doctor
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:http/http.dart';
 
 class SpecialityList extends StatefulWidget {
   const SpecialityList({super.key});
@@ -26,9 +27,10 @@ class _SpecialityListState extends State<SpecialityList> {
   @override
   Widget build(BuildContext context) {
     final DoctorBloc dataBloc = BlocProvider.of<DoctorBloc>(context);
+    final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
 
     return StreamBuilder<List<DoctorEntity>>(
-        stream: GetDoctorsStreamInfoUseCase.excute(),
+        stream: getDoctorsInfoUseCase.streamDoctorInfo(),
         builder: (context, snapshot) {
           late final List<DoctorEntity> data;
           if (snapshot.data == null) {

@@ -49,13 +49,13 @@ class _doctorDetailsState extends State<doctorDetails>
   @override
   Widget build(BuildContext context) {
     final PatientsBloc patientsBloc = BlocProvider.of<PatientsBloc>(context);
-
+    final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
     final uid = widget.uid;
     isFavortie(uid);
     return Scaffold(
         body: SafeArea(
       child: StreamBuilder<List<DoctorEntity>>(
-          stream: GetDoctorsStreamInfoUseCase.excute(),
+          stream: getDoctorsInfoUseCase.streamDoctorInfo(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return ErrorPage(

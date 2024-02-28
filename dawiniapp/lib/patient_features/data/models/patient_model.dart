@@ -78,7 +78,7 @@ class PatientModel extends PatientEntity {
       turn: map['turn']?.toInt() ?? 0,
       uid: map['uid'] ?? "0",
       DoctorName: '',
-      today: map['today'],
+      today: map['today'] ?? true,
     );
   }
 

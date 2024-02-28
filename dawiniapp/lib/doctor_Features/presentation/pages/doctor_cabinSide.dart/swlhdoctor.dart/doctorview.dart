@@ -73,6 +73,7 @@ class _LanguageScreenState extends State<doctorview> {
                       );
                     }),
                     onChanged: (value) {
+                      //  doctorPatientsBloc.add(onGetPatinets(uid: doctor.uid));
                       doctorPatientsBloc.add(onStateUpdate(
                           doctor: doctor, state: !doctor.atSerivce));
                     },

@@ -6,26 +6,22 @@ import 'package:dawini_full/doctor_Features/data/repositories/doctor_repository_
 import 'package:dawini_full/patient_features/data/models/patient_model.dart';
 
 class GetDoctorsInfoUseCase {
-  final DoctorRepository doctorRepository;
+  final DoctorRepository doctorRepository = DcotrRepositoryImpl();
 
-  GetDoctorsInfoUseCase({required this.doctorRepository});
-
-  Future<List<DoctorEntity>> excute() async {
+  Future<List<DoctorEntity>> getDoctorsInfo() async {
     Either<Failure, List<DoctorEntity>> info;
     info = await doctorRepository.getDoctorsInfo();
 
     return info.fold(
         (l) => throw (ServerFailure(message: l.message)), (r) => r);
   }
-}
 
-class GetDoctorsStreamInfoUseCase {
-  static final DoctorRepository doctorRepository = DcotrRepositoryImpl();
-
-  static Stream<List<DoctorEntity>> excute() {
+  Stream<List<DoctorEntity>> streamDoctorInfo() {
     return doctorRepository.streamDoctors();
   }
 }
+
+class GetDoctorsStreamInfoUseCase {}
 
 class UpdateDoctorCabinData {
   final DoctorRepository doctorRepository = DcotrRepositoryImpl();
@@ -44,7 +40,7 @@ class UpdateDoctorCabinData {
   }
 }
 
-class GetDoctorPatinetsInfo {
+class GetDoctorPatinetsInfousecase {
   final DoctorRepository doctorRepository = DcotrRepositoryImpl();
   Future<Either<Failure, List<PatientModel>>> excute(String uid) async {
     return doctorRepository.patinetsInfo(uid);

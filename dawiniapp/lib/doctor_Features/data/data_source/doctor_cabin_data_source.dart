@@ -4,7 +4,6 @@ import 'dart:convert';
 
 import 'package:dawini_full/core/constants/constants.dart';
 import 'package:dawini_full/core/error/exception.dart';
-import 'package:dawini_full/core/error/failure.dart';
 import 'package:dawini_full/patient_features/data/data_source/local_data_source.dart';
 import 'package:dawini_full/doctor_Features/data/models/doctor_model.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
@@ -12,7 +11,6 @@ import 'package:dawini_full/patient_features/data/models/patient_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 
 abstract class DoctorCabinDataSource {
   Future<List<DoctorModel>> getDoctorsInfo();
@@ -22,7 +20,7 @@ abstract class DoctorCabinDataSource {
   Future<void> updateDoctorInfo(
       int numberInList, dynamic data, String infoToUpdate);
   Future<List<PatientModel>> patinetsInfo(String uid);
-  Stream<List<PatientModel>> patinetsInfotest(String uid);
+  Future<List<PatientModel>> patinetsInfotest(String uid);
 }
 
 class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
@@ -65,22 +63,26 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
   }
 
   @override
-  Stream<List<PatientModel>> patinetsInfotest(String uid) {
-    final result = _databaseReference
+  Future<List<PatientModel>> patinetsInfotest(String uid) async {
+    final result = await _databaseReference
         .ref()
         .child(
             '/user_data/Doctors/SBad6UjfzMQDjJcw0nUVEYnnZ2F2/Cabin_info/Patients/2024-02-26')
-        .onValue
-        .map((event) {
-      List currapted = event.snapshot.value as List;
-      final data = currapted.where((element) => element != null).map((e) {
-        return PatientModel.fromJson(e);
-      }).toList();
+        .get();
+    List data = result.value as List;
+    List data_info = data.where((element) => element != null).toList();
+    final info = data_info.map((e) {
+      Map<String, dynamic> convertedMap = {};
+      e.forEach((key, value) {
+        if (key is String && value != null) {
+          convertedMap[key] = value;
+        }
+      });
 
-      return data;
-    });
-
-    return result;
+      return PatientModel.fromMap(convertedMap);
+    }).toList();
+    print(info);
+    return info;
     // try {
     //   String date = DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
     //   final response =

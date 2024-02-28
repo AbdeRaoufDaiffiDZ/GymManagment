@@ -23,6 +23,8 @@ class previousappointm extends StatefulWidget {
 class _previousappointmState extends State<previousappointm> {
   @override
   Widget build(BuildContext context) {
+    final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
+
     return Scaffold(
       body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 15.h),
@@ -46,7 +48,7 @@ class _previousappointmState extends State<previousappointm> {
                 itemCount: data.length,
                 itemBuilder: (context, index) {
                   return StreamBuilder<List<DoctorEntity>>(
-                      stream: GetDoctorsStreamInfoUseCase.excute(),
+                      stream: getDoctorsInfoUseCase.streamDoctorInfo(),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {

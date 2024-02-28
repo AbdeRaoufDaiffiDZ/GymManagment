@@ -24,8 +24,10 @@ class DoctorsList extends StatefulWidget {
 class _DoctorsListState extends State<DoctorsList> {
   @override
   Widget build(BuildContext context) {
+    // ignore: non_constant_identifier_names
+    final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
     return StreamBuilder<List<DoctorEntity>>(
-        stream: GetDoctorsStreamInfoUseCase.excute(),
+        stream: getDoctorsInfoUseCase.streamDoctorInfo(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Loading();

@@ -24,6 +24,7 @@ class _favoriteState extends State<myfavdoctors> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     // final PatientsBloc patientsBloc = BlocProvider.of<PatientsBloc>(context);
     AppLocalizations text = AppLocalizations.of(context)!;
+    final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
 
     return Scaffold(
         body: Padding(
@@ -33,7 +34,7 @@ class _favoriteState extends State<myfavdoctors> with TickerProviderStateMixin {
                 builder: (context, uids) {
                   if (uids.data != null && uids.data!.isNotEmpty) {
                     return StreamBuilder<List<DoctorEntity>>(
-                        stream: GetDoctorsStreamInfoUseCase.excute(),
+                        stream: getDoctorsInfoUseCase.streamDoctorInfo(),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {

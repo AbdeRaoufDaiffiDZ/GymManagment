@@ -25,6 +25,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final PatientsBloc patientsBloc = BlocProvider.of<PatientsBloc>(context);
+    final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
 
     return Scaffold(
         body: Padding(
@@ -47,7 +48,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
               itemCount: data.length,
               itemBuilder: (context, index) {
                 return StreamBuilder<List<DoctorEntity>>(
-                    stream: GetDoctorsStreamInfoUseCase.excute(),
+                    stream: getDoctorsInfoUseCase.streamDoctorInfo(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Loading();

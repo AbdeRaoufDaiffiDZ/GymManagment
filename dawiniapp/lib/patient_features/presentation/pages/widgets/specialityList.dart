@@ -28,9 +28,10 @@ class _SpecialityListState extends State<SpecialityList> {
   @override
   Widget build(BuildContext context) {
     final DoctorBloc dataBloc = BlocProvider.of<DoctorBloc>(context);
+    final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
 
     return StreamBuilder<List<DoctorEntity>>(
-        stream: GetDoctorsStreamInfoUseCase.excute(),
+        stream: getDoctorsInfoUseCase.streamDoctorInfo(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Loading();

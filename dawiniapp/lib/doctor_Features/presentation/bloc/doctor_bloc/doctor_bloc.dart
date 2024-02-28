@@ -42,7 +42,7 @@ class DoctorBloc extends Bloc<DoctorEvent, DoctorState> {
       } else if (event is onDoctorsearchByWilaya) {
         emit(FilterByWilaya(wilaya: event.wilaya));
       } else if (event is DoctorinitialEvent) {
-        final data = getDoctorsInfoUseCase.excute();
+        final data = getDoctorsInfoUseCase.getDoctorsInfo();
 
         add(doctorsInfoUpdated(doctors: await data));
       } else if (event is onSeeAllDoctors) {

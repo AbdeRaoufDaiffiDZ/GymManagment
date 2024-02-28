@@ -637,10 +637,12 @@ class _MyappointemtnsState extends State<Myappointemtns>
   }
 
   Widget turnSHower(state, index) {
+    final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
+
     return Column(
       children: [
         StreamBuilder<List<DoctorEntity>>(
-            stream: GetDoctorsStreamInfoUseCase.excute(),
+            stream: getDoctorsInfoUseCase.streamDoctorInfo(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Loading();
