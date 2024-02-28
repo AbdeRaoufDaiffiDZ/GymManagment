@@ -14,7 +14,7 @@ class PatientEntity extends Equatable {
   final int turn;
   final String DoctorName;
   final String uid;
-  const PatientEntity(
+  PatientEntity(
       {required this.DoctorName,
       required this.uid,
       required this.today,
@@ -54,4 +54,16 @@ class PatientEntity extends Equatable {
       'uid': uid
     };
   }
+
+  final patinet = PatientEntity(
+      DoctorName: "",
+      uid: "",
+      today: true,
+      AppointmentDate: "",
+      turn: 0,
+      doctorRemark: "",
+      address: "",
+      firstName: "",
+      lastName: "",
+      phoneNumber: "");
 }

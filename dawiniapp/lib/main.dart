@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:dawini_full/auth/domain/usecases/auth_usecase.dart';
 import 'package:dawini_full/auth/presentation/bloc/auth_bloc.dart';
+import 'package:dawini_full/doctor_Features/presentation/bloc/bloc_for_patients_data_from_doctor/doctor_patients_bloc.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
 import 'package:dawini_full/firebase_options.dart';
 import 'package:dawini_full/injection_container.dart';
@@ -77,6 +78,7 @@ class MyApp extends StatelessWidget {
             create: (_) => locator<ClinicsBloc>()..add(ClinicinitialEvent()),
           ),
           BlocProvider(create: (_) => locator<AuthBloc>()),
+          BlocProvider(create: (_) => locator<DoctorPatientsBloc>()),
           BlocProvider(
             create: (_) => locator<DoctorBloc>()..add(DoctorinitialEvent()),
           ),
@@ -93,18 +95,21 @@ class MyApp extends StatelessWidget {
             splitScreenMode: true,
             builder: (context, child) {
               return MaterialApp(
-                locale: DevicePreview.locale(context),
-                builder: DevicePreview.appBuilder,
-                localizationsDelegates: AppLocalizations.localizationsDelegates,
-                supportedLocales: AppLocalizations.supportedLocales,
-                debugShowCheckedModeBanner: false,
-                home: MyWidget(device: device,)
-                
-                // doctorview(
-                    //uid: widget.uid, popOrNot: null,
+                  locale: DevicePreview.locale(context),
+                  builder: DevicePreview.appBuilder,
+                  localizationsDelegates:
+                      AppLocalizations.localizationsDelegates,
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  debugShowCheckedModeBanner: false,
+                  home: MyWidget(
+                    device: device,
+                  )
 
-                    // ),
-              );
+                  // doctorview(
+                  //uid: widget.uid, popOrNot: null,
+
+                  // ),
+                  );
             }));
   }
 }

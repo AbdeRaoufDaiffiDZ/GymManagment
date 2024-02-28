@@ -62,35 +62,3 @@ class onDoctorsearchByWilaya extends DoctorEvent {
 class DoctorinitialEvent extends DoctorEvent {}
 
 class onSeeAllDoctors extends DoctorEvent {}
-
-class onTurnUpdate extends DoctorEvent {
-  final int turn;
-  final DoctorEntity doctor;
-
-  const onTurnUpdate({required this.doctor, required this.turn});
-
-  @override
-  List<Object> get props => [turn];
-}
-
-class onStateUpdate extends DoctorEvent {
-  final bool state;
-  final DoctorEntity doctor;
-  const onStateUpdate({required this.doctor, required this.state});
-
-  @override
-  List<Object> get props => [state];
-}
-
-class onDataUpdate extends DoctorEvent {
-  final int numberInList;
-  final dynamic data;
-  final String infoToUpdate;
-
-  const onDataUpdate(
-      {required this.numberInList,
-      required this.data,
-      required this.infoToUpdate});
-  @override
-  List<Object> get props => [numberInList, data, infoToUpdate];
-}

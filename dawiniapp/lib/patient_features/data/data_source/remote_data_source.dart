@@ -89,17 +89,22 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
 
     String date = patientInfo.AppointmentDate;
     String id = patientInfo.turn.toString();
-    await _databaseReference
+    final bool result = await _databaseReference
         .ref("/user_data/Doctors/$uid/Cabin_info/Patients/$date/$id")
         .remove()
-        .then((value) => print("done!"))
-        .catchError((e) => print("error"));
-    await localDataSourcePatients.DeleteDoctorAppointmentLocal(
-        PatientModel.fromMap(patientInfo.toMap()));
+        .then((value) => true)
+        .catchError((e) => false);
+
     if (auth0.user.uid == "4OCo8desYHfXftOWtkY7DRHRFLm2") {
       auth0.signOut();
     }
-    return true;
+    if (result) {
+      await localDataSourcePatients.DeleteDoctorAppointmentLocal(
+          PatientModel.fromMap(patientInfo.toMap()));
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @override

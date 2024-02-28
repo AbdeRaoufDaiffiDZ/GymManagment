@@ -1,11 +1,12 @@
 // ignore_for_file: camel_case_types, use_build_context_synchronously
 
-import 'package:dawini_full/Widget/swlhdoctor.dart/doctorview.dart';
+import 'package:dawini_full/doctor_Features/presentation/bloc/bloc_for_patients_data_from_doctor/doctor_patients_bloc.dart';
 import 'package:dawini_full/core/error/ErrorWidget.dart';
 import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
+import 'package:dawini_full/doctor_Features/presentation/pages/doctor_cabinSide.dart/swlhdoctor.dart/doctorview.dart';
 import 'package:dawini_full/doctor_Features/presentation/pages/doctors/Patient_Info.dart';
 import 'package:dawini_full/introduction_feature/domain/usecases/set_type_usecase.dart';
 import 'package:dawini_full/patient_features/presentation/pages/weather_pag.dart';
@@ -57,6 +58,7 @@ class _DoctorCabinInfoState extends State<DoctorCabinInfo>
   @override
   Widget build(BuildContext context) {
     final DoctorBloc doctorBloc = BlocProvider.of<DoctorBloc>(context);
+
     TextEditingController data = TextEditingController();
     return Scaffold(
         body: SafeArea(
@@ -98,79 +100,79 @@ class _DoctorCabinInfoState extends State<DoctorCabinInfo>
                         height: 10.h,
                       ),
                       Text(doctor.speciality.toString()),
-                      MaterialButton(
-                          color: const Color.fromARGB(255, 109, 184, 245),
-                          child: const Text("update turn +"),
-                          onPressed: () {
-                            doctorBloc.add(onTurnUpdate(
-                                doctor: doctor, turn: doctor.turn + 1));
-                          }),
-                      SizedBox(width: 200.w, child: _entryField("data", data)),
-                      MaterialButton(
-                          color: const Color.fromARGB(255, 109, 184, 245),
-                          child: const Text("update Info"),
-                          onPressed: () {
-                            if (data.text.isNotEmpty) {
-                              doctorBloc.add(onDataUpdate(
-                                  data: data.text,
-                                  infoToUpdate: "description",
-                                  numberInList: doctor.numberInList));
-                            }
-                          }),
-                      MaterialButton(
-                          color: const Color.fromARGB(255, 109, 184, 245),
-                          child: const Text("update turn -"),
-                          onPressed: () {
-                            doctorBloc.add(onTurnUpdate(
-                                doctor: doctor, turn: doctor.turn - 1));
-                          }),
-                      MaterialButton(
-                          color: doctor.atSerivce
-                              ? const Color.fromARGB(255, 109, 184, 245)
-                              : Colors.red,
-                          child: const Text("stateUpdate"),
-                          onPressed: () {
-                            doctorBloc.add(onStateUpdate(
-                                doctor: doctor, state: !doctor.atSerivce));
-                          }),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          MaterialButton(
-                              color: const Color.fromARGB(255, 109, 184, 245),
-                              child: const Text("today"),
-                              onPressed: () {
-                                doctorBloc.add(onDataUpdate(
-                                    data: "today",
-                                    infoToUpdate: "date",
-                                    numberInList: doctor.numberInList));
-                              }),
-                          SizedBox(
-                            width: 10.w,
-                          ),
-                          MaterialButton(
-                              color: const Color.fromARGB(255, 109, 184, 245),
-                              child: const Text("all day"),
-                              onPressed: () {
-                                doctorBloc.add(onDataUpdate(
-                                    data: "all",
-                                    infoToUpdate: "date",
-                                    numberInList: doctor.numberInList));
-                              }),
-                          SizedBox(
-                            width: 10.w,
-                          ),
-                          MaterialButton(
-                              color: const Color.fromARGB(255, 109, 184, 245),
-                              child: const Text("tomorrow"),
-                              onPressed: () {
-                                doctorBloc.add(onDataUpdate(
-                                    data: "tomorrow",
-                                    infoToUpdate: "date",
-                                    numberInList: doctor.numberInList));
-                              }),
-                        ],
-                      ),
+                      // MaterialButton(
+                      //     color: const Color.fromARGB(255, 109, 184, 245),
+                      //     child: const Text("update turn +"),
+                      //     onPressed: () {
+                      //       doctorBloc.add(onTurnUpdate(
+                      //           doctor: doctor, turn: doctor.turn + 1));
+                      //     }),
+                      // SizedBox(width: 200.w, child: _entryField("data", data)),
+                      // MaterialButton(
+                      //     color: const Color.fromARGB(255, 109, 184, 245),
+                      //     child: const Text("update Info"),
+                      //     onPressed: () {
+                      //       if (data.text.isNotEmpty) {
+                      //         doctorBloc.add(onDataUpdate(
+                      //             data: data.text,
+                      //             infoToUpdate: "description",
+                      //             numberInList: doctor.numberInList));
+                      //       }
+                      //     }),
+                      // MaterialButton(
+                      //     color: const Color.fromARGB(255, 109, 184, 245),
+                      //     child: const Text("update turn -"),
+                      //     onPressed: () {
+                      //       doctorBloc.add(onTurnUpdate(
+                      //           doctor: doctor, turn: doctor.turn - 1));
+                      //     }),
+                      // MaterialButton(
+                      //     color: doctor.atSerivce
+                      //         ? const Color.fromARGB(255, 109, 184, 245)
+                      //         : Colors.red,
+                      //     child: const Text("stateUpdate"),
+                      //     onPressed: () {
+                      //       doctorBloc.add(onStateUpdate(
+                      //           doctor: doctor, state: !doctor.atSerivce));
+                      //     }),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: [
+                      //     MaterialButton(
+                      //         color: const Color.fromARGB(255, 109, 184, 245),
+                      //         child: const Text("today"),
+                      //         onPressed: () {
+                      //           doctorBloc.add(onDataUpdate(
+                      //               data: "today",
+                      //               infoToUpdate: "date",
+                      //               numberInList: doctor.numberInList));
+                      //         }),
+                      //     SizedBox(
+                      //       width: 10.w,
+                      //     ),
+                      //     // MaterialButton(
+                      //     //     color: const Color.fromARGB(255, 109, 184, 245),
+                      //     //     child: const Text("all day"),
+                      //     //     onPressed: () {
+                      //     //       doctorBloc.add(onDataUpdate(
+                      //     //           data: "all",
+                      //     //           infoToUpdate: "date",
+                      //     //           numberInList: doctor.numberInList));
+                      //         }),
+                      //     SizedBox(
+                      //       width: 10.w,
+                      //     ),
+                      //     MaterialButton(
+                      //         color: const Color.fromARGB(255, 109, 184, 245),
+                      //         child: const Text("tomorrow"),
+                      //         onPressed: () {
+                      //           doctorBloc.add(onDataUpdate(
+                      //               data: "tomorrow",
+                      //               infoToUpdate: "date",
+                      //               numberInList: doctor.numberInList));
+                      //         }),
+                      //   ],
+                      // ),
                       MaterialButton(
                           color: const Color.fromARGB(255, 109, 184, 245),
                           child: const Text("SWLH tbib"),
@@ -178,9 +180,12 @@ class _DoctorCabinInfoState extends State<DoctorCabinInfo>
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (BuildContext context) => doctorview(
+                                  builder: (BuildContext context) =>
+                                      // testDoctorsCabinData(uid: widget.uid)
+                                      doctorview(
                                     uid: widget.uid,
-                                    popOrNot: widget.popOrNot,
+                                    popOrNot: widget
+                                        .popOrNot, // TODO: do not forget to remove the comments
                                   ),
                                 ));
                           }),
@@ -221,15 +226,15 @@ class _DoctorCabinInfoState extends State<DoctorCabinInfo>
                         },
                         child: const Text("add patient"),
                       ),
-                      MaterialButton(
-                          color: const Color.fromARGB(255, 109, 184, 245),
-                          child: const Text("recommended"),
-                          onPressed: () {
-                            doctorBloc.add(onDataUpdate(
-                                data: 1,
-                                infoToUpdate: "recommendNumber",
-                                numberInList: doctor.numberInList));
-                          }),
+                      // MaterialButton(
+                      //     color: const Color.fromARGB(255, 109, 184, 245),
+                      //     child: const Text("recommended"),
+                      //     onPressed: () {
+                      //       doctorBloc.add(onDataUpdate(
+                      //           data: 1,
+                      //           infoToUpdate: "recommendNumber",
+                      //           numberInList: doctor.numberInList));
+                      //     }),
                     ],
                   ),
                 ),
@@ -238,5 +243,36 @@ class _DoctorCabinInfoState extends State<DoctorCabinInfo>
             return const Loading();
           }),
     ));
+  }
+}
+
+class testDoctorsCabinData extends StatefulWidget {
+  final String uid;
+  const testDoctorsCabinData({super.key, required this.uid});
+
+  @override
+  State<testDoctorsCabinData> createState() => _testDoctorsCabinDataState();
+}
+
+class _testDoctorsCabinDataState extends State<testDoctorsCabinData> {
+  @override
+  Widget build(BuildContext context) {
+    final DoctorPatientsBloc doctorPatientsBloc =
+        BlocProvider.of<DoctorPatientsBloc>(context);
+
+    return BlocBuilder<DoctorPatientsBloc, DoctorPatientsState>(
+      builder: (context, state) {
+        doctorPatientsBloc.add(LoadedDataDoctorPatinetsEvent());
+        if (state is patintsInfoLoading) {
+          return Loading();
+        }
+        if (state is patintsInfoLoaded) {
+          print(state.doctors.first.lastName);
+          return Placeholder();
+        }
+
+        return Container();
+      },
+    );
   }
 }

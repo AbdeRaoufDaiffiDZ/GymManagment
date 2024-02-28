@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:dawini_full/auth/domain/usecases/auth_usecase.dart';
+import 'package:dawini_full/doctor_Features/presentation/bloc/bloc_for_patients_data_from_doctor/doctor_patients_bloc.dart';
 import 'package:dawini_full/introduction_feature/data/data_source/local_data_source.dart';
 import 'package:dawini_full/introduction_feature/data/repositoryImpl/itroduction_repository_impl.dart';
 import 'package:dawini_full/introduction_feature/domain/repository/introductionRepository.dart';
@@ -36,7 +37,11 @@ final locator = GetIt.instance;
 Future<void> setupLocator() async {
   final sharedPreferences = await SharedPreferences.getInstance();
 
-  locator.registerFactory(() => DoctorBloc(locator(), locator()));
+  locator.registerFactory(() => DoctorBloc(
+        locator(),
+      ));
+  locator.registerFactory(() => DoctorPatientsBloc(locator()));
+
   locator.registerFactory(() => PatientsBloc(
       locator(), locator(), locator(), locator(), locator(), locator()));
   locator.registerFactory(() => IntroductionBloc(locator(), locator(),

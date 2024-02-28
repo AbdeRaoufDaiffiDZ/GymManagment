@@ -379,7 +379,7 @@ class _doctorDetailsState extends State<doctorDetails>
                                 height: 20.h,
                                 child: FittedBox(
                                     child: Text(
-                                  "Description : ${doctor.first.description}", //TODO: add description to entty and model and database
+                                  "Description : ${doctor.first.description}",
                                   style: TextStyle(
                                       color: Color(0XFF202020),
                                       fontFamily: "Nunito",

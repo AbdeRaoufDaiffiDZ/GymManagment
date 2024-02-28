@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class secondConatiner extends StatefulWidget {
-  const secondConatiner({super.key});
+  final String uid;
+  final int turn;
+  secondConatiner({super.key, required this.uid, required this.turn});
 
   @override
   State<secondConatiner> createState() => _secondConatinerState();
@@ -48,7 +50,7 @@ class _secondConatinerState extends State<secondConatiner> {
                   Padding(
                     padding: EdgeInsets.only(top: 5.h),
                     child: Text(
-                      "22",
+                      widget.turn.toString(), // TODO:
                       style: TextStyle(
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
@@ -71,7 +73,7 @@ class _secondConatinerState extends State<secondConatiner> {
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.topLeft,
                       child: Text(
-                        "Thabet mohamed ",
+                        "widget.patinet.firstName widget.patinet.lastName",
                         style: TextStyle(
                             fontFamily: "Nunito",
                             fontSize: 16,
@@ -86,7 +88,7 @@ class _secondConatinerState extends State<secondConatiner> {
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.topLeft,
                       child: Text(
-                        "20 years old ",
+                        "Age: widget.patinet ", // TODO: age does not exist in patient entity, create it
                         style: TextStyle(
                             fontFamily: "Nunito",
                             fontSize: 14,
@@ -101,7 +103,7 @@ class _secondConatinerState extends State<secondConatiner> {
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.topLeft,
                       child: Text(
-                        "Male ",
+                        "  widget.patinet .toString(), ", // TODO: gender does not exist in patinte entity, create it
                         style: TextStyle(
                             fontFamily: "Nunito",
                             fontSize: 19,
@@ -122,7 +124,7 @@ class _secondConatinerState extends State<secondConatiner> {
                               children: [
                                 const Icon(Icons.phone, size: 15),
                                 Text(
-                                  "0557902660",
+                                  "widget.patinet.phoneNumber",
                                   style: TextStyle(
                                       fontFamily: 'Nunito',
                                       fontSize: 16,
@@ -140,7 +142,8 @@ class _secondConatinerState extends State<secondConatiner> {
                         child: const FittedBox(
                           fit: BoxFit.scaleDown,
                           alignment: Alignment.topRight,
-                          child: Text("afternoon ",
+                          child: Text(
+                              "afternoon ", // TODO: this must be removed since no longer  exists
                               style: TextStyle(
                                   fontSize: 15,
                                   color: Color(0xff0AA9A9),

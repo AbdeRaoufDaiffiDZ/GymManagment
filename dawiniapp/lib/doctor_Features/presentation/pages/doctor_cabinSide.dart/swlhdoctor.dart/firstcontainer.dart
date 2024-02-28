@@ -1,10 +1,12 @@
 // ignore_for_file: camel_case_types, sized_box_for_whitespace
 
+import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class firstConatiner extends StatefulWidget {
-  const firstConatiner({super.key});
+  final DoctorEntity doctor;
+  firstConatiner({super.key, required this.doctor});
 
   @override
   State<firstConatiner> createState() => _firstConatinerState();
@@ -43,12 +45,12 @@ class _firstConatinerState extends State<firstConatiner> {
                 Container(
                   width: 180.w,
                   height: 25.h,
-                  child: const FittedBox(
+                  child: FittedBox(
                     fit: BoxFit.scaleDown,
                     alignment: Alignment.topLeft,
                     child: Text(
-                      "Dr.Sofian ",
-                      style: TextStyle(
+                      "Dr. ${widget.doctor.firstName}",
+                      style: const TextStyle(
                           fontFamily: "Nunito",
                           fontSize: 17,
                           fontWeight: FontWeight.w600),
@@ -62,7 +64,7 @@ class _firstConatinerState extends State<firstConatiner> {
                     fit: BoxFit.scaleDown,
                     alignment: Alignment.topLeft,
                     child: Text.rich(TextSpan(
-                        text: "max number of patients : ",
+                        text: "max number of patients : ", // TODO:
                         style: TextStyle(
                             fontFamily: "Nunito",
                             color: const Color(0xff202020).withOpacity(0.7),
@@ -87,7 +89,7 @@ class _firstConatinerState extends State<firstConatiner> {
                     fit: BoxFit.scaleDown,
                     alignment: Alignment.topLeft,
                     child: Text.rich(TextSpan(
-                        text: "Booking period : ",
+                        text: "Booking period : ", // TODO:
                         style: TextStyle(
                             fontFamily: "Nunito",
                             color: const Color(0xff202020).withOpacity(0.7),
@@ -95,7 +97,7 @@ class _firstConatinerState extends State<firstConatiner> {
                             fontWeight: FontWeight.w600),
                         children: [
                           TextSpan(
-                            text: "today",
+                            text: "today", // TODO:
                             style: TextStyle(
                                 fontFamily: "Nunito",
                                 color: const Color(0xff0AA9A9).withOpacity(0.7),

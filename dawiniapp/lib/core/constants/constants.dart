@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:dawini_full/patient_features/data/models/patient_model.dart';
 
 class Urls {
@@ -14,4 +16,6 @@ class Urls {
       'https://dawini-cec17-default-rtdb.europe-west1.firebasedatabase.app/clinics/.json';
   static String patientInfoUrl(PatientModel patientInfo) =>
       'https://dawini-cec17-default-rtdb.europe-west1.firebasedatabase.app/user_data/Doctors/${patientInfo.uid}/Cabin_info/Patients/${patientInfo.AppointmentDate}.json';
+  static String DoctorpatientsInfoUrl(String uid, String date) =>
+      'https://dawini-cec17-default-rtdb.europe-west1.firebasedatabase.app/user_data/Doctors/$uid/Cabin_info/Patients/$date.json';
 }
