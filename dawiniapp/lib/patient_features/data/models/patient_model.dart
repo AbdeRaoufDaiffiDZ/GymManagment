@@ -75,9 +75,9 @@ class PatientModel extends PatientEntity {
       address: map['address'] ?? '',
       doctorRemark: map['doctorRemark'] ?? '',
       AppointmentDate: map['AppointmentDate'] ?? '',
-      turn: map['turn']?.toInt() ?? 0,
-      uid: map['uid'] ?? "0",
-      DoctorName: '',
+      turn: map['id']?.toInt() ?? 0,
+      uid: map['DoctorName'] ?? "0",
+      DoctorName: map['uid'] ?? "0",
       today: map['today'] ?? true,
     );
   }

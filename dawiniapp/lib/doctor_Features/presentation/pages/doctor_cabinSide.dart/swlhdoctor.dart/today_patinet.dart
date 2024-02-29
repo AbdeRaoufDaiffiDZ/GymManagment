@@ -38,16 +38,18 @@ class _TodayPatinetState extends State<TodayPatinet> {
                     height: 95.h,
                     decoration: BoxDecoration(
                         border: Border.all(
-                            width: 1.5, color: Colors.grey.withOpacity(0.4)),
+                            width: 1.5,
+                            color: const Color.fromARGB(255, 219, 219, 219)
+                                .withOpacity(0.4)),
                         borderRadius: BorderRadius.circular(12)),
                     child: Row(
                       children: [
                         Container(
                           width: 66.w,
                           decoration: BoxDecoration(
-                            color: index == widget.turn
-                                ? Color(0xff00C8D5)
-                                : Color.fromARGB(255, 213, 0, 0),
+                            color: data.turn == widget.turn
+                                ? const Color(0xff00C8D5)
+                                : const Color.fromARGB(255, 213, 0, 0),
                             borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(12),
                                 bottomLeft: Radius.circular(12)),
@@ -70,7 +72,7 @@ class _TodayPatinetState extends State<TodayPatinet> {
                               Padding(
                                 padding: EdgeInsets.only(top: 5.h),
                                 child: Text(
-                                  index.toString(), // TODO:
+                                  (data.turn).toString(), // TODO:
                                   style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       color: Colors.white,
@@ -184,49 +186,7 @@ class _TodayPatinetState extends State<TodayPatinet> {
               }),
         );
       } else if (state is PatientsInfoLoadingError) {
-        return Center(
-          child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 8.w),
-            child: Column(
-              children: [
-                Text(
-                  "No patient yet ",
-                  style: TextStyle(
-                      fontFamily: "Nunito",
-                      color: const Color(0xff202020),
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w700),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    patientsInfoBloc.add(onGetPatinets(uid: widget.uid));
-                  },
-                  child: Container(
-                    width: 340.w,
-                    height: 33.h,
-                    decoration: BoxDecoration(
-                        color: Color(0xff04CBCB),
-                        borderRadius: BorderRadius.circular(20)),
-                    margin:
-                        EdgeInsets.symmetric(vertical: 22.h, horizontal: 60.w),
-                    child: const FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Reload...",
-                        style: TextStyle(
-                            fontSize: 17,
-                            color: Colors.white,
-                            fontFamily: "Nunito",
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        );
+        return const Center();
       } else if (state is PatientsInfoinitial) {
         patientsInfoBloc.add(onGetPatinets(uid: widget.uid));
 

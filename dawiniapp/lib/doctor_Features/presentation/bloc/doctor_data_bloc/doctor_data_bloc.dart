@@ -34,6 +34,15 @@ class DoctorPatientsBloc
         } catch (e) {
           emit(doctorInfoLoadingError(e.toString()));
         }
+      } else if (event is onTurnUpdate) {
+        try {
+          await updateDoctorCabinData.updateTurn(
+              event.doctor.numberInList, event.turn);
+          final data = await doctorCabinDataSource.getDoctorsInfo();
+          emit(doctorInfoLoaded(data));
+        } catch (e) {
+          emit(doctorInfoLoadingError(e.toString()));
+        }
       }
       // Stream<List<PatientModel>> doctorStream =
       //     doctorCabinDataSource.patinetsInfotest(uid);
@@ -49,7 +58,8 @@ class DoctorPatientsBloc
 //         }, (r) async {
 //           emit(DoctorLoaded());
 //         });
-//       } else if (event is onTurnUpdate) {
+//       } 
+//else if (event is onTurnUpdate) {
 //         final result = await updateDoctorCabinData.updateTurn(
 //             event.doctor.numberInList, event.turn);
 //         result.fold((l) {

@@ -99,6 +99,7 @@ class _LanguageScreenState extends State<doctorview> {
                   ),
                 ),
                 GestureDetector(
+                  // TODO: this button was add to test patinet  data reload
                   onTap: () {
                     patientsInfoBloc.add(onGetPatinets(uid: widget.uid));
                   },
@@ -140,36 +141,6 @@ class _LanguageScreenState extends State<doctorview> {
               ),
             ),
             secondConatiner(uid: doctor.uid, turn: doctor.turn),
-            Center(
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: 3.h),
-                width: 250.w,
-                height: 30.h,
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  alignment: Alignment.center,
-                  child: Text.rich(
-                    TextSpan(
-                        text: "25 ",
-                        style: TextStyle(
-                            fontFamily: "Nunito",
-                            color: const Color(0xff0AA9A9).withOpacity(0.7),
-                            fontSize: 18,
-                            fontWeight: FontWeight.w800),
-                        children: [
-                          TextSpan(
-                            text: "Patients are waiting  ",
-                            style: TextStyle(
-                                fontFamily: "Nunito",
-                                color: const Color(0xff000000).withOpacity(0.5),
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600),
-                          )
-                        ]),
-                  ),
-                ),
-              ),
-            ),
             Row(
               children: [
                 Container(

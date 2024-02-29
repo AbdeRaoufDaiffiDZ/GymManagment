@@ -134,7 +134,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                 fit: BoxFit.scaleDown,
                                                 alignment: Alignment.topLeft,
                                                 child: Text(
-                                                    "Dr. ${doctor[index].lastName}",
+                                                    "Dr. ${doctors.first.lastName}",
                                                     style: const TextStyle(
                                                         fontSize: 19,
                                                         fontWeight:
