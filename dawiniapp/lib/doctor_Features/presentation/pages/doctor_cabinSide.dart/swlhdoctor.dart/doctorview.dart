@@ -1,10 +1,12 @@
 // ignore_for_file: camel_case_types
 
-import 'package:dawini_full/doctor_Features/presentation/bloc/bloc_for_patients_data_from_doctor/doctor_patients_bloc.dart';
+import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_data_bloc/doctor_data_bloc.dart';
+import 'package:dawini_full/doctor_Features/presentation/bloc/patients_info_bloc/patients_info_bloc.dart';
 import 'package:dawini_full/doctor_Features/presentation/pages/doctor_cabinSide.dart/swlhdoctor.dart/firstcontainer.dart';
 import 'package:dawini_full/doctor_Features/presentation/pages/doctor_cabinSide.dart/swlhdoctor.dart/secondcontainer.dart';
 import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
+import 'package:dawini_full/doctor_Features/presentation/pages/doctor_cabinSide.dart/swlhdoctor.dart/today_patinet.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/appBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,15 +34,18 @@ class _LanguageScreenState extends State<doctorview> {
   Widget build(BuildContext context) {
     final DoctorPatientsBloc doctorPatientsBloc =
         BlocProvider.of<DoctorPatientsBloc>(context);
+    final PatientsInfoBloc patientsInfoBloc =
+        BlocProvider.of<PatientsInfoBloc>(context);
     return Scaffold(body: BlocBuilder<DoctorPatientsBloc, DoctorPatientsState>(
         builder: (context, state) {
-      if (state is patintsInfoLoaded) {
+      if (state is doctorInfoLoaded) {
         DoctorEntity doctor = state.doctors
             .where((element) => element.uid == widget.uid)
             .toList()
             .first;
 
-        return ListView(
+        return Column(
+          // shrinkWrap: true,
           children: [
             myAppbar(
               popOrNot: false,
@@ -73,7 +78,8 @@ class _LanguageScreenState extends State<doctorview> {
                       );
                     }),
                     onChanged: (value) {
-                      //  doctorPatientsBloc.add(onGetPatinets(uid: doctor.uid));
+                      // patientsInfoBloc.add(onGetPatinets(uid: widget.uid));
+
                       doctorPatientsBloc.add(onStateUpdate(
                           doctor: doctor, state: !doctor.atSerivce));
                     },
@@ -92,6 +98,31 @@ class _LanguageScreenState extends State<doctorview> {
                         fontSize: 17.sp),
                   ),
                 ),
+                GestureDetector(
+                  onTap: () {
+                    patientsInfoBloc.add(onGetPatinets(uid: widget.uid));
+                  },
+                  child: Container(
+                    width: 70.w,
+                    height: 20.h,
+                    decoration: BoxDecoration(
+                        color: Color(0xff04CBCB),
+                        borderRadius: BorderRadius.circular(20)),
+                    margin: EdgeInsets.only(left: 30.w, top: 7.h),
+                    child: const FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Reload...",
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.white,
+                            fontFamily: "Nunito",
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ),
+                )
               ],
             ),
             firstConatiner(
@@ -173,12 +204,14 @@ class _LanguageScreenState extends State<doctorview> {
                 )
               ],
             ),
+            TodayPatinet(uid: doctor.uid, turn: doctor.turn),
           ],
         );
+      } else if (state is doctorInfoInitial) {
+        doctorPatientsBloc.add(LoadedDataDoctorPatinetsEvent());
       }
-      doctorPatientsBloc.add(LoadedDataDoctorPatinetsEvent());
 
-      return Loading();
+      return const Loading();
     }));
   }
 }

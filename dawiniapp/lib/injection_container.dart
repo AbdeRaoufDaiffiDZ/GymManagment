@@ -1,7 +1,8 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:dawini_full/auth/domain/usecases/auth_usecase.dart';
-import 'package:dawini_full/doctor_Features/presentation/bloc/bloc_for_patients_data_from_doctor/doctor_patients_bloc.dart';
+import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_data_bloc/doctor_data_bloc.dart';
+import 'package:dawini_full/doctor_Features/presentation/bloc/patients_info_bloc/patients_info_bloc.dart';
 import 'package:dawini_full/introduction_feature/data/data_source/local_data_source.dart';
 import 'package:dawini_full/introduction_feature/data/repositoryImpl/itroduction_repository_impl.dart';
 import 'package:dawini_full/introduction_feature/domain/repository/introductionRepository.dart';
@@ -24,7 +25,7 @@ import 'package:dawini_full/patient_features/domain/usecases/clinic_usecase.dart
 import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart';
 import 'package:dawini_full/patient_features/domain/usecases/patients_usecase.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/clinics_bloc/bloc/clinics_bloc.dart';
-import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
+import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -40,10 +41,12 @@ Future<void> setupLocator() async {
   locator.registerFactory(() => DoctorBloc(
         locator(),
       ));
-  locator.registerFactory(() => DoctorPatientsBloc(locator()));
+  locator.registerFactory(
+      () => DoctorPatientsBloc(locator(), doctorInfoInitial()));
 
   locator.registerFactory(() => PatientsBloc(
       locator(), locator(), locator(), locator(), locator(), locator()));
+  locator.registerFactory(() => PatientsInfoBloc(PatientsInfoinitial()));
   locator.registerFactory(() => IntroductionBloc(locator(), locator(),
       locator(), locator(), locator(), locator(), locator()));
   locator.registerFactory(() => ClinicsBloc(getClinicsInfoUseCase: locator()));

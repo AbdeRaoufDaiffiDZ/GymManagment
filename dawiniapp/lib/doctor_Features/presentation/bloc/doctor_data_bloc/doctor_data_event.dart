@@ -1,8 +1,12 @@
-part of 'doctor_patients_bloc.dart';
+part of 'doctor_data_bloc.dart';
 
-abstract class DoctorPatientsEvent {}
+abstract class DoctorPatientsEvent extends Equatable {}
 
-class LoadedDataDoctorPatinetsEvent extends DoctorPatientsEvent {}
+class LoadedDataDoctorPatinetsEvent extends DoctorPatientsEvent {
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+}
 
 class onTurnUpdate extends DoctorPatientsEvent {
   final int turn;
@@ -34,13 +38,4 @@ class onDataUpdate extends DoctorPatientsEvent {
       required this.infoToUpdate});
   @override
   List<Object> get props => [numberInList, data, infoToUpdate];
-}
-
-class onGetPatinets extends DoctorPatientsEvent {
-  final String uid;
-
-  onGetPatinets({required this.uid});
-
-  @override
-  List<Object> get props => [uid];
 }

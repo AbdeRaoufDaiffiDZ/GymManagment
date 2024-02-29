@@ -42,7 +42,8 @@ class UpdateDoctorCabinData {
 
 class GetDoctorPatinetsInfousecase {
   final DoctorRepository doctorRepository = DcotrRepositoryImpl();
-  Future<Either<Failure, List<PatientModel>>> excute(String uid) async {
-    return doctorRepository.patinetsInfo(uid);
+  Future<Either<Failure, List<PatientModel>>> excute(
+      String uid, bool today) async {
+    return doctorRepository.patinetsInfo(uid, today);
   }
 }

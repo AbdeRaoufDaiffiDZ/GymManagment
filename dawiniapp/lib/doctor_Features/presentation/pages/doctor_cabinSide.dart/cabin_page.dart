@@ -1,17 +1,14 @@
 // ignore_for_file: camel_case_types, use_build_context_synchronously
 
-import 'package:dawini_full/doctor_Features/presentation/bloc/bloc_for_patients_data_from_doctor/doctor_patients_bloc.dart';
 import 'package:dawini_full/core/error/ErrorWidget.dart';
 import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart';
-import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
 import 'package:dawini_full/doctor_Features/presentation/pages/doctor_cabinSide.dart/swlhdoctor.dart/doctorview.dart';
 import 'package:dawini_full/doctor_Features/presentation/pages/doctors/Patient_Info.dart';
 import 'package:dawini_full/introduction_feature/domain/usecases/set_type_usecase.dart';
 import 'package:dawini_full/patient_features/presentation/pages/weather_pag.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
@@ -29,37 +26,37 @@ class _DoctorCabinInfoState extends State<DoctorCabinInfo>
     with TickerProviderStateMixin {
   String datetime = DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
   final SetTypeUseCase setTypeUseCase = SetTypeUseCase();
-  Widget _entryField(String title, TextEditingController controller,
-      {bool isPassword = false}) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            title,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          TextField(
-              controller: controller,
-              obscureText: isPassword,
-              decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  fillColor: Color(0xfff3f3f4),
-                  filled: true))
-        ],
-      ),
-    );
-  }
+  // Widget _entryField(String title, TextEditingController controller,
+  //     {bool isPassword = false}) {
+  //   return Container(
+  //     margin: const EdgeInsets.symmetric(vertical: 10),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: <Widget>[
+  //         Text(
+  //           title,
+  //           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+  //         ),
+  //         const SizedBox(
+  //           height: 10,
+  //         ),
+  //         TextField(
+  //             controller: controller,
+  //             obscureText: isPassword,
+  //             decoration: const InputDecoration(
+  //                 border: InputBorder.none,
+  //                 fillColor: Color(0xfff3f3f4),
+  //                 filled: true))
+  //       ],
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
-    final DoctorBloc doctorBloc = BlocProvider.of<DoctorBloc>(context);
+    // final DoctorBloc doctorBloc = BlocProvider.of<DoctorBloc>(context);
     final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
-    TextEditingController data = TextEditingController();
+    // TextEditingController data = TextEditingController();
     return Scaffold(
         body: SafeArea(
       child: StreamBuilder<List<DoctorEntity>>(
@@ -243,36 +240,5 @@ class _DoctorCabinInfoState extends State<DoctorCabinInfo>
             return const Loading();
           }),
     ));
-  }
-}
-
-class testDoctorsCabinData extends StatefulWidget {
-  final String uid;
-  const testDoctorsCabinData({super.key, required this.uid});
-
-  @override
-  State<testDoctorsCabinData> createState() => _testDoctorsCabinDataState();
-}
-
-class _testDoctorsCabinDataState extends State<testDoctorsCabinData> {
-  @override
-  Widget build(BuildContext context) {
-    final DoctorPatientsBloc doctorPatientsBloc =
-        BlocProvider.of<DoctorPatientsBloc>(context);
-
-    return BlocBuilder<DoctorPatientsBloc, DoctorPatientsState>(
-      builder: (context, state) {
-        doctorPatientsBloc.add(LoadedDataDoctorPatinetsEvent());
-        if (state is patintsInfoLoading) {
-          return Loading();
-        }
-        if (state is patintsInfoLoaded) {
-          print(state.doctors.first.lastName);
-          return Placeholder();
-        }
-
-        return Container();
-      },
-    );
   }
 }

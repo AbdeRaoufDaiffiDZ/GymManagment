@@ -54,16 +54,4 @@ class PatientEntity extends Equatable {
       'uid': uid
     };
   }
-
-  final patinet = PatientEntity(
-      DoctorName: "",
-      uid: "",
-      today: true,
-      AppointmentDate: "",
-      turn: 0,
-      doctorRemark: "",
-      address: "",
-      firstName: "",
-      lastName: "",
-      phoneNumber: "");
 }

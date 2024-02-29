@@ -11,6 +11,7 @@ import 'package:dawini_full/patient_features/data/models/patient_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 abstract class DoctorCabinDataSource {
   Future<List<DoctorModel>> getDoctorsInfo();
@@ -19,8 +20,7 @@ abstract class DoctorCabinDataSource {
   Future<void> updatedoctorState(int numberInList, bool state);
   Future<void> updateDoctorInfo(
       int numberInList, dynamic data, String infoToUpdate);
-  Future<List<PatientModel>> patinetsInfo(String uid);
-  Future<List<PatientModel>> patinetsInfotest(String uid);
+  Future<List<PatientModel>> patinetsInfo(String uid, bool today);
 }
 
 class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
@@ -63,15 +63,23 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
   }
 
   @override
-  Future<List<PatientModel>> patinetsInfotest(String uid) async {
+  Future<List<PatientModel>> patinetsInfo(String uid, bool today) async {
+    DateTime now = DateTime.now();
+
+// Add one day to the current date
+    DateTime oneDayAdded = now.add(Duration(days: !today ? 1 : 0));
+
+// Format the date string with the desired format
+    String formattedDate = DateFormat("yyyy-MM-dd").format(oneDayAdded);
+
     final result = await _databaseReference
         .ref()
         .child(
-            '/user_data/Doctors/SBad6UjfzMQDjJcw0nUVEYnnZ2F2/Cabin_info/Patients/2024-02-26')
+            '/user_data/Doctors/SBad6UjfzMQDjJcw0nUVEYnnZ2F2/Cabin_info/Patients/$formattedDate')
         .get();
     List data = result.value as List;
-    List data_info = data.where((element) => element != null).toList();
-    final info = data_info.map((e) {
+    List dataInfo = data.where((element) => element != null).toList();
+    final info = dataInfo.map((e) {
       Map<String, dynamic> convertedMap = {};
       e.forEach((key, value) {
         if (key is String && value != null) {
@@ -81,7 +89,6 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
 
       return PatientModel.fromMap(convertedMap);
     }).toList();
-    print(info);
     return info;
     // try {
     //   String date = DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
@@ -143,11 +150,5 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
         .update({"/doctorsList/$numberInList/$infoToUpdate": data})
         .then((value) => print("done!"))
         .catchError((e) => print("error"));
-  }
-
-  @override
-  Future<List<PatientModel>> patinetsInfo(String uid) {
-    // TODO: implement patinetsInfo
-    throw UnimplementedError();
   }
 }

@@ -481,6 +481,9 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                       }
                     });
               });
+        } else if (state is PatientsLoadingError) {
+          print(state.error);
+          return const Loading();
         } else {
           return const Loading();
         }

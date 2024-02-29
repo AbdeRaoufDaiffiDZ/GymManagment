@@ -71,9 +71,10 @@ class DcotrRepositoryImpl implements DoctorRepository {
   }
 
   @override
-  Future<Either<Failure, List<PatientModel>>> patinetsInfo(String uid) async {
+  Future<Either<Failure, List<PatientModel>>> patinetsInfo(
+      String uid, bool today) async {
     try {
-      final result = await doctorRemoteDataSource.patinetsInfo(uid);
+      final result = await doctorRemoteDataSource.patinetsInfo(uid, today);
       return Right(result);
     } on ServerException {
       return const Left(ServerFailure(message: 'An error has occured'));
