@@ -22,8 +22,8 @@ class myAppbar extends StatelessWidget implements PreferredSizeWidget {
             Padding(
               padding: EdgeInsets.only(left: 11.w),
               child: Image.asset(
-                "assets/images/dawini.png",
-                width: 110.w,
+                "assets/images/dawina.png",
+                width: 90.w,
               ),
             ),
             IconButton(
@@ -51,7 +51,7 @@ class myAppbar extends StatelessWidget implements PreferredSizeWidget {
               },
               icon: Icon(
                 Icons.menu,
-                size: 30.w,
+                size: 30.sp,
                 color: Colors.black,
               ),
             )

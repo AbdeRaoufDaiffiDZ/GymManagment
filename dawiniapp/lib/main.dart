@@ -7,14 +7,15 @@ import 'package:dawini_full/auth/domain/usecases/auth_usecase.dart';
 import 'package:dawini_full/auth/presentation/bloc/auth_bloc.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_data_bloc/doctor_data_bloc.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/patients_info_bloc/patients_info_bloc.dart';
-import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
 import 'package:dawini_full/firebase_options.dart';
 import 'package:dawini_full/injection_container.dart';
 import 'package:dawini_full/introduction_feature/presentation/bloc/bloc/introduction_bloc.dart';
 import 'package:dawini_full/introduction_feature/presentation/screens/pages_shower.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/clinics_bloc/bloc/clinics_bloc.dart';
+import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/pages/myApp.dart';
+import 'package:dawini_full/patients/patient.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
@@ -106,14 +107,14 @@ class MyApp extends StatelessWidget {
                   supportedLocales: AppLocalizations.supportedLocales,
                   debugShowCheckedModeBanner: false,
                   home: MyWidget(
-                    device: device,
-                  )
+                    
+                                  device: device, 
 
                   // doctorview(
                   //uid: widget.uid, popOrNot: null,
 
                   // ),
-                  );
+                  ));
             }));
   }
 }

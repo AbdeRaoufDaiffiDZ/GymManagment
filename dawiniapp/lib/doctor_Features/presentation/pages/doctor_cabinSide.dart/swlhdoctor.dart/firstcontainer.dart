@@ -24,7 +24,9 @@ class _firstConatinerState extends State<firstConatiner> {
       child: Container(
         height: 80.h,
         decoration: BoxDecoration(
-            border: Border.all(width: 1.5, color: Colors.grey.withOpacity(0.4)),
+            color: Colors.white,
+            border:
+                Border.all(width: 1.5, color: Colors.grey.withOpacity(0.23)),
             borderRadius: BorderRadius.circular(12)),
         child: Row(
           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -116,7 +118,7 @@ class _firstConatinerState extends State<firstConatiner> {
                 ),
               ],
             ),
-            Column(
+            /*  Column(
               // TODO: there is a column add in order to add next and previous buttons
               children: [
                 Padding(
@@ -196,6 +198,27 @@ class _firstConatinerState extends State<firstConatiner> {
                   ),
                 ),
               ],
+            ),*/
+            Padding(
+              padding: EdgeInsets.only(top: 44.h),
+              child: InkWell(
+                onTap: () {}, ////////////////////////
+                child: Container(
+                  height: 20.w,
+                  width: 42.w,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: const Color(0xff0AA9A9)),
+                      borderRadius: BorderRadius.circular(12)),
+                  child: const Center(
+                      child: Text(
+                    "Edit",
+                    style: TextStyle(
+                        color: Color(0xff0AA9A9),
+                        fontFamily: "Nunito",
+                        fontWeight: FontWeight.w700),
+                  )),
+                ),
+              ),
             ),
           ],
         ),

@@ -71,7 +71,7 @@ dependencies:
   rxdart: null
   share: ^2.0.4
   shared_preferences: null
-  url_launcher: ^6.2.4
+  url_launcher: ^6.2.5
 dev_dependencies:
   build_runner: null
 

@@ -24,21 +24,19 @@ class _MyappointemtnsState extends State<Myappointemtns>
         appBar: AppBar(
           elevation: 0.0,
           backgroundColor: const Color(0XFFFAFAFA),
-          title: Center(
-            child: Container(
-              margin: EdgeInsets.only(top: 12.h),
-              width: 200.w,
-              height: 30.h,
-              child: const FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(
-                  "My appointments",
-                  style: TextStyle(
-                      color: Color(0XFF202020),
-                      fontSize: 30,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'Nunito'),
-                ),
+          title: Container(
+            margin: EdgeInsets.only(top: 12.h),
+            width: 200.w,
+            height: 30.h,
+            child: const FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                "My appointments",
+                style: TextStyle(
+                    color: Color(0XFF202020),
+                    fontSize: 30,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Nunito'),
               ),
             ),
           ),
