@@ -207,7 +207,7 @@ class _TodayPatinetState extends State<TodayPatinet> {
       } else if (state is PatientsInfoLoadingError) {
         return const Center();
       } else if (state is PatientsInfoinitial) {
-        patientsInfoBloc.add(onGetPatinets(uid: widget.uid));
+        patientsInfoBloc.add(onGetPatinets(uid: widget.uid, true));
 
         return const Loading();
       } else {

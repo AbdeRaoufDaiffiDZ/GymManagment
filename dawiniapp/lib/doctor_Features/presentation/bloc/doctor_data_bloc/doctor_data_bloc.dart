@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:dawini_full/doctor_Features/data/data_source/doctor_cabin_data_source.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart';
@@ -11,7 +12,8 @@ class DoctorPatientsBloc
   final DoctorCabinDataSource doctorCabinDataSource =
       DoctorCabinDataSourceImp();
   final UpdateDoctorCabinData updateDoctorCabinData;
-
+  final GetDoctorPatinetsInfousecase getDoctorPatinetsInfo =
+      GetDoctorPatinetsInfousecase();
   DoctorPatientsBloc(
       this.updateDoctorCabinData, DoctorPatientsState initialState)
       : super(initialState) {
@@ -37,7 +39,7 @@ class DoctorPatientsBloc
       } else if (event is onTurnUpdate) {
         try {
           await updateDoctorCabinData.updateTurn(
-              event.doctor.numberInList, event.turn);
+              event.doctor.numberInList, event.turn, event.doctor.uid);
           final data = await doctorCabinDataSource.getDoctorsInfo();
           emit(doctorInfoLoaded(data));
         } catch (e) {

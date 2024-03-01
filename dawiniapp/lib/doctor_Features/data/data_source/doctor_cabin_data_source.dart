@@ -16,11 +16,14 @@ import 'package:intl/intl.dart';
 abstract class DoctorCabinDataSource {
   Future<List<DoctorModel>> getDoctorsInfo();
   Stream<List<DoctorEntity>> streamDoctors();
-  Future<void> turnUpdate(int numberInList, int turn);
+  Future<void> turnUpdate(int numberInList, int turn, String numberOfPatients);
   Future<void> updatedoctorState(int numberInList, bool state);
   Future<void> updateDoctorInfo(
       int numberInList, dynamic data, String infoToUpdate);
-  Future<List<PatientModel>> patinetsInfo(String uid, bool today);
+  Future<List<PatientModel>> patinetsInfo(
+    String uid,
+    bool today,
+  );
 }
 
 class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
@@ -74,8 +77,7 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
 
     final result = await _databaseReference
         .ref()
-        .child(
-            '/user_data/Doctors/SBad6UjfzMQDjJcw0nUVEYnnZ2F2/Cabin_info/Patients/$formattedDate')
+        .child('/user_data/Doctors/$uid/Cabin_info/Patients/$formattedDate')
         .get();
     List data = result.value as List;
     List dataInfo = data.where((element) => element != null).toList();
@@ -120,9 +122,12 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
   }
 
   @override
-  Future turnUpdate(int numberInList, int turn) async {
+  Future turnUpdate(int numberInList, int turn, String numberOfPatients) async {
+    final data = await patinetsInfo(numberOfPatients, true);
     if (turn < 0) {
       turn = 0;
+    } else if (turn > data.length) {
+      turn = data.length;
     } else {
       turn = turn;
     }

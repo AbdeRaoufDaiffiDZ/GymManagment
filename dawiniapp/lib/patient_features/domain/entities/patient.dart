@@ -9,7 +9,7 @@ class PatientEntity extends Equatable {
   final String lastName;
   final String phoneNumber;
   final String address;
-  final String doctorRemark;
+  final String age;
   final String AppointmentDate;
   final int turn;
   final String DoctorName;
@@ -20,7 +20,7 @@ class PatientEntity extends Equatable {
       required this.today,
       required this.AppointmentDate,
       required this.turn,
-      required this.doctorRemark,
+      required this.age,
       required this.address,
       required this.firstName,
       required this.lastName,
@@ -35,7 +35,7 @@ class PatientEntity extends Equatable {
         firstName,
         phoneNumber,
         address,
-        doctorRemark,
+        age,
         AppointmentDate,
         turn,
       ];
@@ -46,7 +46,7 @@ class PatientEntity extends Equatable {
       'lastName': lastName,
       'phoneNumber': phoneNumber,
       'address': address,
-      'doctorRemark': doctorRemark,
+      'age': age,
       'AppointmentDate': AppointmentDate,
       'turn': turn,
       'today': today,

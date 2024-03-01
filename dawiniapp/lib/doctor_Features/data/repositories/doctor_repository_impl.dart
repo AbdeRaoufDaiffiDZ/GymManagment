@@ -39,9 +39,10 @@ class DcotrRepositoryImpl implements DoctorRepository {
   }
 
   @override
-  Future<Either<Failure, void>> turnUpdate(int numberInList, int turn) async {
+  Future<Either<Failure, void>> turnUpdate(
+      int numberInList, int turn, numberOfPatients) async {
     try {
-      doctorRemoteDataSource.turnUpdate(numberInList, turn);
+      doctorRemoteDataSource.turnUpdate(numberInList, turn, numberOfPatients);
       return const Right(null);
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));

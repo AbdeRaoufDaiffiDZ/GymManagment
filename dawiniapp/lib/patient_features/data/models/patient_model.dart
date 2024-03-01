@@ -11,7 +11,7 @@ class PatientModel extends PatientEntity {
   final String lastName;
   final String phoneNumber;
   final String address;
-  final String doctorRemark;
+  final String age;
   final String AppointmentDate;
   int turn;
   final String DoctorName;
@@ -23,7 +23,7 @@ class PatientModel extends PatientEntity {
       required this.DoctorName,
       required this.AppointmentDate,
       required this.turn,
-      required this.doctorRemark,
+      required this.age,
       required this.address,
       required this.firstName,
       required this.lastName,
@@ -34,7 +34,7 @@ class PatientModel extends PatientEntity {
             today: today,
             AppointmentDate: AppointmentDate,
             turn: turn,
-            doctorRemark: doctorRemark,
+            age: age,
             address: address,
             firstName: firstName,
             lastName: lastName,
@@ -47,7 +47,7 @@ class PatientModel extends PatientEntity {
         firstName,
         phoneNumber,
         address,
-        doctorRemark,
+        age,
         AppointmentDate,
         turn,
       ];
@@ -58,7 +58,7 @@ class PatientModel extends PatientEntity {
       'lastName': lastName,
       'phoneNumber': phoneNumber,
       'address': address,
-      'doctorRemark': doctorRemark,
+      'age': age,
       'AppointmentDate': AppointmentDate,
       'turn': turn,
       'today': today,
@@ -73,11 +73,11 @@ class PatientModel extends PatientEntity {
       lastName: map['lastName'] ?? '',
       phoneNumber: map['phoneNumber'] ?? '',
       address: map['address'] ?? '',
-      doctorRemark: map['doctorRemark'] ?? '',
+      age: map['age'] ?? '',
       AppointmentDate: map['AppointmentDate'] ?? '',
       turn: map['id']?.toInt() ?? 0,
-      uid: map['DoctorName'] ?? "0",
-      DoctorName: map['uid'] ?? "0",
+      uid: map['uid'] ?? "0",
+      DoctorName: map['DoctorName'] ?? "0",
       today: map['today'] ?? true,
     );
   }

@@ -189,7 +189,7 @@ class _todayState extends State<today> with TickerProviderStateMixin {
                           child: InkWell(
                             onTap: () async {
                               final Uri uri =
-                                  Uri(scheme: "tel", path: "0000000000");
+                                  Uri(scheme: "tel", path: data.phoneNumber);
                               if (await canLaunchUrl(uri)) {
                                 await launchUrl(uri); //////////calling
                               }
@@ -226,7 +226,7 @@ class _todayState extends State<today> with TickerProviderStateMixin {
         } else if (state is PatientsInfoLoadingError) {
           return const Center();
         } else if (state is PatientsInfoinitial) {
-          patientsInfoBloc.add(onGetPatinets(uid: widget.uid));
+          patientsInfoBloc.add(onGetPatinets(uid: widget.uid, true));
 
           return const Loading();
         } else {

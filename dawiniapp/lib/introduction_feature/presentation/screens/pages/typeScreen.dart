@@ -153,7 +153,7 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
                 },
                 child: Container(
                   margin:
-                      EdgeInsets.symmetric(horizontal: 50.w, vertical: 16.h),
+                      EdgeInsets.symmetric(horizontal: 30.w, vertical: 16.h),
                   height: 50.h,
                   decoration: BoxDecoration(
                     color: isSelected

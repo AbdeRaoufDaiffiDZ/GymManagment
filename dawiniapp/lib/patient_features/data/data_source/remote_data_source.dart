@@ -55,6 +55,7 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
         'phoneNumber': patientInfo.phoneNumber,
         'address': patientInfo.address,
         'Booking_date': patientInfo.AppointmentDate,
+        'Age': patientInfo.age,
 
         'id': id,
         'idkey': idkey,

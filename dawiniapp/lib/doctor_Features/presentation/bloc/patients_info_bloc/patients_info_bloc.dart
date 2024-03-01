@@ -18,8 +18,8 @@ class PatientsInfoBloc extends Bloc<PatientsInfoEvent, PatientsInfoState> {
           emit(PatientsInfoLoading());
           // updateDoctorCabinData.updateState(
           //     event.doctor.numberInList, event.state);
-          final data =
-              await getDoctorPatinetsInfo.excute(event.uid, true); // TODO:
+          final data = await getDoctorPatinetsInfo.excute(
+              event.uid, event.today); // TODO:
 
           if (kDebugMode) {
             print(data);

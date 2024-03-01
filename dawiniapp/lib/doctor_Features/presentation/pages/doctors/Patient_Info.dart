@@ -246,8 +246,8 @@ class _Patient_infoState extends State<Patient_info> {
                                       ? datetimeToday
                                       : datetimeTomrrow, //////////////////////////////////
                                   turn: 0,
-                                  doctorRemark: "doctorRemark",
-                                  address: "address",
+                                  age: _ageController.text,
+                                  address: _addressController.text,
                                   firstName: _firstNameController.text,
                                   lastName: _lastNameController.text,
                                   phoneNumber: _phoneNumberController.text,

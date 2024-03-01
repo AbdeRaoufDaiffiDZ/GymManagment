@@ -7,6 +7,7 @@ import 'package:dawini_full/doctor_Features/presentation/bloc/patients_info_bloc
 import 'package:dawini_full/doctor_Features/presentation/pages/doctor_cabinSide.dart/swlhdoctor.dart/firstcontainer.dart';
 import 'package:dawini_full/doctor_Features/presentation/pages/doctor_cabinSide.dart/swlhdoctor.dart/secondcontainer.dart';
 import 'package:dawini_full/doctor_Features/presentation/pages/doctor_cabinSide.dart/swlhdoctor.dart/today_patinet.dart';
+import 'package:dawini_full/doctor_Features/presentation/pages/doctors/Patient_Info.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/appBar.dart';
 import 'package:dawini_full/patients/patient.dart';
 import 'package:flutter/material.dart';
@@ -169,8 +170,6 @@ class _LanguageScreenState extends State<doctorview> {
                             context,
                             MaterialPageRoute(
                                 builder: ((context) => Patientslist(
-                                  
-                                      
                                       uid: doctor.uid,
                                     ))));
                       }, ////////////////////
@@ -198,7 +197,10 @@ class _LanguageScreenState extends State<doctorview> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          doctorPatientsBloc.add(onTurnUpdate(
+                              doctor: doctor, turn: doctor.turn - 1));
+                        },
 
                         ///-1
                         child: Container(
@@ -233,7 +235,17 @@ class _LanguageScreenState extends State<doctorview> {
                         ),
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      Patient_info(
+                                        doctorEntity: doctor,
+                                        today: true,
+                                        ifADoctor: true,
+                                      )));
+                        },
                         child: Container(
                             margin: EdgeInsets.symmetric(
                                 vertical: 8.h, horizontal: 0.w),
@@ -250,7 +262,10 @@ class _LanguageScreenState extends State<doctorview> {
                             )),
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          doctorPatientsBloc.add(onTurnUpdate(
+                              doctor: doctor, turn: doctor.turn + 1));
+                        },
                         child: Container(
                           width: 100,
                           height: 40,

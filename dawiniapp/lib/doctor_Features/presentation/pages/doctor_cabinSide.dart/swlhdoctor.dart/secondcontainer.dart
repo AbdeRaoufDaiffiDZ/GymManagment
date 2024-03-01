@@ -110,12 +110,14 @@ class _secondConatinerState extends State<secondConatiner> {
                                 Container(
                                   width: 140.w,
                                   height: 15.h,
-                                  child: const FittedBox(
+                                  child: FittedBox(
                                     fit: BoxFit.scaleDown,
                                     alignment: Alignment.topLeft,
                                     child: Text(
-                                      "Age: widget.patinet ", // TODO: age does not exist in patient entity, create it
-                                      style: TextStyle(
+                                      data.isNotEmpty
+                                          ? "Age: ${data.first.lastName} "
+                                          : "", // TODO: age does not exist in patient entity, create it
+                                      style: const TextStyle(
                                           fontFamily: "Nunito",
                                           fontSize: 14,
                                           fontWeight: FontWeight.w600),
@@ -176,7 +178,7 @@ class _secondConatinerState extends State<secondConatiner> {
                       alignment: Alignment.center,
                       child: Text.rich(
                         TextSpan(
-                            text: "${state.patients.length - widget.turn - 1} ",
+                            text: "${state.patients.length - widget.turn} ",
                             style: TextStyle(
                                 fontFamily: "Nunito",
                                 color: const Color(0xff0AA9A9).withOpacity(0.7),
@@ -200,12 +202,12 @@ class _secondConatinerState extends State<secondConatiner> {
               ],
             );
           } else {
-            return Center();
+            return const Center();
           }
         } else if (state is PatientsInfoLoadingError) {
           // patientsInfoBloc.add(onGetPatinets(uid: widget.uid));
 
-          return Center(
+          return const Center(
               // child: Container(
               //   margin: EdgeInsets.symmetric(horizontal: 8.w),
               //   child: Text(
@@ -219,7 +221,7 @@ class _secondConatinerState extends State<secondConatiner> {
               // ),
               );
         } else {
-          patientsInfoBloc.add(onGetPatinets(uid: widget.uid));
+          patientsInfoBloc.add(onGetPatinets(uid: widget.uid, true));
 
           return const Loading();
         }
