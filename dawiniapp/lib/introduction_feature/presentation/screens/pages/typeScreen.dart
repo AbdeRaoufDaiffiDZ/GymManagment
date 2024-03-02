@@ -139,12 +139,9 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
                       fontFamily: 'Nunito',
                       fontWeight: FontWeight.w600,
                       color: Colors.black45)),
-              SizedBox(height: 20.h),
+              SizedBox(height: 10.h),
               usertypeContainer("Looking for a doctor", "patient", bloc),
               usertypeContainer("Im doctor", "doctor", bloc),
-              SizedBox(
-                height: 20.h,
-              ),
               InkWell(
                 onTap: () {
                   if (isSelected) {

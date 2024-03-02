@@ -202,70 +202,64 @@ class _Patient_infoState extends State<Patient_info> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: canPressButton()
-                      ? () {
-                          {
-                            setState(() {
-                              lastPressedTime = DateTime.now();
-                            });
-                            saveLastPressedTime(widget.doctorEntity.uid);
-                            // Your button action here
-                            String missing = "Please Write your";
-                            if (_firstNameController.text.isEmpty) {
-                              missing = "$missing First Name,";
-                            }
-                            if (_lastNameController.text.isEmpty) {
-                              missing = "$missing Last Name,";
-                            }
-                            if (_ageController.text.isEmpty ||
-                                int.parse(_ageController.text) > 130) {
-                              missing = "$missing age,";
-                            }
-                            if (_phoneNumberController.text.isEmpty ||
-                                _phoneNumberController.text.length < 10) {
-                              missing = "$missing Phone Number,";
-                            }
-                            if (_addressController.text.isEmpty) {
-                              missing = "$missing Home address,";
-                            }
-                            if (_firstNameController.text.isEmpty ||
-                                _lastNameController.text.isEmpty ||
-                                _phoneNumberController.text.length < 10 ||
-                                int.parse(_ageController.text) > 130 ||
-                                _ageController.text.isEmpty ||
-                                _phoneNumberController.text.isEmpty ||
-                                _addressController.text.isEmpty) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: Text(missing),
-                                backgroundColor: Colors.red,
-                              ));
-                            } else {
-                              PatientEntity patient = PatientEntity(
-                                  AppointmentDate: widget.today
-                                      ? datetimeToday
-                                      : datetimeTomrrow, //////////////////////////////////
-                                  turn: 0,
-                                  age: _ageController.text,
-                                  address: _addressController.text,
-                                  firstName: _firstNameController.text,
-                                  lastName: _lastNameController.text,
-                                  phoneNumber: _phoneNumberController.text,
-                                  today: true,
-                                  DoctorName: widget.doctorEntity.lastName,
-                                  uid: widget.doctorEntity.uid);
-                              dataBloc.add(onPatientsSetAppointments(
-                                  context, widget.ifADoctor,
-                                  patients: patient));
-                              showlDialog(context, true, widget.ifADoctor);
-                            }
-                          }
+                  onTap: () {
+                    {
+                      setState(() {
+                        lastPressedTime = DateTime.now();
+                      });
+                      saveLastPressedTime(widget.doctorEntity.uid);
+                      // Your button action here
+                      String missing = "Please Write your";
+                      if (_firstNameController.text.isEmpty) {
+                        missing = "$missing First Name,";
+                      }
+                      if (_lastNameController.text.isEmpty) {
+                        missing = "$missing Last Name,";
+                      }
+                      if (_ageController.text.isEmpty ||
+                          int.parse(_ageController.text) > 130) {
+                        missing = "$missing age,";
+                      }
+                      if (_phoneNumberController.text.isEmpty ||
+                          _phoneNumberController.text.length < 10) {
+                        missing = "$missing Phone Number,";
+                      }
+                      if (_addressController.text.isEmpty) {
+                        missing = "$missing Home address,";
+                      }
+                      if (_firstNameController.text.isEmpty ||
+                          _lastNameController.text.isEmpty ||
+                          _phoneNumberController.text.length < 10 ||
+                          int.parse(_ageController.text) > 130 ||
+                          _ageController.text.isEmpty ||
+                          _phoneNumberController.text.isEmpty ||
+                          _addressController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(missing),
+                          backgroundColor: Colors.red,
+                        ));
+                      } else {
+                        PatientEntity patient = PatientEntity(
+                            AppointmentDate: widget.today
+                                ? datetimeToday
+                                : datetimeTomrrow, //////////////////////////////////
+                            turn: 0,
+                            age: _ageController.text,
+                            address: _addressController.text,
+                            firstName: _firstNameController.text,
+                            lastName: _lastNameController.text,
+                            phoneNumber: _phoneNumberController.text,
+                            today: true,
+                            DoctorName: widget.doctorEntity.lastName,
+                            uid: widget.doctorEntity.uid);
+                        dataBloc.add(onPatientsSetAppointments(
+                            context, widget.ifADoctor,
+                            patients: patient));
+                      }
+                    }
 
 // Disable button if can't press
-                        }
-                      : () {
-                          showlDialog(context, false, widget.ifADoctor);
-                        },
+                  },
                   child: Padding(
                     padding: EdgeInsets.symmetric(
                         vertical: screenHeight * 0.04,
@@ -298,109 +292,6 @@ class _Patient_infoState extends State<Patient_info> {
           ),
         ),
       ),
-    );
-  }
-
-  Future<Object?> showlDialog(context, bool text, bool ifADoctor) {
-    return showGeneralDialog(
-      context: context,
-      pageBuilder: (context, animation, secondaryAnimation) {
-        return Container();
-      },
-      transitionBuilder: (context, a1, a2, widget) {
-        double screenWidth = MediaQuery.of(context).size.width;
-        double screenHeight = MediaQuery.of(context).size.height;
-
-        return BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-          child: ScaleTransition(
-            scale: Tween(begin: 0.5, end: 1.0).animate(a1),
-            child: FadeTransition(
-              opacity: Tween<double>(begin: 0.4, end: 1).animate(a1),
-              child: AlertDialog(
-                title: Center(
-                  child: Text.rich(
-                    textAlign: TextAlign.center,
-                    TextSpan(
-                      text: text
-                          ? "Your appointment has been booked"
-                          : "Your appointment has not been booked",
-                      style: TextStyle(
-                        fontFamily: "Nunito",
-                        fontWeight: FontWeight.w800,
-                        fontSize: screenWidth * 0.05, // Responsive font size
-                        color: const Color.fromRGBO(32, 32, 32, 0.8),
-                      ),
-                      children: [
-                        TextSpan(
-                          text: text
-                              ? " successfully !"
-                              : ", you already booked an appointment",
-                          style: TextStyle(
-                            fontFamily: "Nunito",
-                            fontWeight: FontWeight.w900,
-                            fontSize:
-                                screenWidth * 0.05, // Responsive font size
-                            color: text ? const Color(0XFF0AA9A9) : Colors.red,
-                          ),
-                        ),
-                        TextSpan(
-                          text: text
-                              ? " with the turn "
-                              : ifADoctor
-                                  ? ", try again after 5 sec "
-                                  : ", try again after 10 minutes ",
-                          style: TextStyle(
-                            fontFamily: "Nunito",
-                            fontWeight: FontWeight.w800,
-                            fontSize:
-                                screenWidth * 0.05, // Responsive font size
-                            color: const Color.fromRGBO(32, 32, 32, 0.8),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                content: SizedBox(
-                  height: screenHeight * 0.08,
-                  child: GestureDetector(
-                    onTap: () {
-                      if (Navigator.canPop(context)) {
-                        Navigator.pop(context);
-                        // TODO: afer booking appointmetn must navigate to my appointments page
-                      }
-                    },
-                    child: Container(
-                      height: screenHeight * 0.045,
-                      decoration: BoxDecoration(
-                        color: const Color(0XFF04CBCB),
-                        borderRadius: BorderRadius.circular(screenWidth * 0.05),
-                      ),
-                      child: Center(
-                        child: Text(
-                          "My appointment",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: "Nunito",
-                            fontSize:
-                                screenWidth * 0.05, // Responsive font size
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                shape: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 0.025),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-          ),
-        );
-      },
     );
   }
 }
