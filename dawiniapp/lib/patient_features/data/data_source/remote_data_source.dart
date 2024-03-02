@@ -2,8 +2,6 @@
 
 import 'dart:convert';
 
-import 'package:dawini_full/auth/data/FirebaseAuth/authentification.dart';
-import 'package:dawini_full/auth/data/models/auth_model.dart';
 import 'package:dawini_full/core/constants/constants.dart';
 import 'package:dawini_full/core/error/exception.dart';
 import 'package:dawini_full/doctor_Features/data/data_source/doctor_cabin_data_source.dart';
@@ -19,7 +17,6 @@ import 'package:http/http.dart' as http;
 abstract class DoctorRemoteDataSource {
   Future<bool> SetDoctorAppointment(PatientModel patientInfo);
   Future<bool> RemoveDoctorAppointment(PatientModel patientInfo, context);
-  Stream<List<PatientModel>> getDoctorPatientsStream(String uid);
 }
 
 class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
@@ -34,6 +31,7 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
   @override
   Future<bool> SetDoctorAppointment(PatientModel patientInfo) async {
     // DateTime date = DateTime.parse(patientInfo.AppointmentDate);
+
     final refs = _databaseReference.ref().child(
         "/user_data/Doctors/${patientInfo.uid}/Cabin_info/Patients/${patientInfo.AppointmentDate}");
     // var data = await getDoctorPatients(patientInfo);
@@ -41,28 +39,28 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
     final String? idkey = newChildRef.key;
     final DatabaseEvent snapshot =
         await refs.once(); //////////////////////////////////////////////
-    final id = snapshot.snapshot.children.length + 1;
-    patientInfo.turn = id;
-    print(id);
+    patientInfo.turn = snapshot.snapshot.children.length + 1;
+
+    // print(patientInfo.turn);
     try {
       await _databaseReference
           .reference()
           .child(
-              "/user_data/Doctors/${patientInfo.uid}/Cabin_info/Patients/${patientInfo.AppointmentDate}/$id")
+              "/user_data/Doctors/${patientInfo.uid}/Cabin_info/Patients/${patientInfo.AppointmentDate}/${patientInfo.turn}")
           .set({
         'firstName': patientInfo.firstName,
         'lastName': patientInfo.lastName,
         'phoneNumber': patientInfo.phoneNumber,
         'address': patientInfo.address,
-        'Booking_date': patientInfo.AppointmentDate,
-        'Age': patientInfo.age,
+        'AppointmentDate': patientInfo.AppointmentDate,
+        'age': patientInfo.age,
 
-        'id': id,
+        'turn': patientInfo.turn,
         'idkey': idkey,
         // 'age': patientInfo.age,
       });
-      await localDataSourcePatients.SetDoctorAppointmentLocal(
-          PatientModel.fromMap(patientInfo.toMap()));
+
+      await localDataSourcePatients.SetDoctorAppointmentLocal(patientInfo);
       return true;
     } catch (e) {
       return false;
@@ -72,13 +70,6 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
   @override
   Future<bool> RemoveDoctorAppointment(
       PatientModel patientInfo, context) async {
-    FirebaseAuthMethods auth0 = FirebaseAuthMethods();
-    final AuthModel auth = AuthModel(
-        email: "deleteAppointment@gmail.com", password: "deleteAppointment");
-
-    if (await auth0.authState.isEmpty) {
-      auth0.loginWithEmail(authData: auth);
-    }
     String uid = "";
     List<DoctorModel> doctors = await doctorCabinDataSource.getDoctorsInfo();
     doctors.where((element) => element.uid == patientInfo.DoctorName);
@@ -96,9 +87,6 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
         .then((value) => true)
         .catchError((e) => false);
 
-    if (auth0.user.uid == "4OCo8desYHfXftOWtkY7DRHRFLm2") {
-      auth0.signOut();
-    }
     if (result) {
       await localDataSourcePatients.DeleteDoctorAppointmentLocal(
           PatientModel.fromMap(patientInfo.toMap()));
@@ -106,27 +94,6 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
     } else {
       return false;
     }
-  }
-
-  @override
-  Stream<List<PatientModel>> getDoctorPatientsStream(String uid) {
-    List<PatientModel> resulted = [];
-    final result = _databaseReference
-        .ref()
-        .child('/user_data/Doctors/$uid/Cabin_info/Patients')
-        .onValue
-        .map((event) {
-      resulted.clear();
-
-      List currapted = event.snapshot.value as List;
-      final data = currapted.map((e) {
-        return PatientModel.fromJson(e);
-      }).toList();
-
-      return data;
-    });
-
-    return result;
   }
 }
 

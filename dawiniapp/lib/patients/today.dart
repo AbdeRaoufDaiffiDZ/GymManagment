@@ -127,12 +127,12 @@ class _todayState extends State<today> with TickerProviderStateMixin {
                                 Container(
                                   width: 140.w,
                                   height: 15.h,
-                                  child: const FittedBox(
+                                  child: FittedBox(
                                     fit: BoxFit.scaleDown,
                                     alignment: Alignment.topLeft,
                                     child: Text(
-                                      "Age: widget.patinet ", // TODO: age does not exist in patient entity, create it
-                                      style: TextStyle(
+                                      "Age: ${data.age} ", // TODO: age does not exist in patient entity, create it
+                                      style: const TextStyle(
                                         fontFamily: "Nunito",
                                         fontSize: 14,
                                         fontWeight: FontWeight.w600,

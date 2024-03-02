@@ -107,13 +107,12 @@ class MyApp extends StatelessWidget {
                   supportedLocales: AppLocalizations.supportedLocales,
                   debugShowCheckedModeBanner: false,
                   home: MyWidget(
-                    
-                                  device: device, 
+                    device: device,
 
-                  // doctorview(
-                  //uid: widget.uid, popOrNot: null,
+                    // doctorview(
+                    //uid: widget.uid, popOrNot: null,
 
-                  // ),
+                    // ),
                   ));
             }));
   }

@@ -283,7 +283,7 @@ class _LoginPageState extends State<LoginPage> {
                           users.loginWithEmail(
                               authData: AuthModel.fromMap(auth.toMap()));
 
-                          if (users.user.emailVerified) {
+                          if (users.user!.emailVerified) {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(

@@ -4,7 +4,6 @@ import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_data_bloc/doctor_data_bloc.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/patients_info_bloc/patients_info_bloc.dart';
-import 'package:dawini_full/patient_features/presentation/pages/widgets/Myappointment/previous.dart';
 import 'package:dawini_full/patients/today.dart';
 import 'package:dawini_full/patients/tomorrow.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +27,13 @@ class _PatientslistState extends State<Patientslist>
         BlocProvider.of<PatientsInfoBloc>(context);
     TabController tabcontroller = TabController(length: 2, vsync: this);
 
+    tabcontroller.addListener(() {
+      if (tabcontroller.index == 0) {
+        patientsInfoBloc.add(onGetPatinets(true, uid: widget.uid));
+      } else if (tabcontroller.index == 1) {
+        patientsInfoBloc.add(onGetPatinets(false, uid: widget.uid));
+      }
+    });
     return DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -53,14 +59,6 @@ class _PatientslistState extends State<Patientslist>
             ),
             body: BlocBuilder<DoctorPatientsBloc, DoctorPatientsState>(
                 builder: (context, state) {
-              tabcontroller.addListener(() {
-                if (tabcontroller.index == 0) {
-                  patientsInfoBloc.add(onGetPatinets(true, uid: widget.uid));
-                } else if (tabcontroller.index == 1) {
-                  patientsInfoBloc.add(onGetPatinets(false, uid: widget.uid));
-                }
-              });
-
               if (state is doctorInfoLoaded) {
                 DoctorEntity doctor = state.doctors
                     .where((element) => element.uid == widget.uid)

@@ -27,7 +27,7 @@ class PatientsInfoBloc extends Bloc<PatientsInfoEvent, PatientsInfoState> {
           data.fold((l) async {
             await Future.delayed(const Duration(seconds: 5));
 
-            emit(PatientsInfoLoadingError(l.message.toString()));
+            emit(PatientsInfoLoading());
           }, (r) => emit(PatientsInfoLoaded(r)));
         } catch (e) {
           emit(PatientsInfoLoadingError(e.toString()));

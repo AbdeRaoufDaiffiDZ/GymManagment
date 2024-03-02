@@ -175,7 +175,7 @@ class _TodayPatinetState extends State<TodayPatinet> {
                           child: InkWell(
                             onTap: () async {
                               final Uri uri =
-                                  Uri(scheme: "tel", path: "0000000000");
+                                  Uri(scheme: "tel", path: data.phoneNumber);
                               if (await canLaunchUrl(uri)) {
                                 await launchUrl(uri); //////////calling
                               }

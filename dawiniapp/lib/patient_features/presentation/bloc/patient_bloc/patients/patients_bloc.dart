@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously, depend_on_referenced_packages
 
 import 'package:bloc/bloc.dart';
+import 'package:dawini_full/auth/data/FirebaseAuth/authentification.dart';
+import 'package:dawini_full/auth/data/models/auth_model.dart';
 import 'package:dawini_full/patient_features/domain/entities/patient.dart';
 import 'package:dawini_full/patient_features/domain/usecases/patients_usecase.dart';
 import 'package:equatable/equatable.dart';
@@ -18,6 +20,8 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
   final GetFavoriteDoctorsUseCase getfavoriteDoctorsUseCase;
   final SetFavoriteDoctorsUseCase setFavoriteDoctorsUseCase;
   final DeleteFavoriteDoctorsUseCase deleteFavoriteDoctorsUseCase;
+  FirebaseAuthMethods auth0 = FirebaseAuthMethods();
+
   DateTime? lastPressedTime;
 
   PatientsBloc(
@@ -58,9 +62,19 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
       else if (event is onPatientsSetAppointments) {
         try {
           if (canPressButton(event.ifADoctor)) {
+            final AuthModel auth = AuthModel(
+                email: "deleteAppointment@gmail.com",
+                password: "deleteAppointment");
+
+            if (auth0.user == null) {
+              auth0.loginWithEmail(authData: auth);
+            }
             saveLastPressedTime();
             final done =
                 await bookDoctorAppointmentUseCase.excute(event.patients);
+            if (auth0.user!.uid == "4OCo8desYHfXftOWtkY7DRHRFLm2") {
+              auth0.signOut();
+            }
             if (done) {
               ScaffoldMessenger.of(event.context).showSnackBar(const SnackBar(
                   content: Text("done"), backgroundColor: Colors.green));
@@ -81,10 +95,19 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
       } else if (event is onPatientsAppointmentDelete) {
         try {
           emit(PatientsLoading());
+          final AuthModel auth = AuthModel(
+              email: "deleteAppointment@gmail.com",
+              password: "deleteAppointment");
+
+          if (auth0.user == null) {
+            auth0.loginWithEmail(authData: auth);
+          }
 
           final result = await deletAppointmentLocalusecase.excute(
               event.patients, event.context);
-
+          if (auth0.user!.uid == "4OCo8desYHfXftOWtkY7DRHRFLm2") {
+            auth0.signOut();
+          }
           final List<PatientEntity> patients =
               await getAppointmentLocalusecase.excute();
 
@@ -156,8 +179,8 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
       final difference = DateTime.now().difference(lastPressedTime!);
 
       return ifADoctor
-          ? difference.inSeconds >= 20
-          : difference.inMinutes >= 5; // Change 1 to your desired limit
+          ? difference.inSeconds >= 5
+          : difference.inSeconds >= 5; // Change 1 to your desired limit
     }
   }
 }

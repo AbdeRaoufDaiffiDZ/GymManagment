@@ -17,7 +17,7 @@ class FirebaseAuthMethods {
   // GET USER DATA
   // using null check operator since this method should be called only
   // when the user is logged in
-  User get user => _auth.currentUser!;
+  User? get user => _auth.currentUser;
 
   // STATE PERSISTENCE STREAM
   Stream<User?> get authState => FirebaseAuth.instance.authStateChanges();
@@ -62,10 +62,12 @@ class FirebaseAuthMethods {
         email: authData.email,
         password: authData.password,
       );
-      if (!user.emailVerified) {
-        await sendEmailVerification();
-        // restrict access to certain things using provider
-        // transition to another page instead of home screen
+      if (authData.email == "deleteAppointment@gmail.com") {
+        if (user!.emailVerified) {
+          await sendEmailVerification();
+          // restrict access to certain things using provider
+          // transition to another page instead of home screen
+        }
       }
       return Right(result);
     } on FirebaseAuthException catch (e) {

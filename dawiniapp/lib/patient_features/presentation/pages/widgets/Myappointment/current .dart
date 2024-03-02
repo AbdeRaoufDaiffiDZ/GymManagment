@@ -233,7 +233,11 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                       height: 24.h,
                                       width: 270.w,
                                       decoration: BoxDecoration(
-                                          color: Colors.grey.shade200,
+                                          color: (data[index].turn ==
+                                                      doctors.first.turn) &&
+                                                  data[index].today
+                                              ? Color.fromARGB(73, 20, 255, 20)
+                                              : Colors.grey.shade200,
                                           borderRadius:
                                               BorderRadius.circular(12)),
                                       child: Row(
@@ -250,7 +254,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                       Icons.calendar_month,
                                                       size: 17),
                                                   Text(
-                                                    " today , morning",
+                                                    " today: ${data[index].AppointmentDate}",
                                                     style: TextStyle(
                                                         color: const Color(
                                                                 0xff202020)
