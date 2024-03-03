@@ -35,8 +35,7 @@ class _LanguageScreenState extends State<doctorview> {
   Widget build(BuildContext context) {
     final DoctorPatientsBloc doctorPatientsBloc =
         BlocProvider.of<DoctorPatientsBloc>(context);
-    final PatientsInfoBloc patientsInfoBloc =
-        BlocProvider.of<PatientsInfoBloc>(context);
+
     return Scaffold(
         backgroundColor: Color(0xffFAFAFA),
         body: BlocBuilder<DoctorPatientsBloc, DoctorPatientsState>(

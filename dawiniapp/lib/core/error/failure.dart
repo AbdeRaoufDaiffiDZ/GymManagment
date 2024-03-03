@@ -16,8 +16,16 @@ class ConnectionFailure extends Failure {
   const ConnectionFailure({required super.message});
 }
 
-class DatabaseFailure extends Failure {
-  const DatabaseFailure({required super.message});
+class UnKnownFailure extends Failure {
+  const UnKnownFailure({required super.message});
+}
+
+class TimeOutFailure extends Failure {
+  const TimeOutFailure({required super.message});
+}
+
+class FirebaseFailure extends Failure {
+  const FirebaseFailure({required super.message});
 }
 
 class AuthenticatinFailure extends Failure {

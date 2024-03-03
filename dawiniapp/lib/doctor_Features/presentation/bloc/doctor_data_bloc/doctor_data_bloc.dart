@@ -1,9 +1,10 @@
 import 'package:bloc/bloc.dart';
-import 'package:dartz/dartz.dart';
 import 'package:dawini_full/doctor_Features/data/data_source/doctor_cabin_data_source.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart';
 import 'package:equatable/equatable.dart';
+import 'package:dawini_full/auth/data/FirebaseAuth/authentification.dart';
+
 part 'doctor_data_event.dart';
 part 'doctor_data_state.dart';
 
@@ -14,6 +15,8 @@ class DoctorPatientsBloc
   final UpdateDoctorCabinData updateDoctorCabinData;
   final GetDoctorPatinetsInfousecase getDoctorPatinetsInfo =
       GetDoctorPatinetsInfousecase();
+  final FirebaseAuthMethods auth0 = FirebaseAuthMethods();
+
   DoctorPatientsBloc(
       this.updateDoctorCabinData, DoctorPatientsState initialState)
       : super(initialState) {
@@ -21,7 +24,9 @@ class DoctorPatientsBloc
       if (event is LoadedDataDoctorPatinetsEvent) {
         try {
           final data = await doctorCabinDataSource.getDoctorsInfo();
-
+          if (auth0.user!.uid == "4OCo8desYHfXftOWtkY7DRHRFLm2") {
+            auth0.signOut();
+          }
           emit(doctorInfoLoaded(data));
         } catch (e) {
           emit(doctorInfoLoadingError(e.toString()));

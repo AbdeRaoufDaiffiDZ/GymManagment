@@ -26,7 +26,7 @@ class PatientsInfoinitial extends PatientsInfoState {
 class PatientsInfoLoading extends PatientsInfoState {
   @override
   // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 }
 
 class PatientsInfoLoadingError extends PatientsInfoState {

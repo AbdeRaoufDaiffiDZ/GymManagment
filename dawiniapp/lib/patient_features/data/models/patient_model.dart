@@ -69,8 +69,8 @@ class PatientModel extends PatientEntity {
 
   factory PatientModel.fromMap(Map<String, dynamic> map) {
     return PatientModel(
-      firstName: map['firstName'] ?? '',
-      lastName: map['lastName'] ?? '',
+      firstName: map['firstName'] ?? 'No Patients ',
+      lastName: map['lastName'] ?? 'booked yet ',
       phoneNumber: map['phoneNumber'] ?? '',
       address: map['address'] ?? '',
       age: map['age'] ?? '',

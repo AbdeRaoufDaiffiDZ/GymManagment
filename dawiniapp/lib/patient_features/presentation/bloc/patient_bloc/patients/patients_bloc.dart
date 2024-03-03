@@ -22,7 +22,7 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
   final GetFavoriteDoctorsUseCase getfavoriteDoctorsUseCase;
   final SetFavoriteDoctorsUseCase setFavoriteDoctorsUseCase;
   final DeleteFavoriteDoctorsUseCase deleteFavoriteDoctorsUseCase;
-  FirebaseAuthMethods auth0 = FirebaseAuthMethods();
+  final FirebaseAuthMethods auth0 = FirebaseAuthMethods();
 
   DateTime? lastPressedTime;
 
@@ -88,7 +88,7 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
             } else {
               ScaffoldMessenger.of(event.context).showSnackBar(const SnackBar(
                   content: Text("try again"), backgroundColor: Colors.red));
-              showlDialog(event.context, true, event.ifADoctor, false);
+              showlDialog(event.context, false, event.ifADoctor, false);
             }
           } else {
             showlDialog(event.context, false, event.ifADoctor, true);

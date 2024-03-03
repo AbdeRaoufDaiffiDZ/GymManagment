@@ -29,9 +29,9 @@ class _PatientslistState extends State<Patientslist>
 
     tabcontroller.addListener(() {
       if (tabcontroller.index == 0) {
-        patientsInfoBloc.add(onGetPatinets(true, uid: widget.uid));
+        patientsInfoBloc.add(onGetPatinets(true, context, uid: widget.uid));
       } else if (tabcontroller.index == 1) {
-        patientsInfoBloc.add(onGetPatinets(false, uid: widget.uid));
+        patientsInfoBloc.add(onGetPatinets(false, context, uid: widget.uid));
       }
     });
     return DefaultTabController(

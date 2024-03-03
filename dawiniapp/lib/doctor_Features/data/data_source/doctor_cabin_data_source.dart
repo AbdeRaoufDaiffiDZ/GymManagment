@@ -79,46 +79,25 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
         .ref()
         .child('/user_data/Doctors/$uid/Cabin_info/Patients/$formattedDate')
         .get();
-    List data = result.value as List;
-    List dataInfo = data.where((element) => element != null).toList();
-    final info = dataInfo.map((e) {
-      Map<String, dynamic> convertedMap = {};
-      e.forEach((key, value) {
-        if (key is String && value != null) {
-          convertedMap[key] = value;
-        }
-      });
+    Map<String, dynamic> convertedMap = {};
 
-      return PatientModel.fromMap(convertedMap);
-    }).toList();
-    return info;
-    // try {
-    //   String date = DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
-    //   final response =
-    //       await client.get(Uri.parse(Urls.DoctorpatientsInfoUrl(uid, date)));
+    if (result.value != null) {
+      List data = result.value as List;
+      List dataInfo = data.where((element) => element != null).toList();
+      final info = dataInfo.map((e) {
+        e.forEach((key, value) {
+          if (key is String && value != null) {
+            convertedMap[key] = value;
+          }
+        });
 
-    //   if (response.statusCode == 200) {
-    //     List<PatientModel> users =
-    //         (json.decode(response.body) as List).map((data) {
-    //       return PatientModel.fromJson(data);
-    //     }).toList();
-    //     return users;
-    //   } else {
-    //     throw ServerFailure(message: response.statusCode.toString());
-    //   }
-    // } catch (e) {
-    //   throw ServerFailure(message: e.toString());
-    // }
-
-    // final DataSnapshot result = await _databaseReference
-    //     .ref()
-    //     .child('/user_data/Doctors/$uid/Cabin_info/Patients/$datetime')
-    //     .get();
-
-    // final data = result.value as List;
-    // return data.map((e) {
-    //   return PatientModel.fromJson(e);
-    // }).toList();
+        return PatientModel.fromMap(convertedMap);
+      }).toList();
+      return info;
+    } else {
+      final data = [PatientModel.fromMap(convertedMap)];
+      return data;
+    }
   }
 
   @override
