@@ -85,22 +85,22 @@ class DoctorModel extends DoctorEntity {
 
   factory DoctorModel.fromJson(Map<dynamic, dynamic> json) {
     return DoctorModel(
-        numberInList: json['numberInList'],
-        firstName: json['firstName'],
-        lastName: json['lastName'],
-        phoneNumber: json['phoneNumber'],
-        wilaya: json['Wilaya'],
-        city: json[
-            'city'], //////////////////////////////////   city must be add to databse
-        speciality: json['speciality'],
-        atSerivce: json[
-            'atSerivce'], ///////////////////////////////////////   atService must be add to database
-        turn: json['turn'],
-        uid: json['uid'],
-        location: json['location'],
-        date: json['date'],
-        experience: json['experience'],
-        description: json['description']);
+        numberInList: json['numberInList'] ?? 0,
+        firstName: json['firstName'] ?? " ",
+        lastName: json['lastName'] ?? " ",
+        phoneNumber: json['phoneNumber'] ?? " ",
+        wilaya: json['Wilaya'] ?? " ",
+        city: json['city'] ??
+            " ", //////////////////////////////////   city must be add to databse
+        speciality: json['speciality'] ?? " ",
+        atSerivce: json['atSerivce'] ??
+            " ", ///////////////////////////////////////   atService must be add to database
+        turn: json['turn'] ?? " ",
+        uid: json['uid'] ?? " ",
+        location: json['location'] ?? " ",
+        date: json['date'] ?? " ",
+        experience: json['experience'] ?? " ",
+        description: json['description'] ?? " ");
   }
 
   DoctorEntity toEntity() => DoctorEntity(

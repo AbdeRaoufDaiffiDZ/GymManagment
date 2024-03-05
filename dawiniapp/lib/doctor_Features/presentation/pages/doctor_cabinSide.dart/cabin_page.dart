@@ -1,15 +1,9 @@
 // ignore_for_file: camel_case_types, use_build_context_synchronously
 
-import 'package:dawini_full/core/error/ErrorWidget.dart';
-import 'package:dawini_full/core/loading/loading.dart';
-import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
-import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart';
 import 'package:dawini_full/doctor_Features/presentation/pages/doctor_cabinSide.dart/swlhdoctor.dart/doctorview.dart';
-import 'package:dawini_full/doctor_Features/presentation/pages/doctors/Patient_Info.dart';
 import 'package:dawini_full/introduction_feature/domain/usecases/set_type_usecase.dart';
 import 'package:dawini_full/patient_features/presentation/pages/weather_pag.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
 class DoctorCabinInfo extends StatefulWidget {
@@ -54,9 +48,6 @@ class _DoctorCabinInfoState extends State<DoctorCabinInfo>
 
   @override
   Widget build(BuildContext context) {
-    // final DoctorBloc doctorBloc = BlocProvider.of<DoctorBloc>(context);
-    final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
-    // TextEditingController data = TextEditingController();
     return Scaffold(
         body: SafeArea(
             child: Center(

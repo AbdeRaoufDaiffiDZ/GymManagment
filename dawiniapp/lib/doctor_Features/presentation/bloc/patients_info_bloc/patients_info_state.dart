@@ -1,9 +1,9 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, unnecessary_this
 
 part of 'patients_info_bloc.dart';
 
 abstract class PatientsInfoState extends Equatable {
-  PatientsInfoState();
+  const PatientsInfoState();
 }
 
 /// UnInitialized
@@ -15,6 +15,9 @@ class PatientsInfoLoaded extends PatientsInfoState {
 
   @override
   List<Object> get props => [patients];
+  PatientsInfoLoaded copyWith(patients) {
+    return PatientsInfoLoaded(patients ?? this.patients);
+  }
 }
 
 class PatientsInfoinitial extends PatientsInfoState {
@@ -25,12 +28,11 @@ class PatientsInfoinitial extends PatientsInfoState {
 /// Initialized
 class PatientsInfoLoading extends PatientsInfoState {
   @override
-  // TODO: implement props
   List<Object?> get props => [];
 }
 
 class PatientsInfoLoadingError extends PatientsInfoState {
-  PatientsInfoLoadingError(this.errorMessage);
+  const PatientsInfoLoadingError(this.errorMessage);
 
   final String errorMessage;
 
@@ -39,4 +41,7 @@ class PatientsInfoLoadingError extends PatientsInfoState {
 
   @override
   List<Object> get props => [errorMessage];
+  PatientsInfoLoadingError copyWith(errorMessage) {
+    return PatientsInfoLoadingError(errorMessage ?? this.errorMessage);
+  }
 }

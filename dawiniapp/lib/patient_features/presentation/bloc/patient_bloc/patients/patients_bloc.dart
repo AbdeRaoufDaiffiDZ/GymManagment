@@ -270,6 +270,8 @@ Future<Object?> showlDialog(
                   onTap: () {
                     if (Navigator.canPop(context)) {
                       Navigator.pop(context);
+                      Navigator.pop(context);
+
                       // TODO: afer booking appointmetn must navigate to my appointments page
                     }
                   },

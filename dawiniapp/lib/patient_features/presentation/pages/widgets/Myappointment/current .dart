@@ -5,11 +5,13 @@ import 'dart:ui';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:dawini_full/core/error/ErrorWidget.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../../../../../doctor_Features/domain/entities/doctor.dart';
 import '../../../../../doctor_Features/domain/usecases/doctor_usecase.dart';
@@ -26,6 +28,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final PatientsBloc patientsBloc = BlocProvider.of<PatientsBloc>(context);
     final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
+    final FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
     return Scaffold(
         body: Padding(
@@ -236,7 +239,8 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                           color: (data[index].turn ==
                                                       doctors.first.turn) &&
                                                   data[index].today
-                                              ? Color.fromARGB(73, 20, 255, 20)
+                                              ? const Color.fromARGB(
+                                                  73, 20, 255, 20)
                                               : Colors.grey.shade200,
                                           borderRadius:
                                               BorderRadius.circular(12)),
@@ -486,7 +490,9 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                     });
               });
         } else if (state is PatientsLoadingError) {
-          print(state.error);
+          if (kDebugMode) {
+            print(state.error);
+          }
           return const Loading();
         } else {
           return const Loading();

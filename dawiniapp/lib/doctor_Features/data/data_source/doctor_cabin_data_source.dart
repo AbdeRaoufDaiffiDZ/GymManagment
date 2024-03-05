@@ -1,9 +1,5 @@
 // ignore_for_file: avoid_print
 
-import 'dart:convert';
-
-import 'package:dawini_full/core/constants/constants.dart';
-import 'package:dawini_full/core/error/exception.dart';
 import 'package:dawini_full/patient_features/data/data_source/local_data_source.dart';
 import 'package:dawini_full/doctor_Features/data/models/doctor_model.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
@@ -34,19 +30,25 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
       LocalDataSourceImplDoctor();
   @override
   Future<List<DoctorModel>> getDoctorsInfo() async {
-    try {
-      final response = await client.get(Uri.parse(Urls.doctorInfoUrl()));
-      if (response.statusCode == 200) {
-        List<DoctorModel> users =
-            (json.decode(response.body) as List).map((data) {
-          return DoctorModel.fromJson(data);
-        }).toList();
-        return users;
-      } else {
-        throw ServerException();
-      }
-    } catch (e) {
-      throw ServerException();
+    final result = await _databaseReference.ref().child('/doctorsList').get();
+    Map<String, dynamic> convertedMap = {};
+
+    if (result.value != null) {
+      List data = result.value as List;
+      List dataInfo = data.where((element) => element != null).toList();
+      final info = dataInfo.map((e) {
+        e.forEach((key, value) {
+          if (key is String && value != null) {
+            convertedMap[key] = value;
+          }
+        });
+
+        return DoctorModel.fromJson(convertedMap);
+      }).toList();
+      return info;
+    } else {
+      final data = [DoctorModel.fromJson(convertedMap)];
+      return data;
     }
   }
 
@@ -82,7 +84,13 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
     Map<String, dynamic> convertedMap = {};
 
     if (result.value != null) {
-      List data = result.value as List;
+      List data;
+      if (result.value is Map<Object?, Object?>) {
+        final d = result.value as Map<Object?, Object?>;
+        data = d.entries.map((e) => e.value).toList();
+      } else {
+        data = result.value as List;
+      }
       List dataInfo = data.where((element) => element != null).toList();
       final info = dataInfo.map((e) {
         e.forEach((key, value) {
@@ -91,7 +99,9 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
           }
         });
 
-        return PatientModel.fromMap(convertedMap);
+        return PatientModel.fromMap(
+          convertedMap,
+        );
       }).toList();
       return info;
     } else {
@@ -105,8 +115,8 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
     final data = await patinetsInfo(numberOfPatients, true);
     if (turn < 0) {
       turn = 0;
-    } else if (turn > data.length) {
-      turn = data.length;
+    } else if (turn > data.last.turn) {
+      turn = data.last.turn;
     } else {
       turn = turn;
     }

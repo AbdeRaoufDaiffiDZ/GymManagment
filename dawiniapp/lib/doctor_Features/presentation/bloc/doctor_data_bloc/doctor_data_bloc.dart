@@ -1,20 +1,19 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:bloc/bloc.dart';
-import 'package:dawini_full/doctor_Features/data/data_source/doctor_cabin_data_source.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart';
 import 'package:equatable/equatable.dart';
 import 'package:dawini_full/auth/data/FirebaseAuth/authentification.dart';
+import 'package:flutter/foundation.dart';
 
 part 'doctor_data_event.dart';
 part 'doctor_data_state.dart';
 
 class DoctorPatientsBloc
     extends Bloc<DoctorPatientsEvent, DoctorPatientsState> {
-  final DoctorCabinDataSource doctorCabinDataSource =
-      DoctorCabinDataSourceImp();
+  final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
   final UpdateDoctorCabinData updateDoctorCabinData;
-  final GetDoctorPatinetsInfousecase getDoctorPatinetsInfo =
-      GetDoctorPatinetsInfousecase();
   final FirebaseAuthMethods auth0 = FirebaseAuthMethods();
 
   DoctorPatientsBloc(
@@ -23,7 +22,7 @@ class DoctorPatientsBloc
     on<DoctorPatientsEvent>((event, emit) async {
       if (event is LoadedDataDoctorPatinetsEvent) {
         try {
-          final data = await doctorCabinDataSource.getDoctorsInfo();
+          final data = await getDoctorsInfoUseCase.getDoctorsInfo();
           if (auth0.user!.uid == "4OCo8desYHfXftOWtkY7DRHRFLm2") {
             auth0.signOut();
           }
@@ -35,7 +34,7 @@ class DoctorPatientsBloc
         try {
           updateDoctorCabinData.updateState(
               event.doctor.numberInList, event.state);
-          final data = await doctorCabinDataSource.getDoctorsInfo();
+          final data = await getDoctorsInfoUseCase.getDoctorsInfo();
 
           emit(doctorInfoLoaded(data)); //         });
         } catch (e) {
@@ -43,9 +42,12 @@ class DoctorPatientsBloc
         }
       } else if (event is onTurnUpdate) {
         try {
+          if (kDebugMode) {
+            print("turn updated");
+          }
           await updateDoctorCabinData.updateTurn(
               event.doctor.numberInList, event.turn, event.doctor.uid);
-          final data = await doctorCabinDataSource.getDoctorsInfo();
+          final data = await getDoctorsInfoUseCase.getDoctorsInfo();
           emit(doctorInfoLoaded(data));
         } catch (e) {
           emit(doctorInfoLoadingError(e.toString()));

@@ -27,7 +27,7 @@ class PatientsInfoBloc extends Bloc<PatientsInfoEvent, PatientsInfoState> {
         data.fold((l) async {
           ScaffoldMessenger.of(event.context).showSnackBar(SnackBar(
               content: Text(l.message),
-              backgroundColor: Color.fromARGB(255, 255, 58, 58)));
+              backgroundColor: const Color.fromARGB(255, 255, 58, 58)));
           emit(PatientsInfoLoading());
         }, (r) => emit(PatientsInfoLoaded(r)));
       }

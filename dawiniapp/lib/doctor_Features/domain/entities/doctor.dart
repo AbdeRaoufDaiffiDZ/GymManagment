@@ -49,4 +49,35 @@ class DoctorEntity extends Equatable {
         turn,
         uid
       ];
+  DoctorEntity copyWith(
+      {numberInList,
+      location,
+      date,
+      experience,
+      description,
+      lastName,
+      firstName,
+      phoneNumber,
+      speciality,
+      city,
+      atSerivce,
+      wilaya,
+      turn,
+      uid}) {
+    return DoctorEntity(
+        numberInList: numberInList ?? this.numberInList,
+        location: location ?? this.location,
+        date: date ?? this.date,
+        experience: experience ?? this.experience,
+        description: description ?? this.description,
+        uid: uid ?? this.uid,
+        city: city ?? this.city,
+        turn: turn ?? this.turn,
+        speciality: speciality ?? this.speciality,
+        atSerivce: atSerivce ?? this.atSerivce,
+        wilaya: wilaya ?? this.wilaya,
+        firstName: firstName ?? this.firstName,
+        lastName: lastName ?? this.lastName,
+        phoneNumber: phoneNumber ?? this.phoneNumber);
+  }
 }

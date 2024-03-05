@@ -9,7 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class secondConatiner extends StatefulWidget {
   final String uid;
   final int turn;
-  secondConatiner({super.key, required this.uid, required this.turn});
+  const secondConatiner({super.key, required this.uid, required this.turn});
 
   @override
   State<secondConatiner> createState() => _secondConatinerState();
@@ -110,8 +110,8 @@ class _secondConatinerState extends State<secondConatiner> {
                                   alignment: Alignment.topLeft,
                                   child: Text(
                                     data.isNotEmpty
-                                        ? "Age: ${data.first.lastName} "
-                                        : "", // TODO: age does not exist in patient entity, create it
+                                        ? "Age: ${data.first.age} "
+                                        : " ",
                                     style: const TextStyle(
                                         fontFamily: "Nunito",
                                         fontSize: 14,
@@ -122,12 +122,14 @@ class _secondConatinerState extends State<secondConatiner> {
                               Container(
                                 width: 100.w,
                                 height: 14.h,
-                                child: const FittedBox(
+                                child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.topLeft,
                                   child: Text(
-                                    "  widget.patinet .toString(), ", // TODO: gender does not exist in patinte entity, create it
-                                    style: TextStyle(
+                                    data.isNotEmpty
+                                        ? "Gender: ${data.first.gender} "
+                                        : " ",
+                                    style: const TextStyle(
                                         fontFamily: "Nunito",
                                         fontSize: 19,
                                         fontWeight: FontWeight.w600),

@@ -3,7 +3,6 @@
 import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_data_bloc/doctor_data_bloc.dart';
-import 'package:dawini_full/doctor_Features/presentation/bloc/patients_info_bloc/patients_info_bloc.dart';
 import 'package:dawini_full/doctor_Features/presentation/pages/doctor_cabinSide.dart/swlhdoctor.dart/firstcontainer.dart';
 import 'package:dawini_full/doctor_Features/presentation/pages/doctor_cabinSide.dart/swlhdoctor.dart/secondcontainer.dart';
 import 'package:dawini_full/doctor_Features/presentation/pages/doctor_cabinSide.dart/swlhdoctor.dart/today_patinet.dart';
@@ -37,7 +36,7 @@ class _LanguageScreenState extends State<doctorview> {
         BlocProvider.of<DoctorPatientsBloc>(context);
 
     return Scaffold(
-        backgroundColor: Color(0xffFAFAFA),
+        backgroundColor: const Color(0xffFAFAFA),
         body: BlocBuilder<DoctorPatientsBloc, DoctorPatientsState>(
             builder: (context, state) {
           if (state is doctorInfoLoaded) {
@@ -190,7 +189,7 @@ class _LanguageScreenState extends State<doctorview> {
                 ),
                 TodayPatinet(uid: doctor.uid, turn: doctor.turn),
                 Container(
-                  color: Color(0xffFAFAFA),
+                  color: const Color(0xffFAFAFA),
                   height: 75.h,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -208,7 +207,7 @@ class _LanguageScreenState extends State<doctorview> {
                           width: 100,
                           height: 40,
                           decoration: BoxDecoration(
-                              color: Color(0xff00C8D5),
+                              color: const Color(0xff00C8D5),
                               borderRadius: BorderRadius.circular(25)),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -250,7 +249,7 @@ class _LanguageScreenState extends State<doctorview> {
                                 vertical: 8.h, horizontal: 0.w),
                             width: 60,
                             height: 60,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                               color: Color(0xff00C8D5),
                             ),
@@ -269,7 +268,7 @@ class _LanguageScreenState extends State<doctorview> {
                           width: 100,
                           height: 40,
                           decoration: BoxDecoration(
-                              color: Color(0xff00C8D5),
+                              color: const Color(0xff00C8D5),
                               borderRadius: BorderRadius.circular(25)),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,

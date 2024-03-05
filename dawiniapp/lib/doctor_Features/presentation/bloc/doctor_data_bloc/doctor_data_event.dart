@@ -1,10 +1,11 @@
+// ignore_for_file: camel_case_types
+
 part of 'doctor_data_bloc.dart';
 
 abstract class DoctorPatientsEvent extends Equatable {}
 
 class LoadedDataDoctorPatinetsEvent extends DoctorPatientsEvent {
   @override
-  // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
 }
 
@@ -15,7 +16,7 @@ class onTurnUpdate extends DoctorPatientsEvent {
   onTurnUpdate({required this.doctor, required this.turn});
 
   @override
-  List<Object> get props => [turn];
+  List<Object> get props => [doctor, turn];
 }
 
 class onStateUpdate extends DoctorPatientsEvent {
@@ -24,7 +25,7 @@ class onStateUpdate extends DoctorPatientsEvent {
   onStateUpdate({required this.doctor, required this.state});
 
   @override
-  List<Object> get props => [state];
+  List<Object> get props => [doctor, state];
 }
 
 class onDataUpdate extends DoctorPatientsEvent {

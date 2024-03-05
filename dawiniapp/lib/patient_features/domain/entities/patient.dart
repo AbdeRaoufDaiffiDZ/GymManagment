@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 class PatientEntity extends Equatable {
   final String firstName;
   final bool today;
-
+  final String gender;
   final String lastName;
   final String phoneNumber;
   final String address;
@@ -14,8 +14,11 @@ class PatientEntity extends Equatable {
   final int turn;
   final String DoctorName;
   final String uid;
-  PatientEntity(
-      {required this.DoctorName,
+  final String token;
+  const PatientEntity(
+      {required this.token,
+      required this.gender,
+      required this.DoctorName,
       required this.uid,
       required this.today,
       required this.AppointmentDate,
@@ -28,6 +31,8 @@ class PatientEntity extends Equatable {
 
   @override
   List<Object?> get props => [
+        token,
+        gender,
         DoctorName,
         uid,
         today,
@@ -42,6 +47,8 @@ class PatientEntity extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {
+      'token': token,
+      'gender': "gender",
       'firstName': firstName,
       'lastName': lastName,
       'phoneNumber': phoneNumber,
@@ -53,5 +60,34 @@ class PatientEntity extends Equatable {
       'DoctorName': DoctorName,
       'uid': uid
     };
+  }
+
+  PatientEntity copyWith({
+    token,
+    gender,
+    DoctorName,
+    uid,
+    today,
+    lastName,
+    firstName,
+    phoneNumber,
+    address,
+    age,
+    AppointmentDate,
+    turn,
+  }) {
+    return PatientEntity(
+        token: token ?? this.token,
+        gender: gender ?? this.gender,
+        DoctorName: DoctorName ?? this.DoctorName,
+        uid: uid ?? this.uid,
+        today: today ?? this.today,
+        AppointmentDate: AppointmentDate ?? this.AppointmentDate,
+        turn: turn ?? this.turn,
+        age: age ?? this.age,
+        address: address ?? this.address,
+        firstName: firstName ?? this.firstName,
+        lastName: lastName ?? this.lastName,
+        phoneNumber: phoneNumber ?? this.phoneNumber);
   }
 }

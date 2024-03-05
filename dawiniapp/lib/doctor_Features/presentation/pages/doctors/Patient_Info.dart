@@ -1,11 +1,10 @@
-// ignore_for_file: camel_case_types, file_names
-
-import 'dart:ui';
+// ignore_for_file: file_names, camel_case_types, use_build_context_synchronously
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/patient_features/domain/entities/patient.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,6 +33,9 @@ class _Patient_infoState extends State<Patient_info> {
   final TextEditingController _ageController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _genderController = TextEditingController();
+  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String datetimeToday = DateFormat("yyyy-MM-dd").format(DateTime.now());
   String datetimeTomrrow = DateFormat("yyyy-MM-dd")
@@ -79,6 +81,7 @@ class _Patient_infoState extends State<Patient_info> {
     _ageController.dispose();
     _phoneNumberController.dispose();
     _addressController.dispose();
+    _genderController.dispose();
     super.dispose();
   }
 
@@ -202,7 +205,7 @@ class _Patient_infoState extends State<Patient_info> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
+                  onTap: () async {
                     {
                       setState(() {
                         lastPressedTime = DateTime.now();
@@ -239,7 +242,10 @@ class _Patient_infoState extends State<Patient_info> {
                           backgroundColor: Colors.red,
                         ));
                       } else {
+                        final token = await _fcm.getToken();
                         PatientEntity patient = PatientEntity(
+                            token: token.toString(),
+                            gender: "_genderController.text",
                             AppointmentDate: widget.today
                                 ? datetimeToday
                                 : datetimeTomrrow, //////////////////////////////////

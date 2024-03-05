@@ -57,6 +57,7 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
 
         'turn': patientInfo.turn,
         'idkey': idkey,
+        'token': patientInfo.token
         // 'age': patientInfo.age,
       });
 

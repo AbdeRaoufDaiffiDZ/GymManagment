@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types
+
 part of 'patients_info_bloc.dart';
 
 abstract class PatientsInfoEvent extends Equatable {}

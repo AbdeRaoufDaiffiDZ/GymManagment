@@ -1,14 +1,12 @@
 // ignore_for_file: camel_case_types, sized_box_for_whitespace
 
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
-import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_data_bloc/doctor_data_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class firstConatiner extends StatefulWidget {
   final DoctorEntity doctor;
-  firstConatiner({super.key, required this.doctor});
+  const firstConatiner({super.key, required this.doctor});
 
   @override
   State<firstConatiner> createState() => _firstConatinerState();
@@ -17,8 +15,6 @@ class firstConatiner extends StatefulWidget {
 class _firstConatinerState extends State<firstConatiner> {
   @override
   Widget build(BuildContext context) {
-    final DoctorPatientsBloc doctorPatientsBloc =
-        BlocProvider.of<DoctorPatientsBloc>(context);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
       child: Container(

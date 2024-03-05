@@ -20,6 +20,9 @@ final class PatientsLoaded extends PatientsState {
 
   @override
   List<Object> get props => [patients];
+  PatientsLoaded copyWith(patients) {
+    return PatientsLoaded(patients ?? this.patients);
+  }
 }
 
 final class PatientsLoadingError extends PatientsState {
@@ -29,4 +32,7 @@ final class PatientsLoadingError extends PatientsState {
 
   @override
   List<Object> get props => [error];
+  PatientsLoadingError copyWith(error) {
+    return PatientsLoadingError(error ?? this.error);
+  }
 }

@@ -6,8 +6,9 @@ import 'package:dawini_full/patient_features/domain/entities/patient.dart';
 
 class PatientModel extends PatientEntity {
   final String firstName;
+  final String token;
   bool today;
-
+  final String gender;
   final String lastName;
   final String phoneNumber;
   final String address;
@@ -18,7 +19,9 @@ class PatientModel extends PatientEntity {
   final String uid;
 
   PatientModel(
-      {required this.today,
+      {required this.token,
+      required this.gender,
+      required this.today,
       required this.uid,
       required this.DoctorName,
       required this.AppointmentDate,
@@ -29,6 +32,8 @@ class PatientModel extends PatientEntity {
       required this.lastName,
       required this.phoneNumber})
       : super(
+            token: token,
+            gender: gender,
             uid: uid,
             DoctorName: DoctorName,
             today: today,
@@ -42,6 +47,8 @@ class PatientModel extends PatientEntity {
 
   @override
   List<Object?> get props => [
+        token,
+        gender,
         today,
         lastName,
         firstName,
@@ -54,6 +61,8 @@ class PatientModel extends PatientEntity {
 
   Map<String, dynamic> toMap() {
     return {
+      'token': token,
+      'gender': gender,
       'firstName': firstName,
       'lastName': lastName,
       'phoneNumber': phoneNumber,
@@ -69,6 +78,8 @@ class PatientModel extends PatientEntity {
 
   factory PatientModel.fromMap(Map<String, dynamic> map) {
     return PatientModel(
+      token: map['token'] ?? 'No token',
+      gender: map['gender'] ?? ' go to patient model to Edite ',
       firstName: map['firstName'] ?? 'No Patients ',
       lastName: map['lastName'] ?? 'booked yet ',
       phoneNumber: map['phoneNumber'] ?? '',
@@ -86,4 +97,33 @@ class PatientModel extends PatientEntity {
 
   factory PatientModel.fromJson(String source) =>
       PatientModel.fromMap(json.decode(source));
+
+  PatientModel copyWith({
+    token,
+    gender,
+    DoctorName,
+    uid,
+    today,
+    lastName,
+    firstName,
+    phoneNumber,
+    address,
+    age,
+    AppointmentDate,
+    turn,
+  }) {
+    return PatientModel(
+        token: token,
+        gender: gender,
+        DoctorName: DoctorName ?? this.DoctorName,
+        uid: uid ?? this.uid,
+        today: today ?? this.today,
+        AppointmentDate: AppointmentDate ?? this.AppointmentDate,
+        turn: turn ?? this.turn,
+        age: age ?? this.age,
+        address: address ?? this.address,
+        firstName: firstName ?? this.firstName,
+        lastName: lastName ?? this.lastName,
+        phoneNumber: phoneNumber ?? this.phoneNumber);
+  }
 }
