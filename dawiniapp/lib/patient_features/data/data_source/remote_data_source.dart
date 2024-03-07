@@ -5,9 +5,9 @@ import 'dart:convert';
 import 'package:dawini_full/core/constants/constants.dart';
 import 'package:dawini_full/core/error/exception.dart';
 import 'package:dawini_full/doctor_Features/data/data_source/doctor_cabin_data_source.dart';
+import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/patient_features/data/data_source/local_data_source.dart';
 import 'package:dawini_full/patient_features/data/models/clinic_model.dart';
-import 'package:dawini_full/doctor_Features/data/models/doctor_model.dart';
 import 'package:dawini_full/patient_features/data/models/patient_model.dart';
 import 'package:dawini_full/patient_features/domain/entities/clinic.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -54,11 +54,9 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
         'address': patientInfo.address,
         'AppointmentDate': patientInfo.AppointmentDate,
         'age': patientInfo.age,
-
         'turn': patientInfo.turn,
         'idkey': idkey,
         'token': patientInfo.token
-        // 'age': patientInfo.age,
       });
 
       await localDataSourcePatients.SetDoctorAppointmentLocal(patientInfo);
@@ -72,7 +70,7 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
   Future<bool> RemoveDoctorAppointment(
       PatientModel patientInfo, context) async {
     String uid = "";
-    List<DoctorModel> doctors = await doctorCabinDataSource.getDoctorsInfo();
+    List<DoctorEntity> doctors = await doctorCabinDataSource.getDoctorsInfo();
     doctors.where((element) => element.uid == patientInfo.DoctorName);
     // doctorCabinDataSource.getDoctorsInfo().then((value) {
     //   DoctorModel doctor = value.singleWhere(

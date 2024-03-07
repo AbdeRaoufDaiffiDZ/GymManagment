@@ -14,27 +14,16 @@ class ErrorPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final errorMessage = getErrorMessage(error);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Error"),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              "An error occurred:",
-              style: TextStyle(fontSize: 20),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              errorMessage,
-              style: const TextStyle(fontSize: 16),
-            ),
-            const SizedBox(height: 20),
-            // Add retry button or other actions if needed
-          ],
-        ),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            errorMessage,
+            style: const TextStyle(fontSize: 16),
+          ),
+          // Add retry button or other actions if needed
+        ],
       ),
     );
   }

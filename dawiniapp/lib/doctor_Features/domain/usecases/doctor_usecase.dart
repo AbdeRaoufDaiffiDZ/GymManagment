@@ -3,7 +3,7 @@ import 'package:dawini_full/core/error/failure.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/doctor_Features/domain/repositories/doctor_repository.dart';
 import 'package:dawini_full/doctor_Features/data/repositories/doctor_repository_impl.dart';
-import 'package:dawini_full/patient_features/data/models/patient_model.dart';
+import 'package:dawini_full/patient_features/domain/entities/patient.dart';
 
 class GetDoctorsInfoUseCase {
   final DoctorRepository doctorRepository = DcotrRepositoryImpl();
@@ -43,7 +43,7 @@ class UpdateDoctorCabinData {
 
 class GetDoctorPatinetsInfousecase {
   final DoctorRepository doctorRepository = DcotrRepositoryImpl();
-  Future<Either<Failure, List<PatientModel>>> excute(
+  Future<Either<Failure, List<PatientEntity>>> excute(
       String uid, bool today) async {
     return doctorRepository.patinetsInfo(uid, today);
   }

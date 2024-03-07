@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 abstract class DoctorCabinDataSource {
-  Future<List<DoctorModel>> getDoctorsInfo();
+  Future<List<DoctorEntity>> getDoctorsInfo();
   Stream<List<DoctorEntity>> streamDoctors();
   Future<void> turnUpdate(int numberInList, int turn, String numberOfPatients);
   Future<void> updatedoctorState(int numberInList, bool state);
@@ -29,7 +29,7 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
   static final LocalDataSourceDoctors localDataSourcePatients =
       LocalDataSourceImplDoctor();
   @override
-  Future<List<DoctorModel>> getDoctorsInfo() async {
+  Future<List<DoctorEntity>> getDoctorsInfo() async {
     final result = await _databaseReference.ref().child('/doctorsList').get();
     Map<String, dynamic> convertedMap = {};
 
@@ -43,7 +43,7 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
           }
         });
 
-        return DoctorModel.fromJson(convertedMap);
+        return DoctorModel.fromJson(convertedMap).toEntity();
       }).toList();
       return info;
     } else {
@@ -53,12 +53,12 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
   }
 
   @override
-  Stream<List<DoctorModel>> streamDoctors() {
+  Stream<List<DoctorEntity>> streamDoctors() {
     final result =
         _databaseReference.ref().child('doctorsList').onValue.map((event) {
       List currapted = event.snapshot.value as List;
       final data = currapted.map((e) {
-        return DoctorModel.fromJson(e);
+        return DoctorModel.fromJson(e).toEntity();
       }).toList();
 
       return data;
@@ -122,9 +122,13 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
     }
     await _databaseReference
         .ref("/doctorsList/$numberInList/")
+        // .set(turn);
         .update({"turn": turn})
         .then((value) => print("done!"))
         .catchError((e) => print("error"));
+    await _databaseReference
+        .ref("/doctorsList/$numberInList/numberOfPatient")
+        .set(data.length);
   }
 
   @override

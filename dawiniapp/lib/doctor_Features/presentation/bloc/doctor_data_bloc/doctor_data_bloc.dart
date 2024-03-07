@@ -35,6 +35,9 @@ class DoctorPatientsBloc
           updateDoctorCabinData.updateState(
               event.doctor.numberInList, event.state);
           final data = await getDoctorsInfoUseCase.getDoctorsInfo();
+          List<DoctorEntity> doctor = data;
+
+          doctor[event.doctor.numberInList].atSerivce = event.state;
 
           emit(doctorInfoLoaded(data)); //         });
         } catch (e) {
@@ -48,7 +51,17 @@ class DoctorPatientsBloc
           await updateDoctorCabinData.updateTurn(
               event.doctor.numberInList, event.turn, event.doctor.uid);
           final data = await getDoctorsInfoUseCase.getDoctorsInfo();
-          emit(doctorInfoLoaded(data));
+          List<DoctorEntity> doctor = data;
+          if (event.turn < 0) {
+            doctor[event.doctor.numberInList].turn = 0;
+          } else if (data[event.doctor.numberInList].numberOfPatient <
+              event.turn) {
+            doctor[event.doctor.numberInList].turn =
+                data[event.doctor.numberInList].numberOfPatient;
+          } else {
+            doctor[event.doctor.numberInList].turn = event.turn;
+          }
+          emit(doctorInfoLoaded(doctor));
         } catch (e) {
           emit(doctorInfoLoadingError(e.toString()));
         }

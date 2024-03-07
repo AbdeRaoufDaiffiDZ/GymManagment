@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:equatable/equatable.dart';
 
 class DoctorEntity extends Equatable {
@@ -13,11 +15,13 @@ class DoctorEntity extends Equatable {
   final String wilaya;
   final String city;
   final String speciality;
-  final bool atSerivce;
-  final int turn;
+  final int numberOfPatient;
+  bool atSerivce;
+  int turn;
 
-  const DoctorEntity(
-      {required this.numberInList,
+  DoctorEntity(
+      {required this.numberOfPatient,
+      required this.numberInList,
       required this.location,
       required this.date,
       required this.experience,
@@ -34,6 +38,7 @@ class DoctorEntity extends Equatable {
 
   @override
   List<Object?> get props => [
+        numberOfPatient,
         numberInList,
         location,
         date,
@@ -49,35 +54,4 @@ class DoctorEntity extends Equatable {
         turn,
         uid
       ];
-  DoctorEntity copyWith(
-      {numberInList,
-      location,
-      date,
-      experience,
-      description,
-      lastName,
-      firstName,
-      phoneNumber,
-      speciality,
-      city,
-      atSerivce,
-      wilaya,
-      turn,
-      uid}) {
-    return DoctorEntity(
-        numberInList: numberInList ?? this.numberInList,
-        location: location ?? this.location,
-        date: date ?? this.date,
-        experience: experience ?? this.experience,
-        description: description ?? this.description,
-        uid: uid ?? this.uid,
-        city: city ?? this.city,
-        turn: turn ?? this.turn,
-        speciality: speciality ?? this.speciality,
-        atSerivce: atSerivce ?? this.atSerivce,
-        wilaya: wilaya ?? this.wilaya,
-        firstName: firstName ?? this.firstName,
-        lastName: lastName ?? this.lastName,
-        phoneNumber: phoneNumber ?? this.phoneNumber);
-  }
 }

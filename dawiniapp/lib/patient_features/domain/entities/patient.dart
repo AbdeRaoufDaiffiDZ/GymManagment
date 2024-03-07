@@ -61,33 +61,4 @@ class PatientEntity extends Equatable {
       'uid': uid
     };
   }
-
-  PatientEntity copyWith({
-    token,
-    gender,
-    DoctorName,
-    uid,
-    today,
-    lastName,
-    firstName,
-    phoneNumber,
-    address,
-    age,
-    AppointmentDate,
-    turn,
-  }) {
-    return PatientEntity(
-        token: token ?? this.token,
-        gender: gender ?? this.gender,
-        DoctorName: DoctorName ?? this.DoctorName,
-        uid: uid ?? this.uid,
-        today: today ?? this.today,
-        AppointmentDate: AppointmentDate ?? this.AppointmentDate,
-        turn: turn ?? this.turn,
-        age: age ?? this.age,
-        address: address ?? this.address,
-        firstName: firstName ?? this.firstName,
-        lastName: lastName ?? this.lastName,
-        phoneNumber: phoneNumber ?? this.phoneNumber);
-  }
 }

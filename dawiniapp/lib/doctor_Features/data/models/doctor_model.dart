@@ -1,4 +1,4 @@
-// ignore_for_file: annotate_overrides, overridden_fields
+// ignore_for_file: annotate_overrides, overridden_fields, must_be_immutable
 
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 
@@ -17,9 +17,10 @@ class DoctorModel extends DoctorEntity {
   final bool atSerivce;
   final int turn;
   final String uid;
-
-  const DoctorModel(
-      {required this.numberInList,
+  final int numberOfPatient;
+  DoctorModel(
+      {required this.numberOfPatient,
+      required this.numberInList,
       required this.location,
       required this.date,
       required this.experience,
@@ -34,6 +35,7 @@ class DoctorModel extends DoctorEntity {
       required this.lastName,
       required this.phoneNumber})
       : super(
+            numberOfPatient: numberOfPatient,
             numberInList: numberInList,
             location: location,
             date: date,
@@ -51,6 +53,7 @@ class DoctorModel extends DoctorEntity {
 
   @override
   List<Object?> get props => [
+        numberOfPatient,
         location,
         date,
         experience,
@@ -68,6 +71,7 @@ class DoctorModel extends DoctorEntity {
 
   Map<String, dynamic> toMap() {
     return {
+      'numberOfPatient': numberOfPatient,
       'location': location,
       'date': date,
       'experience': experience,
@@ -85,6 +89,7 @@ class DoctorModel extends DoctorEntity {
 
   factory DoctorModel.fromJson(Map<dynamic, dynamic> json) {
     return DoctorModel(
+        numberOfPatient: json['numberOfPatient'] ?? 0,
         numberInList: json['numberInList'] ?? 0,
         firstName: json['firstName'] ?? " ",
         lastName: json['lastName'] ?? " ",
@@ -104,6 +109,7 @@ class DoctorModel extends DoctorEntity {
   }
 
   DoctorEntity toEntity() => DoctorEntity(
+      numberOfPatient: numberOfPatient,
       uid: uid,
       firstName: firstName,
       lastName: lastName,
