@@ -98,32 +98,17 @@ class PatientModel extends PatientEntity {
   factory PatientModel.fromJson(String source) =>
       PatientModel.fromMap(json.decode(source));
 
-  PatientModel copyWith({
-    token,
-    gender,
-    DoctorName,
-    uid,
-    today,
-    lastName,
-    firstName,
-    phoneNumber,
-    address,
-    age,
-    AppointmentDate,
-    turn,
-  }) {
-    return PatientModel(
-        token: token,
-        gender: gender,
-        DoctorName: DoctorName ?? this.DoctorName,
-        uid: uid ?? this.uid,
-        today: today ?? this.today,
-        AppointmentDate: AppointmentDate ?? this.AppointmentDate,
-        turn: turn ?? this.turn,
-        age: age ?? this.age,
-        address: address ?? this.address,
-        firstName: firstName ?? this.firstName,
-        lastName: lastName ?? this.lastName,
-        phoneNumber: phoneNumber ?? this.phoneNumber);
-  }
+  PatientEntity toEntity() => PatientEntity(
+      token: token,
+      gender: gender,
+      DoctorName: DoctorName,
+      uid: uid,
+      today: today,
+      AppointmentDate: AppointmentDate,
+      turn: turn,
+      age: age,
+      address: address,
+      firstName: firstName,
+      lastName: lastName,
+      phoneNumber: phoneNumber);
 }

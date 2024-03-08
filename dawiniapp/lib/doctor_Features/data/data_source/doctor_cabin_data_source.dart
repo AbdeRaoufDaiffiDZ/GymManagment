@@ -2,7 +2,6 @@
 
 import 'package:dawini_full/patient_features/data/data_source/local_data_source.dart';
 import 'package:dawini_full/doctor_Features/data/models/doctor_model.dart';
-import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/patient_features/data/models/patient_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -10,8 +9,8 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 abstract class DoctorCabinDataSource {
-  Future<List<DoctorEntity>> getDoctorsInfo();
-  Stream<List<DoctorEntity>> streamDoctors();
+  Future<List<DoctorModel>> getDoctorsInfo();
+  Stream<List<DoctorModel>> streamDoctors();
   Future<void> turnUpdate(int numberInList, int turn, String numberOfPatients);
   Future<void> updatedoctorState(int numberInList, bool state);
   Future<void> updateDoctorInfo(
@@ -29,7 +28,7 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
   static final LocalDataSourceDoctors localDataSourcePatients =
       LocalDataSourceImplDoctor();
   @override
-  Future<List<DoctorEntity>> getDoctorsInfo() async {
+  Future<List<DoctorModel>> getDoctorsInfo() async {
     final result = await _databaseReference.ref().child('/doctorsList').get();
     Map<String, dynamic> convertedMap = {};
 
@@ -43,7 +42,7 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
           }
         });
 
-        return DoctorModel.fromJson(convertedMap).toEntity();
+        return DoctorModel.fromJson(convertedMap);
       }).toList();
       return info;
     } else {
@@ -53,12 +52,12 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
   }
 
   @override
-  Stream<List<DoctorEntity>> streamDoctors() {
+  Stream<List<DoctorModel>> streamDoctors() {
     final result =
         _databaseReference.ref().child('doctorsList').onValue.map((event) {
       List currapted = event.snapshot.value as List;
       final data = currapted.map((e) {
-        return DoctorModel.fromJson(e).toEntity();
+        return DoctorModel.fromJson(e);
       }).toList();
 
       return data;
