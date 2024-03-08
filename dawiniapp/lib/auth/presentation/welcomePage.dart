@@ -4,15 +4,15 @@ import 'package:dawini_full/auth/data/FirebaseAuth/authentification.dart';
 import 'package:dawini_full/auth/presentation/loginPage.dart';
 import 'package:dawini_full/auth/presentation/signup.dart';
 import 'package:dawini_full/core/loading/loading.dart';
-import 'package:dawini_full/doctor_Features/presentation/pages/doctor_cabinSide.dart/cabin_page.dart';
+import 'package:dawini_full/doctor_Features/presentation/pages/doctor_cabinSide.dart/swlhdoctor.dart/doctorview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class doctorsideHome extends StatefulWidget {
-  final bool popOrNot;
-
-  const doctorsideHome({super.key, required this.popOrNot});
+  const doctorsideHome({
+    super.key,
+  });
 
   @override
   State<doctorsideHome> createState() => _doctorsideHomeState();
@@ -35,48 +35,20 @@ class _doctorsideHomeState extends State<doctorsideHome> {
 
           final user = snapshot.data;
           return user != null
-              ? DoctorCabinInfo(
-                  uid: snapshot.data!.uid,
-                  popOrNot: widget.popOrNot,
+              ? doctorview(
+                  uid: user.uid,
                 )
-              : WelcomePage(
-                  popOrNot: widget.popOrNot,
-                );
-//           if (snapshot.data == null) {
-//             return LoginPage();
-//           } else {
-//             final user = snapshot.data;
-// if(user != null){}
-//             return DoctorCabinInfo(
-//               uid: snapshot.data!.uid,
-//               popOrNot: widget.popOrNot,
-//             );
-//             //   SafeArea(
-//             //     child: Column(
-//             //       children: [
-//             //         MaterialButton(
-//             //           color: Colors.white,
-//             //           onPressed: () {
-//             //             auth.signOut();
-//             //           },
-//             //           child: Text("clickTo Disconnect"),
-//             //         ),
-//             //         SizedBox(
-//             //           height: 20.h,
-//             //         ),
-
-//             //     ],
-//             //   ),
-//             // );
-//           }
+              : WelcomePage();
+//
         });
   }
 }
 
 class WelcomePage extends StatefulWidget {
-  const WelcomePage({Key? key, this.title, required this.popOrNot})
-      : super(key: key);
-  final bool popOrNot;
+  const WelcomePage({
+    Key? key,
+    this.title,
+  }) : super(key: key);
 
   final String? title;
 
@@ -85,15 +57,11 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
-  Widget _submitButton(popOrNot) {
+  Widget _submitButton() {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => LoginPage(
-                      popOrNot: popOrNot,
-                    )));
+            context, MaterialPageRoute(builder: (context) => LoginPage()));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -117,13 +85,11 @@ class _WelcomePageState extends State<WelcomePage> {
     );
   }
 
-  Widget _signUpButton(popOrNot) {
+  Widget _signUpButton() {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => SignUpPage(popOrNot: popOrNot)));
+            context, MaterialPageRoute(builder: (context) => SignUpPage()));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -221,11 +187,11 @@ class _WelcomePageState extends State<WelcomePage> {
               SizedBox(
                 height: 80,
               ),
-              _submitButton(widget.popOrNot),
+              _submitButton(),
               SizedBox(
                 height: 20,
               ),
-              _signUpButton(widget.popOrNot),
+              _signUpButton(),
               SizedBox(
                 height: 20,
               ),

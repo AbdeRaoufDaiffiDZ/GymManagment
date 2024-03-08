@@ -1,13 +1,14 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, prefer_const_constructors
 
 import 'package:dawini_full/auth/presentation/Widget/bezierContainer.dart';
 import 'package:dawini_full/auth/presentation/loginPage.dart';
 import 'package:flutter/material.dart';
 
 class SignUpPage extends StatefulWidget {
-  const SignUpPage({Key? key, this.title, required this.popOrNot})
-      : super(key: key);
-  final bool popOrNot;
+  const SignUpPage({
+    Key? key,
+    this.title,
+  }) : super(key: key);
   final String? title;
 
   @override
@@ -85,15 +86,11 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  Widget _loginAccountLabel(popOrNot) {
+  Widget _loginAccountLabel() {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => LoginPage(
-                      popOrNot: popOrNot,
-                    )));
+            context, MaterialPageRoute(builder: (context) => LoginPage()));
       },
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 20),
@@ -185,7 +182,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     _submitButton(),
                     SizedBox(height: height * .14),
-                    _loginAccountLabel(widget.popOrNot),
+                    _loginAccountLabel(),
                   ],
                 ),
               ),

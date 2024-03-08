@@ -15,12 +15,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class doctorview extends StatefulWidget {
   final String uid;
-  final bool popOrNot;
 
   const doctorview({
     super.key,
     required this.uid,
-    required this.popOrNot,
     // this.uid,
     //required this.popOrNot,
   });
@@ -51,7 +49,7 @@ class _LanguageScreenState extends State<doctorview> {
               // shrinkWrap: true,
               children: [
                 myAppbar(
-                  popOrNot: false,
+                  fromWhere: true, // navigate to patinet side
                 ),
                 Row(
                   children: [

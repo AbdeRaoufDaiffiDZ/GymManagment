@@ -41,11 +41,9 @@ class _PagesShowerState extends State<PagesShower> {
         } else if (state is IgnoreIntorductionState) {
           if (state.Screen == 'doctor') {
             if (uid == null) {
-              return const doctorsideHome(
-                popOrNot: false,
-              );
+              return const doctorsideHome();
             } else {
-              return const WelcomePage(popOrNot: false);
+              return const WelcomePage();
             }
             /////////////////////////////////////    here you will go to patients screen
           } else {

@@ -2,13 +2,14 @@
 
 import 'package:dawini_full/auth/presentation/welcomePage.dart';
 import 'package:dawini_full/introduction_feature/domain/usecases/set_type_usecase.dart';
+import 'package:dawini_full/patient_features/presentation/pages/weather_pag.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class myAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String? uid;
-  final bool popOrNot;
-  myAppbar({Key? key, this.uid, required this.popOrNot}) : super(key: key);
+  final bool fromWhere;
+  myAppbar({Key? key, this.uid, required this.fromWhere}) : super(key: key);
   final SetTypeUseCase setTypeUseCase = SetTypeUseCase();
 
   @override
@@ -28,25 +29,18 @@ class myAppbar extends StatelessWidget implements PreferredSizeWidget {
             ),
             IconButton(
               onPressed: () async {
-                if (uid == null) {
+                if (fromWhere) {
+                  await setTypeUseCase.execute("patient");
+
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Weather()));
+                } else {
+                  await setTypeUseCase.execute("doctor");
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const doctorsideHome(
-                                popOrNot: false,
-                              )));
-                } else {
-                  await setTypeUseCase.execute("doctor");
-                  if (popOrNot) {
-                    Navigator.pop(context);
-                  } else {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const doctorsideHome(
-                                  popOrNot: true,
-                                )));
-                  }
+                          builder: (context) => const doctorsideHome()));
                 }
               },
               icon: Icon(

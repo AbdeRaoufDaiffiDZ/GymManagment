@@ -10,9 +10,10 @@ import 'package:flutter/material.dart';
 import 'Widget/bezierContainer.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key, this.title, required this.popOrNot})
-      : super(key: key);
-  final bool popOrNot;
+  const LoginPage({
+    Key? key,
+    this.title,
+  }) : super(key: key);
 
   final String? title;
 
@@ -178,15 +179,11 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _createAccountLabel(popOrNot) {
+  Widget _createAccountLabel() {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => SignUpPage(
-                      popOrNot: widget.popOrNot,
-                    )));
+            context, MaterialPageRoute(builder: (context) => SignUpPage()));
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 20),
@@ -287,9 +284,7 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => doctorsideHome(
-                                          popOrNot: widget.popOrNot,
-                                        )));
+                                    builder: (context) => doctorsideHome()));
                           }
                           // result.then((value) {
                           //   value.fold(
@@ -337,7 +332,7 @@ class _LoginPageState extends State<LoginPage> {
                       },
                       child: _facebookButton()),
                   SizedBox(height: height * .055),
-                  _createAccountLabel(widget.popOrNot),
+                  _createAccountLabel(),
                 ],
               ),
             ),

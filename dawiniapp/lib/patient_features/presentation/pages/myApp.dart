@@ -69,12 +69,9 @@ class _MypageState extends State<Mypage> {
             key: _scaffoldKey,
             body: Weather(
               device: widget.device,
-              popOrNot: widget.popOrNot,
             ));
       } else {
-        return const doctorsideHome(
-          popOrNot: false,
-        );
+        return const doctorsideHome();
       }
     } else {
       return const Loading();
