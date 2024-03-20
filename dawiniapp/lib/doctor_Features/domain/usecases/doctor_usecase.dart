@@ -31,13 +31,15 @@ class UpdateDoctorCabinData {
     return doctorRepository.turnUpdate(numberInList, turn, numberOfPatients);
   }
 
-  Future<Either<Failure, void>> updateState(int numberInList, bool state) {
-    return doctorRepository.updatedoctorState(numberInList, state);
+  Future<Either<Failure, void>> updateState(
+      int numberInList, bool state, DoctorEntity doctor) {
+    return doctorRepository.updatedoctorState(numberInList, state, doctor);
   }
 
-  Future<Either<Failure, void>> updatedoctorData(
-      int numberInList, dynamic data, String infoToUpdate) {
-    return doctorRepository.updatedoctorData(numberInList, data, infoToUpdate);
+  Future<Either<Failure, void>> updatedoctorData(int numberInList, dynamic data,
+      String infoToUpdate, DoctorEntity doctor) {
+    return doctorRepository.updatedoctorData(
+        numberInList, data, infoToUpdate, doctor);
   }
 }
 

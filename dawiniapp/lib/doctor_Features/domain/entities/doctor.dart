@@ -1,5 +1,7 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 
 class DoctorEntity extends Equatable {
@@ -54,4 +56,26 @@ class DoctorEntity extends Equatable {
         turn,
         uid
       ];
+
+  Map<String, dynamic> toMap() {
+    return {
+      'location': location,
+      'date': date,
+      'experience': experience,
+      'description': description,
+      'numberInList': numberInList,
+      'uid': uid,
+      'firstName': firstName,
+      'lastName': lastName,
+      'phoneNumber': phoneNumber,
+      'wilaya': wilaya,
+      'city': city,
+      'speciality': speciality,
+      'numberOfPatient': numberOfPatient,
+      'atSerivce': atSerivce,
+      'turn': turn,
+    };
+  }
+
+  String toJson() => json.encode(toMap());
 }

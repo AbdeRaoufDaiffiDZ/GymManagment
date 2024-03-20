@@ -33,7 +33,7 @@ class DoctorPatientsBloc
       } else if (event is onStateUpdate) {
         try {
           updateDoctorCabinData.updateState(
-              event.doctor.numberInList, event.state);
+              event.doctor.numberInList, event.state, event.doctor);
           final data = await getDoctorsInfoUseCase.getDoctorsInfo();
           List<DoctorEntity> doctor = data;
 

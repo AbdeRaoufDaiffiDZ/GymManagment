@@ -12,9 +12,10 @@ abstract class DoctorCabinDataSource {
   Future<List<DoctorModel>> getDoctorsInfo();
   Stream<List<DoctorModel>> streamDoctors();
   Future<void> turnUpdate(int numberInList, int turn, String numberOfPatients);
-  Future<void> updatedoctorState(int numberInList, bool state);
+  Future<void> updatedoctorState(
+      int numberInList, bool state, DoctorModel doctor);
   Future<void> updateDoctorInfo(
-      int numberInList, dynamic data, String infoToUpdate);
+      int numberInList, dynamic data, String infoToUpdate, DoctorModel doctor);
   Future<List<PatientModel>> patinetsInfo(
     String uid,
     bool today,
@@ -110,7 +111,11 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
   }
 
   @override
-  Future turnUpdate(int numberInList, int turn, String numberOfPatients) async {
+  Future turnUpdate(
+    int numberInList,
+    int turn,
+    String numberOfPatients,
+  ) async {
     final data = await patinetsInfo(numberOfPatients, true);
     if (turn < 0) {
       turn = 0;
@@ -131,20 +136,32 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
   }
 
   @override
-  Future updatedoctorState(int numberInList, bool state) async {
+  Future updatedoctorState(
+      int numberInList, bool state, DoctorModel doctor) async {
     await _databaseReference
         .ref()
         .update({"/doctorsList/$numberInList/atSerivce": state})
         .then((value) => print("done!"))
         .catchError((e) => print("error"));
+    print(doctor.uid);
+    await _databaseReference
+        .ref()
+        .update({"/user_data/Doctors/${doctor.uid}/isWorking": state})
+        .then((value) => print("done!"))
+        .catchError((e) => print(e.toString()));
   }
 
   @override
-  Future<void> updateDoctorInfo(
-      int numberInList, dynamic data, String infoToUpdate) async {
+  Future<void> updateDoctorInfo(int numberInList, dynamic data,
+      String infoToUpdate, DoctorModel doctor) async {
     await _databaseReference
         .ref()
         .update({"/doctorsList/$numberInList/$infoToUpdate": data})
+        .then((value) => print("done!"))
+        .catchError((e) => print("error"));
+    await _databaseReference
+        .ref()
+        .update({"/user_data/Doctors/${doctor.uid}/$infoToUpdate": data})
         .then((value) => print("done!"))
         .catchError((e) => print("error"));
   }

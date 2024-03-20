@@ -6,10 +6,10 @@ import 'package:dawini_full/core/error/failure.dart';
 import 'package:dawini_full/doctor_Features/data/data_source/doctor_cabin_data_source.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/doctor_Features/domain/repositories/doctor_repository.dart';
-import 'package:dawini_full/patient_features/data/models/patient_model.dart';
 import 'package:dawini_full/patient_features/domain/entities/patient.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:flutter/foundation.dart';
+import 'package:dawini_full/doctor_Features/data/models/doctor_model.dart';
 
 class DcotrRepositoryImpl implements DoctorRepository {
   static final DoctorCabinDataSource doctorCabinDataSource =
@@ -141,9 +141,10 @@ class DcotrRepositoryImpl implements DoctorRepository {
 
   @override
   Future<Either<Failure, void>> updatedoctorState(
-      int numberInList, bool state) async {
+      int numberInList, bool state, DoctorEntity doctor) async {
     try {
-      doctorCabinDataSource.updatedoctorState(numberInList, state);
+      doctorCabinDataSource.updatedoctorState(
+          numberInList, state, DoctorModel.fromJson(doctor.toMap()));
       return const Right(null);
     } on FirebaseException catch (e) {
       if (kDebugMode) {
@@ -194,10 +195,11 @@ class DcotrRepositoryImpl implements DoctorRepository {
   }
 
   @override
-  Future<Either<Failure, void>> updatedoctorData(
-      int numberInList, dynamic data, String infoToUpdate) async {
+  Future<Either<Failure, void>> updatedoctorData(int numberInList, dynamic data,
+      String infoToUpdate, DoctorEntity doctor) async {
     try {
-      doctorCabinDataSource.updateDoctorInfo(numberInList, data, infoToUpdate);
+      doctorCabinDataSource.updateDoctorInfo(numberInList, data, infoToUpdate,
+          DoctorModel.fromJson(doctor.toMap()));
       return const Right(null);
     } on FirebaseException catch (e) {
       if (kDebugMode) {
