@@ -1,101 +1,115 @@
-// Import required libraries
 import * as functions from "firebase-functions";
-import * as admin from "firebase-admin";
-
-// Interface for doctorEntity (replace with your actual properties)
+import admin = require("firebase-admin");
 
 
-// Initialize Firebase Admin app (replace with your credentials)
-admin.initializeApp();
-
-// Get a database reference
-const database = admin.database();
-// /**
-//  *  Formats a date in yyyy-mm-dd format.
-//  *  @param {Date} date The date object to format.
-//  *  @return {string} The formatted date string in yyyy-mm-dd format.
-//  */
-// function formatDate(date: Date): string {
-//   const year = date.getFullYear().toString().padStart(4, "0");
-//   const month = (date.getMonth() + 1).toString().padStart(2, "0");
-//   const day = date.getDate().toString().
-//     padStart(2, "0");
-
-//   return `${year}-${month}-${day}`;
-// }
-export const getDoctorList = functions.https.onCall(async () => {
-  // Get a reference to the doctors list
-  // Get today's date
-  // const today = new Date();
-
-  // Format the date
-  // const formattedDate = formatDate(today);
-  const doctorsRef = database.ref("/doctorsList");
-
-  // Get a snapshot of the list data
-  const snapshot = await doctorsRef.once("value");
-  // Check if data exists
-  if (snapshot.exists()) {
-    console.log("Data found!");
-    // Process the data from snapshot.val()
-  } else {
-    console.log("No data found at the specified path.");
-    // Handle the case where no data exists
-  }
-
-  return "Data read operation completed.";
-
-  // // Get the list value (an object)
-  // const listData = snapshot.val() as { [key: string]: DoctorEntity };
-
-  // // Convert list data to an array of DoctorEntity objects
-  // const doctorList: DoctorEntity[] = Object.values(listData);
-
-  // // Access and process doctor data (replace with your logic)
-  // doctorList.forEach( async (doctor) => {
-  //   const patientssRef = database.ref("/user_data/Doctors/"+
-  //   doctor.uid +"/Cabin_info/Patients/" + formattedDate);
-  //   const snap = await patientssRef.once("value");
-  //   const listDataPatient = snap.val() as { [key: string]: PatientEntity };
-  //   const patientList: PatientEntity[] = Object.values(listDataPatient);
-  //   patientList.forEach((patient) => {
-  //     if (patient.turn == doctor.turn) {
-  //       console.log("patient name is: "+ patient.firstName);
-  //     }
-  //   });
-  // });
-
-  // return doctorList;// Return the list of doctors
+admin.initializeApp({databaseURL:
+  "https://dawini-cec17-default-rtdb"+
+  ".europe-west1.firebasedatabase.app/",
+credential: admin.credential.cert({
+  clientEmail: "firebase-adminsdk-r"+
+    "xmpe@dawini-cec17.iam.gserviceaccount.com",
+  privateKey: "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgk"+
+    "qhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC3VqpPbhnG8/pO\nHNOrsjWE"+
+    "7IUFvTywbE0H6dUr3DhhT05WOdMXRmxjqE/QiaMqxiMhT0IZ0n"+
+    "Og/b5C\nDXiFvzuy2jW6ooCGD7UCSflfKzDzsVuZ1Chn2b/ROY"+
+    "R6Epd22Tg881u/oRjW+Dnw\nkGiZBMHMPQgoc0uZsJnINXs21Tc"+
+    "lhViG1/5OU0abOzzp6j5ejb2I8nZYNP4DOnHv\nX2O2y8AXZvbh"+
+    "lWExmtZs6Xgq8DhOqpz5oJbSoknkuc9BvD5dlcUHZsaP/ehIbhm+"+
+    "\nrBIqLsp4Y/nMCeVN+8/GQaAobG0ld8t9Fo3g70IQn3P7A09hXU"+
+    "KBlmcFYo1GX6v0\nu017GGPZAgMBAAECggEAFz8//S5iyl1pYb"+
+    "o6BM1mB+LNwzqJlX1GDzjRNOyJoZ0i\nu8A9Sfg+CizvYevx6p"+
+    "yRG8onAYsz6jgChfGbVKo48abFpVKxpU4cj5u9qRma7WuR\nx+G"+
+    "k9fYgYnE+oRP2bLWCcggRnCzbL3buMdi9yplV0YXzoN1tuqEv/r"+
+    "j5VKyYf4M/\nuz6wQ9gIydj4LX4ASopK3ETaJfU1sqswexzIRyC"+
+    "F0E822MQN8e7/MbUvDJYBIhpa\nJrwgHFF7H8tVGjML3U8KDbQg"+
+    "taJKZh8ULEhxkYUBDSyyFgEHApGAguIRXhXiUUL0\nDhujtqDJJ"+
+    "J0cPyurz620li2Q//tiIW+jKMut3fQC+QKBgQDyToG0Nl8Mav3W"+
+    "tVi5\nR088a0ogJ4YLZ3SqaDnKCarPXLrM2xS6cr9nO5IQQ88cQ"+
+    "4X3PEgwHYIXxI2Th6B3\nZi2Hc+A2bx29fOq2q8OoUxyckGu43m"+
+    "m72YW084FD6N+Dw3gaIOEgnjmzJgx6ymfR\n5TZViOv1QlXdKju"+
+    "TrEuo9LFA3wKBgQDBsw5nGL7puePAk6GLunAPLVDlSoTQubBd\n"+
+    "THPtt/Kj7zJCTSTzNQA+b38vKjFiR0r2ayVMYqOh6cE/EYg2mO1"+
+    "non3srYGXSCvj\nXuswyb69BsimYepvdY36KCDmQWv/hyxxzhP6"+
+    "CXSv9YiIzMwyB5iXtAZVfuTxw3zc\nMomvMf9aRwKBgEEjXbbmj"+
+    "vK1qHuZ0LouM1zYstqmBWD3dOOClVZ89tA763O6yX29\n7zp/Ry"+
+    "rcL8c3V8I5EGbu59Qf4LdyVG8EpuSs/+9iO6p+9FIbJsQPY7erE"+
+    "2plUCNR\nvKICfBOXfM7dM2JCyIKORpCkf+Jam0JPziV8Y4JRTO"+
+    "fhvJZcURKghS4dAoGBAINF\nlUo7lA8UgwydQMtQg+dVP9DVSuO"+
+    "mJKdmS97cXl3JmtciLxuAXPTzXU+ambNQO7Z6\n8OEurFTr9aKH"+
+    "gDf4NlSY5ByFjiD3sX67ckszPsgek9dm3pnBIoJZtco2pjmb43w"+
+    "R\nPKqkw+cIUQrdOLnjOf/96pkAkapjYPhea79G9Ba7AoGAHZ+A"+
+    "NCRx2aU13k2dGsri\nNr3eCLwM/zkSy7tzGOjb5/KWSa6yR6dt7"+
+    "3zAk8n02auGGb+tFpQ8jOEJ9bMYOjdb\nCgNjsHzUDf50Fw8Dlg"+
+    "7O4GfR2f/PuvuvbjlFPzSj+PSC/fPv19hlnF4qwnS+pr7/\nkNE"+
+    "spbO+/Nydnf5wNh1vc5I=\n-----END PRIVATE KEY-----\n",
+  projectId: "dawini-cec17",
+}),
 });
-// interface DoctorEntity {
-//   numberOfPatient: Int32Array,
-//   uid: string,
-//   firstName: string,
-//   lastName: string,
-//   phoneNumber: string,
-//   wilaya: string,
-//   city: string,
-//   speciality: string,
-//   atSerivce: boolean,
-//   turn: Int32Array,
-//   location: string,
-//   date: string,
-//   experience: string,
-//   description: string,
-//   numberInList: Int32Array
-//   // Add other doctor properties
-// }
-// interface PatientEntity {
-//   firstName:string,
-//   today:boolean,
-//   gender:string,
-//   lastName:string
-//   phoneNumber:string,
-//   address:string
-//   age:string
-//   AppointmentDate:string
-//   turn:Int32Array,
-//   DoctorName:string;
-//   uid:string;
-//   token:string
-// }
+/**
+ * This function formats the current date in YYYY-MM-DD format.
+ * @return {string} The formatted date string in YYYY-MM-DD format.
+ */
+function getTodayDate(): string {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate())
+    .padStart(2, "0");
+  return ""+year +"-" +month+"-" +day;
+}
+
+interface Patient {
+  token: string;
+  turn: number;
+}
+
+exports.readSpecificDocument = functions.database.ref("/doctorsList")
+  .onUpdate(async (change, context) => {
+    const afterData = change.after.val();
+    const filteredDoctors = afterData.filter((obj: object) => obj !== null);
+    if (!filteredDoctors) {
+      return;
+    }
+    for (const objj of filteredDoctors) {
+      const doctorUid = objj.uid;
+      const newTurn = objj.turn; // Assuming "currentTurn" holds the new turn
+      // Check if newTurn exists and avoid processing empty objects
+      if (!newTurn) {
+        console.warn("Skipping update for doctor:",
+          doctorUid, "due to missing newTurn");
+        continue;
+      }
+      const docRef = admin.database().ref("/user_data/Doctors/"+doctorUid+
+      "/Cabin_info/Patients/"+ getTodayDate());
+      const snapshot = await docRef.once("value");
+      const filteredData = snapshot.val()?.
+        filter((obj: object) => obj !== null);
+      if (!filteredData) {
+        console.warn("No patients found for Dr.", doctorUid);
+        return;
+      }
+      for (const obj of filteredData as Patient[]) {
+        const token = obj.token;
+        const patientTurn = obj.turn;
+        if (patientTurn - 2 === newTurn) {
+          const payload: admin.messaging.MessagingPayload = {
+            notification: {
+              title: "اقترب دورك عند الطبيب " + objj.lastName,
+              body: "الطبيب في انتظارك دورك بعد مريضين من الان",
+            },
+          };
+          await admin.messaging().
+            sendToDevice(token, payload);
+        } else if (patientTurn - 1 === newTurn) {
+          const payload: admin.messaging.MessagingPayload = {
+            notification: {
+              title: "اقترب دورك عند الطبيب "+ objj.lastName,
+              body: "الطبيب في انتظارك، دورك هو التالي",
+            },
+          };
+          await admin.messaging().
+            sendToDevice(token, payload);
+        }
+      }
+    }
+  });

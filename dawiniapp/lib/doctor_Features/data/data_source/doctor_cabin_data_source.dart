@@ -143,7 +143,6 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
         .update({"/doctorsList/$numberInList/atSerivce": state})
         .then((value) => print("done!"))
         .catchError((e) => print("error"));
-    print(doctor.uid);
     await _databaseReference
         .ref()
         .update({"/user_data/Doctors/${doctor.uid}/isWorking": state})
