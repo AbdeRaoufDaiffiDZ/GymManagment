@@ -108,10 +108,7 @@ class MyApp extends StatelessWidget {
                   home: MyWidget(
                     device: device,
 
-                    // doctorview(
-                    //uid: widget.uid, popOrNot: null,
-
-                    // ),
+                  
                   ));
             }));
   }
