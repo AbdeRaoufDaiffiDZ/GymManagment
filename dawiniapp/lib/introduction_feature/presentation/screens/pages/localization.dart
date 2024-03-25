@@ -22,10 +22,10 @@ class _LocalisationState extends State<Localisation> {
       body: SafeArea(
         child: Column(
           children: [
-            Container(
-              margin: const EdgeInsets.all(8),
-              child: Image.asset("assets/images/cc.png"),
-            ),
+            // Container(
+            //   margin: EdgeInsets.all(8.h),
+            //   child: Image.asset("assets/images/cc.png"),
+            // ),
             languageContainer("English", bloc, widget.languageSys),
             languageContainer("French", bloc, widget.languageSys),
             languageContainer("Arabic", bloc, widget.languageSys),
@@ -36,7 +36,7 @@ class _LocalisationState extends State<Localisation> {
                 color: isSelected
                     ? const Color(0xFF2CDBC6)
                     : const Color.fromARGB(108, 44, 219, 199),
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(16.h),
               ),
               child: InkWell(
                 onTap: () {
@@ -66,7 +66,7 @@ class _LocalisationState extends State<Localisation> {
   Widget languageContainer(
       String language, IntroductionBloc bloc, String languageSys) {
     return Container(
-      margin: const EdgeInsets.all(8),
+      margin: EdgeInsets.all(8.h),
       width: 150.w,
       height: 40.h,
       decoration: BoxDecoration(
@@ -76,7 +76,7 @@ class _LocalisationState extends State<Localisation> {
               : Colors.grey.shade300,
           width: 2.w,
         ),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.h),
       ),
       child: InkWell(
         onTap: () {

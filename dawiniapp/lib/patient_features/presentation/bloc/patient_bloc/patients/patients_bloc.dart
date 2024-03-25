@@ -72,23 +72,27 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
 
             if (auth0.user == null) {
               auth0.loginWithEmail(authData: auth);
-            }
-            saveLastPressedTime();
-            final done =
-                await bookDoctorAppointmentUseCase.excute(event.patients);
-            if (auth0.user!.uid == "4OCo8desYHfXftOWtkY7DRHRFLm2") {
-              auth0.signOut();
-            }
-            if (done) {
-              ScaffoldMessenger.of(event.context).showSnackBar(const SnackBar(
-                  content:
-                      Text("Your appointment has been booked successfully"),
-                  backgroundColor: Colors.green));
-              showlDialog(event.context, true, event.ifADoctor, true);
-            } else {
               ScaffoldMessenger.of(event.context).showSnackBar(const SnackBar(
                   content: Text("try again"), backgroundColor: Colors.red));
               showlDialog(event.context, false, event.ifADoctor, false);
+            } else {
+              saveLastPressedTime();
+              final done =
+                  await bookDoctorAppointmentUseCase.excute(event.patients);
+              if (auth0.user!.uid == "4OCo8desYHfXftOWtkY7DRHRFLm2") {
+                auth0.signOut();
+              }
+              if (done) {
+                ScaffoldMessenger.of(event.context).showSnackBar(const SnackBar(
+                    content:
+                        Text("Your appointment has been booked successfully"),
+                    backgroundColor: Colors.green));
+                showlDialog(event.context, true, event.ifADoctor, true);
+              } else {
+                ScaffoldMessenger.of(event.context).showSnackBar(const SnackBar(
+                    content: Text("try again"), backgroundColor: Colors.red));
+                showlDialog(event.context, false, event.ifADoctor, false);
+              }
             }
           } else {
             showlDialog(event.context, false, event.ifADoctor, true);
@@ -99,7 +103,7 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
         } catch (e) {
           ScaffoldMessenger.of(event.context).showSnackBar(const SnackBar(
               content: Text("try again"), backgroundColor: Colors.red));
-          showlDialog(event.context, false, event.ifADoctor, true);
+          showlDialog(event.context, false, event.ifADoctor, false);
 
           emit(PatientsLoadingError(e.toString()));
         }
@@ -122,7 +126,6 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
           final List<PatientEntity> patients =
               await getAppointmentLocalusecase.excute();
 
-          emit(PatientsLoaded(patients));
           if (result) {
             ScaffoldMessenger.of(event.context).showSnackBar(const SnackBar(
                 content: Text("appointment removed sucessusfuly"),
@@ -132,6 +135,7 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
                 content: Text("please, try again"),
                 backgroundColor: Colors.red));
           }
+          emit(PatientsLoaded(patients));
         } catch (e) {
           ScaffoldMessenger.of(event.context).showSnackBar(const SnackBar(
               content: Text("try again"), backgroundColor: Colors.red));
@@ -270,9 +274,9 @@ Future<Object?> showlDialog(
                   onTap: () {
                     if (Navigator.canPop(context)) {
                       Navigator.pop(context);
-                      Navigator.pop(context);
-
-                      // TODO: afer booking appointmetn must navigate to my appointments page
+                      if (done) {
+                        Navigator.pop(context);
+                      }
                     }
                   },
                   child: Container(

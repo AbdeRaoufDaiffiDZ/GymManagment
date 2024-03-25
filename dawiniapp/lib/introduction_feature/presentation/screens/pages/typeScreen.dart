@@ -112,11 +112,11 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
               SizedBox(
                 height: 20.h,
               ),
-              Container(
-                width: 250.w,
-                margin: const EdgeInsets.all(8),
-                child: Image.asset("assets/images/pp.png"),
-              ),
+              // Container(
+              //   width: 250.w,
+              //   margin: const EdgeInsets.all(8),
+              //   child: Image.asset("assets/images/pp.png"),
+              // ),
               SizedBox(
                 height: 20.h,
               ),

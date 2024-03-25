@@ -160,28 +160,30 @@ class _LanguageScreenState extends State<doctorview> {
                                     fontSize: 17,
                                     fontWeight: FontWeight.w800)))),
                     const Spacer(),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: ((context) => Patientslist(
-                                      uid: doctor.uid,
-                                    ))));
-                      }, ////////////////////
-                      child: Container(
-                          margin: EdgeInsets.only(right: 8.w),
-                          width: 100.w,
-                          height: 23.h,
-                          child: const FittedBox(
-                              fit: BoxFit.scaleDown,
-                              alignment: Alignment.bottomRight,
-                              child: Text("See all list ",
-                                  style: TextStyle(
-                                      fontFamily: "Nunito",
-                                      color: Color(0xff0AA9A9),
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600)))),
+                    Container(
+                      margin: EdgeInsets.only(right: 8.w),
+                      width: 100.w,
+                      height: 23.h,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.bottomRight,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) => Patientslist(
+                                          uid: doctor.uid,
+                                        ))));
+                          },
+                          child: const Text("See all list ",
+                              style: TextStyle(
+                                  fontFamily: "Nunito",
+                                  color: Color(0xff0AA9A9),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600)),
+                        ),
+                      ),
                     )
                   ],
                 ),

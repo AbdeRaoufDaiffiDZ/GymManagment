@@ -5,9 +5,9 @@ import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/introduction_feature/presentation/bloc/bloc/introduction_bloc.dart';
 import 'package:dawini_full/introduction_feature/presentation/screens/pages/localization.dart';
 import 'package:dawini_full/introduction_feature/presentation/screens/pages/typeScreen.dart';
-import 'package:dawini_full/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:dawini_full/patient_features/presentation/pages/myApp.dart';
 
 class PagesShower extends StatefulWidget {
   final String? uid;
@@ -47,7 +47,10 @@ class _PagesShowerState extends State<PagesShower> {
             }
             /////////////////////////////////////    here you will go to patients screen
           } else {
-            return const MyWidget();
+            return const Mypage(
+              device: "test",
+              popOrNot: false,
+            );
           }
         } else {
           bloc.add(const NextPage(id: 1));

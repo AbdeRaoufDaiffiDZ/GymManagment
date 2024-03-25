@@ -15,7 +15,6 @@ import 'package:dawini_full/patient_features/presentation/bloc/clinics_bloc/bloc
 import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/pages/myApp.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -29,9 +28,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
-  final device = await deviceInfo.androidInfo;
+  String device = "deviceInfo.androidInfo";
   AwesomeNotifications().initialize(
       null,
       [
@@ -60,7 +58,7 @@ Future<void> main() async {
 
   runApp(
     MyApp(
-      device: device.fingerprint,
+      device: device,
     ),
   );
 }
@@ -107,8 +105,6 @@ class MyApp extends StatelessWidget {
                   debugShowCheckedModeBanner: false,
                   home: MyWidget(
                     device: device,
-
-                  
                   ));
             }));
   }

@@ -3,6 +3,7 @@
 import 'package:dawini_full/introduction_feature/presentation/bloc/bloc/introduction_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LanguageScreen extends StatefulWidget {
   final String Language;
@@ -27,23 +28,16 @@ class _LanguageScreenState extends State<LanguageScreen> {
           children: <Widget>[
             BlocBuilder<IntroductionBloc, IntroductionState>(
                 builder: (context, state) {
-              // String language;
-              // if (state is LanguageState) {
-              //   language = state.language;
-              // } else {
-              //   language = widget.Language;
-              // }
               return Text(
-                // language,
                 widget.Language,
-                style: const TextStyle(
-                  fontSize: 24.0,
+                style: TextStyle(
+                  fontSize: 18.0.sp,
                   fontWeight: FontWeight.bold,
                 ),
               );
             }),
-            const SizedBox(
-              height: 0.05,
+            SizedBox(
+              height: 0.05.h,
             ),
             MaterialButton(
               color: "Arabic" == widget.Language ? Colors.red : Colors.grey,
@@ -72,9 +66,8 @@ class _LanguageScreenState extends State<LanguageScreen> {
               },
               child: const Text('French'),
             ),
-            const SizedBox(height: 0.05), // Add spacing between text and button
             SizedBox(
-              width: 0.5,
+              width: 0.5.h,
               child: ElevatedButton(
                 onPressed: () {
                   // Add the action you want to perform when the button is pressed

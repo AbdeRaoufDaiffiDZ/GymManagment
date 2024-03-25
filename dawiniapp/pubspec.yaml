@@ -34,7 +34,7 @@ dependencies:
   bloc_test: null
   cloud_firestore: null
   cloud_functions: ^4.6.8
-  connectivity_plus: null
+  connectivity_plus: ^1.4.0
   cupertino_icons: null
   curved_navigation_bar: null
   custom_refresh_indicator: ^3.0.0
