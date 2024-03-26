@@ -162,11 +162,19 @@ class _SearchMenuState extends State<SearchMenu> {
                       .toList(),
                   value: selectedValue,
                   onChanged: (wilaya) {
-                    setState(() {
-                      selectedValue = wilaya;
-                    });
-                    dataBloc.add(onDoctorsearchByWilaya(
-                        wilaya: wilaya.toString().toLowerCase()));
+                    if (widget.isHome) {
+                      dataBloc.add(onSeeAllDoctors());
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const doctors()));
+                    } else {
+                      setState(() {
+                        selectedValue = wilaya;
+                      });
+                      dataBloc.add(onDoctorsearchByWilaya(
+                          wilaya: wilaya.toString().toLowerCase()));
+                    }
                   },
                   buttonStyleData: ButtonStyleData(
                     height: 40.h,
