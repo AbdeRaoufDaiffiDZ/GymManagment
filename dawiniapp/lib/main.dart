@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:dawini_full/auth/domain/usecases/auth_usecase.dart';
 import 'package:dawini_full/auth/presentation/bloc/auth_bloc.dart';
+import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_data_bloc/doctor_data_bloc.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/patients_info_bloc/patients_info_bloc.dart';
 import 'package:dawini_full/firebase_options.dart';
@@ -119,12 +120,8 @@ class MyWidget extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<MyWidget> {
-  bool isConnected = false;
-  bool isAuthuntificated = false;
-  bool status = false;
-  late String type;
-
   DoctorAuthStateUseCase doctorAuthStateUseCase = DoctorAuthStateUseCase();
+  bool? status;
   @override
   void initState() {
     super.initState();
@@ -133,7 +130,7 @@ class _MyWidgetState extends State<MyWidget> {
         AwesomeNotifications().requestPermissionToSendNotifications();
       }
     });
-    _loadStatus();
+    statusGet();
   }
 
   @override
@@ -141,8 +138,9 @@ class _MyWidgetState extends State<MyWidget> {
     if (kDebugMode) {
       print(widget.device);
     }
-
-    if (status) {
+    if (status == null) {
+      return const Loading();
+    } else if (status == true) {
       return Scaffold(
         body: Mypage(
           device: widget.device,
@@ -154,10 +152,10 @@ class _MyWidgetState extends State<MyWidget> {
     }
   }
 
-  Future<void> _loadStatus() async {
-    final prefs = await SharedPreferences.getInstance();
+  Future statusGet() async {
+    final snapshot = await SharedPreferences.getInstance();
     setState(() {
-      status = (prefs.getBool('ignore') ?? false);
+      status = snapshot.getBool('ignore');
     });
   }
 }

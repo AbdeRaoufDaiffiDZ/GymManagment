@@ -21,26 +21,20 @@ final class LoadFavoriteDoctor extends DoctorState {
 
   @override
   List<Object> get props => [doctor];
-  LoadFavoriteDoctor copyWith(doctor) {
-    return LoadFavoriteDoctor(doctor: doctor ?? this.doctor);
-  }
 }
 
 final class DoctorFilterSpeciality extends DoctorState {
   final String speciality;
-
-  final List<DoctorEntity> doctor;
-
-  const DoctorFilterSpeciality(
-      {required this.speciality, required this.doctor});
+  final String? doctorName;
+  final String? doctorWilaya;
+  const DoctorFilterSpeciality({
+    required this.doctorWilaya,
+    required this.doctorName,
+    required this.speciality,
+  });
 
   @override
-  List<Object> get props => [doctor, speciality];
-  DoctorFilterSpeciality copyWith(doctor, speciality) {
-    return DoctorFilterSpeciality(
-        doctor: doctor ?? this.doctor,
-        speciality: speciality ?? this.speciality);
-  }
+  List<Object?> get props => [speciality, doctorName, doctorWilaya];
 }
 
 final class DoctorLoaded extends DoctorState {
@@ -55,16 +49,15 @@ final class ChossenDoctor extends DoctorState {
 
 final class DoctorSearchName extends DoctorState {
   final String name;
-
-  const DoctorSearchName({required this.name});
+  final String? doctorSpeciality;
+  final String? doctorWilaya;
+  const DoctorSearchName(
+      {required this.doctorSpeciality,
+      required this.doctorWilaya,
+      required this.name});
 
   @override
-  List<Object> get props => [name];
-  DoctorSearchName copyWith(name) {
-    return DoctorSearchName(
-      name: name ?? this.name,
-    );
-  }
+  List<Object?> get props => [name, doctorSpeciality, doctorWilaya];
 }
 
 final class DoctorLoadingFailure extends DoctorState {
@@ -74,11 +67,6 @@ final class DoctorLoadingFailure extends DoctorState {
 
   @override
   List<Object> get props => [message];
-  DoctorLoadingFailure copyWith(message) {
-    return DoctorLoadingFailure(
-      message: message ?? this.message,
-    );
-  }
 }
 
 final class SeeAllDoctors extends DoctorState {
@@ -88,13 +76,12 @@ final class SeeAllDoctors extends DoctorState {
 
 final class FilterByWilaya extends DoctorState {
   final String wilaya;
-
-  const FilterByWilaya({required this.wilaya});
+  final String? doctorName;
+  final String? doctorSpeciality;
+  const FilterByWilaya(
+      {required this.doctorSpeciality,
+      required this.doctorName,
+      required this.wilaya});
   @override
-  List<Object> get props => [wilaya];
-  FilterByWilaya copyWith(wilaya) {
-    return FilterByWilaya(
-      wilaya: wilaya ?? this.wilaya,
-    );
-  }
+  List<Object?> get props => [wilaya, doctorName, doctorSpeciality];
 }

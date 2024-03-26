@@ -37,7 +37,9 @@ class onDoctorsearchByName extends DoctorEvent {
   const onDoctorsearchByName({required this.doctorName});
 
   @override
-  List<Object> get props => [doctorName];
+  List<Object> get props => [
+        doctorName,
+      ];
 }
 
 class onDoctorsearchByspeciality extends DoctorEvent {
@@ -47,7 +49,7 @@ class onDoctorsearchByspeciality extends DoctorEvent {
       {required this.doctors, required this.speciality});
 
   @override
-  List<Object> get props => [speciality];
+  List<Object> get props => [speciality, doctors];
 }
 
 class onDoctorsearchByWilaya extends DoctorEvent {
@@ -56,9 +58,14 @@ class onDoctorsearchByWilaya extends DoctorEvent {
   const onDoctorsearchByWilaya({required this.wilaya});
 
   @override
-  List<Object> get props => [wilaya];
+  List<Object> get props => [
+        wilaya,
+      ];
 }
 
 class DoctorinitialEvent extends DoctorEvent {}
 
-class onSeeAllDoctors extends DoctorEvent {}
+class onSeeAllDoctors extends DoctorEvent {
+  @override
+  List<Object> get props => [];
+}

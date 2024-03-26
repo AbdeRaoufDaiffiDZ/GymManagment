@@ -24,13 +24,42 @@ Widget DoctorStateConditions(DoctorState state, List<DoctorEntity> data,
               element.wilaya.toLowerCase().contains(state.wilaya.toLowerCase()))
           .toList();
     }
+    if (state.doctorSpeciality != null) {
+      if (state.doctorSpeciality!.isEmpty || state.doctorSpeciality == 'all') {
+        doctors = doctors;
+      } else {
+        doctors = doctors
+            .where((element) => element.speciality
+                .toLowerCase()
+                .contains(state.doctorSpeciality!.toLowerCase()))
+            .toList();
+      }
+    }
+    if (state.doctorName != null) {
+      doctors = doctors
+          .where((element) => element.lastName
+              .toLowerCase()
+              .contains(state.doctorName!.toLowerCase()))
+          .toList();
+      if (doctors.isEmpty) {
+        doctors = doctors
+            .where((element) => element.firstName
+                .toLowerCase()
+                .contains(state.doctorName!.toLowerCase()))
+            .toList();
+      }
+    }
     return Doctors(doctors: doctors, device: device);
   } else if (state is DoctorSearchName) {
     List<DoctorEntity>? doctors;
-    doctors = data
-        .where((element) =>
-            element.lastName.toLowerCase().contains(state.name.toLowerCase()))
-        .toList();
+    if (state.name.isEmpty) {
+      doctors = data;
+    } else {
+      doctors = data
+          .where((element) =>
+              element.lastName.toLowerCase().contains(state.name.toLowerCase()))
+          .toList();
+    }
     if (doctors.isEmpty) {
       doctors = data
           .where((element) => element.firstName
@@ -38,15 +67,67 @@ Widget DoctorStateConditions(DoctorState state, List<DoctorEntity> data,
               .contains(state.name.toLowerCase()))
           .toList();
     }
+    if (state.doctorSpeciality != null) {
+      if (state.doctorSpeciality!.isEmpty || state.doctorSpeciality == 'all') {
+        doctors = doctors;
+      } else {
+        doctors = doctors
+            .where((element) => element.speciality
+                .toLowerCase()
+                .contains(state.doctorSpeciality!.toLowerCase()))
+            .toList();
+      }
+    }
+    if (state.doctorWilaya != null) {
+      if (state.doctorWilaya!.isEmpty || state.doctorWilaya == 'province') {
+        doctors = doctors;
+      } else {
+        doctors = doctors
+            .where((element) => element.wilaya
+                .toLowerCase()
+                .contains(state.doctorWilaya!.toLowerCase()))
+            .toList();
+      }
+    }
 
     return Doctors(doctors: doctors, device: device);
   } else if (state is DoctorFilterSpeciality) {
-    final doctors = data
-        .where((element) => element.speciality
-            .toLowerCase()
-            .contains(state.speciality.toLowerCase()))
-        .toList();
+    List<DoctorEntity>? doctors;
+    if (state.speciality.toLowerCase() == 'all') {
+      doctors = data;
+    } else {
+      doctors = data
+          .where((element) => element.speciality
+              .toLowerCase()
+              .contains(state.speciality.toLowerCase()))
+          .toList();
+    }
 
+    if (state.doctorName != null) {
+      doctors = doctors
+          .where((element) => element.lastName
+              .toLowerCase()
+              .contains(state.doctorName!.toLowerCase()))
+          .toList();
+      if (doctors.isEmpty) {
+        doctors = doctors
+            .where((element) => element.firstName
+                .toLowerCase()
+                .contains(state.doctorName!.toLowerCase()))
+            .toList();
+      }
+    }
+    if (state.doctorWilaya != null) {
+      if (state.doctorWilaya!.isEmpty || state.doctorWilaya == 'province') {
+        doctors = doctors;
+      } else {
+        doctors = doctors
+            .where((element) => element.wilaya
+                .toLowerCase()
+                .contains(state.doctorWilaya!.toLowerCase()))
+            .toList();
+      }
+    }
     return Doctors(doctors: doctors, device: device);
   } else if (state is DoctorLoadingFailure) {
     return ErrorWidget(state.message);

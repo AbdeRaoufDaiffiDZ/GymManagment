@@ -11,6 +11,10 @@ part 'doctor_state.dart';
 
 class DoctorBloc extends Bloc<DoctorEvent, DoctorState> {
   final GetDoctorsInfoUseCase getDoctorsInfoUseCase;
+  String? doctorName;
+  String? doctorWilaya;
+  String? doctorSpeciality;
+
   DoctorBloc(
     this.getDoctorsInfoUseCase,
   ) : super(DoctorLoading()) {
@@ -20,32 +24,35 @@ class DoctorBloc extends Bloc<DoctorEvent, DoctorState> {
         emit(DoctorLoaded());
       } else if (event is onDoctorsearchByspeciality) {
         emit(DoctorLoading());
+        doctorSpeciality = event.speciality;
 
-        List<DoctorEntity> doctors;
-
-        if (event.speciality.isEmpty || event.speciality == 'all') {
-          doctors = event.doctors;
-          emit(DoctorLoaded());
-        } else {
-          doctors = event.doctors
-              .where((element) => element.speciality
-                  .toLowerCase()
-                  .contains(event.speciality.toLowerCase()))
-              .toList();
-          emit(DoctorFilterSpeciality(
-              doctor: doctors, speciality: event.speciality));
-        }
+        emit(DoctorFilterSpeciality(
+            speciality: doctorSpeciality!,
+            doctorWilaya: doctorWilaya,
+            doctorName: doctorName));
       } else if (event is onDoctorChoose) {
         emit(ChossenDoctor());
       } else if (event is onDoctorsearchByName) {
-        emit(DoctorSearchName(name: event.doctorName));
+        doctorName = event.doctorName;
+        emit(DoctorSearchName(
+            name: doctorName!,
+            doctorWilaya: doctorWilaya,
+            doctorSpeciality: doctorSpeciality));
       } else if (event is onDoctorsearchByWilaya) {
-        emit(FilterByWilaya(wilaya: event.wilaya));
+        doctorWilaya = event.wilaya;
+
+        emit(FilterByWilaya(
+            wilaya: doctorWilaya!,
+            doctorName: doctorName,
+            doctorSpeciality: doctorSpeciality));
       } else if (event is DoctorinitialEvent) {
         final data = getDoctorsInfoUseCase.getDoctorsInfo();
 
         add(doctorsInfoUpdated(doctors: await data));
       } else if (event is onSeeAllDoctors) {
+        doctorName = null;
+        doctorWilaya = null;
+        doctorSpeciality = null;
         emit(SeeAllDoctors());
       }
     });

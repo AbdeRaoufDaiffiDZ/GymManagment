@@ -1,18 +1,13 @@
 // ignore_for_file: file_names
 
 import 'dart:async';
-import 'dart:ui';
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dawini_full/auth/domain/usecases/auth_usecase.dart';
 import 'package:dawini_full/auth/presentation/welcomePage.dart';
-import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/patient_features/domain/usecases/patients_usecase.dart';
 import 'package:dawini_full/patient_features/presentation/pages/weather_pag.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -34,22 +29,12 @@ class _MypageState extends State<Mypage> {
   bool isAlerSet = false;
   late StreamSubscription subscription;
   bool status = false;
-
+  String? type;
   @override
   void initState() {
     getConnectivity();
+    loadType();
     super.initState();
-
-    // InternetConnectionChecker().onStatusChange.listen((status) {
-    //   if (kDebugMode) {
-    //     print(InternetConnectionStatus.values);
-    //   }
-    //   final hasInternet = status == InternetConnectionStatus.connected;
-    //   setState(() {
-    //     isConnected = hasInternet;
-    //   });
-    //   _showSnackBar(hasInternet);
-    // });
   }
 
   getConnectivity() => subscription = Connectivity()
@@ -93,15 +78,6 @@ class _MypageState extends State<Mypage> {
                   child: const Text('Ok'))
             ],
           ));
-  // void _showSnackBar(bool hasInternet) {
-  //   AppLocalizations text = AppLocalizations.of(context)!;
-
-  //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-  //     content: Text(
-  //         hasInternet ? text.internet_Restored : text.no_Interne_Connection),
-  //     backgroundColor: hasInternet ? Colors.green : Colors.red,
-  //   ));
-  // }
 
   final GetAppointmentLocalusecase getAppointmentLocalusecase =
       GetAppointmentLocalusecase();
@@ -109,24 +85,21 @@ class _MypageState extends State<Mypage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: SharedPreferences.getInstance(),
-        builder: (context, snapshot) {
-          // ignore: unrelated_type_equality_checks
-          if (snapshot.connectionState.name == "waiting") {
-            return const Loading();
-          }
-          final type = snapshot.data?.getString('type');
+    if (type != "doctor" || type == null) {
+      return Scaffold(
+          key: _scaffoldKey,
+          body: Weather(
+            device: widget.device,
+          ));
+    } else {
+      return const doctorsideHome();
+    }
+  }
 
-          if (type != "doctor") {
-            return Scaffold(
-                key: _scaffoldKey,
-                body: Weather(
-                  device: widget.device,
-                ));
-          } else {
-            return const doctorsideHome();
-          }
-        });
+  Future loadType() async {
+    final snapshot = await SharedPreferences.getInstance();
+    setState(() {
+      type = snapshot.getString('type');
+    });
   }
 }
