@@ -11,6 +11,19 @@
     "at_service":"في الخدمة",
     "not_at_service":"خارج الخدمة",
     "internet_Restored":"عودة الاتصال بالانترنت",
-    "no_Interne_Connection":"لايوجد اتصال بالانترنت"
-
+    "no_Interne_Connection":"لايوجد اتصال بالانترنت",
+    "turn":"الدور",
+    "age":"العمر",
+    "gender":"الجنس",
+    "call":"اتصال",
+    "nopatinet":"لم يتم الحجز بعد",
+    "patientslist":"قائمة المرضى",
+    "today":"اليوم",
+    "tomorrow":"الغد",
+    "all":"All",
+    "endocrino":"Endocrino",
+    "cardiology":"Cardiology",
+    "Opthalm":"opthalm",
+    "dentist":"Dentist",
+    "generalist":"generalist"
   }

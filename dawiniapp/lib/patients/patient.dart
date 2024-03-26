@@ -9,6 +9,7 @@ import 'package:dawini_full/patients/tomorrow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Patientslist extends StatefulWidget {
   final String uid;
@@ -26,6 +27,7 @@ class _PatientslistState extends State<Patientslist>
     final PatientsInfoBloc patientsInfoBloc =
         BlocProvider.of<PatientsInfoBloc>(context);
     TabController tabcontroller = TabController(length: 2, vsync: this);
+    AppLocalizations text = AppLocalizations.of(context)!;
 
     tabcontroller.addListener(() {
       if (tabcontroller.index == 0) {
@@ -44,11 +46,11 @@ class _PatientslistState extends State<Patientslist>
                 margin: EdgeInsets.only(top: 12.h),
                 width: 200.w,
                 height: 30.h,
-                child: const FittedBox(
+                child: FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Text(
-                    "Patients list",
-                    style: TextStyle(
+                    text.patientslist,
+                    style: const TextStyle(
                         color: Color(0XFF202020),
                         fontSize: 25,
                         fontWeight: FontWeight.w700,
@@ -83,11 +85,11 @@ class _PatientslistState extends State<Patientslist>
                                   child: SizedBox(
                                     width: 130.w,
                                     height: 30.h,
-                                    child: const FittedBox(
+                                    child: FittedBox(
                                       fit: BoxFit.scaleDown,
                                       child: Text(
-                                        "Today",
-                                        style: TextStyle(
+                                        text.today,
+                                        style: const TextStyle(
                                             fontSize: 22,
                                             fontWeight: FontWeight.w700,
                                             fontFamily: "Nunito"),
@@ -99,11 +101,11 @@ class _PatientslistState extends State<Patientslist>
                                   child: Container(
                                     width: 130.w,
                                     height: 30.h,
-                                    child: const FittedBox(
+                                    child: FittedBox(
                                       fit: BoxFit.scaleDown,
                                       child: Text(
-                                        "Tomorrow",
-                                        style: TextStyle(
+                                        text.tomorrow,
+                                        style: const TextStyle(
                                             fontSize: 22,
                                             fontWeight: FontWeight.w700,
                                             fontFamily: "Nunito"),

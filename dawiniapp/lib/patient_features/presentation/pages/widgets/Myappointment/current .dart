@@ -11,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:dawini_full/core/error/ErrorWidget.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../../doctor_Features/domain/entities/doctor.dart';
 import '../../../../../doctor_Features/domain/usecases/doctor_usecase.dart';
@@ -28,7 +28,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final PatientsBloc patientsBloc = BlocProvider.of<PatientsBloc>(context);
     final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
-    final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+    AppLocalizations text = AppLocalizations.of(context)!;
 
     return Scaffold(
         body: Padding(
@@ -78,7 +78,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
 
                       if (doctors.isNotEmpty) {
                         if (data[index].today) {
-                          notificationConditions(data, index, doctors);
+                          notificationConditions(data, index, doctors,text:text);
                         }
                         return Column(
                           children: [
@@ -137,7 +137,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                 fit: BoxFit.scaleDown,
                                                 alignment: Alignment.topLeft,
                                                 child: Text(
-                                                    "Dr. ${doctors.first.lastName}",
+                                                    text.dr+". ${doctors.first.lastName}",
                                                     style: const TextStyle(
                                                         fontSize: 19,
                                                         fontWeight:
@@ -172,8 +172,8 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                 child: Row(children: [
                                                   Text(
                                                     data[index].today
-                                                        ? "current turn "
-                                                        : "tomorrow date",
+                                                        ? text.currentturn
+                                                        : text.tomorrow date,
                                                     style: const TextStyle(
                                                         fontFamily: "Nunito",
                                                         fontWeight:
@@ -185,7 +185,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                   data[index].today
                                                       ? Text.rich(
                                                           TextSpan(
-                                                              text: "is at :",
+                                                              text: text.isat,
                                                               style: const TextStyle(
                                                                   fontFamily:
                                                                       "Nunito",
@@ -258,7 +258,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                       Icons.calendar_month,
                                                       size: 17),
                                                   Text(
-                                                    " today: ${data[index].AppointmentDate}",
+                                                    text.today +": ${data[index].AppointmentDate}",
                                                     style: TextStyle(
                                                         color: const Color(
                                                                 0xff202020)
@@ -282,7 +282,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                 children: [
                                                   const Icon(Icons.schedule,
                                                       size: 17),
-                                                  Text(" my turn : ",
+                                                  Text(text.myturn+" : ",
                                                       style: TextStyle(
                                                         color: const Color(
                                                                 0xff202020)
@@ -344,7 +344,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                                 .spaceBetween,
                                                         children: [
                                                           Text(
-                                                            "Are you sure you want to cancel your appointment ?",
+                                                          text.cancelappointment,
                                                             maxLines: 2,
                                                             textAlign: TextAlign
                                                                 .center,
@@ -384,7 +384,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                                           1)),
                                                               child: Center(
                                                                   child: Text(
-                                                                "Keep appointment",
+                                                               text.keepappointment,
                                                                 style: TextStyle(
                                                                     color: const Color(
                                                                             0XFF202020)
@@ -429,7 +429,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                               ),
                                                               child: Center(
                                                                   child: Text(
-                                                                "Cancel appointment",
+                                                                text.cancelappointmentbottun,
                                                                 style: TextStyle(
                                                                     color: Colors
                                                                         .white,
@@ -468,7 +468,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                             borderRadius:
                                                 BorderRadius.circular(12)),
                                         child: Center(
-                                          child: Text("Cancel appointment",
+                                          child: Text(text.cancelappointmentbottun,
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w600,
                                                   fontFamily: 'Nunito',
@@ -501,7 +501,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
     ));
   }
 
-  NotificationShower(String patientName, int index, String doctorName, body) {
+  NotificationShower(String patientName, int index, String doctorName, body,{required text}) {
     AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: index,
@@ -510,16 +510,16 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
             body: "$patientName turn at $doctorName $body"));
   }
 
-  notificationConditions(state, index, doctors) {
+  notificationConditions(state, index, doctors,{required text}) {
     if (state[index].turn - 2 == (doctors.first.turn)) {
       NotificationShower(state[index].firstName + " " + state[index].lastName,
-          index, "Dr. " + doctors.first.lastName, "is near");
+          index, "Dr. " + doctors.first.lastName, "is near",text:text);
     } else if (state[index].turn - 1 == (doctors.first.turn)) {
       NotificationShower(state[index].firstName + " " + state[index].lastName,
-          index, "Dr. " + doctors.first.lastName, "is after one Patient");
+          index, "Dr. " + doctors.first.lastName, "is after one Patient",text:text);
     } else if (state[index].turn == (doctors.first.turn)) {
       NotificationShower(state[index].firstName + " " + state[index].lastName,
-          index, "Dr. " + doctors.first.lastName, "is NOW");
+          index, "Dr. " + doctors.first.lastName, "is NOW",text:text);
     }
   }
 }

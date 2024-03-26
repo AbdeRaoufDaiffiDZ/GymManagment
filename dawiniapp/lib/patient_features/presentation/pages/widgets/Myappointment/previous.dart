@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:dawini_full/core/error/ErrorWidget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class previousappointm extends StatefulWidget {
   const previousappointm({super.key});
@@ -24,6 +25,7 @@ class _previousappointmState extends State<previousappointm> {
   @override
   Widget build(BuildContext context) {
     final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
+    AppLocalizations text = AppLocalizations.of(context)!;
 
     return Scaffold(
       body: Padding(
@@ -106,7 +108,8 @@ class _previousappointmState extends State<previousappointm> {
                                                 fit: BoxFit.scaleDown,
                                                 alignment: Alignment.topLeft,
                                                 child: Text(
-                                                    "Dr. ${doctors.first.lastName}",
+                                                    text.dr +
+                                                        ". ${doctors.first.lastName}",
                                                     style: const TextStyle(
                                                         fontSize: 19,
                                                         fontWeight:
@@ -197,7 +200,7 @@ class _previousappointmState extends State<previousappointm> {
                                                                         .spaceBetween,
                                                                 children: [
                                                                   Text(
-                                                                    "Are you sure you want to cancel your appointment ?",
+                                                                    text.cancelappointment,
                                                                     maxLines: 2,
                                                                     textAlign:
                                                                         TextAlign
@@ -235,7 +238,7 @@ class _previousappointmState extends State<previousappointm> {
                                                                               width: 1)),
                                                                       child: Center(
                                                                           child: Text(
-                                                                        "Keep appointment",
+                                                                        text.keepappointment,
                                                                         style: TextStyle(
                                                                             color: const Color(0XFF202020).withOpacity(
                                                                                 0.85),
@@ -275,7 +278,7 @@ class _previousappointmState extends State<previousappointm> {
                                                                       ),
                                                                       child: Center(
                                                                           child: Text(
-                                                                        "Cancel appointment",
+                                                                        text.cancelappointmentbottun,
                                                                         style: TextStyle(
                                                                             color: Colors
                                                                                 .white,
@@ -321,7 +324,7 @@ class _previousappointmState extends State<previousappointm> {
                                                   height: 20.h,
                                                   child: Center(
                                                     child: AutoSizeText(
-                                                        "delete data",
+                                                        text.deletedata,
                                                         style: TextStyle(
                                                             fontFamily:
                                                                 'Nunito',

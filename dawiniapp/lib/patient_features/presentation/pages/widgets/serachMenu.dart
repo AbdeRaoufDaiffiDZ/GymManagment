@@ -1,12 +1,12 @@
 // ignore_for_file: file_names, non_constant_identifier_names
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:dawini_full/patient_features/presentation/bloc/clinics_bloc/bloc/clinics_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearchMenu extends StatefulWidget {
   const SearchMenu({
@@ -22,18 +22,30 @@ class _SearchMenuState extends State<SearchMenu> {
     return 17.0 - (textLength * 0.8);
   }
 
-  final items = [
-    "Province",
-    "Alger",
-    "Boumerdes",
-    "Oran",
-    "chlef",
-    "Bejaia",
-    "Annaba",
-    "Bouira"
-  ];
+  // final items = [
+  //   "Province",
+  //   "Alger",
+  //   "Boumerdes",
+  //   "Oran",
+  //   "chlef",
+  //   "Bejaia",
+  //   "Annaba",
+  //   "Bouira"
+  // ];
+  // TODO:
   @override
   Widget build(BuildContext context) {
+    AppLocalizations text = AppLocalizations.of(context)!;
+    final List<String> items = [
+      text.province,
+      text.alger,
+      text.boumerdes,
+      text.oran,
+      text.chlef,
+      text.bejaia,
+      text.annaba,
+      text.bouira
+    ];
     final TextEditingController textController = TextEditingController();
     final DoctorBloc dataBloc = BlocProvider.of<DoctorBloc>(context);
     // final ClinicsBloc clinicBloc = BlocProvider.of<ClinicsBloc>(context);
@@ -74,7 +86,7 @@ class _SearchMenuState extends State<SearchMenu> {
                             },
                             decoration: InputDecoration(
                               border: InputBorder.none,
-                              hintText: 'Search for a doctor',
+                              hintText: text.searchforadoctor,
                               hintStyle: TextStyle(
                                 fontSize: _calculateFontSize(
                                     textController.text.length),
@@ -101,7 +113,7 @@ class _SearchMenuState extends State<SearchMenu> {
                         width: 80.w,
                         height: 20.h,
                         child: Center(
-                          child: AutoSizeText("Province",
+                          child: AutoSizeText(text.province,
                               style: TextStyle(
                                   fontSize: 17.sp,
                                   fontWeight: FontWeight.w600,
@@ -131,6 +143,32 @@ class _SearchMenuState extends State<SearchMenu> {
                 value: selectedValue,
                 onChanged: (wilaya) {
                   setState(() {
+                    switch (wilaya) {
+                      case text.province:
+                        selectedValue = "Province";
+                        break;
+                      case text.alger:
+                        selectedValue = "Alger";
+                        break;
+                      case text.boumerdes:
+                        selectedValue = "Boumerdes";
+                        break;
+                      case text.oran:
+                        selectedValue = "Oran";
+                        break;
+                      case text.chlef:
+                        selectedValue = "Chlef";
+                        break;
+                      case text.bejaia:
+                        selectedValue = "Bejaia";
+                        break;
+                      case text.annaba:
+                        selectedValue = "Annaba";
+                        break;
+                      case text.bouira:
+                        selectedValue = "Bouira";
+                        break;
+                    }
                     selectedValue = wilaya;
                   });
                   dataBloc.add(onDoctorsearchByWilaya(
@@ -184,166 +222,166 @@ class _SearchMenuState extends State<SearchMenu> {
   }
 }
 
-String dropdownValueClinics = "all";
+// String dropdownValueClinics = "all";
 
-class SearchMenuClinics extends StatefulWidget {
-  const SearchMenuClinics({
-    super.key,
-  });
-  @override
-  State<SearchMenuClinics> createState() => _SearchMenuClinicsState();
-}
+// class SearchMenuClinics extends StatefulWidget {
+//   const SearchMenuClinics({
+//     super.key,
+//   });
+//   @override
+//   State<SearchMenuClinics> createState() => _SearchMenuClinicsState();
+// }
 
-class _SearchMenuClinicsState extends State<SearchMenuClinics> {
-  String? selectedValue;
+// class _SearchMenuClinicsState extends State<SearchMenuClinics> {
+//   String? selectedValue;
 
-  final items = [
-    "Province",
-    "Alger",
-    "Boumerdes",
-    "Oran",
-    "chlef",
-    "Bejaia",
-    "Annaba",
-    "Bouira"
-  ];
-  @override
-  Widget build(BuildContext context) {
-    final TextEditingController textController = TextEditingController();
-    final ClinicsBloc ClinicsdataBloc = BlocProvider.of<ClinicsBloc>(context);
-    // final ClinicsBloc clinicBloc = BlocProvider.of<ClinicsBloc>(context);
+//   final items = [
+//     "Province",
+//     "Alger",
+//     "Boumerdes",
+//     "Oran",
+//     "chlef",
+//     "Bejaia",
+//     "Annaba",
+//     "Bouira"
+//   ];
+//   @override
+//   Widget build(BuildContext context) {
+//     final TextEditingController textController = TextEditingController();
+//     final ClinicsBloc ClinicsdataBloc = BlocProvider.of<ClinicsBloc>(context);
+//     // final ClinicsBloc clinicBloc = BlocProvider.of<ClinicsBloc>(context);
 
-    return Padding(
-      padding: EdgeInsets.only(top: 8.h),
-      child: Row(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(right: 15.w, left: 10.h),
-              child: Container(
-                height: 45.h,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Colors.grey.shade300,
-                ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 5.w),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.search,
-                        size: 26.w,
-                        color: const Color(0xFF2CDBC6),
-                      ),
-                      Expanded(
-                        child: TextField(
-                          controller: textController,
-                          onChanged: (text) {
-                            ClinicsdataBloc.add(
-                                onClinicsearchByName(clinicName: text));
-                            // clinicBloc.add(onClinicsearchByName(clinicName: text));
+//     return Padding(
+//       padding: EdgeInsets.only(top: 8.h),
+//       child: Row(
+//         children: [
+//           Expanded(
+//             child: Padding(
+//               padding: EdgeInsets.only(right: 15.w, left: 10.h),
+//               child: Container(
+//                 height: 45.h,
+//                 decoration: BoxDecoration(
+//                   borderRadius: BorderRadius.circular(12),
+//                   color: Colors.grey.shade300,
+//                 ),
+//                 child: Padding(
+//                   padding: EdgeInsets.symmetric(horizontal: 5.w),
+//                   child: Row(
+//                     children: [
+//                       Icon(
+//                         Icons.search,
+//                         size: 26.w,
+//                         color: const Color(0xFF2CDBC6),
+//                       ),
+//                       Expanded(
+//                         child: TextField(
+//                           controller: textController,
+//                           onChanged: (text) {
+//                             ClinicsdataBloc.add(
+//                                 onClinicsearchByName(clinicName: text));
+//                             // clinicBloc.add(onClinicsearchByName(clinicName: text));
 
-                            ///
-                          },
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Search for a clinic',
-                            hintStyle: TextStyle(fontSize: 13.sp),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(right: 10.w),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton2<String>(
-                isExpanded: true,
-                hint: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        'Province',
-                        style: TextStyle(
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-                items: items
-                    .map((String item) => DropdownMenuItem<String>(
-                          value: item,
-                          child: Text(
-                            item,
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ))
-                    .toList(),
-                value: selectedValue,
-                onChanged: (wilaya) {
-                  setState(() {
-                    selectedValue = wilaya;
-                  });
-                  ClinicsdataBloc.add(onClinicsearchByWilaya(
-                      wilaya: wilaya.toString().toLowerCase()));
-                },
-                buttonStyleData: ButtonStyleData(
-                  height: 45.h,
-                  width: 120.w,
-                  padding: EdgeInsets.only(left: 14.w, right: 14.w),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: const Color(0xFF2CDBC6),
-                    ),
-                    color: const Color(0xFF2CDBC6),
-                  ),
-                  elevation: 1,
-                ),
-                iconStyleData: IconStyleData(
-                  icon: const Icon(
-                    Icons.arrow_downward_outlined,
-                  ),
-                  iconSize: 14.w,
-                  iconEnabledColor: Colors.white,
-                ),
-                dropdownStyleData: DropdownStyleData(
-                  maxHeight: 200.h,
-                  width: 120.w,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(14),
-                    color: Colors.teal.shade100,
-                  ),
-                  offset: Offset(-10.w, 0.h),
-                  scrollbarTheme: ScrollbarThemeData(
-                    radius: const Radius.circular(20),
-                    thickness: MaterialStateProperty.all(8),
-                    thumbVisibility: MaterialStateProperty.all(true),
-                    interactive: true,
-                  ),
-                ),
-                menuItemStyleData: const MenuItemStyleData(
-                  height: 40,
-                  padding: EdgeInsets.only(left: 12, right: 14),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+//                             ///
+//                           },
+//                           decoration: InputDecoration(
+//                             border: InputBorder.none,
+//                             hintText: 'Search for a clinic',
+//                             hintStyle: TextStyle(fontSize: 13.sp),
+//                           ),
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//             ),
+//           ),
+//           Padding(
+//             padding: EdgeInsets.only(right: 10.w),
+//             child: DropdownButtonHideUnderline(
+//               child: DropdownButton2<String>(
+//                 isExpanded: true,
+//                 hint: Row(
+//                   children: [
+//                     Expanded(
+//                       child: Text(
+//                         'Province',
+//                         style: TextStyle(
+//                           fontSize: 15.sp,
+//                           fontWeight: FontWeight.bold,
+//                           color: Colors.white,
+//                         ),
+//                         overflow: TextOverflow.ellipsis,
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//                 items: items
+//                     .map((String item) => DropdownMenuItem<String>(
+//                           value: item,
+//                           child: Text(
+//                             item,
+//                             style: TextStyle(
+//                               fontSize: 14.sp,
+//                               fontWeight: FontWeight.bold,
+//                               color: Colors.white,
+//                             ),
+//                             overflow: TextOverflow.ellipsis,
+//                           ),
+//                         ))
+//                     .toList(),
+//                 value: selectedValue,
+//                 onChanged: (wilaya) {
+//                   setState(() {
+//                     selectedValue = wilaya;
+//                   });
+//                   ClinicsdataBloc.add(onClinicsearchByWilaya(
+//                       wilaya: wilaya.toString().toLowerCase()));
+//                 },
+//                 buttonStyleData: ButtonStyleData(
+//                   height: 45.h,
+//                   width: 120.w,
+//                   padding: EdgeInsets.only(left: 14.w, right: 14.w),
+//                   decoration: BoxDecoration(
+//                     borderRadius: BorderRadius.circular(12),
+//                     border: Border.all(
+//                       color: const Color(0xFF2CDBC6),
+//                     ),
+//                     color: const Color(0xFF2CDBC6),
+//                   ),
+//                   elevation: 1,
+//                 ),
+//                 iconStyleData: IconStyleData(
+//                   icon: const Icon(
+//                     Icons.arrow_downward_outlined,
+//                   ),
+//                   iconSize: 14.w,
+//                   iconEnabledColor: Colors.white,
+//                 ),
+//                 dropdownStyleData: DropdownStyleData(
+//                   maxHeight: 200.h,
+//                   width: 120.w,
+//                   decoration: BoxDecoration(
+//                     borderRadius: BorderRadius.circular(14),
+//                     color: Colors.teal.shade100,
+//                   ),
+//                   offset: Offset(-10.w, 0.h),
+//                   scrollbarTheme: ScrollbarThemeData(
+//                     radius: const Radius.circular(20),
+//                     thickness: MaterialStateProperty.all(8),
+//                     thumbVisibility: MaterialStateProperty.all(true),
+//                     interactive: true,
+//                   ),
+//                 ),
+//                 menuItemStyleData: const MenuItemStyleData(
+//                   height: 40,
+//                   padding: EdgeInsets.only(left: 12, right: 14),
+//                 ),
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

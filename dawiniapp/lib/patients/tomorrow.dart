@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class tomorrow extends StatefulWidget {
   const tomorrow({super.key, required this.uid});
@@ -20,6 +21,7 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     bool isEmpty = false;
+    AppLocalizations text = AppLocalizations.of(context)!;
 
     final PatientsInfoBloc patientsInfoBloc =
         BlocProvider.of<PatientsInfoBloc>(context);
@@ -98,7 +100,7 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
                                   Padding(
                                     padding: EdgeInsets.only(top: 4.w),
                                     child: Text(
-                                      "Turn",
+                                      text.turn,
                                       style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         color: const Color(0xff202020)
@@ -163,7 +165,8 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
                                         fit: BoxFit.scaleDown,
                                         alignment: Alignment.topLeft,
                                         child: Text(
-                                          "Age: ${data.age}", // TODO: age does not exist in patient entity, create it
+                                          text.age +
+                                              ": ${data.age}", // TODO: age does not exist in patient entity, create it
                                           style: const TextStyle(
                                             fontFamily: "Nunito",
                                             fontSize: 14,
@@ -179,7 +182,7 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
                                         fit: BoxFit.scaleDown,
                                         alignment: Alignment.topLeft,
                                         child: Text(
-                                          "Gender: ${data.gender}",
+                                          text.gender + ": ${data.gender}",
                                           style: const TextStyle(
                                             fontFamily: "Nunito",
                                             fontSize: 19,
@@ -235,10 +238,10 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
                                     ),
                                     borderRadius: BorderRadius.circular(12),
                                   ),
-                                  child: const Center(
+                                  child: Center(
                                     child: Text(
-                                      "call",
-                                      style: TextStyle(
+                                      text.call,
+                                      style: const TextStyle(
                                         color: Color(0xff0AA9A9),
                                         fontFamily: "Nunito",
                                         fontWeight: FontWeight.w700,
@@ -257,7 +260,7 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
                       child: Padding(
                         padding: EdgeInsets.only(top: 20.w),
                         child: Text(
-                          "No Patinets Booked yet...", // TODO:   langugae here
+                          text.nopatinet, // TODO:   langugae here
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
                             color: const Color(0xff202020).withOpacity(0.6),
