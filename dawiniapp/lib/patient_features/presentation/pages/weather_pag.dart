@@ -5,6 +5,7 @@ import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/docto
 import 'package:dawini_full/doctor_Features/presentation/pages/doctors/doctorsList.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/appBar.dart';
+import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/recommandedDoctors.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/serachMenu.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/specialityList.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Myappointment/appointments.dart';
@@ -103,7 +104,7 @@ class _DoctorPageState extends State<Weather> {
             ),
             Container(
               child: Column(children: [
-                SearchMenu(),
+                SearchMenu(isHome: true),
                 SizedBox(height: 10.h),
 
                 // Container(
@@ -250,7 +251,7 @@ class _DoctorPageState extends State<Weather> {
                     ),
                   ),
                 ),
-                Container(child: DoctorsList()),
+                Container(child: RecommandedDoctors()),
               ]),
             ),
           ],
@@ -279,7 +280,9 @@ class _doctorsState extends State<doctors> {
     return Scaffold(
       body: ListView(
         children: [
-          SearchMenu(),
+          SearchMenu(
+            isHome: false,
+          ),
           DoctorsList(device: "widget.device"),
         ],
       ),

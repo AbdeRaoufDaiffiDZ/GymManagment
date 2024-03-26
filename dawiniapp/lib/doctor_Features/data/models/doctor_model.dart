@@ -3,6 +3,7 @@
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 
 class DoctorModel extends DoctorEntity {
+  final int recommanded;
   final int numberInList;
   final String location;
   final String date;
@@ -19,7 +20,8 @@ class DoctorModel extends DoctorEntity {
   final String uid;
   final int numberOfPatient;
   DoctorModel(
-      {required this.numberOfPatient,
+      {required this.recommanded,
+      required this.numberOfPatient,
       required this.numberInList,
       required this.location,
       required this.date,
@@ -35,6 +37,7 @@ class DoctorModel extends DoctorEntity {
       required this.lastName,
       required this.phoneNumber})
       : super(
+            recommanded: recommanded,
             numberOfPatient: numberOfPatient,
             numberInList: numberInList,
             location: location,
@@ -66,11 +69,13 @@ class DoctorModel extends DoctorEntity {
         atSerivce,
         wilaya,
         city,
-        uid
+        uid,
+        recommanded
       ];
 
   Map<String, dynamic> toMap() {
     return {
+      'recommanded': recommanded,
       'numberOfPatient': numberOfPatient,
       'location': location,
       'date': date,
@@ -89,6 +94,7 @@ class DoctorModel extends DoctorEntity {
 
   factory DoctorModel.fromJson(Map<dynamic, dynamic> json) {
     return DoctorModel(
+        recommanded: json['recommanded'] ?? 0,
         numberOfPatient: json['numberOfPatient'] ?? 0,
         numberInList: json['numberInList'] ?? 0,
         firstName: json['firstName'] ?? " ",
@@ -123,5 +129,6 @@ class DoctorModel extends DoctorEntity {
       date: date,
       experience: experience,
       description: description,
-      numberInList: numberInList);
+      numberInList: numberInList,
+      recommanded: recommanded);
 }

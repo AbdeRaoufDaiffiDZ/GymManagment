@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 
 class DoctorEntity extends Equatable {
+  final int recommanded;
   final String location;
   final String date;
   final String experience;
@@ -22,7 +23,8 @@ class DoctorEntity extends Equatable {
   int turn;
 
   DoctorEntity(
-      {required this.numberOfPatient,
+      {required this.recommanded,
+      required this.numberOfPatient,
       required this.numberInList,
       required this.location,
       required this.date,
@@ -40,6 +42,7 @@ class DoctorEntity extends Equatable {
 
   @override
   List<Object?> get props => [
+        recommanded,
         numberOfPatient,
         numberInList,
         location,
@@ -59,6 +62,7 @@ class DoctorEntity extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {
+      'recommanded': recommanded,
       'location': location,
       'date': date,
       'experience': experience,

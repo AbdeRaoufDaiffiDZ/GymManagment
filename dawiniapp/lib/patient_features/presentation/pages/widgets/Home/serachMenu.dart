@@ -1,14 +1,17 @@
 // ignore_for_file: file_names, non_constant_identifier_names
 
 import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
+import 'package:dawini_full/patient_features/presentation/pages/weather_pag.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SearchMenu extends StatefulWidget {
+  final bool isHome;
   const SearchMenu({
     super.key,
+    required this.isHome,
   });
   @override
   State<SearchMenu> createState() => _SearchMenuState();
@@ -16,11 +19,14 @@ class SearchMenu extends StatefulWidget {
 
 class _SearchMenuState extends State<SearchMenu> {
   String? selectedValue;
+  final TextEditingController textController = TextEditingController();
+
   double _calculateFontSize(int textLength) {
     return 16 - (textLength * 0.7);
   }
 
   final items = [
+    "Province",
     "Alger",
     "Boumerdes",
     "Oran",
@@ -31,7 +37,6 @@ class _SearchMenuState extends State<SearchMenu> {
   ];
   @override
   Widget build(BuildContext context) {
-    final TextEditingController textController = TextEditingController();
     final DoctorBloc dataBloc = BlocProvider.of<DoctorBloc>(context);
     // final ClinicsBloc clinicBloc = BlocProvider.of<ClinicsBloc>(context);
 
@@ -51,38 +56,65 @@ class _SearchMenuState extends State<SearchMenu> {
                   ),
                   child: Container(
                     padding: EdgeInsets.only(left: 2.w),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.search,
-                          size: 22.sp,
-                          color: const Color(0xFF2CDBC6),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 4.w),
-                            child: TextField(
-                              controller: textController,
-                              onChanged: (text) {
-                                dataBloc.add(
-                                    onDoctorsearchByName(doctorName: text));
-                                // clinicBloc.add(onClinicsearchByName(clinicName: text));
-
-                                ///
-                              },
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Search for a doctor',
-                                hintStyle: TextStyle(
-                                  fontSize: _calculateFontSize(
-                                      textController.text.length),
-                                ),
+                    child: !widget.isHome
+                        ? Row(
+                            children: [
+                              Icon(
+                                Icons.search,
+                                size: 22.sp,
+                                color: const Color(0xFF2CDBC6),
                               ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                              Expanded(
+                                child: Padding(
+                                    padding: EdgeInsets.only(left: 4.w),
+                                    child: TextField(
+                                      controller: textController,
+                                      onChanged: (text) {
+                                        dataBloc.add(onDoctorsearchByName(
+                                            doctorName: text));
+                                        // clinicBloc.add(onClinicsearchByName(clinicName: text));
+
+                                        ///
+                                      },
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        hintText: 'Search for a doctor',
+                                        hintStyle: TextStyle(
+                                          fontSize: _calculateFontSize(
+                                              textController.text.length),
+                                        ),
+                                      ),
+                                    )),
+                              ),
+                            ],
+                          )
+                        : GestureDetector(
+                            onTap: () {
+                              dataBloc.add(onSeeAllDoctors());
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const doctors()));
+                            },
+                            child: Row(children: [
+                              Icon(
+                                Icons.search,
+                                size: 22.sp,
+                                color: const Color(0xFF2CDBC6),
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: EdgeInsets.only(left: 4.w),
+                                  child: Text(
+                                    'Search for a doctor',
+                                    style: TextStyle(
+                                      fontSize: _calculateFontSize(
+                                          textController.text.length),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ])),
                   ),
                 ),
               ),
