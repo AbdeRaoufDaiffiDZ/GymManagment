@@ -25,7 +25,7 @@ class _previousappointmState extends State<previousappointm> {
   @override
   Widget build(BuildContext context) {
     final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
-    AppLocalizations text = AppLocalizations.of(context)!;
+    final AppLocalizations text = AppLocalizations.of(context)!;
 
     return Scaffold(
       body: Padding(
@@ -148,9 +148,9 @@ class _previousappointmState extends State<previousappointm> {
                                                   fit: BoxFit.scaleDown,
                                                   child: Text(
                                                       '${doctors.first.city}, ${doctors.first.wilaya}',
-                                                      style: const TextStyle(
+                                                      style: TextStyle(
                                                           fontFamily: 'Nunito',
-                                                          fontSize: 15,
+                                                          fontSize: 15.sp,
                                                           fontWeight:
                                                               FontWeight.w600,
                                                           color: Color(
@@ -231,8 +231,8 @@ class _previousappointmState extends State<previousappointm> {
                                                                       width:
                                                                           200.w,
                                                                       decoration: BoxDecoration(
-                                                                          borderRadius: BorderRadius.circular(
-                                                                              20),
+                                                                          borderRadius: BorderRadius.circular(20
+                                                                              .r),
                                                                           border: Border.all(
                                                                               color: const Color(0XFF202020).withOpacity(0.6),
                                                                               width: 1)),
@@ -274,7 +274,7 @@ class _previousappointmState extends State<previousappointm> {
                                                                         color: const Color(
                                                                             0XFF04CBCB),
                                                                         borderRadius:
-                                                                            BorderRadius.circular(20),
+                                                                            BorderRadius.circular(20.r),
                                                                       ),
                                                                       child: Center(
                                                                           child: Text(
@@ -298,7 +298,7 @@ class _previousappointmState extends State<previousappointm> {
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
-                                                                          10),
+                                                                          10.r),
                                                               borderSide:
                                                                   BorderSide
                                                                       .none,
@@ -318,7 +318,7 @@ class _previousappointmState extends State<previousappointm> {
                                                         const Color(0XFFECF2F2),
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            10)),
+                                                            10.r)),
                                                 child: Container(
                                                   width: 80.w,
                                                   height: 20.h,

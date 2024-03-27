@@ -26,6 +26,7 @@ class _DoctorsListState extends State<DoctorsList> {
   Widget build(BuildContext context) {
     // ignore: non_constant_identifier_names
     final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
+
     return StreamBuilder<List<DoctorEntity>>(
         stream: getDoctorsInfoUseCase.streamDoctorInfo(),
         builder: (context, snapshot) {
@@ -74,7 +75,8 @@ class Doctors extends StatefulWidget {
 class _DoctorsState extends State<Doctors> {
   @override
   Widget build(BuildContext context) {
-    AppLocalizations text = AppLocalizations.of(context)!;
+    final AppLocalizations text = AppLocalizations.of(context)!;
+    final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
 
     List<DoctorEntity> data = widget.doctors;
 
@@ -105,7 +107,7 @@ class _DoctorsState extends State<Doctors> {
               child: Container(
                   margin: EdgeInsets.symmetric(vertical: 7.h, horizontal: 7.w),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(16.r),
                     border: Border.all(
                       color: Colors.grey, // Set the border color
                       width: 1.w, // Set the border width
@@ -173,7 +175,7 @@ class _DoctorsState extends State<Doctors> {
                               Text("${data[index].city},${data[index].wilaya}",
                                   style: TextStyle(
                                       fontFamily: 'Nunito',
-                                      fontSize: 15,
+                                      fontSize: 15.sp,
                                       fontWeight: FontWeight.w600,
                                       color: const Color(0XFF202020)
                                           .withOpacity(0.75))),
@@ -182,12 +184,16 @@ class _DoctorsState extends State<Doctors> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 3.w),
+                        margin: isArabic
+                            ? EdgeInsets.only(right: 3.w)
+                            : EdgeInsets.only(left: 3.w),
                         width: double.infinity,
                         height: 20.h,
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
-                          alignment: Alignment.bottomLeft,
+                          alignment: isArabic
+                              ? Alignment.bottomRight
+                              : Alignment.bottomLeft,
                           child: Row(
                             children: [
                               Icon(Icons.circle,

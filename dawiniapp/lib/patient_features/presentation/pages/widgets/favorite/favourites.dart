@@ -4,6 +4,7 @@ import 'package:dawini_full/patient_features/presentation/pages/widgets/favorite
 import 'package:dawini_full/patient_features/presentation/pages/widgets/favorite/doctor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class favorite extends StatefulWidget {
   favorite({Key? key}) : super(key: key);
@@ -16,6 +17,7 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     TabController tabcontroller = TabController(length: 2, vsync: this);
+    final AppLocalizations text = AppLocalizations.of(context)!;
 
     return DefaultTabController(
       length: 2,
@@ -27,10 +29,10 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
             margin: EdgeInsets.only(top: 12.h),
             width: 200.w,
             height: 30.h,
-            child: const FittedBox(
+            child: FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(
-                "My favorite",
+                text.favorite,
                 style: TextStyle(
                     color: Color(0XFF202020),
                     fontSize: 33,
@@ -57,10 +59,10 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
                           child: SizedBox(
                             width: 130.w,
                             height: 30.h,
-                            child: const FittedBox(
+                            child: FittedBox(
                               fit: BoxFit.scaleDown,
                               child: Text(
-                                "Doctors",
+                                text.doctors,
                                 style: TextStyle(
                                     fontSize: 22,
                                     fontWeight: FontWeight.w700,
@@ -73,10 +75,10 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
                           child: SizedBox(
                             width: 130.w,
                             height: 30.h,
-                            child: const FittedBox(
+                            child: FittedBox(
                               fit: BoxFit.scaleDown,
                               child: Text(
-                                "Clinics",
+                                text.clinics,
                                 style: TextStyle(
                                     fontSize: 22,
                                     fontWeight: FontWeight.w700,

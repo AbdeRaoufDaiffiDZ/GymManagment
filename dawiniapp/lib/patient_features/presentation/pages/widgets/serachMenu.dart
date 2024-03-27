@@ -35,7 +35,7 @@ class _SearchMenuState extends State<SearchMenu> {
   // TODO:
   @override
   Widget build(BuildContext context) {
-    AppLocalizations text = AppLocalizations.of(context)!;
+    final AppLocalizations text = AppLocalizations.of(context)!;
     final List<String> items = [
       text.province,
       text.alger,
@@ -143,32 +143,24 @@ class _SearchMenuState extends State<SearchMenu> {
                 value: selectedValue,
                 onChanged: (wilaya) {
                   setState(() {
-                    switch (wilaya) {
-                      case text.province:
-                        selectedValue = "Province";
-                        break;
-                      case text.alger:
-                        selectedValue = "Alger";
-                        break;
-                      case text.boumerdes:
-                        selectedValue = "Boumerdes";
-                        break;
-                      case text.oran:
-                        selectedValue = "Oran";
-                        break;
-                      case text.chlef:
-                        selectedValue = "Chlef";
-                        break;
-                      case text.bejaia:
-                        selectedValue = "Bejaia";
-                        break;
-                      case text.annaba:
-                        selectedValue = "Annaba";
-                        break;
-                      case text.bouira:
-                        selectedValue = "Bouira";
-                        break;
+                    if (wilaya == text.alger) {
+                      selectedValue = "Alger";
+                    } else if (wilaya == text.boumerdes) {
+                      selectedValue = "Boumerdes";
+                    } else if (wilaya == text.oran) {
+                      selectedValue = "Oran";
+                    } else if (wilaya == text.chlef) {
+                      selectedValue = "Chlef";
+                    } else if (wilaya == text.bejaia) {
+                      selectedValue = "Bejaia";
+                    } else if (wilaya == text.annaba) {
+                      selectedValue = "Annaba";
+                    } else if (wilaya == text.bouira) {
+                      selectedValue = "Bouira";
+                    } else {
+                      selectedValue = "Province";
                     }
+
                     selectedValue = wilaya;
                   });
                   dataBloc.add(onDoctorsearchByWilaya(

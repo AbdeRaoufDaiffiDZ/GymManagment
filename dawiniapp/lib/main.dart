@@ -5,7 +5,6 @@ import 'dart:async';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:dawini_full/auth/domain/usecases/auth_usecase.dart';
 import 'package:dawini_full/auth/presentation/bloc/auth_bloc.dart';
-import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_data_bloc/doctor_data_bloc.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/patients_info_bloc/patients_info_bloc.dart';
 import 'package:dawini_full/firebase_options.dart';
@@ -64,12 +63,32 @@ Future<void> main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   final device;
   const MyApp({
     Key? key,
     this.device,
   }) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  String? language;
+  @override
+  void initState() {
+    super.initState();
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) {
+        AwesomeNotifications().requestPermissionToSendNotifications();
+      }
+    });
+    lanugageGet().then((value) => setState(() {
+          language = value;
+        }));
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -98,16 +117,23 @@ class MyApp extends StatelessWidget {
             splitScreenMode: true,
             builder: (context, child) {
               return MaterialApp(
-                  locale: DevicePreview.locale(context),
+                  locale: language == null
+                      ? DevicePreview.locale(context)
+                      : Locale(language!),
                   builder: DevicePreview.appBuilder,
                   localizationsDelegates:
                       AppLocalizations.localizationsDelegates,
                   supportedLocales: AppLocalizations.supportedLocales,
                   debugShowCheckedModeBanner: false,
                   home: MyWidget(
-                    device: device,
+                    device: widget.device,
                   ));
             }));
+  }
+
+  Future<String?> lanugageGet() async {
+    final snapshot = await SharedPreferences.getInstance();
+    return snapshot.getString('language');
   }
 }
 
@@ -130,7 +156,9 @@ class _MyWidgetState extends State<MyWidget> {
         AwesomeNotifications().requestPermissionToSendNotifications();
       }
     });
-    statusGet();
+    statusGet().then((value) => setState(() {
+          status = value;
+        }));
   }
 
   @override
@@ -138,9 +166,7 @@ class _MyWidgetState extends State<MyWidget> {
     if (kDebugMode) {
       print(widget.device);
     }
-    if (status == null) {
-      return const Loading();
-    } else if (status == true) {
+    if (status == true) {
       return Scaffold(
         body: Mypage(
           device: widget.device,
@@ -152,10 +178,8 @@ class _MyWidgetState extends State<MyWidget> {
     }
   }
 
-  Future statusGet() async {
+  Future<bool?> statusGet() async {
     final snapshot = await SharedPreferences.getInstance();
-    setState(() {
-      status = snapshot.getBool('ignore');
-    });
+    return status = snapshot.getBool('ignore');
   }
 }

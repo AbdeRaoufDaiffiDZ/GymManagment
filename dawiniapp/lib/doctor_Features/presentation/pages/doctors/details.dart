@@ -13,6 +13,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class doctorDetails extends StatefulWidget {
   final String uid;
@@ -48,8 +49,12 @@ class _doctorDetailsState extends State<doctorDetails>
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations text = AppLocalizations.of(context)!;
+
     final PatientsBloc patientsBloc = BlocProvider.of<PatientsBloc>(context);
     final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
+    final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
+
     final uid = widget.uid;
     isFavortie(uid);
     return Scaffold(
@@ -112,8 +117,8 @@ class _doctorDetailsState extends State<doctorDetails>
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Container(
-                                width: 35,
-                                height: 35,
+                                width: 35.w,
+                                height: 35.h,
                                 decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: Color(0xffECF2F2),
@@ -130,8 +135,8 @@ class _doctorDetailsState extends State<doctorDetails>
                               ),
                               SizedBox(width: 190.w),
                               Container(
-                                width: 35,
-                                height: 35,
+                                width: 35.w,
+                                height: 35.h,
                                 decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: Color(0xffECF2F2),
@@ -148,9 +153,11 @@ class _doctorDetailsState extends State<doctorDetails>
                               ),
                               SizedBox(width: 6.w),
                               Container(
-                                width: 35,
-                                height: 35,
-                                margin: EdgeInsets.only(right: 8.w),
+                                width: 35.w,
+                                height: 35.h,
+                                margin: isArabic
+                                    ? EdgeInsets.only(left: 8.w)
+                                    : EdgeInsets.only(right: 8.w),
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: Color(0xffECF2F2),
@@ -195,9 +202,9 @@ class _doctorDetailsState extends State<doctorDetails>
                                 offset: const Offset(0, 0),
                               ),
                             ],
-                            borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20))),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20.r),
+                                topRight: Radius.circular(20.r))),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -216,14 +223,15 @@ class _doctorDetailsState extends State<doctorDetails>
                                         "Dr.${doctor.first.lastName}",
                                         style: TextStyle(
                                             overflow: TextOverflow.ellipsis,
-                                            fontSize: 22,
+                                            fontSize: 22.sp,
                                             fontFamily: 'Nunito',
                                             fontWeight: FontWeight.w700),
                                       )),
                                 ),
                                 Container(
-                                  margin:
-                                      EdgeInsets.only(right: 8.w, top: 10.h),
+                                  margin: isArabic
+                                      ? EdgeInsets.only(left: 8.w, top: 10.h)
+                                      : EdgeInsets.only(right: 8.w, top: 10.h),
                                   height: 20.h,
                                   width: 100.w,
                                   child: FittedBox(
@@ -242,11 +250,11 @@ class _doctorDetailsState extends State<doctorDetails>
                                           ),
                                           Text(
                                             doctor.first.atSerivce
-                                                ? " At service"
-                                                : " Not At service",
+                                                ? text.at_service
+                                                : text.not_at_service,
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w600,
-                                                fontSize: 23,
+                                                fontSize: 23.sp,
                                                 fontFamily: 'Nunito'),
                                           ),
                                         ],
@@ -265,7 +273,7 @@ class _doctorDetailsState extends State<doctorDetails>
                                     doctor.first.speciality,
                                     style: TextStyle(
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 22,
+                                        fontSize: 22.sp,
                                         fontFamily: 'Nunito'),
                                   ),
                                 )),
@@ -274,7 +282,9 @@ class _doctorDetailsState extends State<doctorDetails>
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
-                                  margin: EdgeInsets.only(left: 15.w),
+                                  margin: isArabic
+                                      ? EdgeInsets.only(right: 15.w)
+                                      : EdgeInsets.only(left: 15.w),
                                   height: 40.h,
                                   width: 130.w,
                                   child: Column(
@@ -283,7 +293,9 @@ class _doctorDetailsState extends State<doctorDetails>
                                     children: [
                                       FittedBox(
                                         fit: BoxFit.scaleDown,
-                                        alignment: Alignment.topLeft,
+                                        alignment: isArabic
+                                            ? Alignment.topRight
+                                            : Alignment.topLeft,
                                         child: Row(
                                           children: [
                                             Icon(
@@ -297,7 +309,7 @@ class _doctorDetailsState extends State<doctorDetails>
                                                 color: const Color(0XFF202020)
                                                     .withOpacity(0.7),
                                                 fontWeight: FontWeight.w600,
-                                                fontSize: 15,
+                                                fontSize: 15.sp,
                                                 fontFamily: 'Nunito',
                                               ),
                                             ),
@@ -309,7 +321,9 @@ class _doctorDetailsState extends State<doctorDetails>
                                         width: 200.w,
                                         child: FittedBox(
                                           fit: BoxFit.scaleDown,
-                                          alignment: Alignment.topLeft,
+                                          alignment: isArabic
+                                              ? Alignment.topRight
+                                              : Alignment.topLeft,
                                           child: Row(
                                             children: [
                                               Icon(
@@ -323,7 +337,7 @@ class _doctorDetailsState extends State<doctorDetails>
                                                   color: const Color(0XFF202020)
                                                       .withOpacity(0.7),
                                                   fontWeight: FontWeight.w600,
-                                                  fontSize: 15,
+                                                  fontSize: 15.sp,
                                                   fontFamily: 'Nunito',
                                                 ),
                                               ),
@@ -342,7 +356,9 @@ class _doctorDetailsState extends State<doctorDetails>
                                     }
                                   },
                                   child: Container(
-                                    margin: EdgeInsets.only(right: 8.w),
+                                    margin: isArabic
+                                        ? EdgeInsets.only(left: 8.w)
+                                        : EdgeInsets.only(right: 8.w),
                                     height: 40.h,
                                     width: 70.w,
                                     child: Column(
@@ -357,11 +373,11 @@ class _doctorDetailsState extends State<doctorDetails>
                                         ),
                                         RichText(
                                           text: TextSpan(
-                                            text: 'location link',
+                                            text: text.link_location,
                                             style: TextStyle(
                                               color: const Color(0xff414141)
                                                   .withOpacity(0.85),
-                                              fontSize: 12,
+                                              fontSize: 12.sp,
                                               decoration:
                                                   TextDecoration.underline,
                                             ),
@@ -374,39 +390,51 @@ class _doctorDetailsState extends State<doctorDetails>
                               ],
                             ),
                             Container(
-                                margin: EdgeInsets.only(left: 15.w),
+                                margin: isArabic
+                                    ? EdgeInsets.only(right: 15.w)
+                                    : EdgeInsets.only(left: 15.w),
                                 width: 90.w,
                                 height: 20.h,
                                 child: FittedBox(
                                     child: Text(
-                                  "Description : ${doctor.first.description}",
+                                  text.description +
+                                      " : ${doctor.first.description}",
                                   style: TextStyle(
                                       color: Color(0XFF202020),
                                       fontFamily: "Nunito",
                                       fontWeight: FontWeight.w600),
                                 ))),
                             Container(
-                                margin: EdgeInsets.only(left: 15.w, top: 8.h),
+                                margin: isArabic
+                                    ? EdgeInsets.only(right: 15.w, top: 8.h)
+                                    : EdgeInsets.only(left: 15.w, top: 8.h),
                                 width: 130.w,
                                 height: 20.h,
                                 child: FittedBox(
-                                    alignment: Alignment.topLeft,
+                                    alignment: isArabic
+                                        ? Alignment.topRight
+                                        : Alignment.topLeft,
                                     child: Text(
-                                      "Experience : ${doctor.first.experience}",
+                                      text.experience +
+                                          " : ${doctor.first.experience}",
                                       style: TextStyle(
                                           color: Color(0XFF202020),
                                           fontFamily: "Nunito",
                                           fontWeight: FontWeight.w600),
                                     ))),
                             Container(
-                                margin: EdgeInsets.only(left: 15.w, top: 8.h),
+                                margin: isArabic
+                                    ? EdgeInsets.only(right: 15.w, top: 8.h)
+                                    : EdgeInsets.only(left: 15.w, top: 8.h),
                                 width: 250.w,
                                 height: 24.h,
-                                child: const FittedBox(
+                                child: FittedBox(
                                     fit: BoxFit.scaleDown,
-                                    alignment: Alignment.topLeft,
+                                    alignment: isArabic
+                                        ? Alignment.topRight
+                                        : Alignment.topLeft,
                                     child: Text(
-                                      "Choose from available booking time :",
+                                      text.choose_from_available_booking_time,
                                       style: TextStyle(
                                           fontSize: 20,
                                           color: Color(0XFF202020),
@@ -416,17 +444,22 @@ class _doctorDetailsState extends State<doctorDetails>
                             Row(
                               children: [
                                 Container(
-                                    margin:
-                                        EdgeInsets.only(left: 15.w, top: 10.h),
+                                    margin: isArabic
+                                        ? EdgeInsets.only(
+                                            right: 15.w, top: 10.h)
+                                        : EdgeInsets.only(
+                                            left: 15.w, top: 10.h),
                                     width: 50.w,
                                     height: 20.h,
-                                    child: const FittedBox(
+                                    child: FittedBox(
                                         fit: BoxFit.scaleDown,
-                                        alignment: Alignment.topLeft,
+                                        alignment: isArabic
+                                            ? Alignment.topRight
+                                            : Alignment.topLeft,
                                         child: Text(
-                                          "Date : ",
+                                          text.date + ": ",
                                           style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: 20.sp,
                                               color: Color(0XFF202020),
                                               fontFamily: "Nunito",
                                               fontWeight: FontWeight.w700),
@@ -441,15 +474,17 @@ class _doctorDetailsState extends State<doctorDetails>
                                     });
                                   },
                                   child: Container(
-                                    margin:
-                                        EdgeInsets.only(left: 15.w, top: 8.h),
+                                    margin: isArabic
+                                        ? EdgeInsets.only(right: 15.w, top: 8.h)
+                                        : EdgeInsets.only(left: 15.w, top: 8.h),
                                     width: 80.w,
                                     height: 28.h,
                                     decoration: BoxDecoration(
                                         color: !today
                                             ? Color.fromRGBO(244, 67, 54, 0.322)
                                             : null,
-                                        borderRadius: BorderRadius.circular(6),
+                                        borderRadius:
+                                            BorderRadius.circular(6.r),
                                         border: Border.all(
                                           width: 2,
                                           color: today
@@ -460,11 +495,11 @@ class _doctorDetailsState extends State<doctorDetails>
                                               : Color.fromRGBO(
                                                   244, 67, 54, 0.322),
                                         )),
-                                    child: const Center(
+                                    child: Center(
                                         child: Text(
-                                      "today",
+                                      text.today,
                                       style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: 16.sp,
                                           color: Color(0XFF202020),
                                           fontFamily: "Nunito",
                                           fontWeight: FontWeight.w600),
@@ -482,12 +517,13 @@ class _doctorDetailsState extends State<doctorDetails>
                                     });
                                   },
                                   child: Container(
-                                    margin:
-                                        EdgeInsets.only(left: 15.w, top: 8.h),
+                                    margin: isArabic
+                                        ? EdgeInsets.only(right: 15.w, top: 8.h)
+                                        : EdgeInsets.only(left: 15.w, top: 8.h),
                                     width: 80.w,
                                     height: 28.h,
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(6),
+                                      borderRadius: BorderRadius.circular(6.r),
                                       color: tomorrow
                                           ? null
                                           : Color.fromRGBO(244, 67, 54, 0.322),
@@ -502,11 +538,11 @@ class _doctorDetailsState extends State<doctorDetails>
                                                 244, 67, 54, 0.322),
                                       ),
                                     ),
-                                    child: const Center(
+                                    child: Center(
                                         child: Text(
-                                      "tomorrow",
+                                      text.tomorrow,
                                       style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: 16.sp,
                                           color: Color(0XFF202020),
                                           fontFamily: "Nunito",
                                           fontWeight: FontWeight.w600),
@@ -539,16 +575,16 @@ class _doctorDetailsState extends State<doctorDetails>
                                             ? Color(0xff04CBCB)
                                             : Color.fromRGBO(255, 0, 0, 0.11)
                                         : Color.fromRGBO(255, 0, 0, 0.11),
-                                    borderRadius: BorderRadius.circular(20)),
+                                    borderRadius: BorderRadius.circular(20.r)),
                                 margin: EdgeInsets.symmetric(
                                     vertical: 22.h, horizontal: 60.w),
-                                child: const FittedBox(
+                                child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.center,
                                   child: Text(
-                                    "Book appointment",
+                                    text.book_appointment,
                                     style: TextStyle(
-                                        fontSize: 17,
+                                        fontSize: 17.sp,
                                         color: Colors.white,
                                         fontFamily: "Nunito",
                                         fontWeight: FontWeight.w600),

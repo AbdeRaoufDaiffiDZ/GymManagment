@@ -54,7 +54,7 @@ class LocalDataSourceImpl extends LocalDataSource {
 
     final String? status = prefs.getString('language');
     if (status == null) {
-      yield 'English';
+      yield 'en';
     } else {
       yield status;
     }

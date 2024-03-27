@@ -23,9 +23,17 @@
     "all":"All",
     "endocrino":"Endocrino",
     "cardiology":"Cardiology",
-    "Opthalm":"opthalm",
+    "opthalm":"opthalm",
     "dentist":"Dentist",
     "generalist":"generalist",
+    "province":"Province",
+    "alger":"Alger",
+    "boumerdes":"Boumerdes",
+    "oran":"Oran",
+    "chlef":"Chlef",
+    "bejaia":"Bejaia",
+    "annaba":"Annaba",
+    "bouira":"Bouira",
     "cancelappointment":"Are you sure you want to cancel your appointment ?",
     "dr":"Dr",
     "keepappointment":"Keep appointment",
@@ -34,5 +42,36 @@
     "currentturn":"current turn",
     "tomorrowdate":"tomorrow date",
     "isat":"is at",
-    "myturn":"my turn"
+    "myturn":"my turn",
+    "searchforadoctor":"search for a doctor",
+    "next":"next",
+    "whoareyou":"Who are you!",
+    "lookingfordoctor":"Looking for a Doctor",
+    "iamdoctor":"I'm a Doctor",
+    "current":"current",
+    "previous":"Previous",
+    "doctors":"Doctors",
+    "clinics":"Clinics",
+    "commingsoon":"Coomming Soon...",
+    "confirmappointment":"Confirm appointment",
+    "book_appointment":"Book appointment",
+    "date":"Date",
+    "choose_from_available_booking_time":"Choose from available booking time :",
+    "experience":"Experience",
+    "description":"Description",
+    "link_location":"Location Link"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   }

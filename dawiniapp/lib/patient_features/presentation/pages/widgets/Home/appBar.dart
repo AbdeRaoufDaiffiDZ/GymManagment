@@ -14,6 +14,8 @@ class myAppbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
+
     return SafeArea(
       child: PreferredSize(
         preferredSize: Size.fromHeight(50.h),
@@ -21,7 +23,9 @@ class myAppbar extends StatelessWidget implements PreferredSizeWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: EdgeInsets.only(left: 11.w),
+              padding: isArabic
+                  ? EdgeInsets.only(right: 11.w)
+                  : EdgeInsets.only(left: 11.w),
               child: Image.asset(
                 "assets/images/dawina.png",
                 width: 90.w,

@@ -23,7 +23,7 @@ class _favoriteState extends State<myfavdoctors> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     // final PatientsBloc patientsBloc = BlocProvider.of<PatientsBloc>(context);
-    AppLocalizations text = AppLocalizations.of(context)!;
+    final AppLocalizations text = AppLocalizations.of(context)!;
     final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
 
     return Scaffold(
@@ -147,7 +147,8 @@ class _favoriteState extends State<myfavdoctors> with TickerProviderStateMixin {
                                                           alignment:
                                                               Alignment.topLeft,
                                                           child: Text(
-                                                              "Dr.${doctor[index].lastName}",
+                                                              text.dr +
+                                                                  ".${doctor[index].lastName}",
                                                               style: const TextStyle(
                                                                   fontFamily:
                                                                       'Nunito',

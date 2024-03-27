@@ -1,5 +1,4 @@
 {
-    "helloWorld": "مرحبا ياعالم",
     "home":"الرئيسية",
     "my_Appointement":"مواعيدي",
     "favorite":"المفضل",
@@ -7,7 +6,7 @@
     "see_all":"الجميع",
     "specialty":"التخصص",
     "search":"بحث",
-    "recommended_doctors":"Recommended doctors",
+    "recommended_doctors":"الأطباء الموصى بهم",
     "at_service":"في الخدمة",
     "not_at_service":"خارج الخدمة",
     "internet_Restored":"عودة الاتصال بالانترنت",
@@ -20,10 +19,57 @@
     "patientslist":"قائمة المرضى",
     "today":"اليوم",
     "tomorrow":"الغد",
-    "all":"All",
-    "endocrino":"Endocrino",
-    "cardiology":"Cardiology",
-    "Opthalm":"opthalm",
-    "dentist":"Dentist",
-    "generalist":"generalist"
+    "all":"الجميع",
+    "endocrino":"الغدد الصماء",
+    "cardiology":"أمراض القلب",
+    "opthalm":"طب العيون",
+    "dentist":"طب أسنان",
+    "generalist":"طب عام",
+    "province":"جميع",
+    "alger":"العاصمة",
+    "boumerdes":"بومرداس",
+    "oran":"وهران",
+    "chlef":"الشلف",
+    "bejaia":"بجاية",
+    "annaba":"عنابة",
+    "bouira":"البويرة",
+    "cancelappointment":"هل تود حقا الغاء الموعد ؟",
+    "dr":"د",
+    "keepappointment":"ابقاء الموعد",
+    "cancelappointmentbottun":"الغاء الموعد",
+    "deletedata":"مسح البيانات",
+    "currentturn":"الدور الحالي",
+    "tomorrowdate":"مواعيد الغد",
+    "isat":"وصل الى",
+    "myturn":"الدور",
+    "searchforadoctor":"بحث عن طبيب",
+    "next":"التالي",
+    "whoareyou":"من انت",
+    "lookingfordoctor":"انا ابحث عن طبيب",
+    "iamdoctor":"انا طبيب",
+    "current":"الحالي",
+    "previous":"السابق",
+    "doctors":"الاطباء",
+    "clinics":"العيادات",
+    "commingsoon":"قادم عن قريب",
+    "confirmappointment":"تاكيد الموعد",
+    "book_appointment":"حجز موعد",
+    "date":"الموعد",
+    "choose_from_available_booking_time":"اختر من الايام المتاحة",
+    "experience":"الخبرة",
+    "description":"الوصف",
+    "link_location":"الموقع في الخارطة"
+
+
+
+
+
+
+
+
+
+
+
+
+
   }

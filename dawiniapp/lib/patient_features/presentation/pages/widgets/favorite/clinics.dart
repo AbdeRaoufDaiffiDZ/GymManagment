@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // ignore: must_be_immutable
 class myfavclincs extends StatefulWidget {
@@ -16,15 +17,17 @@ class myfavclincs extends StatefulWidget {
 class _favoriteState extends State<myfavclincs> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations text = AppLocalizations.of(context)!;
+
     return Scaffold(
         body: SafeArea(
       child: Center(
         child: SizedBox(
           width: 200.w, // 90.h
           height: 100.h, // 20.h
-          child: const FittedBox(
+          child: FittedBox(
             fit: BoxFit.scaleDown,
-            child: Text("Coomming Soon...",
+            child: Text(text.commingsoon,
                 // widget.clinics[index].ClinicName,
                 style: TextStyle(
                     fontFamily: 'Nunito',

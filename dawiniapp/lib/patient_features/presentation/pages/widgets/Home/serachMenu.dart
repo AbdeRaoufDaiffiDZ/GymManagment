@@ -6,6 +6,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearchMenu extends StatefulWidget {
   final bool isHome;
@@ -19,27 +20,31 @@ class SearchMenu extends StatefulWidget {
 
 class _SearchMenuState extends State<SearchMenu> {
   String? selectedValue;
+  String? selected;
+
   final TextEditingController textController = TextEditingController();
 
   double _calculateFontSize(int textLength) {
-    return 16 - (textLength * 0.7);
+    return 16.sp - (textLength * 0.7.sp);
   }
 
-  final items = [
-    "Province",
-    "Alger",
-    "Boumerdes",
-    "Oran",
-    "chlef",
-    "Bejaia",
-    "Annaba",
-    "Bouira"
-  ];
   @override
   Widget build(BuildContext context) {
+    final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
+
     final DoctorBloc dataBloc = BlocProvider.of<DoctorBloc>(context);
     // final ClinicsBloc clinicBloc = BlocProvider.of<ClinicsBloc>(context);
-
+    final AppLocalizations text = AppLocalizations.of(context)!;
+    final List<String> items = [
+      text.province,
+      text.alger,
+      text.boumerdes,
+      text.oran,
+      text.chlef,
+      text.bejaia,
+      text.annaba,
+      text.bouira
+    ];
     return SafeArea(
       child: Padding(
         padding: EdgeInsets.only(top: 8.h),
@@ -47,15 +52,19 @@ class _SearchMenuState extends State<SearchMenu> {
           children: [
             Expanded(
               child: Padding(
-                padding: EdgeInsets.only(right: 8.w, left: 10.h),
+                padding: isArabic
+                    ? EdgeInsets.only(left: 8.w, right: 10.h)
+                    : EdgeInsets.only(right: 8.w, left: 10.h),
                 child: Container(
                   height: 40.h,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.r),
                     color: const Color(0XFFECF2F2),
                   ),
                   child: Container(
-                    padding: EdgeInsets.only(left: 2.w),
+                    padding: isArabic
+                        ? EdgeInsets.only(right: 2.w)
+                        : EdgeInsets.only(left: 2.w),
                     child: !widget.isHome
                         ? Row(
                             children: [
@@ -66,7 +75,9 @@ class _SearchMenuState extends State<SearchMenu> {
                               ),
                               Expanded(
                                 child: Padding(
-                                    padding: EdgeInsets.only(left: 4.w),
+                                    padding: isArabic
+                                        ? EdgeInsets.only(right: 4.w)
+                                        : EdgeInsets.only(left: 4.w),
                                     child: TextField(
                                       controller: textController,
                                       onChanged: (text) {
@@ -78,7 +89,7 @@ class _SearchMenuState extends State<SearchMenu> {
                                       },
                                       decoration: InputDecoration(
                                         border: InputBorder.none,
-                                        hintText: 'Search for a doctor',
+                                        hintText: text.searchforadoctor,
                                         hintStyle: TextStyle(
                                           fontSize: _calculateFontSize(
                                               textController.text.length),
@@ -104,9 +115,11 @@ class _SearchMenuState extends State<SearchMenu> {
                               ),
                               Expanded(
                                 child: Padding(
-                                  padding: EdgeInsets.only(left: 4.w),
+                                  padding: isArabic
+                                      ? EdgeInsets.only(right: 4.w)
+                                      : EdgeInsets.only(left: 4.w),
                                   child: Text(
-                                    'Search for a doctor',
+                                    text.searchforadoctor,
                                     style: TextStyle(
                                       fontSize: _calculateFontSize(
                                           textController.text.length),
@@ -120,7 +133,9 @@ class _SearchMenuState extends State<SearchMenu> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(right: 10.w),
+              padding: isArabic
+                  ? EdgeInsets.only(left: 10.w)
+                  : EdgeInsets.only(right: 10.w),
               child: DropdownButtonHideUnderline(
                 child: DropdownButton2<String>(
                   isExpanded: true,
@@ -130,11 +145,11 @@ class _SearchMenuState extends State<SearchMenu> {
                         child: SizedBox(
                           width: 30.w,
                           height: 20.h,
-                          child: const FittedBox(
+                          child: FittedBox(
                             fit: BoxFit.scaleDown,
-                            child: Text("Province",
+                            child: Text(text.province,
                                 style: TextStyle(
-                                    fontSize: 15,
+                                    fontSize: 15.sp,
                                     fontWeight: FontWeight.w600,
                                     color: Colors.white)),
                           ),
@@ -152,15 +167,15 @@ class _SearchMenuState extends State<SearchMenu> {
                                 fit: BoxFit.scaleDown,
                                 child: Text(item,
                                     overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                        fontSize: 18,
+                                    style: TextStyle(
+                                        fontSize: 18.sp,
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white)),
                               ),
                             ),
                           ))
                       .toList(),
-                  value: selectedValue,
+                  value: selected,
                   onChanged: (wilaya) {
                     if (widget.isHome) {
                       dataBloc.add(onSeeAllDoctors());
@@ -170,18 +185,38 @@ class _SearchMenuState extends State<SearchMenu> {
                               builder: (context) => const doctors()));
                     } else {
                       setState(() {
-                        selectedValue = wilaya;
+                        selected = wilaya;
+
+                        if (wilaya == text.alger) {
+                          selectedValue = "Alger";
+                        } else if (wilaya == text.boumerdes) {
+                          selectedValue = "Boumerdes";
+                        } else if (wilaya == text.oran) {
+                          selectedValue = "Oran";
+                        } else if (wilaya == text.chlef) {
+                          selectedValue = "Chlef";
+                        } else if (wilaya == text.bejaia) {
+                          selectedValue = "Bejaia";
+                        } else if (wilaya == text.annaba) {
+                          selectedValue = "Annaba";
+                        } else if (wilaya == text.bouira) {
+                          selectedValue = "Bouira";
+                        } else {
+                          selectedValue = "Province";
+                        }
                       });
                       dataBloc.add(onDoctorsearchByWilaya(
-                          wilaya: wilaya.toString().toLowerCase()));
+                          wilaya: selectedValue.toString().toLowerCase()));
                     }
                   },
                   buttonStyleData: ButtonStyleData(
                     height: 40.h,
                     width: 100.w,
-                    padding: EdgeInsets.only(left: 5.w, right: 10.w),
+                    padding: isArabic
+                        ? EdgeInsets.only(right: 5.w, left: 10.w)
+                        : EdgeInsets.only(left: 5.w, right: 10.w),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                       border: Border.all(
                         color: const Color(0xFF2CDBC6),
                       ),
@@ -199,14 +234,16 @@ class _SearchMenuState extends State<SearchMenu> {
                     maxHeight: 200.h,
                     width: 120.w,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(14.r),
                       color: Colors.teal.shade100,
                     ),
                     offset: Offset(0.w, 0.h),
                   ),
-                  menuItemStyleData: const MenuItemStyleData(
+                  menuItemStyleData: MenuItemStyleData(
                     height: 30,
-                    padding: EdgeInsets.only(left: 12, right: 14),
+                    padding: isArabic
+                        ? EdgeInsets.only(right: 12, left: 14)
+                        : EdgeInsets.only(left: 12, right: 14),
                   ),
                 ),
               ),

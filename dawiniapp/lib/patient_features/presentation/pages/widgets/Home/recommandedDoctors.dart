@@ -24,6 +24,7 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
     final AppLocalizations text = AppLocalizations.of(context)!;
     int compareNumbers(DoctorEntity a, DoctorEntity b) =>
         b.recommanded - a.recommanded;
+    final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
 
     return StreamBuilder<List<DoctorEntity>>(
         stream: getDoctorsInfoUseCase.streamDoctorInfo(),
@@ -80,7 +81,7 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                         margin: EdgeInsets.symmetric(
                             vertical: 7.h, horizontal: 7.w),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(16.r),
                           border: Border.all(
                             color: Colors.grey, // Set the border color
                             width: 1.w, // Set the border width
@@ -109,9 +110,9 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                                 fit: BoxFit.scaleDown,
                                 alignment: Alignment.topLeft,
                                 child: Text("Dr.${doctors[index].lastName}",
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontFamily: 'Nunito',
-                                        fontSize: 17,
+                                        fontSize: 17.sp,
                                         fontWeight: FontWeight.w600,
                                         color: Color(0XFF202020))),
                               ),
@@ -124,9 +125,9 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                                 fit: BoxFit.scaleDown,
                                 alignment: Alignment.topLeft,
                                 child: Text(doctors[index].speciality,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontFamily: 'Nunito',
-                                        fontSize: 15,
+                                        fontSize: 15.sp,
                                         fontWeight: FontWeight.w600,
                                         color: Color(0XFF000000))),
                               ),
@@ -149,7 +150,7 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                                         "${doctors[index].city},${doctors[index].wilaya}",
                                         style: TextStyle(
                                             fontFamily: 'Nunito',
-                                            fontSize: 15,
+                                            fontSize: 15.sp,
                                             fontWeight: FontWeight.w600,
                                             color: const Color(0XFF202020)
                                                 .withOpacity(0.75))),
@@ -158,12 +159,16 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                               ),
                             ),
                             Container(
-                              margin: EdgeInsets.only(left: 3.w),
+                              margin: isArabic
+                                  ? EdgeInsets.only(right: 3.w)
+                                  : EdgeInsets.only(left: 3.w),
                               width: double.infinity,
                               height: 20.h,
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,
-                                alignment: Alignment.bottomLeft,
+                                alignment: isArabic
+                                    ? Alignment.bottomRight
+                                    : Alignment.bottomLeft,
                                 child: Row(
                                   children: [
                                     Icon(Icons.circle,
@@ -176,9 +181,9 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                                         doctors[index].atSerivce
                                             ? text.at_service
                                             : text.not_at_service,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             fontFamily: 'Nunito',
-                                            fontSize: 16,
+                                            fontSize: 16.sp,
                                             fontWeight: FontWeight.w600,
                                             color: Color(0XFF202020))),
                                   ],

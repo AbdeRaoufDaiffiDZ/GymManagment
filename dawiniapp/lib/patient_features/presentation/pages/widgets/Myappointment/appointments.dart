@@ -4,6 +4,7 @@ import 'package:dawini_full/patient_features/presentation/pages/widgets/Myappoin
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Myappointment/previous.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Myappointemtns extends StatefulWidget {
   const Myappointemtns({Key? key, String? uid}) : super(key: key);
@@ -17,6 +18,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
   @override
   Widget build(BuildContext context) {
     TabController tabcontroller = TabController(length: 2, vsync: this);
+    final AppLocalizations text = AppLocalizations.of(context)!;
 
     return DefaultTabController(
       length: 2,
@@ -28,13 +30,13 @@ class _MyappointemtnsState extends State<Myappointemtns>
             margin: EdgeInsets.only(top: 12.h),
             width: 200.w,
             height: 30.h,
-            child: const FittedBox(
+            child: FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(
-                "My appointments",
+                text.my_Appointement,
                 style: TextStyle(
                     color: Color(0XFF202020),
-                    fontSize: 30,
+                    fontSize: 30.sp,
                     fontWeight: FontWeight.w700,
                     fontFamily: 'Nunito'),
               ),
@@ -58,10 +60,10 @@ class _MyappointemtnsState extends State<Myappointemtns>
                           child: SizedBox(
                             width: 130.w,
                             height: 30.h,
-                            child: const FittedBox(
+                            child: FittedBox(
                               fit: BoxFit.scaleDown,
                               child: Text(
-                                "Current",
+                                text.current,
                                 style: TextStyle(
                                     fontSize: 22,
                                     fontWeight: FontWeight.w700,
@@ -74,12 +76,12 @@ class _MyappointemtnsState extends State<Myappointemtns>
                           child: Container(
                             width: 130.w,
                             height: 30.h,
-                            child: const FittedBox(
+                            child: FittedBox(
                               fit: BoxFit.scaleDown,
                               child: Text(
-                                "Previous",
+                                text.previous,
                                 style: TextStyle(
-                                    fontSize: 22,
+                                    fontSize: 22.sp,
                                     fontWeight: FontWeight.w700,
                                     fontFamily: "Nunito"),
                               ),

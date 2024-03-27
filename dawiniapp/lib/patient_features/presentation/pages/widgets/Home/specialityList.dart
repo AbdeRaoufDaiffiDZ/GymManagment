@@ -6,6 +6,7 @@ import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/docto
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SpecialityList extends StatefulWidget {
   const SpecialityList({super.key});
@@ -15,19 +16,20 @@ class SpecialityList extends StatefulWidget {
 }
 
 class _SpecialityListState extends State<SpecialityList> {
-  final List<Map<String, String>> mylist = [
-    {"text": "ALL", "icon": "assets/images/generalist.png"},
-    {"text": "Generalist", "icon": "assets/images/generalist.png"},
-    {"text": "Dentist", "icon": "assets/images/dentist.png"},
-    {"text": "Opthalm", "icon": "assets/images/opthalm.png"},
-    {"text": "Endocrino", "icon": "assets/images/endocrino.png"},
-    {"text": "Cardiology", "icon": "assets/images/cardiology.png"},
-  ];
   @override
   Widget build(BuildContext context) {
     final DoctorBloc dataBloc = BlocProvider.of<DoctorBloc>(context);
     final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
+    final AppLocalizations text = AppLocalizations.of(context)!;
 
+    final List<Map<String, String>> mylist = [
+      {"text": text.all, "icon": "assets/images/generalist.png"},
+      {"text": text.generalist, "icon": "assets/images/generalist.png"},
+      {"text": text.dentist, "icon": "assets/images/dentist.png"},
+      {"text": text.opthalm, "icon": "assets/images/opthalm.png"},
+      {"text": text.endocrino, "icon": "assets/images/endocrino.png"},
+      {"text": text.cardiology, "icon": "assets/images/cardiology.png"},
+    ];
     return StreamBuilder<List<DoctorEntity>>(
         stream: getDoctorsInfoUseCase.streamDoctorInfo(),
         builder: (context, snapshot) {

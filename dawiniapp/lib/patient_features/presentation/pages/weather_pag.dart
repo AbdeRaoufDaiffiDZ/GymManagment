@@ -30,7 +30,6 @@ class Weather extends StatefulWidget {
 class _DoctorPageState extends State<Weather> {
   int selectedindex2 = 0;
 
-  List<String> where = ["Home", "appointments", "favorite"];
   // final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   //     FlutterLocalNotificationsPlugin();
   @override
@@ -38,8 +37,7 @@ class _DoctorPageState extends State<Weather> {
     final DoctorBloc dataBloc = BlocProvider.of<DoctorBloc>(context);
     final PatientsBloc patientsdataBloc =
         BlocProvider.of<PatientsBloc>(context);
-
-    AppLocalizations text = AppLocalizations.of(context)!;
+    final AppLocalizations text = AppLocalizations.of(context)!;
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -95,6 +93,8 @@ class _DoctorPageState extends State<Weather> {
 
   Widget whereIam(
       AppLocalizations text, DoctorBloc dataBloc, PatientsBloc patientsBloc) {
+    final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
+
     switch (selectedindex2) {
       case 0:
         return ListView(
@@ -172,7 +172,9 @@ class _DoctorPageState extends State<Weather> {
 
                 Container(
                   margin: EdgeInsets.only(top: 4.h),
-                  padding: EdgeInsets.only(left: 9.w),
+                  padding: isArabic
+                      ? EdgeInsets.only(right: 9.w)
+                      : EdgeInsets.only(left: 9.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -216,7 +218,9 @@ class _DoctorPageState extends State<Weather> {
 
                 SpecialityList(),
                 Padding(
-                  padding: EdgeInsets.only(left: 7.w),
+                  padding: isArabic
+                      ? EdgeInsets.only(right: 7.w)
+                      : EdgeInsets.only(left: 7.w),
                   child: Container(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

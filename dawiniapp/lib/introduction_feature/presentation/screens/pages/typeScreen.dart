@@ -4,89 +4,7 @@ import 'package:dawini_full/introduction_feature/presentation/bloc/bloc/introduc
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-class TypeScreen extends StatefulWidget {
-  final String type;
-
-  const TypeScreen({super.key, required this.type});
-
-  @override
-  State<TypeScreen> createState() => _TypeScreenState();
-}
-
-class _TypeScreenState extends State<TypeScreen> {
-  @override
-  Widget build(BuildContext context) {
-    final IntroductionBloc bloc = BlocProvider.of<IntroductionBloc>(context);
-
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'Who are you!',
-              style: TextStyle(
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 0.2),
-            MaterialButton(
-              color: "patient" == widget.type ? Colors.green : Colors.grey,
-              onPressed: () {
-                // Add the action you want to perform when the button is pressed
-                // For example, you can show a dialog or navigate to another screen.
-                bloc.add(const onTypeChoose(type: "patient"));
-              },
-              child: const Text('Looking for a Doctor'),
-            ), // Add spacing between text and button
-
-            const SizedBox(height: 20.0),
-            MaterialButton(
-              color: "doctor" == widget.type ? Colors.green : Colors.grey,
-              onPressed: () {
-                // Add the action you want to perform when the button is pressed
-                // For example, you can show a dialog or navigate to another screen.
-                bloc.add(const onTypeChoose(type: "doctor"));
-              },
-              child: const Text("I'm a Doctor"),
-            ), // Add spacing between text and button
-            const SizedBox(height: 20.0),
-            SizedBox(
-              width: 0.5,
-              child: ElevatedButton(
-                onPressed: () {
-                  // Add the action you want to perform when the button is pressed
-                  // For example, you can show a dialog or navigate to another screen.
-                  bloc.add(const NextPage(id: 3));
-                },
-                child: const Text('next'),
-              ),
-            ),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     // Add the action you want to perform when the button is pressed
-            //     // For example, you can show a dialog or navigate to another screen.
-            //     bloc.add(NextPage(id: 3));
-            //   },
-            //   child: Text('Looking for a Doctor'),
-            // ),
-            // SizedBox(height: 20.0), // Add spacing between text and button
-            // ElevatedButton(
-            //   onPressed: () {
-            //     // Add the action you want to perform when the button is pressed
-            //     // For example, you can show a dialog or navigate to another screen.
-            //     bloc.add(NextPage(id: 3));
-            //   },
-            //   child: Text("I'm a Doctor"),
-            // )
-          ],
-        ),
-      ),
-    );
-  }
-}
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UserTypeSelector extends StatefulWidget {
   final String type;
@@ -102,6 +20,7 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
   @override
   Widget build(BuildContext context) {
     final IntroductionBloc bloc = BlocProvider.of<IntroductionBloc>(context);
+    final AppLocalizations text = AppLocalizations.of(context)!;
 
     return Scaffold(
       body: SafeArea(
@@ -140,8 +59,8 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
                       fontWeight: FontWeight.w600,
                       color: Colors.black45)),
               SizedBox(height: 10.h),
-              usertypeContainer("Looking for a doctor", "patient", bloc),
-              usertypeContainer("Im doctor", "doctor", bloc),
+              usertypeContainer(text.whoareyou, "patient", bloc),
+              usertypeContainer(text.iamdoctor, "doctor", bloc),
               InkWell(
                 onTap: () {
                   if (isSelected) {
@@ -160,7 +79,7 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
                   ),
                   child: Center(
                     child: Text(
-                      "Next",
+                      text.next,
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 20.sp,
@@ -179,11 +98,13 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
   }
 
   Widget usertypeContainer(String MyType, String type, IntroductionBloc bloc) {
+    final AppLocalizations text = AppLocalizations.of(context)!;
+
     return InkWell(
       onTap: () {
-        if (MyType == "Looking for a doctor") {
+        if (MyType == text.whoareyou) {
           bloc.add(const onTypeChoose(type: "patient"));
-        } else if (MyType == "Im doctor") {
+        } else if (MyType == text.iamdoctor) {
           bloc.add(const onTypeChoose(type: "doctor"));
         }
         isSelected = true;

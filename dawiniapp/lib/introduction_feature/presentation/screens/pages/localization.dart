@@ -2,6 +2,7 @@ import 'package:dawini_full/introduction_feature/presentation/bloc/bloc/introduc
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Localisation extends StatefulWidget {
   final String languageSys;
@@ -17,6 +18,7 @@ class _LocalisationState extends State<Localisation> {
   @override
   Widget build(BuildContext context) {
     final IntroductionBloc bloc = BlocProvider.of<IntroductionBloc>(context);
+    final AppLocalizations text = AppLocalizations.of(context)!;
 
     return Scaffold(
       body: SafeArea(
@@ -27,8 +29,8 @@ class _LocalisationState extends State<Localisation> {
             //   child: Image.asset("assets/images/cc.png"),
             // ),
             languageContainer("English", bloc, widget.languageSys),
-            languageContainer("French", bloc, widget.languageSys),
-            languageContainer("Arabic", bloc, widget.languageSys),
+            languageContainer("Français", bloc, widget.languageSys),
+            languageContainer("العربية", bloc, widget.languageSys),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 50.w, vertical: 16.h),
               height: 50.h,
@@ -46,7 +48,7 @@ class _LocalisationState extends State<Localisation> {
                 },
                 child: Center(
                   child: Text(
-                    "Next",
+                    text.next,
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 20.sp,

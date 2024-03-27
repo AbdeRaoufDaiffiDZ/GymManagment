@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Patient_info extends StatefulWidget {
   final DoctorEntity doctorEntity;
@@ -122,6 +123,7 @@ class _Patient_infoState extends State<Patient_info> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     final PatientsBloc dataBloc = BlocProvider.of<PatientsBloc>(context);
+    AppLocalizations text = AppLocalizations.of(context)!;
 
     return Scaffold(
       body: SafeArea(
@@ -277,11 +279,11 @@ class _Patient_infoState extends State<Patient_info> {
                         color: const Color(0XFF04CBCB),
                         borderRadius: BorderRadius.circular(screenWidth * 0.04),
                       ),
-                      child: const Center(
+                      child: Center(
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
                           child: Text(
-                            "Confirm appointment",
+                            text.confirmappointment,
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,

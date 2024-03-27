@@ -46,6 +46,8 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                   element.AppointmentDate == datetime ||
                   element.AppointmentDate == datetimeTomorrow)
               .toList();
+          final bool isArabic =
+              Localizations.localeOf(context).languageCode == "ar";
 
           return ListView.builder(
               itemCount: data.length,
@@ -78,7 +80,8 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
 
                       if (doctors.isNotEmpty) {
                         if (data[index].today) {
-                          notificationConditions(data, index, doctors,text:text);
+                          notificationConditions(data, index, doctors,
+                              text: text);
                         }
                         return Column(
                           children: [
@@ -137,7 +140,8 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                 fit: BoxFit.scaleDown,
                                                 alignment: Alignment.topLeft,
                                                 child: Text(
-                                                    text.dr+". ${doctors.first.lastName}",
+                                                    text.dr +
+                                                        ". ${doctors.first.lastName}",
                                                     style: const TextStyle(
                                                         fontSize: 19,
                                                         fontWeight:
@@ -167,18 +171,20 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                               width: 160.w,
                                               height: 20.h,
                                               child: FittedBox(
-                                                alignment: Alignment.topLeft,
+                                                alignment: isArabic
+                                                    ? Alignment.topRight
+                                                    : Alignment.topLeft,
                                                 fit: BoxFit.scaleDown,
                                                 child: Row(children: [
                                                   Text(
                                                     data[index].today
                                                         ? text.currentturn
-                                                        : text.tomorrow date,
-                                                    style: const TextStyle(
+                                                        : text.tomorrowdate,
+                                                    style: TextStyle(
                                                         fontFamily: "Nunito",
                                                         fontWeight:
                                                             FontWeight.w600,
-                                                        fontSize: 17,
+                                                        fontSize: 17.sp,
                                                         color: Color.fromRGBO(
                                                             32, 32, 32, 0.6)),
                                                   ),
@@ -186,13 +192,14 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                       ? Text.rich(
                                                           TextSpan(
                                                               text: text.isat,
-                                                              style: const TextStyle(
+                                                              style: TextStyle(
                                                                   fontFamily:
                                                                       "Nunito",
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w600,
-                                                                  fontSize: 17,
+                                                                  fontSize:
+                                                                      17.sp,
                                                                   color: Color
                                                                       .fromRGBO(
                                                                           32,
@@ -201,17 +208,18 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                                           0.6)),
                                                               children: [
                                                                 TextSpan(
-                                                                    text: doctors.isNotEmpty
+                                                                    text: doctors
+                                                                            .isNotEmpty
                                                                         ? " ${doctors.first.turn}"
                                                                         : "",
-                                                                    style: const TextStyle(
+                                                                    style: TextStyle(
                                                                         fontFamily:
                                                                             "Nunito",
                                                                         fontWeight:
                                                                             FontWeight
                                                                                 .w600,
-                                                                        fontSize:
-                                                                            17,
+                                                                        fontSize: 17
+                                                                            .sp,
                                                                         color: Color(
                                                                             0XFF0AA9A9)))
                                                               ]),
@@ -247,10 +255,13 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                       child: Row(
                                         children: [
                                           Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 14),
+                                            padding: isArabic
+                                                ? EdgeInsets.only(right: 14)
+                                                : EdgeInsets.only(left: 14),
                                             child: FittedBox(
-                                              alignment: Alignment.centerLeft,
+                                              alignment: isArabic
+                                                  ? Alignment.centerRight
+                                                  : Alignment.centerLeft,
                                               fit: BoxFit.scaleDown,
                                               child: Row(
                                                 children: [
@@ -258,7 +269,8 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                       Icons.calendar_month,
                                                       size: 17),
                                                   Text(
-                                                    text.today +": ${data[index].AppointmentDate}",
+                                                    text.today +
+                                                        ": ${data[index].AppointmentDate}",
                                                     style: TextStyle(
                                                         color: const Color(
                                                                 0xff202020)
@@ -273,22 +285,25 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                           ),
                                           const Spacer(),
                                           Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 14),
+                                            padding: isArabic
+                                                ? EdgeInsets.only(left: 14)
+                                                : EdgeInsets.only(right: 14),
                                             child: FittedBox(
-                                              alignment: Alignment.centerLeft,
+                                              alignment: isArabic
+                                                  ? Alignment.centerRight
+                                                  : Alignment.centerLeft,
                                               fit: BoxFit.scaleDown,
                                               child: Row(
                                                 children: [
                                                   const Icon(Icons.schedule,
                                                       size: 17),
-                                                  Text(text.myturn+" : ",
+                                                  Text(text.myturn + " : ",
                                                       style: TextStyle(
                                                         color: const Color(
                                                                 0xff202020)
                                                             .withOpacity(0.8),
                                                         fontFamily: 'Nunito',
-                                                        fontSize: 15,
+                                                        fontSize: 15.sp,
                                                         fontWeight:
                                                             FontWeight.w600,
                                                       )),
@@ -296,9 +311,9 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                       data[index]
                                                           .turn
                                                           .toString(),
-                                                      style: const TextStyle(
+                                                      style: TextStyle(
                                                           fontFamily: 'Nunito',
-                                                          fontSize: 16,
+                                                          fontSize: 16.sp,
                                                           fontWeight:
                                                               FontWeight.w600,
                                                           color: Color(
@@ -344,7 +359,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                                 .spaceBetween,
                                                         children: [
                                                           Text(
-                                                          text.cancelappointment,
+                                                            text.cancelappointment,
                                                             maxLines: 2,
                                                             textAlign: TextAlign
                                                                 .center,
@@ -373,8 +388,8 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                               decoration: BoxDecoration(
                                                                   borderRadius:
                                                                       BorderRadius
-                                                                          .circular(
-                                                                              20),
+                                                                          .circular(20
+                                                                              .r),
                                                                   border: Border.all(
                                                                       color: const Color(
                                                                               0XFF202020)
@@ -384,7 +399,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                                           1)),
                                                               child: Center(
                                                                   child: Text(
-                                                               text.keepappointment,
+                                                                text.keepappointment,
                                                                 style: TextStyle(
                                                                     color: const Color(
                                                                             0XFF202020)
@@ -425,7 +440,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                                 borderRadius:
                                                                     BorderRadius
                                                                         .circular(
-                                                                            20),
+                                                                            20.r),
                                                               ),
                                                               child: Center(
                                                                   child: Text(
@@ -449,7 +464,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                     shape: OutlineInputBorder(
                                                       borderRadius:
                                                           BorderRadius.circular(
-                                                              10),
+                                                              10.r),
                                                       borderSide:
                                                           BorderSide.none,
                                                     ),
@@ -466,9 +481,10 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                         decoration: BoxDecoration(
                                             color: const Color(0xffE0F3F2),
                                             borderRadius:
-                                                BorderRadius.circular(12)),
+                                                BorderRadius.circular(12.r)),
                                         child: Center(
-                                          child: Text(text.cancelappointmentbottun,
+                                          child: Text(
+                                              text.cancelappointmentbottun,
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w600,
                                                   fontFamily: 'Nunito',
@@ -501,7 +517,8 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
     ));
   }
 
-  NotificationShower(String patientName, int index, String doctorName, body,{required text}) {
+  NotificationShower(String patientName, int index, String doctorName, body,
+      {required text}) {
     AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: index,
@@ -510,16 +527,19 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
             body: "$patientName turn at $doctorName $body"));
   }
 
-  notificationConditions(state, index, doctors,{required text}) {
+  notificationConditions(state, index, doctors, {required text}) {
     if (state[index].turn - 2 == (doctors.first.turn)) {
       NotificationShower(state[index].firstName + " " + state[index].lastName,
-          index, "Dr. " + doctors.first.lastName, "is near",text:text);
+          index, "Dr. " + doctors.first.lastName, "is near",
+          text: text);
     } else if (state[index].turn - 1 == (doctors.first.turn)) {
       NotificationShower(state[index].firstName + " " + state[index].lastName,
-          index, "Dr. " + doctors.first.lastName, "is after one Patient",text:text);
+          index, "Dr. " + doctors.first.lastName, "is after one Patient",
+          text: text);
     } else if (state[index].turn == (doctors.first.turn)) {
       NotificationShower(state[index].firstName + " " + state[index].lastName,
-          index, "Dr. " + doctors.first.lastName, "is NOW",text:text);
+          index, "Dr. " + doctors.first.lastName, "is NOW",
+          text: text);
     }
   }
 }
