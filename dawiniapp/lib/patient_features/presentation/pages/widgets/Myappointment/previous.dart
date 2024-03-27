@@ -45,7 +45,8 @@ class _previousappointmState extends State<previousappointm> {
                   .where(
                       (element) => element.AppointmentDate != datetimeTomorrow)
                   .toList();
-
+              final bool isArabic =
+                  Localizations.localeOf(context).languageCode == "ar";
               return ListView.builder(
                 itemCount: data.length,
                 itemBuilder: (context, index) {
@@ -106,7 +107,9 @@ class _previousappointmState extends State<previousappointm> {
                                               height: 25.h,
                                               child: FittedBox(
                                                 fit: BoxFit.scaleDown,
-                                                alignment: Alignment.topLeft,
+                                                alignment: isArabic
+                                                    ? Alignment.topRight
+                                                    : Alignment.topLeft,
                                                 child: Text(
                                                     text.dr +
                                                         ". ${doctors.first.lastName}",
@@ -122,7 +125,9 @@ class _previousappointmState extends State<previousappointm> {
                                               width: 80.w,
                                               height: 20.h,
                                               child: FittedBox(
-                                                alignment: Alignment.topLeft,
+                                                alignment: isArabic
+                                                    ? Alignment.topRight
+                                                    : Alignment.topLeft,
                                                 fit: BoxFit.scaleDown,
                                                 child: Text(
                                                     doctors.first.speciality,
@@ -144,7 +149,9 @@ class _previousappointmState extends State<previousappointm> {
                                                       .withOpacity(0.6),
                                                 ),
                                                 FittedBox(
-                                                  alignment: Alignment.topLeft,
+                                                  alignment: isArabic
+                                                      ? Alignment.topRight
+                                                      : Alignment.topLeft,
                                                   fit: BoxFit.scaleDown,
                                                   child: Text(
                                                       '${doctors.first.city}, ${doctors.first.wilaya}',

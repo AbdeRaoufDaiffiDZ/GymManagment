@@ -124,6 +124,7 @@ class _Patient_infoState extends State<Patient_info> {
     double screenHeight = MediaQuery.of(context).size.height;
     final PatientsBloc dataBloc = BlocProvider.of<PatientsBloc>(context);
     AppLocalizations text = AppLocalizations.of(context)!;
+    final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
 
     return Scaffold(
       body: SafeArea(
@@ -135,8 +136,11 @@ class _Patient_infoState extends State<Patient_info> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(
-                      left: screenWidth * 0.04, top: screenHeight * 0.03),
+                  padding: isArabic
+                      ? EdgeInsets.only(
+                          right: screenWidth * 0.04, top: screenHeight * 0.03)
+                      : EdgeInsets.only(
+                          left: screenWidth * 0.04, top: screenHeight * 0.03),
                   child: Container(
                     height: screenWidth * 0.11,
                     width: screenWidth * 0.11,
@@ -165,7 +169,7 @@ class _Patient_infoState extends State<Patient_info> {
                   height: screenHeight * 0.035,
                   child: Center(
                     child: AutoSizeText(
-                      "Please enter the following information :",
+                      text.please_enter_the_following_information,
                       style: TextStyle(
                         fontSize: screenHeight * 0.045,
                         fontWeight: FontWeight.w600,
@@ -185,23 +189,23 @@ class _Patient_infoState extends State<Patient_info> {
                     children: [
                       buildInputField(null,
                           controller: _firstNameController,
-                          hintText: 'Your first name ',
+                          hintText: text.first_name,
                           textInputType: TextInputType.name),
                       buildInputField(null,
                           controller: _lastNameController,
-                          hintText: 'Your family name ',
+                          hintText: text.family_name,
                           textInputType: TextInputType.name),
                       buildInputField(null,
                           controller: _ageController,
-                          hintText: 'Your age',
+                          hintText: text.age,
                           textInputType: TextInputType.number),
                       buildInputField(null,
                           controller: _phoneNumberController,
-                          hintText: 'Phone number ',
+                          hintText: text.phone_number,
                           textInputType: TextInputType.number),
                       buildInputField(null,
                           controller: _addressController,
-                          hintText: 'Home address',
+                          hintText: text.home_adress,
                           textInputType: TextInputType.streetAddress),
                     ],
                   ),
@@ -214,23 +218,23 @@ class _Patient_infoState extends State<Patient_info> {
                       });
                       saveLastPressedTime(widget.doctorEntity.uid);
                       // Your button action here
-                      String missing = "Please Write your";
+                      String missing = text.please_write_your;
                       if (_firstNameController.text.isEmpty) {
-                        missing = "$missing First Name,";
+                        missing = "$missing ${text.first_name},";
                       }
                       if (_lastNameController.text.isEmpty) {
-                        missing = "$missing Last Name,";
+                        missing = "$missing ${text.family_name},";
                       }
                       if (_ageController.text.isEmpty ||
                           int.parse(_ageController.text) > 130) {
-                        missing = "$missing age,";
+                        missing = "$missing ${text.age},";
                       }
                       if (_phoneNumberController.text.isEmpty ||
                           _phoneNumberController.text.length < 10) {
-                        missing = "$missing Phone Number,";
+                        missing = "$missing ${text.phone_number},";
                       }
                       if (_addressController.text.isEmpty) {
-                        missing = "$missing Home address,";
+                        missing = "$missing ${text.home_adress},";
                       }
                       if (_firstNameController.text.isEmpty ||
                           _lastNameController.text.isEmpty ||

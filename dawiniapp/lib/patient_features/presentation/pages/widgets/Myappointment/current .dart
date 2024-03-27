@@ -138,7 +138,9 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                               height: 25.h,
                                               child: FittedBox(
                                                 fit: BoxFit.scaleDown,
-                                                alignment: Alignment.topLeft,
+                                                alignment: isArabic
+                                                    ? Alignment.topRight
+                                                    : Alignment.topLeft,
                                                 child: Text(
                                                     text.dr +
                                                         ". ${doctors.first.lastName}",
@@ -154,7 +156,9 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                               width: 160.w,
                                               height: 17.h,
                                               child: FittedBox(
-                                                alignment: Alignment.topLeft,
+                                                alignment: isArabic
+                                                    ? Alignment.topRight
+                                                    : Alignment.topLeft,
                                                 fit: BoxFit.scaleDown,
                                                 child: Text(
                                                     doctors.first.speciality,
@@ -297,16 +301,24 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                 children: [
                                                   const Icon(Icons.schedule,
                                                       size: 17),
-                                                  Text(text.myturn + " : ",
-                                                      style: TextStyle(
-                                                        color: const Color(
-                                                                0xff202020)
-                                                            .withOpacity(0.8),
-                                                        fontFamily: 'Nunito',
-                                                        fontSize: 15.sp,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                      )),
+                                                  Padding(
+                                                    padding: isArabic
+                                                        ? EdgeInsets.only(
+                                                            right: 5.w)
+                                                        : EdgeInsets.only(
+                                                            left: 5.w),
+                                                    child: Text(
+                                                        text.myturn + " : ",
+                                                        style: TextStyle(
+                                                          color: const Color(
+                                                                  0xff202020)
+                                                              .withOpacity(0.8),
+                                                          fontFamily: 'Nunito',
+                                                          fontSize: 15.sp,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        )),
+                                                  ),
                                                   Text(
                                                       data[index]
                                                           .turn
@@ -518,27 +530,31 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
   }
 
   NotificationShower(String patientName, int index, String doctorName, body,
-      {required text}) {
+      {required AppLocalizations text}) {
     AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: index,
             channelKey: 'basic_channel',
-            title: "your turn $body",
-            body: "$patientName turn at $doctorName $body"));
+            title: "${text.turn} $body",
+            body: "$patientName ${text.myturn} $doctorName $body"));
   }
 
-  notificationConditions(state, index, doctors, {required text}) {
+  notificationConditions(state, index, doctors,
+      {required AppLocalizations text}) {
     if (state[index].turn - 2 == (doctors.first.turn)) {
       NotificationShower(state[index].firstName + " " + state[index].lastName,
-          index, "Dr. " + doctors.first.lastName, "is near",
+          index, text.dr + ". " + doctors.first.lastName, text.is_near,
           text: text);
     } else if (state[index].turn - 1 == (doctors.first.turn)) {
-      NotificationShower(state[index].firstName + " " + state[index].lastName,
-          index, "Dr. " + doctors.first.lastName, "is after one Patient",
+      NotificationShower(
+          state[index].firstName + " " + state[index].lastName,
+          index,
+          text.dr + ". " + doctors.first.lastName,
+          text.is_after_one_patient,
           text: text);
     } else if (state[index].turn == (doctors.first.turn)) {
       NotificationShower(state[index].firstName + " " + state[index].lastName,
-          index, "Dr. " + doctors.first.lastName, "is NOW",
+          index, text.dr + ". " + doctors.first.lastName, text.is_now,
           text: text);
     }
   }

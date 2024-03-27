@@ -40,8 +40,8 @@
     "deletedata":"مسح البيانات",
     "currentturn":"الدور الحالي",
     "tomorrowdate":"مواعيد الغد",
-    "isat":"وصل الى",
-    "myturn":"الدور",
+    "isat":" ",
+    "myturn":"دورك",
     "searchforadoctor":"بحث عن طبيب",
     "next":"التالي",
     "whoareyou":"من انت",
@@ -58,7 +58,27 @@
     "choose_from_available_booking_time":"اختر من الايام المتاحة",
     "experience":"الخبرة",
     "description":"الوصف",
-    "link_location":"الموقع في الخارطة"
+    "link_location":"الموقع",
+    "please_enter_the_following_information":"من فضلك ادخل المعلومات التالية",
+    "home_adress":"العنوان الشخصي",
+    "phone_number":"رقم الهاتف",
+    "family_name":"اللقب",
+    "first_name":"الاسم",
+    "please_write_your":"من فضلك اكتب",
+    "is_after_one_patient":"هو التالي",
+    "is_now":"الان",
+    "is_near":"قريب",
+    "try_again":"حاول مجددا",
+    "your_appointment_has_been_booked":"تم حجز موعدك",
+    "your_appointment_has_not_been_booked":"لم يتم حجز موعدك",
+    "successfully":"بنجاح",
+    "you_already_booked_an_appointment":"لقد قمت بحجز موعد من قبل",
+    "try_again_after_five_sec":"حاول مجددا بعد 5 ثواني",
+    "try_again_after_ten_sec":"حاول مجددا بعد 10 دقائق",
+    "try_again_please":"حاول مجددا من فضلك"
+
+
+
 
 
 

@@ -59,6 +59,26 @@
     "choose_from_available_booking_time":"Choose from available booking time :",
     "experience":"Experience",
     "description":"Description",
-    "link_location":"Location Link"
+    "link_location":"Location",
+    "please_enter_the_following_information":"Please enter the following information :",
+    "home_adress":"Home address",
+    "phone_number":"Phone number",
+    "family_name":"family name",
+    "first_name":"first name",
+    "please_write_your":"Please Write your",
+    "is_after_one_patient":"is after one Patient",
+    "is_now":"is NOW",
+    "is_near":"is near",
+    "try_again":"try again",
+    "your_appointment_has_been_booked":"Your appointment has been booked",
+    "your_appointment_has_not_been_booked":"Your appointment has not been booked",
+    "successfully":"successfully",
+    "you_already_booked_an_appointment":"you already booked an appointment",
+    "try_again_after_five_sec":"try again after 5 sec",
+    "try_again_after_ten_sec":"try again after 10 sec",
+    "try_again_please":"try again please"
+
+
+
 
   }

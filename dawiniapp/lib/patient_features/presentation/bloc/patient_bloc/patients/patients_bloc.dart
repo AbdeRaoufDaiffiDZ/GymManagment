@@ -10,6 +10,7 @@ import 'package:dawini_full/patient_features/domain/usecases/patients_usecase.da
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 part 'patients_event.dart';
 part 'patients_state.dart';
@@ -142,6 +143,8 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
           emit(PatientsLoadingError(e.toString()));
         }
       } else if (event is onSetFavoriteDoctor) {
+        final AppLocalizations text = AppLocalizations.of(event.context)!;
+
         try {
           emit(PatientsLoading());
 
@@ -152,10 +155,12 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
           emit(PatientsLoaded(patients));
         } catch (e) {
           ScaffoldMessenger.of(event.context).showSnackBar(SnackBar(
-              content: Text("try again"), backgroundColor: Colors.red));
+              content: Text(text.try_again), backgroundColor: Colors.red));
           emit(PatientsLoadingError(e.toString()));
         }
       } else if (event is onDeleteFavoriteDoctor) {
+        final AppLocalizations text = AppLocalizations.of(event.context)!;
+
         try {
           emit(PatientsLoading());
 
@@ -166,7 +171,7 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
           emit(PatientsLoaded(patients));
         } catch (e) {
           ScaffoldMessenger.of(event.context).showSnackBar(SnackBar(
-              content: Text("try again"), backgroundColor: Colors.red));
+              content: Text(text.try_again), backgroundColor: Colors.red));
           emit(PatientsLoadingError(e.toString()));
         }
       }
@@ -214,6 +219,7 @@ Future<Object?> showlDialog(
     transitionBuilder: (context, a1, a2, widget) {
       double screenWidth = MediaQuery.of(context).size.width;
       double screenHeight = MediaQuery.of(context).size.height;
+      final AppLocalizations locale = AppLocalizations.of(context)!;
 
       return BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
@@ -227,8 +233,8 @@ Future<Object?> showlDialog(
                   textAlign: TextAlign.center,
                   TextSpan(
                     text: text
-                        ? "Your appointment has been booked"
-                        : "Your appointment has not been booked",
+                        ? locale.your_appointment_has_been_booked
+                        : locale.your_appointment_has_not_been_booked,
                     style: TextStyle(
                       fontFamily: "Nunito",
                       fontWeight: FontWeight.w800,
@@ -239,8 +245,8 @@ Future<Object?> showlDialog(
                       TextSpan(
                         text: done
                             ? text
-                                ? " successfully !"
-                                : ", you already booked an appointment"
+                                ? locale.successfully + " !"
+                                : "," + locale.you_already_booked_an_appointment
                             : " ",
                         style: TextStyle(
                           fontFamily: "Nunito",
@@ -252,11 +258,11 @@ Future<Object?> showlDialog(
                       TextSpan(
                         text: done
                             ? text
-                                ? " with the turn "
+                                ? " "
                                 : ifADoctor
-                                    ? ", try again after 5 sec "
-                                    : ", try again after 10 minutes "
-                            : ", try again Please",
+                                    ? ",${locale.try_again_after_five_sec}"
+                                    : ",${locale.try_again_after_ten_sec}"
+                            : ", ${locale.try_again_please}",
                         style: TextStyle(
                           fontFamily: "Nunito",
                           fontWeight: FontWeight.w800,
@@ -287,7 +293,7 @@ Future<Object?> showlDialog(
                     ),
                     child: Center(
                       child: Text(
-                        "My appointment",
+                        locale.my_Appointement,
                         style: TextStyle(
                           color: Colors.white,
                           fontFamily: "Nunito",
