@@ -109,7 +109,8 @@ class _MyAppState extends State<MyApp> {
           ),
           BlocProvider(
             create: (_) => locator<PatientsBloc>()..add(PatientsinitialEvent()),
-          )
+          ),
+          BlocProvider(create: (_) => locator<AuthBloc>())
         ],
         child: ScreenUtilInit(
             designSize: const Size(320, 609),

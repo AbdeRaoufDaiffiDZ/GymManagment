@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, camel_case_types, library_private_types_in_public_api, use_build_context_synchronously, file_names
 
 import 'package:dawini_full/auth/data/FirebaseAuth/authentification.dart';
+import 'package:dawini_full/auth/presentation/Widget/bloc_map_widget.dart';
 import 'package:dawini_full/auth/presentation/loginPage.dart';
 import 'package:dawini_full/auth/presentation/signup.dart';
 import 'package:dawini_full/core/loading/loading.dart';
@@ -38,7 +39,7 @@ class _doctorsideHomeState extends State<doctorsideHome> {
               ? doctorview(
                   uid: user.uid,
                 )
-              : WelcomePage();
+              : AuthBlocMap();
 //
         });
   }

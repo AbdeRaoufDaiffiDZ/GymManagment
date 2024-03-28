@@ -1,19 +1,23 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, file_names, library_private_types_in_public_api
 
 import 'package:dawini_full/auth/data/FirebaseAuth/authentification.dart';
-import 'package:dawini_full/auth/data/models/auth_model.dart';
 import 'package:dawini_full/auth/domain/entity/auth_entity.dart';
+import 'package:dawini_full/auth/presentation/bloc/auth_bloc.dart';
+import 'package:dawini_full/auth/presentation/bloc/auth_event.dart';
 import 'package:dawini_full/auth/presentation/signup.dart';
-import 'package:dawini_full/auth/presentation/welcomePage.dart';
+import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/appBar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'Widget/bezierContainer.dart';
 
 class LoginPage extends StatefulWidget {
+  final String? error;
   const LoginPage({
-    Key? key,
+    super.key,
     this.title,
-  }) : super(key: key);
+    this.error,
+  });
 
   final String? title;
 
@@ -214,24 +218,15 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _title() {
     return RichText(
-      textAlign: TextAlign.center,
-      text: TextSpan(
-          text: 'd',
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          text: widget.error,
           style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.w700,
-              color: Color(0xffe46b10)),
-          children: [
-            TextSpan(
-              text: 'ev',
-              style: TextStyle(color: Colors.black, fontSize: 30),
-            ),
-            TextSpan(
-              text: 'rnz',
-              style: TextStyle(color: Color(0xffe46b10), fontSize: 30),
-            ),
-          ]),
-    );
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+            color: Colors.black,
+          ),
+        ));
   }
 
   Widget _emailPasswordWidget() {
@@ -245,101 +240,106 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final AuthBloc authBloc = BlocProvider.of<AuthBloc>(context);
+
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
+        appBar: myAppbar(
+          fromWhere: true, // navigate to doctor side
+        ),
         body: SizedBox(
-      height: height,
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-              top: -height * .15,
-              right: -MediaQuery.of(context).size.width * .4,
-              child: BezierContainer()),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(height: height * .2),
-                  _title(),
-                  SizedBox(height: 50),
-                  _emailPasswordWidget(),
-                  SizedBox(height: 20),
-                  GestureDetector(
-                    child: _submitButton(),
-                    onTap: () {
-                      if (emailController.text.isNotEmpty &&
-                          passwordController.text.isNotEmpty) {
-                        AuthEntity auth = AuthEntity(
-                            email: emailController.text,
-                            password: passwordController.text);
-                        try {
-                          // users.signInWithGoogle(context);
-                          users.loginWithEmail(
-                              authData: AuthModel.fromMap(auth.toMap()));
+          height: height,
+          child: Stack(
+            children: <Widget>[
+              Positioned(
+                  top: -height * .15,
+                  right: -MediaQuery.of(context).size.width * .4,
+                  child: BezierContainer()),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(height: height * .2),
+                      _title(),
+                      SizedBox(height: 50),
+                      _emailPasswordWidget(),
+                      SizedBox(height: 20),
+                      GestureDetector(
+                        child: _submitButton(),
+                        onTap: () {
+                          if (emailController.text.isNotEmpty &&
+                              passwordController.text.isNotEmpty) {
+                            AuthEntity auth = AuthEntity(
+                                email: emailController.text,
+                                password: passwordController.text);
 
-                          if (users.user!.emailVerified) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => doctorsideHome()));
+                            authBloc.add(
+                                onLoginEvent(context: context, data: auth));
+                            // users.signInWithGoogle(context);
+                            // users.loginWithEmail(
+                            //     authData: AuthModel.fromMap(auth.toMap()));
+
+                            // if (users.user!.emailVerified) {
+                            //   Navigator.push(
+                            //       context,
+                            //       MaterialPageRoute(
+                            //           builder: (context) =>
+                            //               doctorsideHome()));
+                            // }
+                            // result.then((value) {
+                            //   value.fold(
+                            //     (l) => null,
+                            //     (r) => Navigator.push(
+                            //         context,
+                            //         MaterialPageRoute(
+                            //             builder: (context) => doctorsideHome(
+                            //                   popOrNot: widget.popOrNot,
+                            //                 ))),
+                            //   );
+                            // });
+                            // showSnackBar(context, "hello");
                           }
-                          // result.then((value) {
-                          //   value.fold(
-                          //     (l) => null,
-                          //     (r) => Navigator.push(
-                          //         context,
-                          //         MaterialPageRoute(
-                          //             builder: (context) => doctorsideHome(
-                          //                   popOrNot: widget.popOrNot,
-                          //                 ))),
-                          //   );
-                          // });
-                          // showSnackBar(context, "hello");
-                        } catch (e) {
-                          // showSnackBar(context, e.toString());
-                        }
-                      }
-                    },
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      if (emailController.text.isNotEmpty &&
-                          passwordController.text.isNotEmpty) {
-                        try {
-                          // users.(emailController.text);
+                        },
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          if (emailController.text.isNotEmpty &&
+                              passwordController.text.isNotEmpty) {
+                            try {
+                              // users.(emailController.text);
 
-                          // showSnackBar(context, "hello");
-                        } catch (e) {
-                          // showSnackBar(context, e.toString());
-                        }
-                      }
-                    },
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      alignment: Alignment.centerRight,
-                      child: Text('Forgot Password ?',
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500)),
-                    ),
+                              // showSnackBar(context, "hello");
+                            } catch (e) {
+                              // showSnackBar(context, e.toString());
+                            }
+                          }
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          alignment: Alignment.centerRight,
+                          child: Text('Forgot Password ?',
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w500)),
+                        ),
+                      ),
+                      _divider(),
+                      GestureDetector(
+                          onTap: () {
+                            // users.disconnect();
+                          },
+                          child: _facebookButton()),
+                      SizedBox(height: height * .055),
+                      _createAccountLabel(),
+                    ],
                   ),
-                  _divider(),
-                  GestureDetector(
-                      onTap: () {
-                        // users.disconnect();
-                      },
-                      child: _facebookButton()),
-                  SizedBox(height: height * .055),
-                  _createAccountLabel(),
-                ],
+                ),
               ),
-            ),
+              Positioned(top: 40, left: 0, child: _backButton()),
+            ],
           ),
-          Positioned(top: 40, left: 0, child: _backButton()),
-        ],
-      ),
-    ));
+        ));
   }
 }

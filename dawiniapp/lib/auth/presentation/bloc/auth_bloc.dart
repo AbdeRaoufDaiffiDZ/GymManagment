@@ -8,13 +8,13 @@ import 'package:flutter/material.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   DoctorAuthStateUseCase authStateUseCase = DoctorAuthStateUseCase();
-  AuthBloc(AuthState initialState) : super(initialState) {
+  AuthBloc(super.initialState) {
     on<AuthEvent>((event, emit) async {
       if (event is onLoginEvent) {
         emit(LoadAuthState());
         final result = await authStateUseCase.signIn(event.data);
         result.fold((l) {
-          showSnackBar(event.context, l.message);
+          // showSnackBar(event.context, l.message);
           emit(ErrorAuthState(error: l.message));
         }, (r) => emit(SuccessasfulLogin()));
       } else if (event is onRegisterEvent) {
@@ -22,7 +22,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final result =
             await authStateUseCase.registerDoctor(event.data, event.doctorData);
         result.fold((l) {
-          showSnackBar(event.context, l.message);
+          // showSnackBar(event.context, l.message);
           emit(ErrorAuthState(error: l.message));
         }, (r) => emit(LoginState()));
       } else if (event is onResetPassEvent) {
@@ -30,7 +30,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final result = await authStateUseCase.forgetPassword(event.data);
         result.fold((l) {
           {
-            showSnackBar(event.context, l.message);
+            // showSnackBar(event.context, l.message);
             emit(ErrorAuthState(error: l.message));
           }
         }, (r) => emit(LoginState()));

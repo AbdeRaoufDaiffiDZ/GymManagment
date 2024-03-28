@@ -1,6 +1,8 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:dawini_full/auth/domain/usecases/auth_usecase.dart';
+import 'package:dawini_full/auth/presentation/bloc/auth_bloc.dart';
+import 'package:dawini_full/auth/presentation/bloc/auth_state.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_data_bloc/doctor_data_bloc.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/patients_info_bloc/patients_info_bloc.dart';
 import 'package:dawini_full/introduction_feature/data/data_source/local_data_source.dart';
@@ -46,6 +48,7 @@ Future<void> setupLocator() async {
 
   locator.registerFactory(() => PatientsBloc(
       locator(), locator(), locator(), locator(), locator(), locator()));
+  locator.registerFactory(() => AuthBloc(LoginState()));
   locator.registerFactory(() => PatientsInfoBloc(PatientsInfoinitial()));
   locator.registerFactory(() => IntroductionBloc(locator(), locator(),
       locator(), locator(), locator(), locator(), locator()));
