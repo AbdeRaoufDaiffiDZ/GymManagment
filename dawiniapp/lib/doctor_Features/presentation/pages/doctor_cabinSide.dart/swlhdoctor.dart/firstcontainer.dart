@@ -3,6 +3,7 @@
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class firstConatiner extends StatefulWidget {
   final DoctorEntity doctor;
@@ -15,21 +16,23 @@ class firstConatiner extends StatefulWidget {
 class _firstConatinerState extends State<firstConatiner> {
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations locale = AppLocalizations.of(context)!;
+    final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+      padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
       child: Container(
         height: 80.h,
         decoration: BoxDecoration(
             color: Colors.white,
             border:
-                Border.all(width: 1.5, color: Colors.grey.withOpacity(0.23)),
-            borderRadius: BorderRadius.circular(12)),
+                Border.all(width: 1.5.w, color: Colors.grey.withOpacity(0.23)),
+            borderRadius: BorderRadius.circular(12.r)),
         child: Row(
           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
                 margin: EdgeInsets.symmetric(vertical: 3.h, horizontal: 8.w),
-                height: 57.w,
+                height: 57.h,
                 width: 57.w,
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
@@ -52,12 +55,13 @@ class _firstConatinerState extends State<firstConatiner> {
                   height: 25.h,
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
-                    alignment: Alignment.topLeft,
+                    alignment:
+                        isArabic ? Alignment.topRight : Alignment.topLeft,
                     child: Text(
-                      "Dr. ${widget.doctor.firstName}",
-                      style: const TextStyle(
+                      "${locale.dr}. ${widget.doctor.firstName}",
+                      style: TextStyle(
                           fontFamily: "Nunito",
-                          fontSize: 17,
+                          fontSize: 17.sp,
                           fontWeight: FontWeight.w600),
                     ),
                   ),
@@ -67,21 +71,22 @@ class _firstConatinerState extends State<firstConatiner> {
                   height: 20.h,
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
-                    alignment: Alignment.topLeft,
+                    alignment:
+                        isArabic ? Alignment.topRight : Alignment.topLeft,
                     child: Text.rich(TextSpan(
-                        text: "max number of patients : ", // TODO:
+                        text: locale.max_number_of_patients + " : ", // TODO:
                         style: TextStyle(
                             fontFamily: "Nunito",
                             color: const Color(0xff202020).withOpacity(0.7),
-                            fontSize: 12,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.w600),
                         children: [
                           TextSpan(
-                            text: "25",
+                            text: "25", // TODO:
                             style: TextStyle(
                                 fontFamily: "Nunito",
                                 color: const Color(0xff0AA9A9).withOpacity(0.7),
-                                fontSize: 12,
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.w600),
                           )
                         ])),
@@ -92,21 +97,22 @@ class _firstConatinerState extends State<firstConatiner> {
                   height: 20.h,
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
-                    alignment: Alignment.topLeft,
+                    alignment:
+                        isArabic ? Alignment.topRight : Alignment.topLeft,
                     child: Text.rich(TextSpan(
-                        text: "Booking period : ", // TODO:
+                        text: locale.booking_period + " : ", // TODO:
                         style: TextStyle(
                             fontFamily: "Nunito",
                             color: const Color(0xff202020).withOpacity(0.7),
-                            fontSize: 12,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.w600),
                         children: [
                           TextSpan(
-                            text: "today", // TODO:
+                            text: locale.today, // TODO:
                             style: TextStyle(
                                 fontFamily: "Nunito",
                                 color: const Color(0xff0AA9A9).withOpacity(0.7),
-                                fontSize: 12,
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.w600),
                           )
                         ])),
@@ -114,101 +120,21 @@ class _firstConatinerState extends State<firstConatiner> {
                 ),
               ],
             ),
-            /*  Column(
-              // TODO: there is a column add in order to add next and previous buttons
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: 10.h,
-                      left: 0
-                          .w), // TODO: top value is 44.h but I changed it in order to test, when you finish rewrite it
-                  child: Container(
-                    height: 20.w,
-                    width: 42.w,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: const Color(0xff0AA9A9)),
-                        borderRadius: BorderRadius.circular(12)),
-                    child: const Center(
-                        child: Text(
-                      "Edit",
-                      style: TextStyle(
-                          color: Color(0xff0AA9A9),
-                          fontFamily: "Nunito",
-                          fontWeight: FontWeight.w700),
-                    )),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: 5.h,
-                      left: 0
-                          .w), // TODO: top value is 44.h but I changed it in order to test, when you finish rewrite it
-                  child: GestureDetector(
-                    onTap: () {
-                      doctorPatientsBloc.add(onTurnUpdate(
-                          doctor: widget.doctor, turn: widget.doctor.turn + 1));
-                    },
-                    child: Container(
-                      height: 20.w,
-                      width: 42.w,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: const Color(0xff0AA9A9)),
-                          borderRadius: BorderRadius.circular(12)),
-                      child: const Center(
-                          child: Text(
-                        "next",
-                        style: TextStyle(
-                            color: Color(0xff0AA9A9),
-                            fontFamily: "Nunito",
-                            fontWeight: FontWeight.w700),
-                      )),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: 5.h,
-                      left: 0
-                          .w), // TODO: top value is 44.h but I changed it in order to test, when you finish rewrite it
-                  child: GestureDetector(
-                    onTap: () {
-                      print("pressed next");
-                      doctorPatientsBloc.add(onTurnUpdate(
-                          doctor: widget.doctor, turn: widget.doctor.turn - 1));
-                    },
-                    child: Container(
-                      height: 20.w,
-                      width: 42.w,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: const Color(0xff0AA9A9)),
-                          borderRadius: BorderRadius.circular(12)),
-                      child: const Center(
-                          child: Text(
-                        "past",
-                        style: TextStyle(
-                            color: Color(0xff0AA9A9),
-                            fontFamily: "Nunito",
-                            fontWeight: FontWeight.w700),
-                      )),
-                    ),
-                  ),
-                ),
-              ],
-            ),*/
             Padding(
               padding: EdgeInsets.only(top: 44.h),
               child: InkWell(
                 onTap: () {}, ////////////////////////
                 child: Container(
-                  height: 20.w,
+                  height: 20.h,
                   width: 42.w,
                   decoration: BoxDecoration(
                       border: Border.all(color: const Color(0xff0AA9A9)),
-                      borderRadius: BorderRadius.circular(12)),
-                  child: const Center(
+                      borderRadius: BorderRadius.circular(12.r)),
+                  child: Center(
                       child: Text(
-                    "Edit",
+                    locale.edit,
                     style: TextStyle(
+                        fontSize: 12.sp,
                         color: Color(0xff0AA9A9),
                         fontFamily: "Nunito",
                         fontWeight: FontWeight.w700),

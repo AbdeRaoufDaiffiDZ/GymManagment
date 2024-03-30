@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TodayPatinet extends StatefulWidget {
   final int turn;
@@ -20,6 +21,8 @@ class TodayPatinet extends StatefulWidget {
 class _TodayPatinetState extends State<TodayPatinet> {
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations locale = AppLocalizations.of(context)!;
+    final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
     final PatientsInfoBloc patientsInfoBloc =
         BlocProvider.of<PatientsInfoBloc>(context);
     return BlocBuilder<PatientsInfoBloc, PatientsInfoState>(
@@ -41,10 +44,10 @@ class _TodayPatinetState extends State<TodayPatinet> {
                   shape: BoxShape.circle,
                 ),
                 child: SizedBox(
-                  height: 24,
-                  width: 24,
+                  height: 24.h,
+                  width: 24.w,
                   child: CircularProgressIndicator(
-                    strokeWidth: 2,
+                    strokeWidth: 2.w,
                     color: Colors.white,
                     value: controller.isDragging || controller.isArmed
                         ? controller.value.clamp(0.0, 1.0)
@@ -73,16 +76,20 @@ class _TodayPatinetState extends State<TodayPatinet> {
                               width: 1.5,
                               color: const Color.fromARGB(255, 219, 219, 219)
                                   .withOpacity(0.4)),
-                          borderRadius: BorderRadius.circular(12)),
+                          borderRadius: BorderRadius.circular(12.r)),
                       child: Row(
                         children: [
                           Container(
                             width: 55.w,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(12),
-                                  bottomLeft: Radius.circular(12)),
+                              borderRadius: isArabic
+                                  ? BorderRadius.only(
+                                      topRight: Radius.circular(12.r),
+                                      bottomRight: Radius.circular(12.r))
+                                  : BorderRadius.only(
+                                      topLeft: Radius.circular(12.r),
+                                      bottomLeft: Radius.circular(12.r)),
                             ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -91,7 +98,7 @@ class _TodayPatinetState extends State<TodayPatinet> {
                                 Padding(
                                   padding: EdgeInsets.only(top: 4.w),
                                   child: Text(
-                                    "Turn",
+                                    locale.turn,
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         color: data.turn == widget.turn
@@ -136,12 +143,14 @@ class _TodayPatinetState extends State<TodayPatinet> {
                                   height: 22.h,
                                   child: FittedBox(
                                     fit: BoxFit.scaleDown,
-                                    alignment: Alignment.topLeft,
+                                    alignment: isArabic
+                                        ? Alignment.topRight
+                                        : Alignment.topLeft,
                                     child: Text(
                                       "${data.firstName} ${data.lastName}",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           fontFamily: "Nunito",
-                                          fontSize: 16,
+                                          fontSize: 16.sp,
                                           fontWeight: FontWeight.w700),
                                     ),
                                   ),
@@ -151,12 +160,14 @@ class _TodayPatinetState extends State<TodayPatinet> {
                                   height: 15.h,
                                   child: FittedBox(
                                     fit: BoxFit.scaleDown,
-                                    alignment: Alignment.topLeft,
+                                    alignment: isArabic
+                                        ? Alignment.topRight
+                                        : Alignment.topLeft,
                                     child: Text(
-                                      "Age: ${data.age} ",
-                                      style: const TextStyle(
+                                      "${locale.age}: ${data.age} ",
+                                      style: TextStyle(
                                           fontFamily: "Nunito",
-                                          fontSize: 14,
+                                          fontSize: 14.sp,
                                           fontWeight: FontWeight.w600),
                                     ),
                                   ),
@@ -166,12 +177,14 @@ class _TodayPatinetState extends State<TodayPatinet> {
                                   height: 14.h,
                                   child: FittedBox(
                                     fit: BoxFit.scaleDown,
-                                    alignment: Alignment.topLeft,
+                                    alignment: isArabic
+                                        ? Alignment.topRight
+                                        : Alignment.topLeft,
                                     child: Text(
-                                      "Gender: ${data.gender}",
-                                      style: const TextStyle(
+                                      "${locale.gender}: ${data.gender}",
+                                      style: TextStyle(
                                           fontFamily: "Nunito",
-                                          fontSize: 19,
+                                          fontSize: 19.sp,
                                           fontWeight: FontWeight.w600),
                                     ),
                                   ),
@@ -182,7 +195,9 @@ class _TodayPatinetState extends State<TodayPatinet> {
                                   height: 17.h,
                                   child: FittedBox(
                                       fit: BoxFit.scaleDown,
-                                      alignment: Alignment.topLeft,
+                                      alignment: isArabic
+                                          ? Alignment.topRight
+                                          : Alignment.topLeft,
                                       child: Row(
                                         children: [
                                           const Icon(Icons.phone, size: 15),
@@ -190,7 +205,7 @@ class _TodayPatinetState extends State<TodayPatinet> {
                                             data.phoneNumber,
                                             style: TextStyle(
                                                 fontFamily: 'Nunito',
-                                                fontSize: 16,
+                                                fontSize: 16.sp,
                                                 fontWeight: FontWeight.w600,
                                                 color: const Color(0xff202020)
                                                     .withOpacity(0.85)),
@@ -202,7 +217,9 @@ class _TodayPatinetState extends State<TodayPatinet> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(top: 55.h, left: 8.w),
+                            padding: isArabic
+                                ? EdgeInsets.only(top: 55.h, right: 8.w)
+                                : EdgeInsets.only(top: 55.h, left: 8.w),
                             child: InkWell(
                               onTap: () async {
                                 final Uri uri =
@@ -217,11 +234,11 @@ class _TodayPatinetState extends State<TodayPatinet> {
                                 decoration: BoxDecoration(
                                     border: Border.all(
                                         color: const Color(0xff0AA9A9)),
-                                    borderRadius: BorderRadius.circular(12)),
-                                child: const Center(
+                                    borderRadius: BorderRadius.circular(12.r)),
+                                child: Center(
                                     child: Text(
-                                  "call",
-                                  style: TextStyle(
+                                  locale.call,
+                                  style: const TextStyle(
                                       color: Color(0xff0AA9A9),
                                       fontFamily: "Nunito",
                                       fontWeight: FontWeight.w700),

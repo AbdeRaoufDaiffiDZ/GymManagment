@@ -12,6 +12,7 @@ import 'package:dawini_full/patients/patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class doctorview extends StatefulWidget {
   final String uid;
@@ -32,6 +33,8 @@ class _LanguageScreenState extends State<doctorview> {
   Widget build(BuildContext context) {
     final DoctorPatientsBloc doctorPatientsBloc =
         BlocProvider.of<DoctorPatientsBloc>(context);
+    final AppLocalizations locale = AppLocalizations.of(context)!;
+    final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
 
     return Scaffold(
         backgroundColor: const Color(0xffFAFAFA),
@@ -54,7 +57,9 @@ class _LanguageScreenState extends State<doctorview> {
                 Row(
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(left: 8.w, top: 0.h),
+                      padding: isArabic
+                          ? EdgeInsets.only(right: 8.w, top: 0.h)
+                          : EdgeInsets.only(left: 8.w, top: 0.h),
                       child: Switch(
                         splashRadius: 0,
                         trackOutlineWidth: MaterialStateProperty.all(0.0),
@@ -87,11 +92,13 @@ class _LanguageScreenState extends State<doctorview> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 5.w, top: 7.h),
+                      padding: isArabic
+                          ? EdgeInsets.only(right: 5.w, top: 7.h)
+                          : EdgeInsets.only(left: 5.w, top: 7.h),
                       child: Text(
                         doctor.atSerivce
-                            ? "Booking allowed"
-                            : "Booking disallowed",
+                            ? locale.booking_allowed
+                            : locale.booking_disallowed,
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
                             color: doctor.atSerivce
@@ -101,32 +108,6 @@ class _LanguageScreenState extends State<doctorview> {
                             fontSize: 17.sp),
                       ),
                     ),
-                    /*InkWell(
-                      // TODO: this button was add to test patinet  data reload
-                      onTap: () {
-                        patientsInfoBloc.add(onGetPatinets(uid: widget.uid));
-                      },
-                      child: Container(
-                        width: 70.w,
-                        height: 20.h,
-                        decoration: BoxDecoration(
-                            color: Color(0xff04CBCB),
-                            borderRadius: BorderRadius.circular(20)),
-                        margin: EdgeInsets.only(left: 30.w, top: 7.h),
-                        child: const FittedBox(
-                          fit: BoxFit.scaleDown,
-                          alignment: Alignment.center,
-                          child: Text(
-                            "Reload...",
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.white,
-                                fontFamily: "Nunito",
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                      ),
-                    )*/
                   ],
                 ),
                 firstConatiner(
@@ -135,7 +116,7 @@ class _LanguageScreenState extends State<doctorview> {
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 9.w),
                   child: Text(
-                    "Patient in examination : ",
+                    locale.patient_in_examination + " : ",
                     style: TextStyle(
                         fontFamily: "Nunito",
                         color: const Color(0xff202020),
@@ -147,26 +128,34 @@ class _LanguageScreenState extends State<doctorview> {
                 Row(
                   children: [
                     Container(
-                        margin: EdgeInsets.only(left: 8.w),
+                        margin: isArabic
+                            ? EdgeInsets.only(right: 8.w)
+                            : EdgeInsets.only(left: 8.w),
                         width: 130.w,
                         height: 23.h,
-                        child: const FittedBox(
+                        child: FittedBox(
                             fit: BoxFit.scaleDown,
-                            alignment: Alignment.bottomLeft,
-                            child: Text("Today's patients :",
-                                style: TextStyle(
+                            alignment: isArabic
+                                ? Alignment.bottomRight
+                                : Alignment.bottomLeft,
+                            child: Text(locale.today_s_patients + " :",
+                                style: const TextStyle(
                                     fontFamily: "Nunito",
                                     color: Color(0xff202020),
                                     fontSize: 17,
                                     fontWeight: FontWeight.w800)))),
                     const Spacer(),
                     Container(
-                      margin: EdgeInsets.only(right: 8.w),
+                      margin: isArabic
+                          ? EdgeInsets.only(left: 8.w)
+                          : EdgeInsets.only(right: 8.w),
                       width: 100.w,
                       height: 23.h,
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
-                        alignment: Alignment.bottomRight,
+                        alignment: isArabic
+                            ? Alignment.bottomLeft
+                            : Alignment.bottomRight,
                         child: InkWell(
                           onTap: () {
                             Navigator.push(
@@ -176,8 +165,8 @@ class _LanguageScreenState extends State<doctorview> {
                                           uid: doctor.uid,
                                         ))));
                           },
-                          child: const Text("See all list ",
-                              style: TextStyle(
+                          child: Text("${locale.see_all} ",
+                              style: const TextStyle(
                                   fontFamily: "Nunito",
                                   color: Color(0xff0AA9A9),
                                   fontSize: 14,
@@ -204,16 +193,18 @@ class _LanguageScreenState extends State<doctorview> {
                         child: Container(
                           margin: EdgeInsets.symmetric(
                               vertical: 8.h, horizontal: 0.w),
-                          width: 100,
-                          height: 40,
+                          width: 100.w,
+                          height: 40.h,
                           decoration: BoxDecoration(
                               color: const Color(0xff00C8D5),
-                              borderRadius: BorderRadius.circular(25)),
+                              borderRadius: BorderRadius.circular(25.r)),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Padding(
-                                padding: EdgeInsets.only(left: 13.w),
+                                padding: isArabic
+                                    ? EdgeInsets.only(right: 13.w)
+                                    : EdgeInsets.only(left: 13.w),
                                 child: Icon(
                                   Icons.arrow_back_ios,
                                   color: Colors.white,
@@ -221,7 +212,7 @@ class _LanguageScreenState extends State<doctorview> {
                                 ),
                               ),
                               Text(
-                                "Back",
+                                locale.back,
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontFamily: "Nunito",
@@ -247,8 +238,8 @@ class _LanguageScreenState extends State<doctorview> {
                         child: Container(
                             margin: EdgeInsets.symmetric(
                                 vertical: 8.h, horizontal: 0.w),
-                            width: 60,
-                            height: 60,
+                            width: 60.w,
+                            height: 60.h,
                             decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                               color: Color(0xff00C8D5),
@@ -265,8 +256,8 @@ class _LanguageScreenState extends State<doctorview> {
                               doctor: doctor, turn: doctor.turn + 1));
                         },
                         child: Container(
-                          width: 100,
-                          height: 40,
+                          width: 100.w,
+                          height: 40.h,
                           decoration: BoxDecoration(
                               color: const Color(0xff00C8D5),
                               borderRadius: BorderRadius.circular(25)),
@@ -274,9 +265,11 @@ class _LanguageScreenState extends State<doctorview> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Padding(
-                                padding: EdgeInsets.only(left: 17.w),
+                                padding: isArabic
+                                    ? EdgeInsets.only(right: 17.w)
+                                    : EdgeInsets.only(left: 17.w),
                                 child: Text(
-                                  "Next",
+                                  locale.next,
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontFamily: "Nunito",
@@ -285,7 +278,9 @@ class _LanguageScreenState extends State<doctorview> {
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.only(left: 4.w),
+                                padding: isArabic
+                                    ? EdgeInsets.only(right: 4.w)
+                                    : EdgeInsets.only(left: 4.w),
                                 child: Icon(
                                   Icons.arrow_forward_ios,
                                   color: Colors.white,

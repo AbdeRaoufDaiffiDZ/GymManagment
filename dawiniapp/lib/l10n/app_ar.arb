@@ -75,21 +75,14 @@
     "you_already_booked_an_appointment":"لقد قمت بحجز موعد من قبل",
     "try_again_after_five_sec":"حاول مجددا بعد 5 ثواني",
     "try_again_after_ten_sec":"حاول مجددا بعد 10 دقائق",
-    "try_again_please":"حاول مجددا من فضلك"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    "try_again_please":"حاول مجددا من فضلك",
+    "booking_allowed":"الحجز مفعل",
+    "booking_disallowed":"الحجز غير مفعل",
+    "patient_in_examination":"المريض داخل قاعة الفحص",
+    "today_s_patients":"المسجلين لليوم",
+    "back":"السابق",
+    "max_number_of_patients":"اقصى عدد للمرضى في القائمة",
+    "booking_period":"موعد الحجز",
+    "edit":"تعديل",
+    "patients_are_waiting":"المرضى في الانتظار"
   }

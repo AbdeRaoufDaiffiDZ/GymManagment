@@ -76,9 +76,14 @@
     "you_already_booked_an_appointment":"you already booked an appointment",
     "try_again_after_five_sec":"try again after 5 sec",
     "try_again_after_ten_sec":"try again after 10 sec",
-    "try_again_please":"try again please"
-
-
-
-
-  }
+    "try_again_please":"try again please",
+    "booking_allowed":"Booking allowed",
+    "booking_disallowed":"Booking disallowed",
+    "patient_in_examination":"Patient in examination",
+    "today_s_patients":"Today's patients",
+    "back":"Back",
+    "max_number_of_patients":"Max number of patients",
+    "booking_period":"Booking period",
+    "edit":"Edit",
+    "patients_are_waiting":"Patients are waiting  "
+}

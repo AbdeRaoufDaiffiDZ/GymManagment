@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class Loading extends StatefulWidget {
@@ -17,7 +18,7 @@ class _LoadingState extends State<Loading> {
       color: Colors.white,
       child: Center(
           child: LoadingAnimationWidget.horizontalRotatingDots(
-              color: Color(0xFF04CBCB), size: 200)),
+              color: Color(0xFF04CBCB), size: 100.w)),
     );
   }
 }

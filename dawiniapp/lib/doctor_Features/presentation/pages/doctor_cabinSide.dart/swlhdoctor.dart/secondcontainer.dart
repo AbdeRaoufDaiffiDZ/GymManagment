@@ -5,6 +5,7 @@ import 'package:dawini_full/doctor_Features/presentation/bloc/patients_info_bloc
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class secondConatiner extends StatefulWidget {
   final String uid;
@@ -20,6 +21,8 @@ class _secondConatinerState extends State<secondConatiner> {
   Widget build(BuildContext context) {
     final PatientsInfoBloc patientsInfoBloc =
         BlocProvider.of<PatientsInfoBloc>(context);
+    final AppLocalizations locale = AppLocalizations.of(context)!;
+    final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
     return BlocBuilder<PatientsInfoBloc, PatientsInfoState>(
         builder: (context, state) {
       if (state is PatientsInfoLoaded) {
@@ -37,16 +40,20 @@ class _secondConatinerState extends State<secondConatiner> {
                       color: Colors.white,
                       border: Border.all(
                           width: 1.5, color: Colors.grey.withOpacity(0.23)),
-                      borderRadius: BorderRadius.circular(12)),
+                      borderRadius: BorderRadius.circular(12.r)),
                   child: Row(
                     children: [
                       Container(
                         width: 66.w,
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           color: Color(0xff00C8D5),
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(12),
-                              bottomLeft: Radius.circular(12)),
+                          borderRadius: isArabic
+                              ? BorderRadius.only(
+                                  topRight: Radius.circular(12.r),
+                                  bottomRight: Radius.circular(12.r))
+                              : BorderRadius.only(
+                                  topLeft: Radius.circular(12.r),
+                                  bottomLeft: Radius.circular(12.r)),
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -55,7 +62,7 @@ class _secondConatinerState extends State<secondConatiner> {
                             Padding(
                               padding: EdgeInsets.only(top: 4.w),
                               child: Text(
-                                "Turn",
+                                locale.turn,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w700,
                                     color: Colors.white,
@@ -90,14 +97,16 @@ class _secondConatinerState extends State<secondConatiner> {
                                 height: 22.h,
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
-                                  alignment: Alignment.topLeft,
+                                  alignment: isArabic
+                                      ? Alignment.topRight
+                                      : Alignment.topLeft,
                                   child: Text(
                                     data.isNotEmpty
                                         ? "${data.first.firstName} ${data.first.lastName}"
                                         : "   ",
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontFamily: "Nunito",
-                                        fontSize: 16,
+                                        fontSize: 16.sp,
                                         fontWeight: FontWeight.w700),
                                   ),
                                 ),
@@ -107,14 +116,16 @@ class _secondConatinerState extends State<secondConatiner> {
                                 height: 15.h,
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
-                                  alignment: Alignment.topLeft,
+                                  alignment: isArabic
+                                      ? Alignment.topRight
+                                      : Alignment.topLeft,
                                   child: Text(
                                     data.isNotEmpty
-                                        ? "Age: ${data.first.age} "
+                                        ? "${locale.age}: ${data.first.age} "
                                         : " ",
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontFamily: "Nunito",
-                                        fontSize: 14,
+                                        fontSize: 14.sp,
                                         fontWeight: FontWeight.w600),
                                   ),
                                 ),
@@ -124,14 +135,16 @@ class _secondConatinerState extends State<secondConatiner> {
                                 height: 14.h,
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
-                                  alignment: Alignment.topLeft,
+                                  alignment: isArabic
+                                      ? Alignment.topRight
+                                      : Alignment.topLeft,
                                   child: Text(
                                     data.isNotEmpty
-                                        ? "Gender: ${data.first.gender} "
+                                        ? "${locale.gender}: ${data.first.gender} "
                                         : " ",
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontFamily: "Nunito",
-                                        fontSize: 19,
+                                        fontSize: 19.sp,
                                         fontWeight: FontWeight.w600),
                                   ),
                                 ),
@@ -142,7 +155,9 @@ class _secondConatinerState extends State<secondConatiner> {
                                 height: 17.h,
                                 child: FittedBox(
                                     fit: BoxFit.scaleDown,
-                                    alignment: Alignment.topLeft,
+                                    alignment: isArabic
+                                        ? Alignment.topRight
+                                        : Alignment.topLeft,
                                     child: Row(
                                       children: [
                                         const Icon(Icons.phone, size: 15),
@@ -152,7 +167,7 @@ class _secondConatinerState extends State<secondConatiner> {
                                               : "   ",
                                           style: TextStyle(
                                               fontFamily: 'Nunito',
-                                              fontSize: 16,
+                                              fontSize: 16.sp,
                                               fontWeight: FontWeight.w600,
                                               color: const Color(0xff202020)
                                                   .withOpacity(0.85)),
@@ -179,16 +194,16 @@ class _secondConatinerState extends State<secondConatiner> {
                           style: TextStyle(
                               fontFamily: "Nunito",
                               color: const Color(0xff0AA9A9).withOpacity(0.7),
-                              fontSize: 19,
+                              fontSize: 19.sp,
                               fontWeight: FontWeight.bold),
                           children: [
                             TextSpan(
-                              text: "Patients are waiting  ",
+                              text: locale.patients_are_waiting,
                               style: TextStyle(
                                   fontFamily: "Nunito",
                                   color:
                                       const Color(0xff000000).withOpacity(0.5),
-                                  fontSize: 18,
+                                  fontSize: 18.sp,
                                   fontWeight: FontWeight.w600),
                             )
                           ]),
