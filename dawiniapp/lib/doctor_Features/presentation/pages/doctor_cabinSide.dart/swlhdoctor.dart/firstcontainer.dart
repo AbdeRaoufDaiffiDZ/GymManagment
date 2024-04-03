@@ -15,10 +15,26 @@ class firstConatiner extends StatefulWidget {
 }
 
 class _firstConatinerState extends State<firstConatiner> {
+  String date = "";
+
   @override
   Widget build(BuildContext context) {
     final AppLocalizations locale = AppLocalizations.of(context)!;
     final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
+    switch (widget.doctor.date) {
+      case "today":
+        date = "${locale.today} ${locale.only}";
+        break;
+      case "all":
+        date = locale.today + locale.and + locale.tomorrow;
+        break;
+      case "tomorrow":
+        date = "${locale.tomorrow} ${locale.only}";
+
+        break;
+      default:
+        break;
+    }
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
       child: Container(
@@ -75,7 +91,7 @@ class _firstConatinerState extends State<firstConatiner> {
                     alignment:
                         isArabic ? Alignment.topRight : Alignment.topLeft,
                     child: Text.rich(TextSpan(
-                        text: locale.max_number_of_patients + " : ", // TODO:
+                        text: "${locale.max_number_of_patients} : ", // TODO:
                         style: TextStyle(
                             fontFamily: "Nunito",
                             color: const Color(0xff202020).withOpacity(0.7),
@@ -102,7 +118,7 @@ class _firstConatinerState extends State<firstConatiner> {
                     alignment:
                         isArabic ? Alignment.topRight : Alignment.topLeft,
                     child: Text.rich(TextSpan(
-                        text: locale.booking_period + " : ", // TODO:
+                        text: "${locale.booking_period} : ", // TODO:
                         style: TextStyle(
                             fontFamily: "Nunito",
                             color: const Color(0xff202020).withOpacity(0.7),
@@ -110,7 +126,7 @@ class _firstConatinerState extends State<firstConatiner> {
                             fontWeight: FontWeight.w600),
                         children: [
                           TextSpan(
-                            text: locale.today, // TODO:
+                            text: date, // TODO:
                             style: TextStyle(
                                 fontFamily: "Nunito",
                                 color: const Color(0xff0AA9A9).withOpacity(0.7),
