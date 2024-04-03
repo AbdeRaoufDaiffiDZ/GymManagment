@@ -72,7 +72,7 @@ class DoctorEntity extends Equatable {
       'firstName': firstName,
       'lastName': lastName,
       'phoneNumber': phoneNumber,
-      'wilaya': wilaya,
+      'Wilaya': wilaya,
       'city': city,
       'speciality': speciality,
       'numberOfPatient': numberOfPatient,

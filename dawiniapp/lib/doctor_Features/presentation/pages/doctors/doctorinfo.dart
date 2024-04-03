@@ -30,7 +30,9 @@ class _doctorDetailsState extends State<Lll> {
   TextEditingController location = TextEditingController();
   TextEditingController max_number_of_patient = TextEditingController();
   TextEditingController experience = TextEditingController();
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  int val = 1;
+
   @override
   void initState() {
     super.initState();
@@ -40,10 +42,23 @@ class _doctorDetailsState extends State<Lll> {
     location.text = widget.doctorInfo.wilaya;
     max_number_of_patient.text = widget.doctorInfo.numberOfPatient.toString();
     experience.text = widget.doctorInfo.experience;
+    switch (widget.doctorInfo.date) {
+      case "today":
+        val = 1;
+        break;
+      case "all":
+        val = 2;
+        break;
+      case "tomorrow":
+        val = 3;
+
+        break;
+      default:
+        break;
+    }
   }
 
   String selectedOption = '';
-  int val = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -875,12 +890,13 @@ class _doctorDetailsState extends State<Lll> {
                                 if (_formKey.currentState!.validate()) {
                                   doctorPatientsBloc
                                       .add(onDataUpdate(doctor: doctor));
+                                  Navigator.pop(context, 'Cancel');
                                 }
                               },
                               child: Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 5.w),
                                 child: Text(
-                                  "Save",
+                                  locale.save,
                                   style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       color: Colors.white,

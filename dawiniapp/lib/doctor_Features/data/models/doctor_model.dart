@@ -87,6 +87,7 @@ class DoctorModel extends DoctorEntity {
       'atSerivce': atSerivce,
       'speciality': speciality,
       'city': city,
+      'Wilaya': wilaya,
       'turn': turn,
       'uid': uid
     };
@@ -100,7 +101,7 @@ class DoctorModel extends DoctorEntity {
         firstName: json['firstName'] ?? " ",
         lastName: json['lastName'] ?? " ",
         phoneNumber: json['phoneNumber'] ?? " ",
-        wilaya: json['wilaya'] ?? " ",
+        wilaya: json['Wilaya'] ?? " ",
         city: json['city'] ??
             " ", //////////////////////////////////   city must be add to databse
         speciality: json['speciality'] ?? " ",

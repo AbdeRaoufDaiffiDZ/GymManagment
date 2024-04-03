@@ -72,7 +72,6 @@ class DoctorPatientsBloc
           }
           await updateDoctorCabinData.updatedoctorData(event.doctor);
           final data = await getDoctorsInfoUseCase.getDoctorsInfo();
-
           emit(doctorInfoLoaded(data));
         } catch (e) {
           emit(doctorInfoLoadingError(e.toString()));
