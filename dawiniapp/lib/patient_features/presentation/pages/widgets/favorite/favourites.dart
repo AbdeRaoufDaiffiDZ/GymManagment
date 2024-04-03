@@ -3,8 +3,8 @@
 import 'package:dawini_full/patient_features/presentation/pages/widgets/favorite/clinics.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/favorite/doctor.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class favorite extends StatefulWidget {
   favorite({Key? key}) : super(key: key);
@@ -25,19 +25,21 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
         appBar: AppBar(
           elevation: 0.0,
           backgroundColor: const Color(0XFFFAFAFA),
-          title: Container(
-            margin: EdgeInsets.only(top: 12.h),
-            width: 200.w,
-            height: 30.h,
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                text.favorite,
-                style: TextStyle(
-                    color: Color(0XFF202020),
-                    fontSize: 33,
-                    fontWeight: FontWeight.w700,
-                    fontFamily: 'Nunito'),
+          title: Center(
+            child: Container(
+              margin: EdgeInsets.only(top: 12.h),
+              width: 200.w,
+              height: 30.h,
+              child: const FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  "My favorite",
+                  style: TextStyle(
+                      color: Color(0XFF202020),
+                      fontSize: 33,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'Nunito'),
+                ),
               ),
             ),
           ),
@@ -49,11 +51,12 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
                   TabBar(
                       controller: tabcontroller,
                       labelColor: Colors.black,
+                      dividerColor: Colors.transparent,
                       unselectedLabelColor: Colors.grey,
                       indicator: UnderlineTabIndicator(
                           borderSide: BorderSide(
                               width: 2.w, color: const Color(0XFF04CBCB)),
-                          insets: EdgeInsets.symmetric(horizontal: 28.w)),
+                          insets: EdgeInsets.symmetric(horizontal: 14.w)),
                       tabs: [
                         Tab(
                           child: SizedBox(

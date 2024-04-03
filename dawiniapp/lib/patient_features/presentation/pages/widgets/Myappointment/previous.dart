@@ -1,18 +1,15 @@
 // ignore_for_file: camel_case_types, sized_box_for_whitespace
 
-import 'dart:ui';
-
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:dawini_full/core/error/ErrorWidget.dart';
 import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:dawini_full/core/error/ErrorWidget.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class previousappointm extends StatefulWidget {
   const previousappointm({super.key});
@@ -28,6 +25,7 @@ class _previousappointmState extends State<previousappointm> {
     final AppLocalizations text = AppLocalizations.of(context)!;
 
     return Scaffold(
+      backgroundColor: const Color(0XFFFAFAFA),
       body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 15.h),
           child: BlocBuilder<PatientsBloc, PatientsState>(
@@ -80,7 +78,7 @@ class _previousappointmState extends State<previousappointm> {
                           return Column(
                             children: [
                               Padding(
-                                padding: EdgeInsets.only(top: 15.h),
+                                padding: EdgeInsets.only(top: 9.h),
                                 child: Container(
                                   height: 130.h,
                                   width: 320.w,
@@ -97,255 +95,77 @@ class _previousappointmState extends State<previousappointm> {
                                         padding: EdgeInsets.symmetric(
                                             vertical: 8.h, horizontal: 8.w),
                                         child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Container(
-                                              width: 150.w,
-                                              height: 25.h,
-                                              child: FittedBox(
-                                                fit: BoxFit.scaleDown,
-                                                alignment: isArabic
-                                                    ? Alignment.topRight
-                                                    : Alignment.topLeft,
-                                                child: Text(
-                                                    text.dr +
-                                                        ". ${doctors.first.lastName}",
-                                                    style: const TextStyle(
-                                                        fontSize: 19,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        color:
-                                                            Color(0XFF202020))),
-                                              ),
-                                            ),
-                                            Container(
-                                              width: 80.w,
-                                              height: 20.h,
-                                              child: FittedBox(
-                                                alignment: isArabic
-                                                    ? Alignment.topRight
-                                                    : Alignment.topLeft,
-                                                fit: BoxFit.scaleDown,
-                                                child: Text(
-                                                    doctors.first.speciality,
-                                                    style: const TextStyle(
-                                                        fontFamily: 'Nunito',
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color:
-                                                            Color(0XFF202020))),
-                                              ),
-                                            ),
-                                            Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.location_on,
-                                                  size: 13.h,
-                                                  color: const Color(0XFF202020)
-                                                      .withOpacity(0.6),
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Container(
+                                                width: 150.w,
+                                                height: 25.h,
+                                                child: FittedBox(
+                                                  fit: BoxFit.scaleDown,
+                                                  alignment: isArabic
+                                                      ? Alignment.topRight
+                                                      : Alignment.topLeft,
+                                                  child: Text(
+                                                      text.dr +
+                                                          ". ${doctors.first.lastName}",
+                                                      style: const TextStyle(
+                                                          fontSize: 19,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          color: Color(
+                                                              0XFF202020))),
                                                 ),
-                                                FittedBox(
+                                              ),
+                                              Container(
+                                                width: 80.w,
+                                                height: 20.h,
+                                                child: FittedBox(
                                                   alignment: isArabic
                                                       ? Alignment.topRight
                                                       : Alignment.topLeft,
                                                   fit: BoxFit.scaleDown,
                                                   child: Text(
-                                                      '${doctors.first.city}, ${doctors.first.wilaya}',
-                                                      style: TextStyle(
+                                                      doctors.first.speciality,
+                                                      style: const TextStyle(
                                                           fontFamily: 'Nunito',
-                                                          fontSize: 15.sp,
+                                                          fontSize: 18,
                                                           fontWeight:
                                                               FontWeight.w600,
                                                           color: Color(
                                                               0XFF202020))),
                                                 ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 2.h),
-                                            GestureDetector(
-                                              onTap: () {
-                                                showGeneralDialog(
-                                                  context: context,
-                                                  pageBuilder: (context,
-                                                      animation,
-                                                      secondaryAnimation) {
-                                                    return Container();
-                                                  },
-                                                  transitionBuilder: (context,
-                                                      a1, a2, widget) {
-                                                    return BackdropFilter(
-                                                      filter: ImageFilter.blur(
-                                                          sigmaX: 5, sigmaY: 5),
-                                                      child: ScaleTransition(
-                                                        scale: Tween(
-                                                                begin: 0.5,
-                                                                end: 1.0)
-                                                            .animate(a1),
-                                                        child: FadeTransition(
-                                                          opacity:
-                                                              Tween<double>(
-                                                                      begin:
-                                                                          0.4,
-                                                                      end: 1)
-                                                                  .animate(a1),
-                                                          child: AlertDialog(
-                                                            contentPadding:
-                                                                EdgeInsets.symmetric(
-                                                                    vertical:
-                                                                        10.h,
-                                                                    horizontal:
-                                                                        10.w),
-                                                            content: Container(
-                                                              height: 150.h,
-                                                              child: Column(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                children: [
-                                                                  Text(
-                                                                    text.cancelappointment,
-                                                                    maxLines: 2,
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .center,
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .black,
-                                                                        fontSize: 19
-                                                                            .sp,
-                                                                        fontFamily:
-                                                                            "Nunito",
-                                                                        fontWeight:
-                                                                            FontWeight.bold),
-                                                                  ),
-                                                                  GestureDetector(
-                                                                    onTap: () {
-                                                                      if (Navigator
-                                                                          .canPop(
-                                                                              context)) {
-                                                                        Navigator.pop(
-                                                                            context);
-                                                                      }
-                                                                    },
-                                                                    child:
-                                                                        Container(
-                                                                      height:
-                                                                          40.h,
-                                                                      width:
-                                                                          200.w,
-                                                                      decoration: BoxDecoration(
-                                                                          borderRadius: BorderRadius.circular(20
-                                                                              .r),
-                                                                          border: Border.all(
-                                                                              color: const Color(0XFF202020).withOpacity(0.6),
-                                                                              width: 1)),
-                                                                      child: Center(
-                                                                          child: Text(
-                                                                        text.keepappointment,
-                                                                        style: TextStyle(
-                                                                            color: const Color(0XFF202020).withOpacity(
-                                                                                0.85),
-                                                                            fontFamily:
-                                                                                "Nunito",
-                                                                            fontSize:
-                                                                                20.sp,
-                                                                            fontWeight: FontWeight.w600),
-                                                                      )),
-                                                                    ),
-                                                                  ),
-                                                                  GestureDetector(
-                                                                    onTap: () {
-                                                                      // patientsBloc.add(onPatientsAppointmentDelete(
-                                                                      //     context,
-                                                                      //     patients:
-                                                                      //         state.patients[index]));
-                                                                      if (Navigator
-                                                                          .canPop(
-                                                                              context)) {
-                                                                        Navigator.pop(
-                                                                            context);
-                                                                      }
-                                                                    },
-                                                                    child:
-                                                                        Container(
-                                                                      height:
-                                                                          40.h,
-                                                                      width:
-                                                                          200.w,
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        color: const Color(
-                                                                            0XFF04CBCB),
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(20.r),
-                                                                      ),
-                                                                      child: Center(
-                                                                          child: Text(
-                                                                        text.cancelappointmentbottun,
-                                                                        style: TextStyle(
-                                                                            color: Colors
-                                                                                .white,
-                                                                            fontFamily:
-                                                                                "Nunito",
-                                                                            fontSize:
-                                                                                20.sp,
-                                                                            fontWeight: FontWeight.w600),
-                                                                      )),
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                            shape:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10.r),
-                                                              borderSide:
-                                                                  BorderSide
-                                                                      .none,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-                                                );
-                                              },
-                                              child: Container(
-                                                height: 22.h,
-                                                width: 150.w,
-                                                decoration: BoxDecoration(
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.location_on,
+                                                    size: 13.h,
                                                     color:
-                                                        const Color(0XFFECF2F2),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10.r)),
-                                                child: Container(
-                                                  width: 80.w,
-                                                  height: 20.h,
-                                                  child: Center(
-                                                    child: AutoSizeText(
-                                                        text.deletedata,
+                                                        const Color(0XFF202020)
+                                                            .withOpacity(0.6),
+                                                  ),
+                                                  FittedBox(
+                                                    alignment: isArabic
+                                                        ? Alignment.topRight
+                                                        : Alignment.topLeft,
+                                                    fit: BoxFit.scaleDown,
+                                                    child: Text(
+                                                        '${doctors.first.city}, ${doctors.first.wilaya}',
                                                         style: TextStyle(
                                                             fontFamily:
                                                                 'Nunito',
-                                                            fontSize: 13.sp,
+                                                            fontSize: 15.sp,
                                                             fontWeight:
                                                                 FontWeight.w600,
-                                                            color: const Color(
+                                                            color: Color(
                                                                 0XFF202020))),
                                                   ),
-                                                ),
+                                                ],
                                               ),
-                                            ),
-                                          ],
-                                        ),
+                                            ]),
                                       ),
                                       // Padding(
                                       //   padding:
