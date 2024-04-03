@@ -84,5 +84,17 @@
     "max_number_of_patients":"اقصى عدد للمرضى في القائمة",
     "booking_period":"موعد الحجز",
     "edit":"تعديل",
-    "patients_are_waiting":"المرضى في الانتظار"
+    "patients_are_waiting":"المرضى في الانتظار",
+    "add_a_photo":"اضافة صورة",
+    "general_information":"معلومات عامة",
+    "please_enter_your": "من فضلك ادخل",
+    "add_a_phone_number":"اضف رقم الهاتف",
+    "another_phone_number":"اضف رقم هاتف اخر",
+    "cabin_adress":"عنوان العيادة",
+    "booking_settings":"اعدادات نظام الحجز",
+    "maximum_number_of_patients_per_day":" اقصى عدد للمرضى في اليوم",
+    "set_the_booking_time":"اختر وقت الحجز",
+    "only":"فقط",
+    "and":"و",
+    "share_your_insights_and_expertise":"شارك أفكارك وخبراتك "
   }

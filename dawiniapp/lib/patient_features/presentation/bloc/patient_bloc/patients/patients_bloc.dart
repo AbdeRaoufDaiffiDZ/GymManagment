@@ -293,7 +293,7 @@ Future<Object?> showlDialog(
                     ),
                     child: Center(
                       child: Text(
-                        locale.my_Appointement,
+                        done ? locale.my_Appointement : locale.try_again,
                         style: TextStyle(
                           color: Colors.white,
                           fontFamily: "Nunito",

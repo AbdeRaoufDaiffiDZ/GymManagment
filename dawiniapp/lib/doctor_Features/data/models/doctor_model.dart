@@ -100,7 +100,7 @@ class DoctorModel extends DoctorEntity {
         firstName: json['firstName'] ?? " ",
         lastName: json['lastName'] ?? " ",
         phoneNumber: json['phoneNumber'] ?? " ",
-        wilaya: json['Wilaya'] ?? " ",
+        wilaya: json['wilaya'] ?? " ",
         city: json['city'] ??
             " ", //////////////////////////////////   city must be add to databse
         speciality: json['speciality'] ?? " ",

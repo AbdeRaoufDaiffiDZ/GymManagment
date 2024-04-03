@@ -65,6 +65,18 @@ class DoctorPatientsBloc
         } catch (e) {
           emit(doctorInfoLoadingError(e.toString()));
         }
+      } else if (event is onDataUpdate) {
+        try {
+          if (kDebugMode) {
+            print("data updated");
+          }
+          await updateDoctorCabinData.updatedoctorData(event.doctor);
+          final data = await getDoctorsInfoUseCase.getDoctorsInfo();
+
+          emit(doctorInfoLoaded(data));
+        } catch (e) {
+          emit(doctorInfoLoadingError(e.toString()));
+        }
       }
       // Stream<List<PatientModel>> doctorStream =
       //     doctorCabinDataSource.patinetsInfotest(uid);

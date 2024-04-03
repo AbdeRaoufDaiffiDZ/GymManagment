@@ -29,14 +29,13 @@ class onStateUpdate extends DoctorPatientsEvent {
 }
 
 class onDataUpdate extends DoctorPatientsEvent {
-  final int numberInList;
-  final dynamic data;
-  final String infoToUpdate;
+  final DoctorEntity doctor;
 
-  onDataUpdate(
-      {required this.numberInList,
-      required this.data,
-      required this.infoToUpdate});
+  onDataUpdate({
+    required this.doctor,
+  });
   @override
-  List<Object> get props => [numberInList, data, infoToUpdate];
+  List<Object> get props => [
+        doctor,
+      ];
 }

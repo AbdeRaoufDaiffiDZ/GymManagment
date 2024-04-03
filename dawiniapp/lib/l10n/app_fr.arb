@@ -84,5 +84,17 @@
     "max_number_of_patients":"Max number of patients",
     "booking_period":"Booking period",
     "edit":"Edit",
-    "patients_are_waiting":"Patients are waiting  "
+    "patients_are_waiting":"Patients are waiting  ",
+    "add_a_photo":"add a photo",
+    "general_information":"General information :",
+    "please_enter_your": "Please enter your ",
+    "add_a_phone_number":"add a phone number",
+    "another_phone_number":"another phone number",
+    "cabin_adress":"Cabin adress",
+    "booking_settings":"Booking settings :",
+    "maximum_number_of_patients_per_day":" maximum number of patients per day",
+    "set_the_booking_time":"Set the booking time",
+    "only":"only",
+    "and":"and",
+    "share_your_insights_and_expertise":"Share your insights and expertise"
 }

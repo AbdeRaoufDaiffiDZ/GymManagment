@@ -195,11 +195,10 @@ class DcotrRepositoryImpl implements DoctorRepository {
   }
 
   @override
-  Future<Either<Failure, void>> updatedoctorData(int numberInList, dynamic data,
-      String infoToUpdate, DoctorEntity doctor) async {
+  Future<Either<Failure, void>> updatedoctorData(DoctorEntity doctor) async {
     try {
-      doctorCabinDataSource.updateDoctorInfo(numberInList, data, infoToUpdate,
-          DoctorModel.fromJson(doctor.toMap()));
+      doctorCabinDataSource
+          .updateDoctorInfo(DoctorModel.fromJson(doctor.toMap()));
       return const Right(null);
     } on FirebaseException catch (e) {
       if (kDebugMode) {

@@ -14,8 +14,7 @@ abstract class DoctorCabinDataSource {
   Future<void> turnUpdate(int numberInList, int turn, String numberOfPatients);
   Future<void> updatedoctorState(
       int numberInList, bool state, DoctorModel doctor);
-  Future<void> updateDoctorInfo(
-      int numberInList, dynamic data, String infoToUpdate, DoctorModel doctor);
+  Future<void> updateDoctorInfo(DoctorModel doctor);
   Future<List<PatientModel>> patinetsInfo(
     String uid,
     bool today,
@@ -151,17 +150,49 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
   }
 
   @override
-  Future<void> updateDoctorInfo(int numberInList, dynamic data,
-      String infoToUpdate, DoctorModel doctor) async {
+  Future<void> updateDoctorInfo(DoctorModel doctor) async {
     await _databaseReference
         .ref()
-        .update({"/doctorsList/$numberInList/$infoToUpdate": data})
-        .then((value) => print("done!"))
-        .catchError((e) => print("error"));
+        .child("/doctorsList/${doctor.numberInList}")
+        .set({
+      "Wilaya": doctor.wilaya,
+      "atSerivce": doctor.atSerivce,
+      "city": doctor.city,
+      "date": doctor.date,
+      "description": doctor.description,
+      "experience": doctor.experience,
+      "firstName": doctor.firstName,
+      "lastName": doctor.lastName,
+      "location": doctor.location,
+      "numberInList": doctor.numberInList,
+      "numberOfPatient": doctor.numberOfPatient,
+      "phoneNumber": doctor.phoneNumber,
+      "recommanded": doctor.recommanded,
+      "speciality": doctor.speciality,
+      "turn": doctor.turn,
+      "uid": doctor.uid
+    });
+
     await _databaseReference
         .ref()
-        .update({"/user_data/Doctors/${doctor.uid}/$infoToUpdate": data})
-        .then((value) => print("done!"))
-        .catchError((e) => print("error"));
+        .child("/user_data/Doctors/${doctor.uid}")
+        .set({
+      "Wilaya": doctor.wilaya,
+      "atSerivce": doctor.atSerivce,
+      "city": doctor.city,
+      "date": doctor.date,
+      "description": doctor.description,
+      "experience": doctor.experience,
+      "firstName": doctor.firstName,
+      "lastName": doctor.lastName,
+      "location": doctor.location,
+      "numberInList": doctor.numberInList,
+      "numberOfPatient": doctor.numberOfPatient,
+      "phoneNumber": doctor.phoneNumber,
+      "recommanded": doctor.recommanded,
+      "speciality": doctor.speciality,
+      "turn": doctor.turn,
+      "uid": doctor.uid
+    });
   }
 }

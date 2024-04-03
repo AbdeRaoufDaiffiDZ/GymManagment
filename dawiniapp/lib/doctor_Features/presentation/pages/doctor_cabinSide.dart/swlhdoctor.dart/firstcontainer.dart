@@ -1,6 +1,7 @@
 // ignore_for_file: camel_case_types, sized_box_for_whitespace
 
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
+import 'package:dawini_full/doctor_Features/presentation/pages/doctors/doctorinfo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -82,7 +83,8 @@ class _firstConatinerState extends State<firstConatiner> {
                             fontWeight: FontWeight.w600),
                         children: [
                           TextSpan(
-                            text: "25", // TODO:
+                            text: widget.doctor.numberOfPatient
+                                .toString(), // TODO:
                             style: TextStyle(
                                 fontFamily: "Nunito",
                                 color: const Color(0xff0AA9A9).withOpacity(0.7),
@@ -123,7 +125,14 @@ class _firstConatinerState extends State<firstConatiner> {
             Padding(
               padding: EdgeInsets.only(top: 44.h),
               child: InkWell(
-                onTap: () {}, ////////////////////////
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Lll(
+                                doctorInfo: widget.doctor,
+                              )));
+                }, ////////////////////////
                 child: Container(
                   height: 20.h,
                   width: 42.w,

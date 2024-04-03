@@ -12,8 +12,7 @@ abstract class DoctorRepository {
       int numberInList, bool state, DoctorEntity doctor);
   Future<Either<Failure, void>> turnUpdate(
       int numberInList, int turn, String numberOfPatients);
-  Future<Either<Failure, void>> updatedoctorData(
-      int numberInList, dynamic data, String infoToUpdate, DoctorEntity doctor);
+  Future<Either<Failure, void>> updatedoctorData(DoctorEntity doctor);
   Future<Either<Failure, List<PatientEntity>>> patinetsInfo(
       String uid, bool today);
 }

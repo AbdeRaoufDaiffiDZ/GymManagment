@@ -64,7 +64,7 @@ dependencies:
   google_nav_bar: null
   google_sign_in: ^6.2.1
   http: null
-  image_picker: ^1.0.7
+  image_picker: null
   internet_connection_checker: null
   intl: any
   loading_animation_widget: ^1.2.0+4
