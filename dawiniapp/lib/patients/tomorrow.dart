@@ -22,6 +22,7 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     bool isEmpty = false;
     AppLocalizations text = AppLocalizations.of(context)!;
+    final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
 
     final PatientsInfoBloc patientsInfoBloc =
         BlocProvider.of<PatientsInfoBloc>(context);
@@ -45,8 +46,8 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
                     shape: BoxShape.circle,
                   ),
                   child: SizedBox(
-                    height: 24,
-                    width: 24,
+                    height: 24.h,
+                    width: 24.w,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
                       color: Colors.white,
@@ -80,17 +81,17 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
                           color: Colors.white,
                           border: Border.all(
                               width: 1.5, color: Colors.grey.withOpacity(0.23)),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: Row(
                           children: [
                             Container(
                               width: 66.w,
-                              decoration: const BoxDecoration(
+                              decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(12),
-                                  bottomLeft: Radius.circular(12),
+                                  topLeft: Radius.circular(12.r),
+                                  bottomLeft: Radius.circular(12.r),
                                 ),
                               ),
                               child: Column(
@@ -150,9 +151,9 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
                                         alignment: Alignment.topLeft,
                                         child: Text(
                                           "${data.firstName} ${data.lastName}",
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontFamily: "Nunito",
-                                            fontSize: 16,
+                                            fontSize: 16.sp,
                                             fontWeight: FontWeight.w700,
                                           ),
                                         ),
@@ -167,9 +168,9 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
                                         child: Text(
                                           text.age +
                                               ": ${data.age}", // TODO: age does not exist in patient entity, create it
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontFamily: "Nunito",
-                                            fontSize: 14,
+                                            fontSize: 14.sp,
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
@@ -183,9 +184,9 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
                                         alignment: Alignment.topLeft,
                                         child: Text(
                                           text.gender + ": ${data.gender}",
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontFamily: "Nunito",
-                                            fontSize: 19,
+                                            fontSize: 19.sp,
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
@@ -200,12 +201,12 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
                                         alignment: Alignment.topLeft,
                                         child: Row(
                                           children: [
-                                            const Icon(Icons.phone, size: 15),
+                                            Icon(Icons.phone, size: 15.w),
                                             Text(
                                               data.phoneNumber,
                                               style: TextStyle(
                                                 fontFamily: 'Nunito',
-                                                fontSize: 16,
+                                                fontSize: 16.sp,
                                                 fontWeight: FontWeight.w600,
                                                 color: const Color(0xff202020)
                                                     .withOpacity(0.85),
@@ -220,7 +221,9 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.only(top: 58.h, right: 6.w),
+                              padding: isArabic
+                                  ? EdgeInsets.only(top: 58.h, right: 5.w)
+                                  : EdgeInsets.only(top: 58.h, left: 5.w),
                               child: InkWell(
                                 onTap: () async {
                                   final Uri uri = Uri(
@@ -236,7 +239,7 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
                                     border: Border.all(
                                       color: const Color(0xff0AA9A9),
                                     ),
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius: BorderRadius.circular(12.r),
                                   ),
                                   child: Center(
                                     child: Text(

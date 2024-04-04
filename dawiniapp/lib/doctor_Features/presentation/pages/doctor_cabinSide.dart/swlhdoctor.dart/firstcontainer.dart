@@ -159,7 +159,7 @@ class _firstConatinerState extends State<firstConatiner> {
                       child: Text(
                     locale.edit,
                     style: TextStyle(
-                        fontSize: 12.sp,
+                        fontSize: 10.sp,
                         color: Color(0xff0AA9A9),
                         fontFamily: "Nunito",
                         fontWeight: FontWeight.w700),

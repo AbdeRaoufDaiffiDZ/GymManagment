@@ -37,7 +37,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                   "My appointments",
                   style: TextStyle(
                       color: Color(0XFF202020),
-                      fontSize: 30,
+                      fontSize: 26,
                       fontWeight: FontWeight.w700,
                       fontFamily: 'Nunito'),
                 ),
@@ -68,7 +68,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                               child: Text(
                                 text.current,
                                 style: TextStyle(
-                                    fontSize: 22,
+                                    fontSize: 20.sp,
                                     fontWeight: FontWeight.w700,
                                     fontFamily: "Nunito"),
                               ),
@@ -84,7 +84,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                               child: Text(
                                 text.previous,
                                 style: TextStyle(
-                                    fontSize: 22.sp,
+                                    fontSize: 20.sp,
                                     fontWeight: FontWeight.w700,
                                     fontFamily: "Nunito"),
                               ),

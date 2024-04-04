@@ -22,6 +22,8 @@ class _todayState extends State<today> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     bool isEmpty = true;
+    final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
+
     AppLocalizations text = AppLocalizations.of(context)!;
 
     final PatientsInfoBloc patientsInfoBloc =
@@ -46,8 +48,8 @@ class _todayState extends State<today> with TickerProviderStateMixin {
                     shape: BoxShape.circle,
                   ),
                   child: SizedBox(
-                    height: 24,
-                    width: 24,
+                    height: 24.h,
+                    width: 24.w,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
                       color: Colors.white,
@@ -80,9 +82,9 @@ class _todayState extends State<today> with TickerProviderStateMixin {
                             decoration: BoxDecoration(
                               color: Colors.white,
                               border: Border.all(
-                                  width: 1.5,
+                                  width: 1.5.w,
                                   color: Colors.grey.withOpacity(0.23)),
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(12.r),
                             ),
                             child: Row(
                               children: [
@@ -92,9 +94,9 @@ class _todayState extends State<today> with TickerProviderStateMixin {
                                     color: data.turn == widget.turn
                                         ? const Color(0xff00C8D5)
                                         : Colors.white,
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(12),
-                                      bottomLeft: Radius.circular(12),
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(12.r),
+                                      bottomLeft: Radius.circular(12.r),
                                     ),
                                   ),
                                   child: Column(
@@ -163,9 +165,9 @@ class _todayState extends State<today> with TickerProviderStateMixin {
                                             alignment: Alignment.topLeft,
                                             child: Text(
                                               "${data.firstName} ${data.lastName}",
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 fontFamily: "Nunito",
-                                                fontSize: 16,
+                                                fontSize: 16.sp,
                                                 fontWeight: FontWeight.w700,
                                               ),
                                             ),
@@ -180,9 +182,9 @@ class _todayState extends State<today> with TickerProviderStateMixin {
                                             child: Text(
                                               text.age +
                                                   ": ${data.age} ", // TODO: age does not exist in patient entity, create it
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 fontFamily: "Nunito",
-                                                fontSize: 14,
+                                                fontSize: 14.sp,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                             ),
@@ -196,9 +198,9 @@ class _todayState extends State<today> with TickerProviderStateMixin {
                                             alignment: Alignment.topLeft,
                                             child: Text(
                                               text.gender + ": ${data.gender}",
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 fontFamily: "Nunito",
-                                                fontSize: 19,
+                                                fontSize: 19.sp,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                             ),
@@ -213,13 +215,12 @@ class _todayState extends State<today> with TickerProviderStateMixin {
                                             alignment: Alignment.topLeft,
                                             child: Row(
                                               children: [
-                                                const Icon(Icons.phone,
-                                                    size: 15),
+                                                Icon(Icons.phone, size: 15.w),
                                                 Text(
                                                   data.phoneNumber,
                                                   style: TextStyle(
                                                     fontFamily: 'Nunito',
-                                                    fontSize: 16,
+                                                    fontSize: 16.sp,
                                                     fontWeight: FontWeight.w600,
                                                     color:
                                                         const Color(0xff202020)
@@ -235,8 +236,9 @@ class _todayState extends State<today> with TickerProviderStateMixin {
                                   ),
                                 ),
                                 Padding(
-                                  padding:
-                                      EdgeInsets.only(top: 58.h, right: 6.w),
+                                  padding: isArabic
+                                      ? EdgeInsets.only(top: 58.h, right: 5.w)
+                                      : EdgeInsets.only(top: 58.h, left: 5.w),
                                   child: InkWell(
                                     onTap: () async {
                                       final Uri uri = Uri(
@@ -253,12 +255,14 @@ class _todayState extends State<today> with TickerProviderStateMixin {
                                         border: Border.all(
                                           color: const Color(0xff0AA9A9),
                                         ),
-                                        borderRadius: BorderRadius.circular(12),
+                                        borderRadius:
+                                            BorderRadius.circular(12.r),
                                       ),
                                       child: Center(
                                         child: Text(
                                           text.call,
-                                          style: const TextStyle(
+                                          style: TextStyle(
+                                            fontSize: 10.sp,
                                             color: Color(0xff0AA9A9),
                                             fontFamily: "Nunito",
                                             fontWeight: FontWeight.w700,
