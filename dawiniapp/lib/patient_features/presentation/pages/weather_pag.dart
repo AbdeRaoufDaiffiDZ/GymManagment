@@ -10,6 +10,7 @@ import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/ser
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/specialityList.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Myappointment/appointments.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/favorite/favourites.dart';
+import 'package:dawini_full/settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -40,6 +41,13 @@ class _DoctorPageState extends State<Weather> {
     final AppLocalizations text = AppLocalizations.of(context)!;
 
     return Scaffold(
+        floatingActionButton: MaterialButton(
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => SettingsPage()));
+          },
+          child: Icon(Icons.settings),
+        ),
         backgroundColor: Colors.white,
         bottomNavigationBar: Container(
           decoration: BoxDecoration(

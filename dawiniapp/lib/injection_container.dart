@@ -79,8 +79,7 @@ Future<void> setupLocator() async {
 
   locator.registerLazySingleton(
       () => CheckWatchingStatusUseCase(repository: locator()));
-  locator
-      .registerLazySingleton(() => SetLanguageUseCase(repository: locator()));
+  locator.registerLazySingleton(() => SetLanguageUseCase());
   locator.registerLazySingleton(
       () => ChossenLanguageUseCase(repository: locator()));
   locator.registerLazySingleton(() => SetTypeUseCase());
@@ -102,7 +101,7 @@ Future<void> setupLocator() async {
   // clinics part
   locator.registerLazySingleton<ClinicRepository>(() => ClinicRepositoryImpl());
   locator.registerLazySingleton<IntroductionRepository>(
-      () => IntroductionRepositoryImpl(dataSource: locator()));
+      () => IntroductionRepositoryImpl());
 
   locator.registerLazySingleton<DoctorRemoteDataSource>(
       () => DoctorRemoteDataSourceImpl());

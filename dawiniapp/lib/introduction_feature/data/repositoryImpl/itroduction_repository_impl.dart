@@ -2,9 +2,8 @@ import 'package:dawini_full/introduction_feature/data/data_source/local_data_sou
 import 'package:dawini_full/introduction_feature/domain/repository/introductionRepository.dart';
 
 class IntroductionRepositoryImpl implements IntroductionRepository {
-  final LocalDataSource dataSource;
+  final LocalDataSource dataSource = LocalDataSourceImpl();
 
-  IntroductionRepositoryImpl({required this.dataSource});
   @override
   Future<bool> isWatched() {
     return dataSource.isWatched();
