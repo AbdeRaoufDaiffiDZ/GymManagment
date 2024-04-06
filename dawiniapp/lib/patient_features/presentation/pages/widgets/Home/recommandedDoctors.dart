@@ -91,17 +91,21 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              margin: const EdgeInsets.all(8),
-                              color: const Color.fromARGB(31, 204, 204, 204)
-                                  .withOpacity(0.3),
-                              height: 100.h,
-                              width: double.infinity,
-                              child: Image.asset(
-                                "assets/images/maleDoctor.png",
-                                fit: BoxFit.scaleDown,
-                                scale: 1.5.w,
-                              ),
-                            ),
+                                margin: const EdgeInsets.all(8),
+                                color: const Color.fromARGB(31, 204, 204, 204)
+                                    .withOpacity(0.3),
+                                height: 100.h,
+                                width: double.infinity,
+                                child: doctors[index].ImageProfileurl == " "
+                                    ? Image.asset(
+                                        "assets/images/maleDoctor.png",
+                                        alignment: Alignment.center,
+                                        scale: 4.3,
+                                      )
+                                    : Image.network(
+                                        doctors[index].ImageProfileurl,
+                                        fit: BoxFit.cover,
+                                      )),
                             Container(
                               margin: EdgeInsets.only(left: 4.w),
                               width: double.infinity,

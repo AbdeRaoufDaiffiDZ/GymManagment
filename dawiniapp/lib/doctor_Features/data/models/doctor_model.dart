@@ -3,6 +3,11 @@
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 
 class DoctorModel extends DoctorEntity {
+  final String ImageProfileurl;
+
+  final String firstNameArabic;
+  final String lastNameArabic;
+  final String specialityArabic;
   final int recommanded;
   final int numberInList;
   final String location;
@@ -20,7 +25,11 @@ class DoctorModel extends DoctorEntity {
   final String uid;
   final int numberOfPatient;
   DoctorModel(
-      {required this.recommanded,
+      {required this.firstNameArabic,
+      required this.lastNameArabic,
+      required this.specialityArabic,
+      required this.ImageProfileurl,
+      required this.recommanded,
       required this.numberOfPatient,
       required this.numberInList,
       required this.location,
@@ -37,6 +46,10 @@ class DoctorModel extends DoctorEntity {
       required this.lastName,
       required this.phoneNumber})
       : super(
+            firstNameArabic: firstNameArabic,
+            lastNameArabic: lastNameArabic,
+            specialityArabic: specialityArabic,
+            ImageProfileurl: ImageProfileurl,
             recommanded: recommanded,
             numberOfPatient: numberOfPatient,
             numberInList: numberInList,
@@ -56,6 +69,10 @@ class DoctorModel extends DoctorEntity {
 
   @override
   List<Object?> get props => [
+        firstNameArabic,
+        lastNameArabic,
+        specialityArabic,
+        ImageProfileurl,
         numberOfPatient,
         location,
         date,
@@ -75,6 +92,10 @@ class DoctorModel extends DoctorEntity {
 
   Map<String, dynamic> toMap() {
     return {
+      'ImageProfileurl': ImageProfileurl,
+      'firstNameArabic': firstNameArabic,
+      'specialityArabic': specialityArabic,
+      'lastNameArabic': lastNameArabic,
       'recommanded': recommanded,
       'numberOfPatient': numberOfPatient,
       'location': location,
@@ -112,7 +133,11 @@ class DoctorModel extends DoctorEntity {
         location: json['location'] ?? " ",
         date: json['date'] ?? " ",
         experience: json['experience'] ?? " ",
-        description: json['description'] ?? " ");
+        description: json['description'] ?? " ",
+        firstNameArabic: json['firstNameArabic'] ?? " ",
+        lastNameArabic: json['lastNameArabic'] ?? " ",
+        ImageProfileurl: json['ImageProfileurl'] ?? " ",
+        specialityArabic: json['specialityArabic'] ?? " ");
   }
 
   DoctorEntity toEntity() => DoctorEntity(
@@ -131,5 +156,9 @@ class DoctorModel extends DoctorEntity {
       experience: experience,
       description: description,
       numberInList: numberInList,
-      recommanded: recommanded);
+      recommanded: recommanded,
+      firstNameArabic: firstNameArabic,
+      lastNameArabic: lastNameArabic,
+      specialityArabic: specialityArabic,
+      ImageProfileurl: ImageProfileurl);
 }

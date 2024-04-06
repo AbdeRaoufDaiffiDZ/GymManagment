@@ -105,15 +105,19 @@ class _doctorDetailsState extends State<doctorDetails>
                       padding: EdgeInsets.only(top: 10.h),
                       child: Stack(children: [
                         Container(
-                          color: const Color(0xffFAFAFA),
-                          height: 150.h,
-                          width: double.infinity,
-                          child: Image.asset(
-                            "assets/images/maleDoctor.png",
-                            fit: BoxFit.scaleDown,
-                            scale: 1.3.w,
-                          ),
-                        ),
+                            color: const Color(0xffFAFAFA),
+                            height: 150.h,
+                            width: double.infinity,
+                            child: doctor.first.ImageProfileurl == ''
+                                ? Image.asset(
+                                    "assets/images/maleDoctor.png",
+                                    alignment: Alignment.center,
+                                    scale: 4.3,
+                                  )
+                                : Image.network(
+                                    doctor.first.ImageProfileurl,
+                                    fit: BoxFit.cover,
+                                  )),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [

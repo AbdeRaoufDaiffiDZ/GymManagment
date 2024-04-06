@@ -121,11 +121,34 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                                   0xff202020)
                                                               .withOpacity(
                                                                   0.4))),
-                                                  child: Image.asset(
-                                                    "assets/images/maleDoctor.png",
-                                                    alignment: Alignment.center,
-                                                    scale: 4.h,
-                                                  )),
+                                                  child: doctor.first
+                                                              .ImageProfileurl ==
+                                                          ''
+                                                      ? ClipOval(
+                                                          child:
+                                                              SizedBox.fromSize(
+                                                          size: Size.fromRadius(
+                                                              48.0), // Adjust radius
+                                                          child: Image.asset(
+                                                            "assets/images/maleDoctor.png",
+                                                            alignment: Alignment
+                                                                .center,
+                                                            scale: 4.3,
+                                                          ),
+                                                        ))
+                                                      : ClipOval(
+                                                          child:
+                                                              SizedBox.fromSize(
+                                                            size: Size.fromRadius(
+                                                                48.0), // Adjust radius
+                                                            child:
+                                                                Image.network(
+                                                              doctor.first
+                                                                  .ImageProfileurl,
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                          ),
+                                                        ))
                                             ],
                                           ),
                                         ),

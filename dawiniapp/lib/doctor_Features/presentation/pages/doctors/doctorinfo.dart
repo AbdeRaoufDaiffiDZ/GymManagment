@@ -5,6 +5,8 @@ import 'dart:io';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_data_bloc/doctor_data_bloc.dart';
 import 'package:dawini_full/doctor_Features/presentation/pages/doctors/customRaadio.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,6 +25,7 @@ class Lll extends StatefulWidget {
 
 class _doctorDetailsState extends State<Lll> {
   File? imageFile;
+  String ImageUrl = "";
   late AppState state;
   TextEditingController first_phone_number = TextEditingController();
   TextEditingController second_phone_number = TextEditingController();
@@ -852,7 +855,7 @@ class _doctorDetailsState extends State<Lll> {
                               color: const Color(0xff00C8D5),
                               borderRadius: BorderRadius.circular(20.r)),
                           child: MaterialButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 String date = "all";
                                 switch (val) {
                                   case 1:
@@ -868,7 +871,8 @@ class _doctorDetailsState extends State<Lll> {
                                   default:
                                     break;
                                 }
-                                final doctor = DoctorEntity(
+
+                                DoctorEntity doctor = DoctorEntity(
                                     recommanded: widget.doctorInfo.recommanded,
                                     numberOfPatient:
                                         int.parse(max_number_of_patient.text),
@@ -886,10 +890,16 @@ class _doctorDetailsState extends State<Lll> {
                                     wilaya: location.text,
                                     firstName: widget.doctorInfo.firstName,
                                     lastName: widget.doctorInfo.lastName,
-                                    phoneNumber: first_phone_number.text);
+                                    phoneNumber: first_phone_number.text,
+                                    firstNameArabic: 'firstNameArabic', // TODO:
+                                    lastNameArabic: 'lastNameArabic',
+                                    specialityArabic: 'specialityArabic',
+                                    ImageProfileurl: ImageUrl);
+
                                 if (_formKey.currentState!.validate()) {
-                                  doctorPatientsBloc
-                                      .add(onDataUpdate(doctor: doctor));
+                                  await toUpload(widget.doctorInfo.uid, doctor,
+                                      doctorPatientsBloc);
+
                                   Navigator.pop(context, 'Cancel');
                                 }
                               },
@@ -950,6 +960,27 @@ class _doctorDetailsState extends State<Lll> {
       setState(() {
         state = AppState.picked;
       });
+    }
+  }
+
+  Reference referenceRoot = FirebaseStorage.instance.ref().child('images');
+  toUpload(String uid, DoctorEntity doctor, doctorPatientsBloc) async {
+    Reference referenceIpageToUpload = referenceRoot.child(uid);
+    try {
+      if (imageFile != null) {
+        await referenceIpageToUpload.putFile(File(imageFile!.path));
+        ImageUrl = await referenceIpageToUpload.getDownloadURL();
+
+        if (kDebugMode) {
+          print(ImageUrl);
+        }
+        doctor.ImageProfileurl = ImageUrl;
+        doctorPatientsBloc.add(onDataUpdate(doctor: doctor));
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
   }
 }

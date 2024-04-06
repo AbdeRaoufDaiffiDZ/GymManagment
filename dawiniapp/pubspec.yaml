@@ -49,6 +49,7 @@ dependencies:
   firebase_core: null
   firebase_database: null
   firebase_messaging: ^14.7.17
+  firebase_storage: ^11.6.9
   flutter:
     sdk: flutter
   flutter_bloc: null

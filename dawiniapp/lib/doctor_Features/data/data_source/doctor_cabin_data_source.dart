@@ -123,6 +123,7 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
     } else {
       turn = turn;
     }
+    final uid = auth.currentUser!.uid; /////////////////////////
     await _databaseReference
         .ref("/doctorsList/$numberInList/")
         // .set(turn);
@@ -130,8 +131,12 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
         .then((value) => print("done!"))
         .catchError((e) => print("error"));
     await _databaseReference
-        .ref("/doctorsList/$numberInList/numberOfPatient")
-        .set(data.length);
+        .ref()
+        .child("/user_data/Doctors/$uid")
+        .update({"turn": turn});
+    // await _databaseReference
+    //     .ref("/doctorsList/$numberInList/numberOfPatient")
+    //     .set(data.length);
   }
 
   @override
@@ -154,7 +159,7 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
     await _databaseReference
         .ref()
         .child("/doctorsList/${doctor.numberInList}")
-        .set({
+        .update({
       "Wilaya": doctor.wilaya,
       "atSerivce": doctor.atSerivce,
       "city": doctor.city,
@@ -170,13 +175,17 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
       "recommanded": doctor.recommanded,
       "speciality": doctor.speciality,
       "turn": doctor.turn,
-      "uid": doctor.uid
+      "uid": doctor.uid,
+      'ImageProfileurl': doctor.ImageProfileurl,
+      'firstNameArabic': doctor.firstNameArabic,
+      'specialityArabic': doctor.specialityArabic,
+      'lastNameArabic': doctor.lastNameArabic,
     });
 
     await _databaseReference
         .ref()
         .child("/user_data/Doctors/${doctor.uid}")
-        .set({
+        .update({
       "Wilaya": doctor.wilaya,
       "atSerivce": doctor.atSerivce,
       "city": doctor.city,
@@ -192,7 +201,11 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
       "recommanded": doctor.recommanded,
       "speciality": doctor.speciality,
       "turn": doctor.turn,
-      "uid": doctor.uid
+      "uid": doctor.uid,
+      'ImageProfileurl': doctor.ImageProfileurl,
+      'firstNameArabic': doctor.firstNameArabic,
+      'specialityArabic': doctor.specialityArabic,
+      'lastNameArabic': doctor.lastNameArabic,
     });
   }
 }
