@@ -74,6 +74,7 @@ dependencies:
   motion_tab_bar_v2: null
   rxdart: null
   share: ^2.0.4
+  readmore: ^3.0.0
   shared_preferences: null
   url_launcher: ^6.2.5
 dev_dependencies:

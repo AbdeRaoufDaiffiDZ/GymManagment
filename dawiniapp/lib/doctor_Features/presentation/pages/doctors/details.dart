@@ -1,19 +1,15 @@
-// ignore_for_file: camel_case_types, prefer_const_constructors, prefer_typing_uninitialized_variables, deprecated_member_use, sized_box_for_whitespace
-
 import 'package:dawini_full/core/error/ErrorWidget.dart';
 import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart';
-import 'package:dawini_full/doctor_Features/presentation/pages/doctors/Patient_Info.dart';
 import 'package:dawini_full/patient_features/domain/usecases/patients_usecase.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:readmore/readmore.dart';
 import 'package:share/share.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class doctorDetails extends StatefulWidget {
   final String uid;
@@ -25,8 +21,9 @@ class doctorDetails extends StatefulWidget {
   State<doctorDetails> createState() => _doctorDetailsState();
 }
 
-bool isTodaySelected = true;
+bool isTodaySelected = false;
 bool? favorite;
+bool isTomorrowSelected = false;
 Future<void> isFavortie(String uid) async {
   final uids = await GetFavoriteDoctorsUseCase.excute();
   if (uids.isNotEmpty) {
@@ -43,14 +40,9 @@ Future<void> isFavortie(String uid) async {
   }
 }
 
-class _doctorDetailsState extends State<doctorDetails>
-    with TickerProviderStateMixin {
-  String datetime = DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
-
+class _doctorDetailsState extends State<doctorDetails> {
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations text = AppLocalizations.of(context)!;
-
     final PatientsBloc patientsBloc = BlocProvider.of<PatientsBloc>(context);
     final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
     final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
@@ -59,66 +51,39 @@ class _doctorDetailsState extends State<doctorDetails>
     isFavortie(uid);
     return Scaffold(
         body: SafeArea(
-      child: StreamBuilder<List<DoctorEntity>>(
-          stream: getDoctorsInfoUseCase.streamDoctorInfo(),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return ErrorPage(
-                error: snapshot.error,
-              );
-              // Text('Error: ${snapshot.error}');
-            }
-            late final List<DoctorEntity> data;
-            late final bool today, tomorrow;
-            if (snapshot.data == null) {
-              data = [];
-            } else {
-              if (snapshot.data!.isEmpty) {
-                data = [];
-              } else {
-                data = snapshot.data!;
-              }
-            }
-            List<DoctorEntity> doctor =
-                data.where((element) => element.uid == uid).toList();
-            if (doctor.isNotEmpty) {
-              if (doctor.first.date == "all") {
-                today = true;
-                tomorrow = true;
-              } else if (doctor.first.date == "today") {
-                today = true;
-                tomorrow = false;
-              } else if (doctor.first.date == "tomorrow") {
-                today = false;
-                tomorrow = true;
-              } else {
-                today = false;
-                tomorrow = false;
-              }
-            }
+            child: StreamBuilder<List<DoctorEntity>>(
+                stream: getDoctorsInfoUseCase.streamDoctorInfo(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return ErrorPage(
+                      error: snapshot.error,
+                    );
+                    // Text('Error: ${snapshot.error}');
+                  }
+                  late final List<DoctorEntity> data;
+                  if (snapshot.data == null) {
+                    data = [];
+                  } else {
+                    if (snapshot.data!.isEmpty) {
+                      data = [];
+                    } else {
+                      data = snapshot.data!;
+                    }
+                  }
+                  List<DoctorEntity> doctor =
+                      data.where((element) => element.uid == uid).toList();
+                  if (doctor.isNotEmpty) {
+                    if (doctor.first.date == "all") {
+                    } else if (doctor.first.date == "today") {
+                    } else if (doctor.first.date == "tomorrow") {
+                    } else {}
+                  }
 
-            if (doctor.isNotEmpty) {
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 10.h),
-                      child: Stack(children: [
-                        Container(
-                            color: const Color(0xffFAFAFA),
-                            height: 150.h,
-                            width: double.infinity,
-                            child: doctor.first.ImageProfileurl == ''
-                                ? Image.asset(
-                                    "assets/images/maleDoctor.png",
-                                    alignment: Alignment.center,
-                                    scale: 4.3,
-                                  )
-                                : Image.network(
-                                    doctor.first.ImageProfileurl,
-                                    fit: BoxFit.cover,
-                                  )),
-                        Row(
+                  if (doctor.isNotEmpty) {
+                    return ListView(children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 8.h),
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Container(
@@ -163,7 +128,7 @@ class _doctorDetailsState extends State<doctorDetails>
                               margin: isArabic
                                   ? EdgeInsets.only(left: 8.w)
                                   : EdgeInsets.only(right: 8.w),
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Color(0xffECF2F2),
                               ),
@@ -190,428 +155,556 @@ class _doctorDetailsState extends State<doctorDetails>
                                   )),
                             ),
                           ],
-                        )
-                      ]),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 10.h),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0XFF000000).withOpacity(0.23),
-                              spreadRadius: 3,
-                              blurRadius: 8,
-                              offset: const Offset(0, 0),
-                            ),
-                          ],
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20.r),
-                            topRight: Radius.circular(20.r),
-                            bottomLeft: Radius.circular(20.r),
-                            bottomRight: Radius.circular(20.r),
-                          )),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                margin: isArabic
-                                    ? EdgeInsets.only(right: 15.w, top: 10.h)
-                                    : EdgeInsets.only(left: 15.w, top: 10.h),
-                                height: 30.h,
-                                width: 180.w,
-                                child: FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    alignment: isArabic
-                                        ? Alignment.topRight
-                                        : Alignment.topLeft,
-                                    child: Text(
-                                      "Dr.${doctor.first.lastName}",
-                                      style: TextStyle(
-                                          overflow: TextOverflow.ellipsis,
-                                          fontSize: 22.sp,
-                                          fontFamily: 'Nunito',
-                                          fontWeight: FontWeight.w700),
-                                    )),
-                              ),
-                              Container(
-                                margin: isArabic
-                                    ? EdgeInsets.only(left: 8.w, top: 10.h)
-                                    : EdgeInsets.only(right: 8.w, top: 10.h),
-                                height: 20.h,
-                                width: 100.w,
-                                child: FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    alignment: isArabic
-                                        ? Alignment.topRight
-                                        : Alignment.topLeft,
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.circle,
-                                          color: doctor.isNotEmpty
-                                              ? doctor.first.atSerivce
-                                                  ? Colors.green
-                                                  : Colors.red
-                                              : Colors.red,
-                                          size: 15,
-                                        ),
-                                        Padding(
-                                          padding: isArabic
-                                              ? EdgeInsets.only(right: 5.w)
-                                              : EdgeInsets.only(left: 5.w),
-                                          child: Text(
-                                            doctor.first.atSerivce
-                                                ? text.at_service
-                                                : text.not_at_service,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 23.sp,
-                                                fontFamily: 'Nunito'),
-                                          ),
-                                        ),
-                                      ],
-                                    )),
-                              ),
-                            ],
-                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10.h),
+                        child: Stack(children: [
                           Container(
-                              margin: isArabic
-                                  ? EdgeInsets.only(right: 15.w)
-                                  : EdgeInsets.only(left: 15.w),
-                              height: 20.h,
-                              width: 250.w,
-                              child: FittedBox(
-                                fit: BoxFit.scaleDown,
-                                alignment: isArabic
-                                    ? Alignment.topRight
-                                    : Alignment.topLeft,
-                                child: Text(
-                                  doctor.first.speciality,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 22.sp,
-                                      fontFamily: 'Nunito'),
+                            margin: EdgeInsets.symmetric(horizontal: 10.w),
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.2),
+                                  spreadRadius: 2,
+                                  blurRadius: 2,
+                                  offset: const Offset(0, 0),
                                 ),
-                              )),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                margin: isArabic
-                                    ? EdgeInsets.only(right: 15.w)
-                                    : EdgeInsets.only(left: 15.w),
-                                height: 40.h,
-                                width: 130.w,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    FittedBox(
-                                      fit: BoxFit.scaleDown,
-                                      alignment: isArabic
-                                          ? Alignment.topRight
-                                          : Alignment.topLeft,
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.phone,
-                                            color: const Color(0XFF0AA9A9),
-                                            size: 15,
-                                          ),
-                                          Text(
-                                            " ${doctor.first.phoneNumber}",
-                                            style: TextStyle(
-                                              color: const Color(0XFF202020)
-                                                  .withOpacity(0.7),
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 15.sp,
-                                              fontFamily: 'Nunito',
-                                            ),
-                                          ),
-                                        ],
+                              ],
+                              color: const Color(0xffF3F4F4),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            height: 150.h,
+                            width: double.infinity,
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: doctor.first.ImageProfileurl == ''
+                                    ? Image.asset(
+                                        "assets/images/maleDoctor.png",
+                                        alignment: Alignment.center,
+                                        scale: 4.3,
+                                      )
+                                    : Image.network(
+                                        doctor.first.ImageProfileurl,
+                                        fit: BoxFit.cover,
+                                      )),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 195.w),
+                            child: Container(
+                                margin: EdgeInsets.symmetric(
+                                    vertical: 10.h, horizontal: 14.w),
+                                height: 20.h,
+                                width: 95.w,
+                                decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.1),
+                                        spreadRadius: 2,
+                                        blurRadius: 2,
+                                        offset: const Offset(0, 0),
                                       ),
+                                    ],
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 6.w),
+                                      child: Icon(Icons.circle,
+                                          size: 10.sp, color: Colors.red),
                                     ),
-                                    Container(
-                                      height: 20.h,
-                                      width: 200.w,
+                                    const Text("at service",
+                                        style: TextStyle(
+                                            fontFamily: 'Nunito',
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color(0XFF202020))),
+                                  ],
+                                )),
+                          )
+                        ]),
+                      ),
+                      Center(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 10.h),
+                          height: 50.h,
+                          width: 300.w,
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Column(
+                              children: [
+                                const Text(
+                                  "Dr. Chergui walid",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700,
+                                      fontFamily: "Nunito",
+                                      color: Color(0xff202020)),
+                                ),
+                                Text(
+                                  "Generalist",
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: "Nunito",
+                                      color:
+                                          const Color(0xff202020).withOpacity(0.65)),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                          margin: EdgeInsets.symmetric(horizontal: 8.w),
+                          height: 18.h,
+                          width: 160.w,
+                          child: const FittedBox(
+                            fit: BoxFit.scaleDown,
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              "General information :",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: "Nunito",
+                                  color: Color(0xff202020)),
+                            ),
+                          )),
+                      Container(
+                          margin: EdgeInsets.symmetric(horizontal: 8.w),
+                          height: 100.h,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                      height: 18.h,
+                                      width: 190.w,
                                       child: FittedBox(
                                         fit: BoxFit.scaleDown,
-                                        alignment: isArabic
-                                            ? Alignment.topRight
-                                            : Alignment.topLeft,
-                                        child: Row(
+                                        alignment: Alignment.topLeft,
+                                        child: RichText(
+                                          text: TextSpan(children: [
+                                            TextSpan(
+                                                text: 'Phone number 1 : ',
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontFamily: "Nunito",
+                                                    color: const Color(0xff202020)
+                                                        .withOpacity(0.65))),
+                                            const TextSpan(
+                                                text: '0557902660',
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontFamily: "Nunito",
+                                                    color: Color(0xff202020)))
+                                          ]),
+                                        ),
+                                      )),
+                                  Padding(
+                                    padding: isArabic
+                                        ? EdgeInsets.only(top: 55.h, right: 8.w)
+                                        : EdgeInsets.only(top: 0.h, left: 65.w),
+                                    child: InkWell(
+                                      onTap: () async {
+                                        final Uri uri =
+                                            Uri(scheme: "tel"); // path: data.);
+                                        if (await canLaunchUrl(uri)) {
+                                          await launchUrl(
+                                              uri); //////////calling
+                                        }
+                                      },
+                                      child: Container(
+                                        height: 20.w,
+                                        width: 42.w,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: const Color(0xff0AA9A9)),
+                                            borderRadius:
+                                                BorderRadius.circular(12.r)),
+                                        child: Center(
+                                            child: Row(
                                           children: [
-                                            Icon(
-                                              Icons.phone,
-                                              color: const Color(0XFF0AA9A9),
-                                              size: 15.sp,
-                                            ),
-                                            Text(
-                                              " ${doctor.first.phoneNumber}",
-                                              style: TextStyle(
-                                                color: const Color(0XFF202020)
-                                                    .withOpacity(0.7),
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 15.sp,
-                                                fontFamily: 'Nunito',
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 2.w,
+                                                  vertical: 5.h),
+                                              child: Icon(
+                                                Icons.phone,
+                                                size: 10.sp,
+                                                color: const Color(0xff0AA9A9),
                                               ),
                                             ),
+                                            const Text(
+                                              "Call",
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Color(0xff0AA9A9),
+                                                  fontFamily: "Nunito",
+                                                  fontWeight: FontWeight.w700),
+                                            ),
                                           ],
-                                        ),
+                                        )),
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () async {
-                                  final url = doctor.first.location;
-                                  if (await canLaunch(url)) {
-                                    await launch(url);
-                                  }
-                                },
-                                child: Container(
-                                  margin: isArabic
-                                      ? EdgeInsets.only(left: 8.w)
-                                      : EdgeInsets.only(right: 8.w),
-                                  height: 40.h,
-                                  width: 70.w,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      const Icon(
-                                        Icons.location_on,
-                                        color: Color(0XFF0AA9A9),
-                                      ),
-                                      RichText(
-                                        text: TextSpan(
-                                          text: text.link_location,
-                                          style: TextStyle(
-                                            color: const Color(0xff414141)
-                                                .withOpacity(0.85),
-                                            fontSize: 11.sp,
-                                          ),
-                                        ),
-                                      )
-                                    ],
                                   ),
-                                ),
+                                ],
                               ),
-                            ],
-                          ),
-                          Container(
-                              margin: isArabic
-                                  ? EdgeInsets.only(right: 15.w)
-                                  : EdgeInsets.only(left: 15.w),
-                              width: 90.w,
-                              height: 20.h,
-                              child: FittedBox(
-                                  child: Text(
-                                "${text.description} : ${doctor.first.description}",
-                                style: TextStyle(
-                                    color: Color(0XFF202020),
-                                    fontFamily: "Nunito",
-                                    fontWeight: FontWeight.w600),
-                              ))),
-                          Container(
-                              margin: isArabic
-                                  ? EdgeInsets.only(right: 15.w, top: 8.h)
-                                  : EdgeInsets.only(left: 15.w, top: 8.h),
-                              width: 130.w,
-                              height: 20.h,
-                              child: FittedBox(
-                                  alignment: isArabic
-                                      ? Alignment.topRight
-                                      : Alignment.topLeft,
-                                  child: Text(
-                                    "${text.experience} : ${doctor.first.experience}",
-                                    style: TextStyle(
-                                        color: Color(0XFF202020),
-                                        fontFamily: "Nunito",
-                                        fontWeight: FontWeight.w600),
-                                  ))),
-                          Container(
-                              margin: isArabic
-                                  ? EdgeInsets.only(right: 15.w, top: 8.h)
-                                  : EdgeInsets.only(left: 15.w, top: 8.h),
-                              width: 250.w,
-                              height: 24.h,
-                              child: FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  alignment: isArabic
-                                      ? Alignment.topRight
-                                      : Alignment.topLeft,
-                                  child: Text(
-                                    text.choose_from_available_booking_time,
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        color: Color(0XFF202020),
-                                        fontFamily: "Nunito",
-                                        fontWeight: FontWeight.w700),
-                                  ))),
-                          Row(
-                            children: [
-                              Container(
-                                  margin: isArabic
-                                      ? EdgeInsets.only(right: 15.w, top: 10.h)
-                                      : EdgeInsets.only(left: 15.w, top: 10.h),
-                                  width: 50.w,
-                                  height: 20.h,
-                                  child: FittedBox(
-                                      fit: BoxFit.scaleDown,
-                                      alignment: isArabic
-                                          ? Alignment.topRight
-                                          : Alignment.topLeft,
-                                      child: Text(
-                                        "${text.date}: ",
-                                        style: TextStyle(
-                                            fontSize: 20.sp,
-                                            color: Color(0XFF202020),
-                                            fontFamily: "Nunito",
-                                            fontWeight: FontWeight.w700),
-                                      ))),
-                              InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    if (today && tomorrow ||
-                                        today && !tomorrow) {
-                                      isTodaySelected = true;
-                                    }
-                                  });
-                                },
-                                child: Container(
-                                  margin: isArabic
-                                      ? EdgeInsets.only(right: 15.w, top: 8.h)
-                                      : EdgeInsets.only(left: 15.w, top: 8.h),
-                                  width: 80.w,
-                                  height: 28.h,
-                                  decoration: BoxDecoration(
-                                      color: !today
-                                          ? Color.fromRGBO(244, 67, 54, 0.322)
-                                          : null,
-                                      borderRadius: BorderRadius.circular(6.r),
-                                      border: Border.all(
-                                        width: 2,
-                                        color: today
-                                            ? (isTodaySelected
-                                                ? Color(0xff04CBCB)
-                                                : Color(0xff000000)
-                                                    .withOpacity(0.25))
-                                            : Color.fromRGBO(
-                                                244, 67, 54, 0.322),
+                              Row(
+                                children: [
+                                  Container(
+                                      height: 18.h,
+                                      width: 190.w,
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        alignment: Alignment.topLeft,
+                                        child: RichText(
+                                          text: TextSpan(children: [
+                                            TextSpan(
+                                                text: 'Phone number 2 : ',
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontFamily: "Nunito",
+                                                    color: const Color(0xff202020)
+                                                        .withOpacity(0.65))),
+                                            const TextSpan(
+                                                text: '1111111111',
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontFamily: "Nunito",
+                                                    color: Color(0xff202020)))
+                                          ]),
+                                        ),
                                       )),
-                                  child: Center(
-                                      child: Text(
-                                    text.today,
-                                    style: TextStyle(
-                                        fontSize: 14.sp,
-                                        color: Color(0XFF202020),
-                                        fontFamily: "Nunito",
-                                        fontWeight: FontWeight.w600),
-                                  )),
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    if (today && tomorrow ||
-                                        !today && tomorrow) {
-                                      isTodaySelected =
-                                          false; // Deselect the other option
-                                    }
-                                  });
-                                },
-                                child: Container(
-                                  margin: isArabic
-                                      ? EdgeInsets.only(right: 15.w, top: 8.h)
-                                      : EdgeInsets.only(left: 15.w, top: 8.h),
-                                  width: 80.w,
-                                  height: 28.h,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(6.r),
-                                    color: tomorrow
-                                        ? null
-                                        : Color.fromRGBO(244, 67, 54, 0.322),
-                                    border: Border.all(
-                                      width: 2,
-                                      color: tomorrow
-                                          ? !isTodaySelected
-                                              ? Color(0xff04CBCB)
-                                              : Color(0xff000000)
-                                                  .withOpacity(0.25)
-                                          : Color.fromRGBO(244, 67, 54, 0.322),
+                                  Padding(
+                                    padding: isArabic
+                                        ? EdgeInsets.only(top: 55.h, right: 8.w)
+                                        : EdgeInsets.only(top: 0.h, left: 65.w),
+                                    child: InkWell(
+                                      onTap: () async {
+                                        final Uri uri =
+                                            Uri(scheme: "tel"); // path: data.);
+                                        if (await canLaunchUrl(uri)) {
+                                          await launchUrl(
+                                              uri); //////////calling
+                                        }
+                                      },
+                                      child: Container(
+                                        height: 20.w,
+                                        width: 42.w,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: const Color(0xff0AA9A9)),
+                                            borderRadius:
+                                                BorderRadius.circular(12.r)),
+                                        child: Center(
+                                            child: Row(
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 2.w,
+                                                  vertical: 4.h),
+                                              child: Icon(
+                                                Icons.phone,
+                                                size: 10.sp,
+                                                color: const Color(0xff0AA9A9),
+                                              ),
+                                            ),
+                                            const Text(
+                                              "Call",
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Color(0xff0AA9A9),
+                                                  fontFamily: "Nunito",
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                          ],
+                                        )),
+                                      ),
                                     ),
                                   ),
-                                  child: Center(
-                                      child: Text(
-                                    text.tomorrow,
-                                    style: TextStyle(
-                                        fontSize: 14.sp,
-                                        color: Color(0XFF202020),
-                                        fontFamily: "Nunito",
-                                        fontWeight: FontWeight.w600),
-                                  )),
-                                ),
-                              )
-                            ],
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              if (!today && !tomorrow ||
-                                  !doctor.first.atSerivce) {
-                              } else {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            Patient_info(
-                                              doctorEntity: doctor.first,
-                                              today: isTodaySelected,
-                                            )));
-                              }
-                            },
-                            child: Container(
-                              width: 340.w,
-                              height: 33.h,
-                              decoration: BoxDecoration(
-                                  color: doctor.first.atSerivce
-                                      ? (today || tomorrow)
-                                          ? Color(0xff04CBCB)
-                                          : Color.fromRGBO(255, 0, 0, 0.11)
-                                      : Color.fromRGBO(255, 0, 0, 0.11),
-                                  borderRadius: BorderRadius.circular(20.r)),
-                              margin: EdgeInsets.symmetric(
-                                  vertical: 22.h, horizontal: 60.w),
-                              child: FittedBox(
-                                fit: BoxFit.scaleDown,
-                                alignment: Alignment.center,
-                                child: Text(
-                                  text.book_appointment,
-                                  style: TextStyle(
-                                      fontSize: 17.sp,
-                                      color: Colors.white,
-                                      fontFamily: "Nunito",
-                                      fontWeight: FontWeight.w600),
-                                ),
+                                ],
                               ),
+                              Row(
+                                children: [
+                                  Container(
+                                      height: 18.h,
+                                      width: 220.w,
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        alignment: Alignment.topLeft,
+                                        child: RichText(
+                                          text: TextSpan(children: [
+                                            TextSpan(
+                                                text: 'Location : ',
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontFamily: "Nunito",
+                                                    color: const Color(0xff202020)
+                                                        .withOpacity(0.65))),
+                                            const TextSpan(
+                                                text: 'Boumerdes , Corso',
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontFamily: "Nunito",
+                                                    color: Color(0xff202020)))
+                                          ]),
+                                        ),
+                                      )),
+                                  Padding(
+                                    padding: isArabic
+                                        ? EdgeInsets.only(top: 55.h, right: 8.w)
+                                        : EdgeInsets.only(top: 0.h, left: 8.w),
+                                    child: InkWell(
+                                      onTap: () {},
+                                      child: Container(
+                                        height: 20.w,
+                                        width: 70.w,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: const Color(0xff0AA9A9)),
+                                            borderRadius:
+                                                BorderRadius.circular(12.r)),
+                                        child: Center(
+                                            child: Row(
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 2.w,
+                                                  vertical: 4.h),
+                                              child: Icon(
+                                                Icons.location_on,
+                                                size: 10.sp,
+                                                color: const Color(0xff0AA9A9),
+                                              ),
+                                            ),
+                                            const Text(
+                                              "on Maps",
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Color(0xff0AA9A9),
+                                                  fontFamily: "Nunito",
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                          ],
+                                        )),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )),
+                      Container(
+                          margin: EdgeInsets.symmetric(horizontal: 8.w),
+                          height: 18.h,
+                          width: 160.w,
+                          child: const FittedBox(
+                            fit: BoxFit.scaleDown,
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              "Experience :",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: "Nunito",
+                                  color: Color(0xff202020)),
                             ),
-                          )
-                        ],
+                          )),
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        child: const ReadMoreText(
+                          "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaassssssssssssssaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaassssssssaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                          trimLines: 3,
+                          trimMode: TrimMode.Line,
+                          textAlign: TextAlign.justify,
+                          trimCollapsedText: " Read more.",
+                          moreStyle: TextStyle(color: Color(0xff0AA9A9)),
+                          trimExpandedText: " show less.",
+                          lessStyle: TextStyle(color: Color(0xff0AA9A9)),
+                        ),
                       ),
-                    )
-                  ],
+                      Center(
+                        child: Container(
+                            margin: EdgeInsets.symmetric(
+                                vertical: 10.h, horizontal: 14.w),
+                            height: 50.h,
+                            width: 250.w,
+                            decoration: BoxDecoration(
+                                color: const Color(0xff00C8D5),
+                                borderRadius: BorderRadius.circular(20.r)),
+                            child: MaterialButton(
+                                onPressed: () {
+                                  _showCustomDialog(context);
+                                },
+                                child: Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 5.w),
+                                  child: const Text(
+                                    "Book appointment",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.white,
+                                        fontFamily: 'Nunito',
+                                        fontSize: 22),
+                                  ),
+                                ))),
+                      ),
+                    ]);
+                  } else {
+                    return const Loading();
+                  }
+                })));
+  }
+
+  void _showCustomDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+          content: Container(
+            width: double.infinity,
+            height: 182.h,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                const Text(
+                  "Choose from available booking time :",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xff202020),
+                      fontFamily: 'Nunito',
+                      fontSize: 16),
                 ),
-              );
-            } else {
-              return Loading();
-            }
-          }),
-    ));
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 0.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Ink(
+                        decoration: BoxDecoration(
+                            boxShadow: [
+                              const BoxShadow(
+                                  spreadRadius: 1.2,
+                                  offset: Offset(0, 0),
+                                  blurRadius: 1.2,
+                                  color: Color(0xff2CDBC6))
+                            ],
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.white,
+                            border: Border.all(color: Colors.transparent)),
+                        height: 40,
+                        width: 110,
+                        child: InkWell(
+                          onTap: () {},
+                          child: const Center(
+                            child: Text(
+                              "today",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  color: Color(0xff202020),
+                                  fontFamily: 'Nunito',
+                                  fontSize: 16),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Ink(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              const BoxShadow(
+                                  spreadRadius: 1.2,
+                                  offset: Offset(0, 0),
+                                  blurRadius: 1.2,
+                                  color: Color(0xff2CDBC6))
+                            ],
+                            border: Border.all(
+                              color: Colors.transparent,
+                              width: 0,
+                            ),
+                            borderRadius: BorderRadius.circular(15)),
+                        height: 40,
+                        width: 110,
+                        child: InkWell(
+                          onTap: () {},
+                          child: const Center(
+                            child: Text(
+                              "tomorrow",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  color: Color(0xff202020),
+                                  fontFamily: 'Nunito',
+                                  fontSize: 16),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Ink(
+                  decoration: BoxDecoration(
+                      color: const Color(0xff00C8D5),
+                      borderRadius: BorderRadius.circular(15)),
+                  height: 40,
+                  width: 230,
+                  child: InkWell(
+                    onTap: () {},
+                    child: const Center(
+                      child: Text(
+                        "Next",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                            fontFamily: 'Nunito',
+                            fontSize: 16),
+                      ),
+                    ),
+                  ),
+                ),
+                Ink(
+                  height: 40,
+                  width: 230,
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                          color: const Color(0xff202020).withOpacity(0.5), width: 2),
+                      borderRadius: BorderRadius.circular(15)),
+                  child: InkWell(
+                    child: InkWell(
+                      onTap: () {},
+                      child: Center(
+                        child: Text(
+                          "Cancel",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xff202020).withOpacity(0.8),
+                              fontFamily: 'Nunito',
+                              fontSize: 16),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }
