@@ -109,8 +109,9 @@ class _previousappointmState extends State<previousappointm> {
                                                       ? Alignment.topRight
                                                       : Alignment.topLeft,
                                                   child: Text(
-                                                      text.dr +
-                                                          ". ${doctors.first.lastName}",
+                                                      isArabic
+                                                          ? " ${doctors.first.lastNameArabic}.د"
+                                                          : "Dr. ${doctors.first.lastName}",
                                                       style: const TextStyle(
                                                           fontSize: 19,
                                                           fontWeight:
@@ -128,7 +129,11 @@ class _previousappointmState extends State<previousappointm> {
                                                       : Alignment.topLeft,
                                                   fit: BoxFit.scaleDown,
                                                   child: Text(
-                                                      doctors.first.speciality,
+                                                      isArabic
+                                                          ? doctors.first
+                                                              .specialityArabic
+                                                          : doctors
+                                                              .first.speciality,
                                                       style: const TextStyle(
                                                           fontFamily: 'Nunito',
                                                           fontSize: 18,

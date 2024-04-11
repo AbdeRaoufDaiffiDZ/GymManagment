@@ -71,7 +71,7 @@
     "try_again":"حاول مجددا",
     "your_appointment_has_been_booked":"تم حجز موعدك",
     "your_appointment_has_not_been_booked":"لم يتم حجز موعدك",
-    "successfully":"بنجاح",
+    "successfully":" بنجاح",
     "you_already_booked_an_appointment":"لقد قمت بحجز موعد من قبل",
     "try_again_after_five_sec":"حاول مجددا بعد 5 ثواني",
     "try_again_after_ten_sec":"حاول مجددا بعد 10 دقائق",
@@ -95,7 +95,12 @@
     "maximum_number_of_patients_per_day":" اقصى عدد للمرضى في اليوم",
     "set_the_booking_time":"اختر وقت الحجز",
     "only":"فقط",
-    "and":" و ",
+    "and":" & ",
     "share_your_insights_and_expertise":"شارك أفكارك وخبراتك ",
-    "save":"حفظ"
+    "save":"حفظ",
+    "my_favorite":"الاطباء المفضلين",
+    "on_maps":"في الخارطة",
+    "read_more":" اقرا المزيد",
+    "show_less":" عرض القليل",
+    "cancel":"الغاء"
   }

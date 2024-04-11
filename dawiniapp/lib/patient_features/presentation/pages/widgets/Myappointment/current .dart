@@ -121,13 +121,17 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                                   0xff202020)
                                                               .withOpacity(
                                                                   0.4))),
-                                                  child: doctor.first
-                                                              .ImageProfileurl ==
-                                                          ''
+                                                  child: (doctor.first
+                                                                  .ImageProfileurl ==
+                                                              " " ||
+                                                          doctor.first
+                                                                  .ImageProfileurl ==
+                                                              "")
                                                       ? ClipOval(
                                                           child:
                                                               SizedBox.fromSize(
-                                                          size: Size.fromRadius(
+                                                          size: const Size
+                                                              .fromRadius(
                                                               48.0), // Adjust radius
                                                           child: Image.asset(
                                                             "assets/images/maleDoctor.png",
@@ -139,7 +143,8 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                       : ClipOval(
                                                           child:
                                                               SizedBox.fromSize(
-                                                            size: Size.fromRadius(
+                                                            size: const Size
+                                                                .fromRadius(
                                                                 48.0), // Adjust radius
                                                             child:
                                                                 Image.network(
@@ -165,14 +170,13 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                     ? Alignment.topRight
                                                     : Alignment.topLeft,
                                                 child: Text(
-                                                    text.dr +
-                                                        ". ${doctors.first.lastName}",
+                                                    "${text.dr}. ${isArabic ? doctors.first.lastNameArabic : doctors.first.lastName}",
                                                     style: TextStyle(
                                                         fontSize: 19.sp,
                                                         fontWeight:
                                                             FontWeight.w700,
-                                                        color:
-                                                            Color(0XFF202020))),
+                                                        color: const Color(
+                                                            0XFF202020))),
                                               ),
                                             ),
                                             Container(
@@ -184,14 +188,18 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                     : Alignment.topLeft,
                                                 fit: BoxFit.scaleDown,
                                                 child: Text(
-                                                    doctors.first.speciality,
+                                                    isArabic
+                                                        ? doctors.first
+                                                            .specialityArabic
+                                                        : doctors
+                                                            .first.speciality,
                                                     style: TextStyle(
                                                         fontFamily: 'Nunito',
                                                         fontSize: 18.sp,
                                                         fontWeight:
                                                             FontWeight.w600,
-                                                        color:
-                                                            Color(0XFF202020))),
+                                                        color: const Color(
+                                                            0XFF202020))),
                                               ),
                                             ),
                                             Container(
@@ -211,8 +219,9 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                         fontFamily: "Nunito",
                                                         fontWeight:
                                                             FontWeight.w600,
-                                                        fontSize: 17.sp,
-                                                        color: Color.fromRGBO(
+                                                        fontSize: 15.sp,
+                                                        color: const Color
+                                                            .fromRGBO(
                                                             32, 32, 32, 0.6)),
                                                   ),
                                                   data[index].today
@@ -227,12 +236,12 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                                           .w600,
                                                                   fontSize:
                                                                       14.sp,
-                                                                  color: Color
+                                                                  color: const Color
                                                                       .fromRGBO(
-                                                                          32,
-                                                                          32,
-                                                                          32,
-                                                                          0.6)),
+                                                                      32,
+                                                                      32,
+                                                                      32,
+                                                                      0.6)),
                                                               children: [
                                                                 TextSpan(
                                                                     text: doctors
@@ -247,7 +256,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                                                 .w600,
                                                                         fontSize: 17
                                                                             .sp,
-                                                                        color: Color(
+                                                                        color: const Color(
                                                                             0XFF0AA9A9)))
                                                               ]),
                                                         )
@@ -258,13 +267,13 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                           ]),
                                         ),
                                         const Spacer(),
-                                        IconButton(
-                                            onPressed: () {},
-                                            icon: Icon(
-                                              Icons.arrow_forward_ios,
-                                              size: 20.w,
-                                              color: Colors.black,
-                                            ))
+                                        // IconButton(
+                                        //     onPressed: () {},
+                                        //     icon: Icon(
+                                        //       Icons.arrow_forward_ios,
+                                        //       size: 20.w,
+                                        //       color: Colors.black,
+                                        //     ))
                                       ],
                                     ),
                                     Container(
@@ -293,11 +302,12 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                               child: Row(
                                                 children: [
                                                   Icon(Icons.calendar_month,
-                                                      size: 17.w),
+                                                      size: 14.w),
                                                   Text(
-                                                    text.today +
+                                                   " "+ text.today +
                                                         ": ${data[index].AppointmentDate}",
                                                     style: TextStyle(
+                                                      fontSize: 10.sp,
                                                         color: const Color(
                                                                 0xff202020)
                                                             .withOpacity(0.8),
@@ -322,7 +332,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                               child: Row(
                                                 children: [
                                                   Icon(Icons.schedule,
-                                                      size: 17.w),
+                                                      size: 14.w),
                                                   Padding(
                                                     padding: isArabic
                                                         ? EdgeInsets.only(
@@ -336,7 +346,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                                   0xff202020)
                                                               .withOpacity(0.8),
                                                           fontFamily: 'Nunito',
-                                                          fontSize: 14.sp,
+                                                          fontSize: 10.sp,
                                                           fontWeight:
                                                               FontWeight.w600,
                                                         )),
@@ -350,7 +360,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                           fontSize: 14.sp,
                                                           fontWeight:
                                                               FontWeight.w600,
-                                                          color: Color(
+                                                          color: const Color(
                                                               0xff0AA9A9))),
                                                 ],
                                               ),

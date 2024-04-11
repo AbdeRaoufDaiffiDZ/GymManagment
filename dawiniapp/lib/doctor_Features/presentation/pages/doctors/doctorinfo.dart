@@ -118,15 +118,21 @@ class _doctorDetailsState extends State<Lll> {
                           width: double.infinity,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(20.r),
-                            child: imageFile == null
-                                ? Image.asset(
-                                    "assets/images/maleDoctor.png",
-                                    fit: BoxFit.scaleDown,
-                                    scale: 1.2.w,
-                                  )
-                                : Image.file(
-                                    imageFile!,
-                                    fit: BoxFit.fill,
+                            child: (widget.doctorInfo.ImageProfileurl == " " ||
+                                    widget.doctorInfo.ImageProfileurl == "")
+                                ? imageFile == null
+                                    ? Image.asset(
+                                        "assets/images/maleDoctor.png",
+                                        fit: BoxFit.scaleDown,
+                                        scale: 1.2.w,
+                                      )
+                                    : Image.file(
+                                        imageFile!,
+                                        fit: BoxFit.fill,
+                                      )
+                                : Image.network(
+                                    widget.doctorInfo.ImageProfileurl,
+                                    fit: BoxFit.cover,
                                   ),
                           ),
                         ),
@@ -182,17 +188,17 @@ class _doctorDetailsState extends State<Lll> {
                           child: Column(
                             children: [
                               Text(
-                                "${locale.dr}.${widget.doctorInfo.firstName} ${widget.doctorInfo.lastName}",
+                                "${widget.doctorInfo.firstName} ${widget.doctorInfo.lastName}  ${widget.doctorInfo.lastNameArabic} ${widget.doctorInfo.firstNameArabic}",
                                 style: TextStyle(
-                                    fontSize: 20.sp,
+                                    fontSize: 17.sp,
                                     fontWeight: FontWeight.w700,
                                     fontFamily: "Nunito",
                                     color: Color(0xff202020)),
                               ),
                               Text(
-                                widget.doctorInfo.speciality,
+                                "${widget.doctorInfo.speciality}  ${widget.doctorInfo.specialityArabic}",
                                 style: TextStyle(
-                                    fontSize: 17.sp,
+                                    fontSize: 14.sp,
                                     fontWeight: FontWeight.w600,
                                     fontFamily: "Nunito",
                                     color: const Color(0xff202020)
@@ -871,11 +877,11 @@ class _doctorDetailsState extends State<Lll> {
                                   default:
                                     break;
                                 }
-
+                                int number =
+                                    int.parse(max_number_of_patient.text);
                                 DoctorEntity doctor = DoctorEntity(
                                     recommanded: widget.doctorInfo.recommanded,
-                                    numberOfPatient:
-                                        int.parse(max_number_of_patient.text),
+                                    numberOfPatient: number,
                                     numberInList:
                                         widget.doctorInfo.numberInList,
                                     location: location_link.text,
@@ -894,7 +900,8 @@ class _doctorDetailsState extends State<Lll> {
                                     firstNameArabic: 'firstNameArabic', // TODO:
                                     lastNameArabic: 'lastNameArabic',
                                     specialityArabic: 'specialityArabic',
-                                    ImageProfileurl: ImageUrl);
+                                    ImageProfileurl:
+                                        widget.doctorInfo.ImageProfileurl);
 
                                 if (_formKey.currentState!.validate()) {
                                   await toUpload(widget.doctorInfo.uid, doctor,
@@ -964,19 +971,21 @@ class _doctorDetailsState extends State<Lll> {
   }
 
   Reference referenceRoot = FirebaseStorage.instance.ref().child('images');
-  toUpload(String uid, DoctorEntity doctor, doctorPatientsBloc) async {
+  Future toUpload(String uid, DoctorEntity doctor, doctorPatientsBloc) async {
     Reference referenceIpageToUpload = referenceRoot.child(uid);
     try {
-      if (imageFile != null) {
-        await referenceIpageToUpload.putFile(File(imageFile!.path));
-        ImageUrl = await referenceIpageToUpload.getDownloadURL();
+      if (doctor.ImageProfileurl == " " || doctor.ImageProfileurl == "") {
+        if (imageFile != null) {
+          await referenceIpageToUpload.putFile(File(imageFile!.path));
+          ImageUrl = await referenceIpageToUpload.getDownloadURL();
 
-        if (kDebugMode) {
-          print(ImageUrl);
+          if (kDebugMode) {
+            print(ImageUrl);
+          }
+          doctor.ImageProfileurl = ImageUrl;
         }
-        doctor.ImageProfileurl = ImageUrl;
-        doctorPatientsBloc.add(onDataUpdate(doctor: doctor));
       }
+      doctorPatientsBloc.add(onDataUpdate(doctor: doctor));
     } catch (e) {
       if (kDebugMode) {
         print(e.toString());

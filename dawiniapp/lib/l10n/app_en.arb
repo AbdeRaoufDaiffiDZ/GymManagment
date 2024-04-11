@@ -72,7 +72,7 @@
     "try_again":"try again",
     "your_appointment_has_been_booked":"Your appointment has been booked",
     "your_appointment_has_not_been_booked":"Your appointment has not been booked",
-    "successfully":"successfully",
+    "successfully":" successfully",
     "you_already_booked_an_appointment":"you already booked an appointment",
     "try_again_after_five_sec":"try again after 5 sec",
     "try_again_after_ten_sec":"try again after 10 sec",
@@ -96,8 +96,13 @@
     "maximum_number_of_patients_per_day":" maximum number of patients per day",
     "set_the_booking_time":"Set the booking time",
     "only":"only",
-    "and":"and",
+    "and":" & ",
     "share_your_insights_and_expertise":"Share your insights and expertise",
-    "save":"Save"
+    "save":"Save",
+    "my_favorite":"My Favorite",
+    "on_maps":"On Maps",
+    "read_more":" Read more",
+    "show_less":" Show less",
+    "cancel":"cancel"
 
 }

@@ -282,6 +282,8 @@ Future<Object?> showlDialog(
                       Navigator.pop(context);
                       if (done) {
                         Navigator.pop(context);
+                        Navigator.pop(context);
+                        Navigator.pop(context);
                       }
                     }
                   },

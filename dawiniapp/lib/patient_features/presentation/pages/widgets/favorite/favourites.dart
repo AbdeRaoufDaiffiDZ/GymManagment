@@ -18,7 +18,7 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     TabController tabcontroller = TabController(length: 2, vsync: this);
     final AppLocalizations text = AppLocalizations.of(context)!;
-
+    
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -30,13 +30,13 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
               margin: EdgeInsets.only(top: 12.h),
               width: 200.w,
               height: 30.h,
-              child: const FittedBox(
+              child:  FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
-                  "My favorite",
+                  text.my_favorite,
                   style: TextStyle(
                       color: Color(0XFF202020),
-                      fontSize: 33,
+                      fontSize: 33.sp,
                       fontWeight: FontWeight.w700,
                       fontFamily: 'Nunito'),
                 ),
@@ -67,7 +67,7 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
                               child: Text(
                                 text.doctors,
                                 style: TextStyle(
-                                    fontSize: 22,
+                                    fontSize: 22.dg,
                                     fontWeight: FontWeight.w700,
                                     fontFamily: "Nunito"),
                               ),
@@ -83,7 +83,7 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
                               child: Text(
                                 text.clinics,
                                 style: TextStyle(
-                                    fontSize: 22,
+                                    fontSize: 22.sp,
                                     fontWeight: FontWeight.w700,
                                     fontFamily: "Nunito"),
                               ),

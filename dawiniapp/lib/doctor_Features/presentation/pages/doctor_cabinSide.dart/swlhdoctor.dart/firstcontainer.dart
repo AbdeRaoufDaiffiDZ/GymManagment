@@ -88,7 +88,7 @@ class _firstConatinerState extends State<firstConatiner> {
                     alignment:
                         isArabic ? Alignment.topRight : Alignment.topLeft,
                     child: Text(
-                      "${locale.dr}. ${widget.doctor.firstName}",
+                      "${locale.dr}. ${isArabic ? widget.doctor.firstNameArabic:widget.doctor.firstName}",
                       style: TextStyle(
                           fontFamily: "Nunito",
                           fontSize: 17.sp,

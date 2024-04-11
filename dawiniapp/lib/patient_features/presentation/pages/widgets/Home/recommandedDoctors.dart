@@ -107,13 +107,14 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                                         fit: BoxFit.cover,
                                       )),
                             Container(
-                              margin: EdgeInsets.only(left: 4.w),
+                              margin: isArabic ? EdgeInsets.only(right: 4.w):EdgeInsets.only(left: 4.w),
                               width: double.infinity,
                               height: 20.h,
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,
-                                alignment: Alignment.topLeft,
-                                child: Text("Dr.${doctors[index].lastName}",
+                                alignment: isArabic ?Alignment.topRight:Alignment.topLeft,
+                                child: Text(
+                                     "${text.dr}. ${isArabic ? doctors[index].lastNameArabic : doctors[index].lastName}",
                                     style: TextStyle(
                                         fontFamily: 'Nunito',
                                         fontSize: 17.sp,
@@ -122,13 +123,16 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                               ),
                             ),
                             Container(
-                              margin: EdgeInsets.only(left: 4.w),
+                              margin:isArabic ? EdgeInsets.only(left: 4.w): EdgeInsets.only(left: 4.w),
                               width: double.infinity,
                               height: 20.h,
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,
-                                alignment: Alignment.topLeft,
-                                child: Text(doctors[index].speciality,
+                                alignment: isArabic ? Alignment.topRight:Alignment.topLeft,
+                                child: Text(
+                                    isArabic
+                                        ? doctors[index].specialityArabic
+                                        : doctors[index].speciality,
                                     style: TextStyle(
                                         fontFamily: 'Nunito',
                                         fontSize: 15.sp,
@@ -142,7 +146,7 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                               height: 20.h,
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,
-                                alignment: Alignment.topLeft,
+                                alignment: isArabic ? Alignment.topRight:Alignment.topLeft,
                                 child: Row(
                                   children: [
                                     Icon(

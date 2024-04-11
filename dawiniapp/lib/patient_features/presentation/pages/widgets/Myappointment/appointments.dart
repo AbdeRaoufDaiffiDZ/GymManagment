@@ -31,13 +31,13 @@ class _MyappointemtnsState extends State<Myappointemtns>
               margin: EdgeInsets.only(top: 12.h),
               width: 200.w,
               height: 30.h,
-              child: const FittedBox(
+              child:  FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
-                  "My appointments",
+                 text.my_Appointement,
                   style: TextStyle(
-                      color: Color(0XFF202020),
-                      fontSize: 26,
+                      color: const Color(0XFF202020),
+                      fontSize: 26.sp,
                       fontWeight: FontWeight.w700,
                       fontFamily: 'Nunito'),
                 ),

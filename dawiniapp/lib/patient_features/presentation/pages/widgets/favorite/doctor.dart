@@ -12,8 +12,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class myfavdoctors extends StatefulWidget {
   const myfavdoctors({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<myfavdoctors> createState() => _favoriteState();
@@ -25,6 +25,7 @@ class _favoriteState extends State<myfavdoctors> with TickerProviderStateMixin {
     // final PatientsBloc patientsBloc = BlocProvider.of<PatientsBloc>(context);
     final AppLocalizations text = AppLocalizations.of(context)!;
     final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
+    final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
 
     return Scaffold(
         body: Padding(
@@ -131,67 +132,105 @@ class _favoriteState extends State<myfavdoctors> with TickerProviderStateMixin {
                                                             .withOpacity(0.3),
                                                         height: 100.h,
                                                         width: double.infinity,
-                                                        child: Image.asset(
-                                                          "assets/images/maleDoctor.png",
-                                                          fit: BoxFit.scaleDown,
-                                                          scale: 1.5.w,
-                                                        ),
+                                                        child: (doctor[index]
+                                                                        .ImageProfileurl ==
+                                                                    " " ||
+                                                                doctor[index]
+                                                                        .ImageProfileurl ==
+                                                                    "")
+                                                            ? Image.asset(
+                                                                "assets/images/maleDoctor.png",
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                scale: 4.3,
+                                                              )
+                                                            : Image.network(
+                                                                doctor[index]
+                                                                    .ImageProfileurl,
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                              ),
                                                       ),
                                                       Container(
-                                                        margin: EdgeInsets.only(
-                                                            left: 4.w),
+                                                        margin: isArabic
+                                                            ? EdgeInsets.only(
+                                                                right: 4.w)
+                                                            : EdgeInsets.only(
+                                                                left: 4.w),
                                                         width: double.infinity,
                                                         height: 20.h,
                                                         child: FittedBox(
                                                           fit: BoxFit.scaleDown,
-                                                          alignment:
-                                                              Alignment.topLeft,
+                                                          alignment: isArabic
+                                                              ? Alignment
+                                                                  .topRight
+                                                              : Alignment
+                                                                  .topLeft,
                                                           child: Text(
-                                                              text.dr +
-                                                                  ".${doctor[index].lastName}",
-                                                              style: const TextStyle(
+                                                              "${text.dr}. ${isArabic ? doctor[index].lastNameArabic : doctor[index].lastName}",
+                                                              style: TextStyle(
                                                                   fontFamily:
                                                                       'Nunito',
-                                                                  fontSize: 17,
+                                                                  fontSize:
+                                                                      17.sp,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w600,
-                                                                  color: Color(
+                                                                  color: const Color(
                                                                       0XFF202020))),
                                                         ),
                                                       ),
                                                       Container(
-                                                        margin: EdgeInsets.only(
-                                                            left: 4.w),
+                                                        margin: isArabic
+                                                            ? EdgeInsets.only(
+                                                                right: 4.w)
+                                                            : EdgeInsets.only(
+                                                                left: 4.w),
                                                         width: double.infinity,
                                                         height: 20.h,
                                                         child: FittedBox(
                                                           fit: BoxFit.scaleDown,
-                                                          alignment:
-                                                              Alignment.topLeft,
+                                                          alignment: isArabic
+                                                              ? Alignment
+                                                                  .topRight
+                                                              : Alignment
+                                                                  .topLeft,
                                                           child: Text(
-                                                              doctor[index]
-                                                                  .speciality,
-                                                              style: const TextStyle(
+                                                              isArabic
+                                                                  ? doctor[
+                                                                          index]
+                                                                      .specialityArabic
+                                                                  : doctor[
+                                                                          index]
+                                                                      .speciality,
+                                                              style: TextStyle(
                                                                   fontFamily:
                                                                       'Nunito',
-                                                                  fontSize: 15,
+                                                                  fontSize:
+                                                                      15.sp,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w600,
-                                                                  color: Color(
+                                                                  color: const Color(
                                                                       0XFF000000))),
                                                         ),
                                                       ),
                                                       Container(
-                                                        margin: EdgeInsets.only(
-                                                            left: 2.w),
+                                                        margin: isArabic
+                                                            ? EdgeInsets.only(
+                                                                right: 2.w)
+                                                            : EdgeInsets.only(
+                                                                left: 2.w),
                                                         width: double.infinity,
                                                         height: 20.h,
                                                         child: FittedBox(
                                                           fit: BoxFit.scaleDown,
-                                                          alignment:
-                                                              Alignment.topLeft,
+                                                          alignment: isArabic
+                                                              ? Alignment
+                                                                  .topRight
+                                                              : Alignment
+                                                                  .topLeft,
                                                           child: Row(
                                                             children: [
                                                               Icon(
@@ -207,7 +246,7 @@ class _favoriteState extends State<myfavdoctors> with TickerProviderStateMixin {
                                                                       fontFamily:
                                                                           'Nunito',
                                                                       fontSize:
-                                                                          15,
+                                                                          15.sp,
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .w600,
@@ -220,14 +259,20 @@ class _favoriteState extends State<myfavdoctors> with TickerProviderStateMixin {
                                                         ),
                                                       ),
                                                       Container(
-                                                        margin: EdgeInsets.only(
-                                                            left: 3.w),
+                                                        margin: isArabic
+                                                            ? EdgeInsets.only(
+                                                                right: 3.w)
+                                                            : EdgeInsets.only(
+                                                                left: 3.w),
                                                         width: double.infinity,
                                                         height: 20.h,
                                                         child: FittedBox(
                                                           fit: BoxFit.scaleDown,
-                                                          alignment: Alignment
-                                                              .bottomLeft,
+                                                          alignment: isArabic
+                                                              ? Alignment
+                                                                  .bottomRight
+                                                              : Alignment
+                                                                  .bottomLeft,
                                                           child: Row(
                                                             children: [
                                                               Icon(Icons.circle,
@@ -248,15 +293,15 @@ class _favoriteState extends State<myfavdoctors> with TickerProviderStateMixin {
                                                                           .at_service
                                                                       : text
                                                                           .not_at_service,
-                                                                  style: const TextStyle(
+                                                                  style: TextStyle(
                                                                       fontFamily:
                                                                           'Nunito',
                                                                       fontSize:
-                                                                          16,
+                                                                          16.sp,
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .w600,
-                                                                      color: Color(
+                                                                      color: const Color(
                                                                           0XFF202020))),
                                                             ],
                                                           ),

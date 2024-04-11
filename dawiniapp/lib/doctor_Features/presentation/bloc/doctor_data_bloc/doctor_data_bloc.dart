@@ -55,7 +55,7 @@ class DoctorPatientsBloc
           if (event.turn < 0) {
             doctor[event.doctor.numberInList].turn = 0;
           } else if (data[event.doctor.numberInList].numberOfPatient <
-              event.turn) {
+              event.turn ) {
             doctor[event.doctor.numberInList].turn =
                 data[event.doctor.numberInList].numberOfPatient;
           } else {
