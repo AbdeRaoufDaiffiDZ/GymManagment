@@ -138,8 +138,10 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                     offset: const Offset(0, 0),
                                                     blurRadius: 1.2,
                                                     color: isTodaySelected
-                                                        ? const Color(0xff2CDBC6)
-                                                        : const Color(0xff202020)
+                                                        ? const Color(
+                                                            0xff2CDBC6)
+                                                        : const Color(
+                                                                0xff202020)
                                                             .withOpacity(0.8))
                                               ],
                                               borderRadius:
@@ -147,8 +149,10 @@ class _doctorDetailsState extends State<doctorDetails> {
                                               border: Border.all(
                                                 color: today
                                                     ? (isTodaySelected
-                                                        ? const Color(0xff04CBCB)
-                                                        : const Color(0xff000000)
+                                                        ? const Color(
+                                                            0xff04CBCB)
+                                                        : const Color(
+                                                                0xff000000)
                                                             .withOpacity(0.25))
                                                     : const Color.fromRGBO(
                                                         244, 67, 54, 0.322),
@@ -170,7 +174,8 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                 locale.today,
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.w700,
-                                                    color: const Color(0xff202020),
+                                                    color:
+                                                        const Color(0xff202020),
                                                     fontFamily: 'Nunito',
                                                     fontSize: 16.sp),
                                               ),
@@ -192,8 +197,10 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                     offset: const Offset(0, 0),
                                                     blurRadius: 1.2,
                                                     color: isTomorrowSelected
-                                                        ? const Color(0xff2CDBC6)
-                                                        : const Color(0xff202020)
+                                                        ? const Color(
+                                                            0xff2CDBC6)
+                                                        : const Color(
+                                                                0xff202020)
                                                             .withOpacity(0.8))
                                               ],
                                               border: Border.all(
@@ -220,7 +227,8 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                 locale.tomorrow,
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.w700,
-                                                    color: const Color(0xff202020),
+                                                    color:
+                                                        const Color(0xff202020),
                                                     fontFamily: 'Nunito',
                                                     fontSize: 16.sp),
                                               ),
@@ -544,7 +552,8 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                     fontSize: 14.sp,
                                                     fontWeight: FontWeight.w700,
                                                     fontFamily: "Nunito",
-                                                    color: const Color(0xff202020)))
+                                                    color: const Color(
+                                                        0xff202020)))
                                           ]),
                                         ),
                                       )),
@@ -563,7 +572,8 @@ class _doctorDetailsState extends State<doctorDetails> {
                                       child: InkWell(
                                         onTap: () async {
                                           final Uri uri = Uri(
-                                              scheme: "tel"); // path: data.);
+                                              scheme: "tel",
+                                              path: doctor.first.phoneNumber);
                                           if (await canLaunchUrl(uri)) {
                                             await launchUrl(
                                                 uri); //////////calling
@@ -586,7 +596,8 @@ class _doctorDetailsState extends State<doctorDetails> {
                                               locale.call,
                                               style: TextStyle(
                                                   fontSize: 8.sp,
-                                                  color: const Color(0xff0AA9A9),
+                                                  color:
+                                                      const Color(0xff0AA9A9),
                                                   fontFamily: "Nunito",
                                                   fontWeight: FontWeight.w700),
                                             ),
@@ -705,7 +716,8 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                     fontSize: 14.sp,
                                                     fontWeight: FontWeight.w700,
                                                     fontFamily: "Nunito",
-                                                    color: const Color(0xff202020)))
+                                                    color: const Color(
+                                                        0xff202020)))
                                           ]),
                                         ),
                                       )),
@@ -723,7 +735,12 @@ class _doctorDetailsState extends State<doctorDetails> {
                                               BorderRadius.circular(12.w)),
                                       child: Center(
                                         child: InkWell(
-                                          onTap: () {},
+                                          onTap: () async {
+                                            final url = doctor.first.location;
+                                            if (await canLaunch(url)) {
+                                              await launch(url);
+                                            }
+                                          },
                                           child: Center(
                                             child: Row(
                                               children: [
@@ -742,7 +759,8 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                   "${locale.on_maps}", //TODO:
                                                   style: TextStyle(
                                                       fontSize: 8.sp,
-                                                      color: const Color(0xff0AA9A9),
+                                                      color: const Color(
+                                                          0xff0AA9A9),
                                                       fontFamily: "Nunito",
                                                       fontWeight:
                                                           FontWeight.w700),
