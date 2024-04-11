@@ -111,11 +111,12 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
       } else if (event is onPatientsAppointmentDelete) {
         try {
           emit(PatientsLoading());
-          final AuthModel auth = AuthModel(
+         
+          if (auth0.user == null) {
+             final AuthModel auth = AuthModel(
               email: "deleteAppointment@gmail.com",
               password: "deleteAppointment");
 
-          if (auth0.user == null) {
             auth0.loginWithEmail(authData: auth);
           }
 

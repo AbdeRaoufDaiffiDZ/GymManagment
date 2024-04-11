@@ -35,8 +35,8 @@ class _LanguageScreenState extends State<doctorview> {
         BlocProvider.of<DoctorPatientsBloc>(context);
     final AppLocalizations locale = AppLocalizations.of(context)!;
     final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
-
-    return BlocBuilder<DoctorPatientsBloc, DoctorPatientsState>(
+if(widget.uid != "4OCo8desYHfXftOWtkY7DRHRFLm2")
+   { return BlocBuilder<DoctorPatientsBloc, DoctorPatientsState>(
             builder: (context, state) {
               if (state is doctorInfoLoaded) {
                 DoctorEntity doctor = state.doctors
@@ -313,4 +313,7 @@ class _LanguageScreenState extends State<doctorview> {
               return const Loading();
             });
   }
+  else{
+    return const Loading();
+  }}
 }

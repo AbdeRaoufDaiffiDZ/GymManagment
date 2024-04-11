@@ -88,7 +88,7 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
 
     if (result) {
       await localDataSourcePatients.DeleteDoctorAppointmentLocal(
-          PatientModel.fromMap(patientInfo.toMap()));
+          patientInfo);
       return true;
     } else {
       return false;
