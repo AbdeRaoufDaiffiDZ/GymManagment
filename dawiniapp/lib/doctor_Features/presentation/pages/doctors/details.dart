@@ -5,7 +5,6 @@ import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart';
 import 'package:dawini_full/doctor_Features/presentation/pages/doctors/Patient_Info.dart';
-import 'package:dawini_full/injection_container.dart';
 import 'package:dawini_full/patient_features/domain/usecases/patients_usecase.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
 import 'package:flutter/material.dart';
@@ -116,7 +115,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                     "${locale.choose_from_available_booking_time}",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
-                                        color: Color(0xff202020),
+                                        color: const Color(0xff202020),
                                         fontFamily: 'Nunito',
                                         fontSize: 16.sp),
                                   ),
@@ -130,17 +129,17 @@ class _doctorDetailsState extends State<doctorDetails> {
                                         Ink(
                                           decoration: BoxDecoration(
                                               color: !today
-                                                  ? Color.fromRGBO(
+                                                  ? const Color.fromRGBO(
                                                       244, 67, 54, 0.322)
                                                   : Colors.white,
                                               boxShadow: [
                                                 BoxShadow(
                                                     spreadRadius: 1.2,
-                                                    offset: Offset(0, 0),
+                                                    offset: const Offset(0, 0),
                                                     blurRadius: 1.2,
                                                     color: isTodaySelected
-                                                        ? Color(0xff2CDBC6)
-                                                        : Color(0xff202020)
+                                                        ? const Color(0xff2CDBC6)
+                                                        : const Color(0xff202020)
                                                             .withOpacity(0.8))
                                               ],
                                               borderRadius:
@@ -148,10 +147,10 @@ class _doctorDetailsState extends State<doctorDetails> {
                                               border: Border.all(
                                                 color: today
                                                     ? (isTodaySelected
-                                                        ? Color(0xff04CBCB)
-                                                        : Color(0xff000000)
+                                                        ? const Color(0xff04CBCB)
+                                                        : const Color(0xff000000)
                                                             .withOpacity(0.25))
-                                                    : Color.fromRGBO(
+                                                    : const Color.fromRGBO(
                                                         244, 67, 54, 0.322),
                                               )),
                                           height: 40.h,
@@ -162,6 +161,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                 if (today && tomorrow ||
                                                     today && !tomorrow) {
                                                   isTodaySelected = true;
+                                                  isTomorrowSelected = false;
                                                 }
                                               });
                                             },
@@ -170,7 +170,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                 locale.today,
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.w700,
-                                                    color: Color(0xff202020),
+                                                    color: const Color(0xff202020),
                                                     fontFamily: 'Nunito',
                                                     fontSize: 16.sp),
                                               ),
@@ -184,16 +184,16 @@ class _doctorDetailsState extends State<doctorDetails> {
                                           decoration: BoxDecoration(
                                               color: tomorrow
                                                   ? Colors.white
-                                                  : Color.fromRGBO(
+                                                  : const Color.fromRGBO(
                                                       244, 67, 54, 0.322),
                                               boxShadow: [
                                                 BoxShadow(
                                                     spreadRadius: 1.2,
-                                                    offset: Offset(0, 0),
+                                                    offset: const Offset(0, 0),
                                                     blurRadius: 1.2,
                                                     color: isTomorrowSelected
-                                                        ? Color(0xff2CDBC6)
-                                                        : Color(0xff202020)
+                                                        ? const Color(0xff2CDBC6)
+                                                        : const Color(0xff202020)
                                                             .withOpacity(0.8))
                                               ],
                                               border: Border.all(
@@ -211,6 +211,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                     !today && tomorrow) {
                                                   isTodaySelected =
                                                       false; // Deselect the other option
+                                                  isTomorrowSelected = true;
                                                 }
                                               });
                                             },
@@ -219,7 +220,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                 locale.tomorrow,
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.w700,
-                                                    color: Color(0xff202020),
+                                                    color: const Color(0xff202020),
                                                     fontFamily: 'Nunito',
                                                     fontSize: 16.sp),
                                               ),
@@ -342,7 +343,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                   icon: Icon(
                                     Icons.share,
                                     size: 20.w,
-                                    color: Color(0xff0AA9A9),
+                                    color: const Color(0xff0AA9A9),
                                   )),
                             ),
                             SizedBox(width: 6.w),
@@ -452,7 +453,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                             fontFamily: 'Nunito',
                                             fontSize: 12.sp,
                                             fontWeight: FontWeight.w600,
-                                            color: Color(0XFF202020))),
+                                            color: const Color(0XFF202020))),
                                   ],
                                 )),
                           )
@@ -468,15 +469,17 @@ class _doctorDetailsState extends State<doctorDetails> {
                             child: Column(
                               children: [
                                 Text(
-                                 "${locale.dr}. ${isArabic ? doctor.first.firstNameArabic: doctor.first.firstName} ${isArabic ? doctor.first.lastNameArabic: doctor.first.lastName}",
+                                  "${locale.dr}. ${isArabic ? doctor.first.firstNameArabic : doctor.first.firstName} ${isArabic ? doctor.first.lastNameArabic : doctor.first.lastName}",
                                   style: TextStyle(
                                       fontSize: 20.sp,
                                       fontWeight: FontWeight.w700,
                                       fontFamily: "Nunito",
-                                      color: Color(0xff202020)),
+                                      color: const Color(0xff202020)),
                                 ),
                                 Text(
-                                isArabic ?  doctor.first.specialityArabic:  doctor.first.speciality,
+                                  isArabic
+                                      ? doctor.first.specialityArabic
+                                      : doctor.first.speciality,
                                   style: TextStyle(
                                       fontSize: 17.sp,
                                       fontWeight: FontWeight.w600,
@@ -504,7 +507,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                   fontSize: 20.sp,
                                   fontWeight: FontWeight.w700,
                                   fontFamily: "Nunito",
-                                  color: Color(0xff202020)),
+                                  color: const Color(0xff202020)),
                             ),
                           )),
                       Container(
@@ -541,7 +544,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                     fontSize: 14.sp,
                                                     fontWeight: FontWeight.w700,
                                                     fontFamily: "Nunito",
-                                                    color: Color(0xff202020)))
+                                                    color: const Color(0xff202020)))
                                           ]),
                                         ),
                                       )),
@@ -583,7 +586,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                               locale.call,
                                               style: TextStyle(
                                                   fontSize: 8.sp,
-                                                  color: Color(0xff0AA9A9),
+                                                  color: const Color(0xff0AA9A9),
                                                   fontFamily: "Nunito",
                                                   fontWeight: FontWeight.w700),
                                             ),
@@ -702,7 +705,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                     fontSize: 14.sp,
                                                     fontWeight: FontWeight.w700,
                                                     fontFamily: "Nunito",
-                                                    color: Color(0xff202020)))
+                                                    color: const Color(0xff202020)))
                                           ]),
                                         ),
                                       )),
@@ -739,7 +742,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                   "${locale.on_maps}", //TODO:
                                                   style: TextStyle(
                                                       fontSize: 8.sp,
-                                                      color: Color(0xff0AA9A9),
+                                                      color: const Color(0xff0AA9A9),
                                                       fontFamily: "Nunito",
                                                       fontWeight:
                                                           FontWeight.w700),
@@ -770,7 +773,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                   fontSize: 20.sp,
                                   fontWeight: FontWeight.w700,
                                   fontFamily: "Nunito",
-                                  color: Color(0xff202020)),
+                                  color: const Color(0xff202020)),
                             ),
                           )),
                       Container(
@@ -783,10 +786,10 @@ class _doctorDetailsState extends State<doctorDetails> {
                           trimCollapsedText:
                               "${locale.read_more}." //TODO: Add read more to locator
                           ,
-                          moreStyle: TextStyle(color: Color(0xff0AA9A9)),
+                          moreStyle: const TextStyle(color: Color(0xff0AA9A9)),
                           trimExpandedText:
                               " ${locale.show_less}.", // TODO: add show less to locator
-                          lessStyle: TextStyle(color: Color(0xff0AA9A9)),
+                          lessStyle: const TextStyle(color: Color(0xff0AA9A9)),
                         ),
                       ),
                       Center(

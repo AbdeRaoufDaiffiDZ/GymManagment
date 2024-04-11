@@ -81,7 +81,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                       if (doctors.isNotEmpty) {
                         if (data[index].today) {
                           notificationConditions(data, index, doctors,
-                              text: text);
+                              text: text, isArabic: isArabic);
                         }
                         return Column(
                           children: [
@@ -121,10 +121,10 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                                   0xff202020)
                                                               .withOpacity(
                                                                   0.4))),
-                                                  child: (doctor.first
+                                                  child: (doctors.first
                                                                   .ImageProfileurl ==
                                                               " " ||
-                                                          doctor.first
+                                                          doctors.first
                                                                   .ImageProfileurl ==
                                                               "")
                                                       ? ClipOval(
@@ -148,7 +148,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                                 48.0), // Adjust radius
                                                             child:
                                                                 Image.network(
-                                                              doctor.first
+                                                              doctors.first
                                                                   .ImageProfileurl,
                                                               fit: BoxFit.cover,
                                                             ),
@@ -572,10 +572,10 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
   }
 
   notificationConditions(state, index, doctors,
-      {required AppLocalizations text}) {
+      {required AppLocalizations text, required bool isArabic}) {
     if (state[index].turn - 2 == (doctors.first.turn)) {
-      NotificationShower(state[index].firstName + " " + state[index].lastName,
-          index, text.dr + ". " + doctors.first.lastName, text.is_near,
+      NotificationShower( state[index].firstName + " " + state[index].lastName,
+          index, text.dr + ". " + (isArabic ? doctors.first.lastNameArabic:doctors.first.lastName), text.is_near,
           text: text);
     } else if (state[index].turn - 1 == (doctors.first.turn)) {
       NotificationShower(
