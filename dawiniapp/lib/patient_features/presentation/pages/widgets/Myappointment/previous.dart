@@ -109,7 +109,7 @@ class _previousappointmState extends State<previousappointm> {
                                                       ? Alignment.topRight
                                                       : Alignment.topLeft,
                                                   child: Text(
-                                                      "${text.dr}. ${isArabic ? doctors[index].lastNameArabic : doctors[index].lastName}",
+                                                      "${text.dr}. ${isArabic ? doctors.first.lastNameArabic : doctors.first.lastName}",
                                                       style: const TextStyle(
                                                           fontSize: 19,
                                                           fontWeight:
