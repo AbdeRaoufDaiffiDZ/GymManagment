@@ -7,7 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class favorite extends StatefulWidget {
-  favorite({Key? key}) : super(key: key);
+  favorite({super.key});
 
   @override
   State<favorite> createState() => _favoriteState();
@@ -35,7 +35,7 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
                 child: Text(
                   text.my_favorite,
                   style: TextStyle(
-                      color: Color(0XFF202020),
+                      color: const Color(0XFF202020),
                       fontSize: 33.sp,
                       fontWeight: FontWeight.w700,
                       fontFamily: 'Nunito'),

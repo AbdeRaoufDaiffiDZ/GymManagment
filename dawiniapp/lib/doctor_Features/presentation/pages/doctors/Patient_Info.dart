@@ -18,11 +18,11 @@ class Patient_info extends StatefulWidget {
   final bool today;
   final bool ifADoctor;
   const Patient_info({
-    Key? key,
+    super.key,
     required this.doctorEntity,
     required this.today,
     this.ifADoctor = false,
-  }) : super(key: key);
+  });
 
   @override
   State<Patient_info> createState() => _Patient_infoState();
@@ -288,7 +288,7 @@ class _Patient_infoState extends State<Patient_info> {
                           fit: BoxFit.scaleDown,
                           child: Text(
                             text.confirmappointment,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
                               color: Colors.white,

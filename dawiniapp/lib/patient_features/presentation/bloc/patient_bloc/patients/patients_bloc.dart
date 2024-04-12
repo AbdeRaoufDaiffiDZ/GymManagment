@@ -246,8 +246,8 @@ Future<Object?> showlDialog(
                       TextSpan(
                         text: done
                             ? text
-                                ? locale.successfully + " !"
-                                : "," + locale.you_already_booked_an_appointment
+                                ? "${locale.successfully} !"
+                                : ",${locale.you_already_booked_an_appointment}"
                             : " ",
                         style: TextStyle(
                           fontFamily: "Nunito",

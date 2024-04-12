@@ -163,7 +163,7 @@ class _previousappointmState extends State<previousappointm> {
                                                             fontSize: 15.sp,
                                                             fontWeight:
                                                                 FontWeight.w600,
-                                                            color: Color(
+                                                            color: const Color(
                                                                 0XFF202020))),
                                                   ),
                                                 ],

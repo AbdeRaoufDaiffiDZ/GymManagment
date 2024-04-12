@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({
-    Key? key,
+    super.key,
     this.title,
-  }) : super(key: key);
+  });
   final String? title;
 
   @override

@@ -77,7 +77,7 @@ class _secondConatinerState extends State<secondConatiner> {
                                 child: Text(
                                   data.isNotEmpty
                                       ? (data.first.turn).toString()
-                                      : widget.turn.toString(), // TODO:
+                                      : widget.turn.toString(), 
                                   style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       color: Colors.white,
@@ -300,7 +300,7 @@ class _secondConatinerState extends State<secondConatiner> {
                                   : Alignment.topLeft,
                               child: Text(
                                 state.patients.first
-                                    .firstName, //TODO: add to localizationn No patients booked yet
+                                    .firstName, 
                                 style: TextStyle(
                                     fontFamily: "Nunito",
                                     fontSize: 16.sp,

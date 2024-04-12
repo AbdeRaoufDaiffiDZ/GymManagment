@@ -122,7 +122,7 @@ class _todayState extends State<today> with TickerProviderStateMixin {
                                       Padding(
                                         padding: EdgeInsets.only(top: 5.h),
                                         child: Text(
-                                          (data.turn).toString(), // TODO:
+                                          (data.turn).toString(),
                                           style: TextStyle(
                                             fontWeight: FontWeight.w700,
                                             color: data.turn == widget.turn
@@ -180,8 +180,7 @@ class _todayState extends State<today> with TickerProviderStateMixin {
                                             fit: BoxFit.scaleDown,
                                             alignment: Alignment.topLeft,
                                             child: Text(
-                                              text.age +
-                                                  ": ${data.age} ", // TODO: age does not exist in patient entity, create it
+                                              "${text.age}: ${data.age} ",
                                               style: TextStyle(
                                                 fontFamily: "Nunito",
                                                 fontSize: 14.sp,
@@ -197,7 +196,7 @@ class _todayState extends State<today> with TickerProviderStateMixin {
                                             fit: BoxFit.scaleDown,
                                             alignment: Alignment.topLeft,
                                             child: Text(
-                                              text.gender + ": ${data.gender}",
+                                              "${text.gender}: ${data.gender}",
                                               style: TextStyle(
                                                 fontFamily: "Nunito",
                                                 fontSize: 19.sp,
@@ -263,7 +262,7 @@ class _todayState extends State<today> with TickerProviderStateMixin {
                                           text.call,
                                           style: TextStyle(
                                             fontSize: 10.sp,
-                                            color: Color(0xff0AA9A9),
+                                            color: const Color(0xff0AA9A9),
                                             fontFamily: "Nunito",
                                             fontWeight: FontWeight.w700,
                                           ),
@@ -280,7 +279,7 @@ class _todayState extends State<today> with TickerProviderStateMixin {
                           child: Padding(
                             padding: EdgeInsets.only(top: 20.w),
                             child: Text(
-                              text.nopatinet, // TODO:   langugae here
+                              text.nopatinet, 
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 color: const Color(0xff202020).withOpacity(0.6),
@@ -297,12 +296,12 @@ class _todayState extends State<today> with TickerProviderStateMixin {
         } else if (state is PatientsInfoLoadingError) {
           return const Center();
         } else if (state is PatientsInfoLoading) {
-          return Loading();
-         
-        }
-        else { patientsInfoBloc.add(onGetPatinets(uid: widget.uid, true, context));
+          return const Loading();
+        } else {
+          patientsInfoBloc.add(onGetPatinets(uid: widget.uid, true, context));
 
-          return const Loading();}
+          return const Loading();
+        }
       },
     );
   }

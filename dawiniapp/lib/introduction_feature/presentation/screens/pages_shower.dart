@@ -48,7 +48,6 @@ class _PagesShowerState extends State<PagesShower> {
             /////////////////////////////////////    here you will go to patients screen
           } else {
             return const Mypage(
-              device: "test",
               popOrNot: false,
             );
           }

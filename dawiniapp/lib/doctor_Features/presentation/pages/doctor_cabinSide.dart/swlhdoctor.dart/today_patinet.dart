@@ -132,8 +132,7 @@ class _TodayPatinetState extends State<TodayPatinet> {
                                           ? Alignment.topRight
                                           : Alignment.topLeft,
                                       child: Text(
-                                        state.patients.first
-                                            .firstName, //TODO: add to localizationn No patients booked yet
+                                        state.patients.first.firstName,
                                         style: TextStyle(
                                             fontFamily: "Nunito",
                                             fontSize: 16.sp,
@@ -324,7 +323,7 @@ class _TodayPatinetState extends State<TodayPatinet> {
                                   child: Text(
                                 locale.call,
                                 style: TextStyle(
-                                    color: Color(0xff0AA9A9),
+                                    color: const Color(0xff0AA9A9),
                                     fontSize: 10.sp,
                                     fontFamily: "Nunito",
                                     fontWeight: FontWeight.w700),

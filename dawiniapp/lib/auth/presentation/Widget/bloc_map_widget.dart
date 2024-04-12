@@ -21,15 +21,15 @@ class _AuthBlocMapState extends State<AuthBlocMap> {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         if (state is LoginState) {
-          return LoginPage();
+          return const LoginPage();
         } else if (state is SuccessasfulLogin) {
-          return doctorsideHome();
+          return const doctorsideHome();
         } else if (state is LoadAuthState) {
           return const Loading();
         } else if (state is ErrorAuthState) {
           return LoginPage(error: state.error);
         } else if (state is RegisterState) {
-          return SignUpPage();
+          return const SignUpPage();
         } else if (state is ResetPassSatate) {}
         return Container();
       },

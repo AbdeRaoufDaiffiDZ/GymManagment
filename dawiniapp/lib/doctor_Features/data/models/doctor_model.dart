@@ -1,4 +1,4 @@
-// ignore_for_file: annotate_overrides, overridden_fields, must_be_immutable
+// ignore_for_file: annotate_overrides, overridden_fields, must_be_immutable, non_constant_identifier_names
 
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 

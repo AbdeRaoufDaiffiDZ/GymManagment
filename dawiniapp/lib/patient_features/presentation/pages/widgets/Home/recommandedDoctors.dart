@@ -119,7 +119,7 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                                         fontFamily: 'Nunito',
                                         fontSize: 17.sp,
                                         fontWeight: FontWeight.w600,
-                                        color: Color(0XFF202020))),
+                                        color: const Color(0XFF202020))),
                               ),
                             ),
                             Container(
@@ -137,7 +137,7 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                                         fontFamily: 'Nunito',
                                         fontSize: 15.sp,
                                         fontWeight: FontWeight.w600,
-                                        color: Color(0XFF000000))),
+                                        color: const Color(0XFF000000))),
                               ),
                             ),
                             Container(
@@ -193,7 +193,7 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                                             fontFamily: 'Nunito',
                                             fontSize: 16.sp,
                                             fontWeight: FontWeight.w600,
-                                            color: Color(0XFF202020))),
+                                            color: const Color(0XFF202020))),
                                   ],
                                 ),
                               ),

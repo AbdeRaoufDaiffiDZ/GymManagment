@@ -17,11 +17,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Weather extends StatefulWidget {
-  final device;
 
   const Weather({
     super.key,
-    this.device,
   });
 
   @override

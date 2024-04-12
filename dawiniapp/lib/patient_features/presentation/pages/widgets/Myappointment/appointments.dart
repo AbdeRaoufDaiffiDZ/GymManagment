@@ -7,7 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Myappointemtns extends StatefulWidget {
-  const Myappointemtns({Key? key, String? uid}) : super(key: key);
+  const Myappointemtns({super.key, String? uid});
 
   @override
   State<Myappointemtns> createState() => _MyappointemtnsState();

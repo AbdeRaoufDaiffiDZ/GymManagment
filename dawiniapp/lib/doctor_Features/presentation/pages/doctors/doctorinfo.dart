@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, camel_case_types, use_build_context_synchronously
 
 import 'dart:io';
 
@@ -159,7 +159,7 @@ class _doctorDetailsState extends State<Lll> {
                                   children: [
                                     Icon(
                                       Icons.camera_alt_rounded,
-                                      color: Color(0xff0AA9A9),
+                                      color: const Color(0xff0AA9A9),
                                       size: 9.w,
                                     ),
                                     Padding(
@@ -194,7 +194,7 @@ class _doctorDetailsState extends State<Lll> {
                                     fontSize: 17.sp,
                                     fontWeight: FontWeight.w700,
                                     fontFamily: "Nunito",
-                                    color: Color(0xff202020)),
+                                    color: const Color(0xff202020)),
                               ),
                               Text(
                                 "${widget.doctorInfo.speciality}  ${widget.doctorInfo.specialityArabic}",
@@ -224,7 +224,7 @@ class _doctorDetailsState extends State<Lll> {
                                 fontSize: 20.sp,
                                 fontWeight: FontWeight.w700,
                                 fontFamily: "Nunito",
-                                color: Color(0xff202020)),
+                                color: const Color(0xff202020)),
                           ),
                         )),
                     Padding(
@@ -268,7 +268,7 @@ class _doctorDetailsState extends State<Lll> {
                                         style: TextStyle(
                                             fontWeight: FontWeight.w500,
                                             fontSize: 16.sp,
-                                            color: Color(0xffEF1B1B))),
+                                            color: const Color(0xffEF1B1B))),
                                     suffixIconConstraints: BoxConstraints(
                                         minHeight: 38.h, minWidth: 12.w),
                                     prefixIconConstraints: BoxConstraints(
@@ -388,7 +388,7 @@ class _doctorDetailsState extends State<Lll> {
                                         style: TextStyle(
                                             fontWeight: FontWeight.w500,
                                             fontSize: 16.sp,
-                                            color: Color(0xffEF1B1B))),
+                                            color: const Color(0xffEF1B1B))),
                                     suffixIconConstraints: BoxConstraints(
                                         minHeight: 38.h, minWidth: 12.w),
                                     prefixIconConstraints: BoxConstraints(
@@ -479,12 +479,12 @@ class _doctorDetailsState extends State<Lll> {
                                 fontSize: 20.sp,
                                 fontWeight: FontWeight.w700,
                                 fontFamily: "Nunito",
-                                color: Color(0xff202020)),
+                                color: const Color(0xff202020)),
                           ),
                         )),
                     Padding(
                       padding: EdgeInsets.all(8.0.r),
-                      child: Container(
+                      child: SizedBox(
                           height: 35.h,
                           child: TextFormField(
                               onEditingComplete: () {
@@ -514,7 +514,7 @@ class _doctorDetailsState extends State<Lll> {
                                     style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         fontSize: 16.sp,
-                                        color: Color(0xffEF1B1B))),
+                                        color: const Color(0xffEF1B1B))),
                                 suffixIconConstraints: BoxConstraints(
                                     minHeight: 38.h, minWidth: 13.w),
                                 prefixIconConstraints: BoxConstraints(
@@ -569,7 +569,7 @@ class _doctorDetailsState extends State<Lll> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Container(
+                                      SizedBox(
                                         height: 18.h,
                                         width: 160.w,
                                         child: FittedBox(
@@ -584,8 +584,7 @@ class _doctorDetailsState extends State<Lll> {
                                                   size: 14,
                                                   color: Color(0xff0AA9A9)),
                                               Text(
-                                                locale.set_the_booking_time +
-                                                    " :",
+                                                "${locale.set_the_booking_time} :",
                                                 style: TextStyle(
                                                     fontSize: 13.sp,
                                                     fontWeight: FontWeight.w700,
@@ -633,7 +632,7 @@ class _doctorDetailsState extends State<Lll> {
                                                 ? EdgeInsets.only(right: 7.w)
                                                 : EdgeInsets.only(left: 7.w),
                                             child: Text(
-                                              "${locale.today} " + locale.only,
+                                              "${locale.today} ${locale.only}",
                                               style: TextStyle(
                                                   fontFamily: 'Nunito',
                                                   fontSize: 17.sp,
@@ -708,7 +707,7 @@ class _doctorDetailsState extends State<Lll> {
                                       style: TextStyle(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 16.sp,
-                                          color: Color(0xffEF1B1B))),
+                                          color: const Color(0xffEF1B1B))),
                                 ),
                                 GestureDetector(
                                   onTap: () {
@@ -741,8 +740,7 @@ class _doctorDetailsState extends State<Lll> {
                                                 ? EdgeInsets.only(right: 7.w)
                                                 : EdgeInsets.only(left: 7.w),
                                             child: Text(
-                                              "${locale.tomorrow} " +
-                                                  locale.only,
+                                              "${locale.tomorrow} ${locale.only}",
                                               style: TextStyle(
                                                   color: const Color(0xff202020)
                                                       .withOpacity(0.75),
@@ -764,7 +762,7 @@ class _doctorDetailsState extends State<Lll> {
                     ),
                     Padding(
                       padding: EdgeInsets.all(5.r),
-                      child: Container(
+                      child: SizedBox(
                         height: 25.h,
                         width: 190.w,
                         child: FittedBox(
@@ -781,7 +779,7 @@ class _doctorDetailsState extends State<Lll> {
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.w800,
                                   fontFamily: "Nunito",
-                                  color: Color(0xff202020)),
+                                  color: const Color(0xff202020)),
                             ),
                           ),
                         ),
@@ -801,9 +799,7 @@ class _doctorDetailsState extends State<Lll> {
                               validator: /////////////////////////////////////////////////////////////////////
                                   (value) {
                                 if (value == null || value.isEmpty) {
-                                  return locale.please_enter_your +
-                                      " " +
-                                      locale.experience;
+                                  return "${locale.please_enter_your} ${locale.experience}";
                                 }
                                 return null;
                               }, // Set the validator function
@@ -822,7 +818,7 @@ class _doctorDetailsState extends State<Lll> {
                                     style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         fontSize: 16.sp,
-                                        color: Color(0xffEF1B1B))),
+                                        color: const Color(0xffEF1B1B))),
                                 suffixIconConstraints: BoxConstraints(
                                     minHeight: 38.h, minWidth: 13.w),
                                 prefixIconConstraints: BoxConstraints(

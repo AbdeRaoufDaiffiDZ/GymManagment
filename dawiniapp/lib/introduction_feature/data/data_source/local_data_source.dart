@@ -51,7 +51,7 @@ class LocalDataSourceImpl extends LocalDataSource {
   @override
   Stream<String> choosenLanguage() async* {
     final Stream<SharedPreferences> prefs =
-        await SharedPreferences.getInstance().asStream();
+        SharedPreferences.getInstance().asStream();
     String? status;
     prefs.listen((event) {
       status = event.getString('language');

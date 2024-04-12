@@ -7,8 +7,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // ignore: must_be_immutable
 class myfavclincs extends StatefulWidget {
   const myfavclincs({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<myfavclincs> createState() => _favoriteState();
@@ -29,7 +29,7 @@ class _favoriteState extends State<myfavclincs> with TickerProviderStateMixin {
             fit: BoxFit.scaleDown,
             child: Text(text.commingsoon,
                 // widget.clinics[index].ClinicName,
-                style: TextStyle(
+                style: const TextStyle(
                     fontFamily: 'Nunito',
                     fontSize: 50, // 25
                     fontWeight: FontWeight.w600)),

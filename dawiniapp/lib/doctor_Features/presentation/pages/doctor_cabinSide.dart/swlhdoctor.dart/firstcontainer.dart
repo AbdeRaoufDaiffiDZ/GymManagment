@@ -62,7 +62,7 @@ class _firstConatinerState extends State<firstConatiner> {
                     child: widget.doctor.ImageProfileurl == ''
                         ? ClipOval(
                             child: SizedBox.fromSize(
-                            size: Size.fromRadius(48.0), // Adjust radius
+                            size: const Size.fromRadius(48.0), // Adjust radius
                             child: Image.asset(
                               "assets/images/maleDoctor.png",
                               alignment: Alignment.center,
@@ -71,7 +71,7 @@ class _firstConatinerState extends State<firstConatiner> {
                           ))
                         : ClipOval(
                             child: SizedBox.fromSize(
-                              size: Size.fromRadius(48.0), // Adjust radius
+                              size: const Size.fromRadius(48.0), // Adjust radius
                               child: Image.network(
                                 widget.doctor.ImageProfileurl,
                                 fit: BoxFit.cover,
@@ -106,7 +106,7 @@ class _firstConatinerState extends State<firstConatiner> {
                     alignment:
                         isArabic ? Alignment.topRight : Alignment.topLeft,
                     child: Text.rich(TextSpan(
-                        text: "${locale.max_number_of_patients} : ", // TODO:
+                        text: "${locale.max_number_of_patients} : ", 
                         style: TextStyle(
                             fontFamily: "Nunito",
                             color: const Color(0xff202020).withOpacity(0.7),
@@ -115,7 +115,7 @@ class _firstConatinerState extends State<firstConatiner> {
                         children: [
                           TextSpan(
                             text: widget.doctor.numberOfPatient
-                                .toString(), // TODO:
+                                .toString(), 
                             style: TextStyle(
                                 fontFamily: "Nunito",
                                 color: const Color(0xff0AA9A9).withOpacity(0.7),
@@ -133,7 +133,7 @@ class _firstConatinerState extends State<firstConatiner> {
                     alignment:
                         isArabic ? Alignment.topRight : Alignment.topLeft,
                     child: Text.rich(TextSpan(
-                        text: "${locale.booking_period} : ", // TODO:
+                        text: "${locale.booking_period} : ", 
                         style: TextStyle(
                             fontFamily: "Nunito",
                             color: const Color(0xff202020).withOpacity(0.7),
@@ -141,7 +141,7 @@ class _firstConatinerState extends State<firstConatiner> {
                             fontWeight: FontWeight.w600),
                         children: [
                           TextSpan(
-                            text: date, // TODO:
+                            text: date, 
                             style: TextStyle(
                                 fontFamily: "Nunito",
                                 color: const Color(0xff0AA9A9).withOpacity(0.7),
@@ -175,7 +175,7 @@ class _firstConatinerState extends State<firstConatiner> {
                     locale.edit,
                     style: TextStyle(
                         fontSize: isFrench ? 8.sp:10.sp,
-                        color: Color(0xff0AA9A9),
+                        color: const Color(0xff0AA9A9),
                         fontFamily: "Nunito",
                         fontWeight: FontWeight.w700),
                   )),

@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types, prefer_typing_uninitialized_variables, non_constant_identifier_names
+// ignore_for_file: camel_case_types, prefer_typing_uninitialized_variables, non_constant_identifier_names, no_leading_underscores_for_local_identifiers, deprecated_member_use
 
 import 'package:dawini_full/core/error/ErrorWidget.dart';
 import 'package:dawini_full/core/loading/loading.dart';
@@ -102,7 +102,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                           return AlertDialog(
                             backgroundColor: Colors.white,
                             surfaceTintColor: Colors.white,
-                            content: Container(
+                            content: SizedBox(
                               width: double.infinity,
                               height: 182.h,
                               child: Column(
@@ -112,7 +112,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Text(
-                                    "${locale.choose_from_available_booking_time}",
+                                    locale.choose_from_available_booking_time,
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         color: const Color(0xff202020),
@@ -292,8 +292,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                         },
                                         child: Center(
                                           child: Text(
-                                            locale
-                                                .cancel, // TODO: add cancule to locatore
+                                            locale.cancel,
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w700,
                                                 color: const Color(0xff202020)
@@ -526,7 +525,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                             children: [
                               Row(
                                 children: [
-                                  Container(
+                                  SizedBox(
                                       height: 18.h,
                                       width: 190.w,
                                       child: FittedBox(
@@ -689,7 +688,7 @@ class _doctorDetailsState extends State<doctorDetails> {
 
                               Row(
                                 children: [
-                                  Container(
+                                  SizedBox(
                                       height: 18.h,
                                       width: 220.w,
                                       child: FittedBox(
@@ -756,7 +755,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                   ),
                                                 ),
                                                 Text(
-                                                  "${locale.on_maps}", //TODO:
+                                                  locale.on_maps,
                                                   style: TextStyle(
                                                       fontSize: 8.sp,
                                                       color: const Color(
@@ -801,12 +800,9 @@ class _doctorDetailsState extends State<doctorDetails> {
                           trimLines: 3,
                           trimMode: TrimMode.Line,
                           textAlign: TextAlign.justify,
-                          trimCollapsedText:
-                              "${locale.read_more}." //TODO: Add read more to locator
-                          ,
+                          trimCollapsedText: "${locale.read_more}.",
                           moreStyle: const TextStyle(color: Color(0xff0AA9A9)),
-                          trimExpandedText:
-                              " ${locale.show_less}.", // TODO: add show less to locator
+                          trimExpandedText: " ${locale.show_less}.",
                           lessStyle: const TextStyle(color: Color(0xff0AA9A9)),
                         ),
                       ),

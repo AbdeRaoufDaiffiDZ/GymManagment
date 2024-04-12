@@ -118,7 +118,7 @@ if(widget.uid != "4OCo8desYHfXftOWtkY7DRHRFLm2")
                       Container(
                         margin: EdgeInsets.symmetric(horizontal: 9.w),
                         child: Text(
-                          locale.patient_in_examination + " : ",
+                          "${locale.patient_in_examination} : ",
                           style: TextStyle(
                               fontFamily: "Nunito",
                               color: const Color(0xff202020),
@@ -140,7 +140,7 @@ if(widget.uid != "4OCo8desYHfXftOWtkY7DRHRFLm2")
                                   alignment: isArabic
                                       ? Alignment.bottomRight
                                       : Alignment.bottomLeft,
-                                  child: Text(locale.today_s_patients + " :",
+                                  child: Text("${locale.today_s_patients} :",
                                       style: const TextStyle(
                                           fontFamily: "Nunito",
                                           color: Color(0xff202020),
@@ -178,7 +178,7 @@ if(widget.uid != "4OCo8desYHfXftOWtkY7DRHRFLm2")
                           )
                         ],
                       ),
-                      Container(
+                      SizedBox(
                         height: 170.h,
                         child: TodayPatinet(uid: doctor.uid, turn: doctor.turn)),
                                Container(

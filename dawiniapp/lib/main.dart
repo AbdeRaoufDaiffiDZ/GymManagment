@@ -11,14 +11,12 @@ import 'package:dawini_full/firebase_options.dart';
 import 'package:dawini_full/injection_container.dart';
 import 'package:dawini_full/introduction_feature/presentation/bloc/bloc/introduction_bloc.dart';
 import 'package:dawini_full/introduction_feature/presentation/screens/pages_shower.dart';
-import 'package:dawini_full/patient_features/presentation/bloc/clinics_bloc/bloc/clinics_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/pages/myApp.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,7 +27,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  String device = "deviceInfo.androidInfo";
   AwesomeNotifications().initialize(
       null,
       [
@@ -57,18 +54,15 @@ Future<void> main() async {
   ]);
 
   runApp(
-    MyApp(
-      device: device,
+    const MyApp(
     ),
   );
 }
 
 class MyApp extends StatefulWidget {
-  final device;
   const MyApp({
-    Key? key,
-    this.device,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -126,8 +120,7 @@ class _MyAppState extends State<MyApp> {
                       AppLocalizations.localizationsDelegates,
                   supportedLocales: AppLocalizations.supportedLocales,
                   debugShowCheckedModeBanner: false,
-                  home: MyWidget(
-                    device: widget.device,
+                  home: const MyWidget(
                   ));
             }));
   }
@@ -139,8 +132,7 @@ class _MyAppState extends State<MyApp> {
 }
 
 class MyWidget extends StatefulWidget {
-  final device;
-  const MyWidget({super.key, this.device});
+  const MyWidget({super.key, });
 
   @override
   State<MyWidget> createState() => _MyWidgetState();
@@ -164,13 +156,10 @@ class _MyWidgetState extends State<MyWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (kDebugMode) {
-      print(widget.device);
-    }
+    
     if (status == true) {
-      return Scaffold(
+      return const Scaffold(
         body: Mypage(
-          device: widget.device,
           popOrNot: false,
         ),
       );
