@@ -69,6 +69,7 @@ class _doctorDetailsState extends State<Lll> {
         BlocProvider.of<DoctorPatientsBloc>(context);
     final AppLocalizations locale = AppLocalizations.of(context)!;
     final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
+    final bool isFrench = Localizations.localeOf(context).languageCode == "fr";
 
     return Scaffold(
         backgroundColor: const Color(0xffFAFAFA),
@@ -118,29 +119,29 @@ class _doctorDetailsState extends State<Lll> {
                           width: double.infinity,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(20.r),
-                            child: (widget.doctorInfo.ImageProfileurl == " " ||
+                            child:  imageFile == null
+                                    ? (widget.doctorInfo.ImageProfileurl == " " ||
                                     widget.doctorInfo.ImageProfileurl == "")
-                                ? imageFile == null
-                                    ? Image.asset(
+                                ?Image.asset(
                                         "assets/images/maleDoctor.png",
                                         fit: BoxFit.scaleDown,
                                         scale: 1.2.w,
                                       )
-                                    : Image.file(
-                                        imageFile!,
-                                        fit: BoxFit.fill,
-                                      )
+                                 
                                 : Image.network(
                                     widget.doctorInfo.ImageProfileurl,
                                     fit: BoxFit.cover,
-                                  ),
+                                  )   : Image.file(
+                                        imageFile!,
+                                        fit: BoxFit.fill,
+                                      )
                           ),
                         ),
                         Container(
                             margin: EdgeInsets.symmetric(
                                 vertical: 10.h, horizontal: 14.w),
                             height: 25.h,
-                            width: 110.w,
+                            width: 130.w,
                             decoration: BoxDecoration(
                                 boxShadow: [
                                   BoxShadow(
@@ -163,7 +164,7 @@ class _doctorDetailsState extends State<Lll> {
                                     ),
                                     Padding(
                                       padding:
-                                          EdgeInsets.symmetric(horizontal: 5.w),
+                                          isArabic ? EdgeInsets.only(right: 5.w):EdgeInsets.only(left: 5.w),
                                       child: Text(
                                         locale.add_a_photo,
                                         style: TextStyle(
@@ -171,7 +172,7 @@ class _doctorDetailsState extends State<Lll> {
                                             color: const Color(0xff202020)
                                                 .withOpacity(0.65),
                                             fontFamily: 'Nunito',
-                                            fontSize: 11.sp),
+                                            fontSize:isFrench ?9.sp: 11.sp),
                                       ),
                                     )
                                   ],
@@ -877,17 +878,17 @@ class _doctorDetailsState extends State<Lll> {
                                   default:
                                     break;
                                 }
-                                int number =
-                                    int.parse(max_number_of_patient.text);
+                               
+                                    
                                 DoctorEntity doctor = DoctorEntity(
                                     recommanded: widget.doctorInfo.recommanded,
-                                    numberOfPatient: number,
+                                    numberOfPatient: widget.doctorInfo.numberOfPatient,
                                     numberInList:
                                         widget.doctorInfo.numberInList,
                                     location: location_link.text,
                                     date: date,
                                     experience: experience.text,
-                                    description: "description",
+                                    max_number: int.parse(max_number_of_patient.text),
                                     uid: widget.doctorInfo.uid,
                                     city: widget.doctorInfo.city,
                                     turn: widget.doctorInfo.turn,
@@ -897,9 +898,9 @@ class _doctorDetailsState extends State<Lll> {
                                     firstName: widget.doctorInfo.firstName,
                                     lastName: widget.doctorInfo.lastName,
                                     phoneNumber: first_phone_number.text,
-                                    firstNameArabic: 'firstNameArabic', // TODO:
-                                    lastNameArabic: 'lastNameArabic',
-                                    specialityArabic: 'specialityArabic',
+                                    firstNameArabic: widget.doctorInfo.firstNameArabic,
+                                    lastNameArabic: widget.doctorInfo.lastNameArabic,
+                                    specialityArabic: widget.doctorInfo.specialityArabic,
                                     ImageProfileurl:
                                         widget.doctorInfo.ImageProfileurl);
 
@@ -974,7 +975,7 @@ class _doctorDetailsState extends State<Lll> {
   Future toUpload(String uid, DoctorEntity doctor, doctorPatientsBloc) async {
     Reference referenceIpageToUpload = referenceRoot.child(uid);
     try {
-      if (doctor.ImageProfileurl == " " || doctor.ImageProfileurl == "") {
+     
         if (imageFile != null) {
           await referenceIpageToUpload.putFile(File(imageFile!.path));
           ImageUrl = await referenceIpageToUpload.getDownloadURL();
@@ -983,7 +984,7 @@ class _doctorDetailsState extends State<Lll> {
             print(ImageUrl);
           }
           doctor.ImageProfileurl = ImageUrl;
-        }
+        
       }
       doctorPatientsBloc.add(onDataUpdate(doctor: doctor));
     } catch (e) {

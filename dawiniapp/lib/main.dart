@@ -93,9 +93,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider(
-            create: (_) => locator<ClinicsBloc>()..add(ClinicinitialEvent()),
-          ),
+          // BlocProvider(
+          //   create: (_) => locator<ClinicsBloc>()..add(ClinicinitialEvent()),
+          // ),
           BlocProvider(create: (_) => locator<AuthBloc>()),
           BlocProvider(create: (_) => locator<DoctorPatientsBloc>()),
           BlocProvider(

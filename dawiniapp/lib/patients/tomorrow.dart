@@ -280,10 +280,13 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
           );
         } else if (state is PatientsInfoLoadingError) {
           return const Center();
+        } else if (state is PatientsInfoLoading) {
+          return Loading();
+         
         }
-        patientsInfoBloc.add(onGetPatinets(uid: widget.uid, false, context));
+        else { patientsInfoBloc.add(onGetPatinets(uid: widget.uid, false, context));
 
-        return const Loading();
+          return const Loading();}
       },
     );
   }

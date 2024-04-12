@@ -9,7 +9,7 @@ class DoctorEntity extends Equatable {
   final String location;
   final String date;
   final String experience;
-  final String description;
+  final int max_number;
   final int numberInList;
   final String uid;
   final String firstName;
@@ -37,7 +37,7 @@ class DoctorEntity extends Equatable {
       required this.location,
       required this.date,
       required this.experience,
-      required this.description,
+      required this.max_number,
       required this.uid,
       required this.city,
       required this.turn,
@@ -61,7 +61,7 @@ class DoctorEntity extends Equatable {
         location,
         date,
         experience,
-        description,
+        max_number,
         lastName,
         firstName,
         phoneNumber,
@@ -83,7 +83,7 @@ class DoctorEntity extends Equatable {
       'location': location,
       'date': date,
       'experience': experience,
-      'description': description,
+      'max_number': max_number,
       'numberInList': numberInList,
       'uid': uid,
       'firstName': firstName,

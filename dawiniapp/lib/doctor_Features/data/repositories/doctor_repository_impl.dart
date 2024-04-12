@@ -253,7 +253,8 @@ class DcotrRepositoryImpl implements DoctorRepository {
       String uid, bool today) async {
     try {
       final result = await doctorCabinDataSource.patinetsInfo(uid, today);
-      return Right(result.map((e) => e.toEntity()).toList());
+      final data = result.map((e) => e.toEntity()).toList();
+      return Right(data);
     } on FirebaseException catch (e) {
       if (kDebugMode) {
         print(e);

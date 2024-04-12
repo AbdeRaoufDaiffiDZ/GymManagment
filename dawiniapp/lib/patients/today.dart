@@ -296,10 +296,13 @@ class _todayState extends State<today> with TickerProviderStateMixin {
           );
         } else if (state is PatientsInfoLoadingError) {
           return const Center();
+        } else if (state is PatientsInfoLoading) {
+          return Loading();
+         
         }
-        patientsInfoBloc.add(onGetPatinets(uid: widget.uid, true, context));
+        else { patientsInfoBloc.add(onGetPatinets(uid: widget.uid, true, context));
 
-        return const Loading();
+          return const Loading();}
       },
     );
   }

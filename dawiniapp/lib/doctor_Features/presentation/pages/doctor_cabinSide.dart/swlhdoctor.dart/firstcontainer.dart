@@ -21,6 +21,8 @@ class _firstConatinerState extends State<firstConatiner> {
   Widget build(BuildContext context) {
     final AppLocalizations locale = AppLocalizations.of(context)!;
     final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
+    final bool isFrench = Localizations.localeOf(context).languageCode == "fr";
+
     switch (widget.doctor.date) {
       case "today":
         date = "${locale.today} ${locale.only}";
@@ -88,7 +90,7 @@ class _firstConatinerState extends State<firstConatiner> {
                     alignment:
                         isArabic ? Alignment.topRight : Alignment.topLeft,
                     child: Text(
-                      "${locale.dr}. ${isArabic ? widget.doctor.firstNameArabic:widget.doctor.firstName}",
+                      "${locale.dr}. ${isArabic ? widget.doctor.firstNameArabic : widget.doctor.firstName}",
                       style: TextStyle(
                           fontFamily: "Nunito",
                           fontSize: 17.sp,
@@ -172,7 +174,7 @@ class _firstConatinerState extends State<firstConatiner> {
                       child: Text(
                     locale.edit,
                     style: TextStyle(
-                        fontSize: 10.sp,
+                        fontSize: isFrench ? 8.sp:10.sp,
                         color: Color(0xff0AA9A9),
                         fontFamily: "Nunito",
                         fontWeight: FontWeight.w700),

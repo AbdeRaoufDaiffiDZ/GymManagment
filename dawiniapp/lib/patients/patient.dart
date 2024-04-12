@@ -115,12 +115,16 @@ class _PatientslistState extends State<Patientslist>
                                 ),
                               ]),
                           Expanded(
-                              child: TabBarView(
-                                  controller: tabcontroller,
-                                  children: [
-                                today(uid: doctor.uid, turn: doctor.turn),
-                                tomorrow(uid: doctor.uid)
-                              ])),
+                              child: Builder(
+                                builder: (context) {
+                                  return TabBarView(
+                                      controller: tabcontroller,
+                                      children: [
+                                    today(uid: doctor.uid, turn: doctor.turn),
+                                    tomorrow(uid: doctor.uid)
+                                  ]);
+                                }
+                              )),
                         ])));
               } else {
                 return const Loading();
