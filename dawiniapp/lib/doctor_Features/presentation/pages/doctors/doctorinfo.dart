@@ -9,9 +9,9 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum AppState { free, picked, cropped }
 
@@ -478,8 +478,10 @@ class _doctorDetailsState extends State<Lll> {
                     Padding(
                       padding: EdgeInsets.all(8.0.r),
                       child: Container(
+                          color: Colors.white,
                           height: 35.h,
                           child: TextFormField(
+                              keyboardType: TextInputType.number,
                               onEditingComplete: () {
                                 // Move focus to the next field when "Next" is pressed
                                 FocusScope.of(context).nextFocus();

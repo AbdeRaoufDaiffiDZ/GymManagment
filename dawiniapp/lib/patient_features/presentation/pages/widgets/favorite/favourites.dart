@@ -27,7 +27,6 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
           backgroundColor: const Color(0XFFFAFAFA),
           title: Center(
             child: Container(
-              margin: EdgeInsets.only(top: 12.h),
               width: 200.w,
               height: 30.h,
               child: const FittedBox(
@@ -47,7 +46,8 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
         body: SafeArea(
             child: Container(
                 color: const Color(0XFFFAFAFA),
-                child: Column(children: [
+                child: Column(
+                  children: [
                   TabBar(
                       controller: tabcontroller,
                       labelColor: Colors.black,

@@ -2,6 +2,7 @@ import 'package:dawini_full/core/error/ErrorWidget.dart';
 import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart';
+import 'package:dawini_full/doctor_Features/presentation/pages/doctors/Patient_Info.dart';
 import 'package:dawini_full/patient_features/domain/usecases/patients_usecase.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class doctorDetails extends StatefulWidget {
   State<doctorDetails> createState() => _doctorDetailsState();
 }
 
-bool isTodaySelected = false;
+bool isTodaySelected = true;
 bool? favorite;
 bool isTomorrowSelected = false;
 Future<void> isFavortie(String uid) async {
@@ -249,8 +250,8 @@ class _doctorDetailsState extends State<doctorDetails> {
                                       fontSize: 17,
                                       fontWeight: FontWeight.w600,
                                       fontFamily: "Nunito",
-                                      color:
-                                          const Color(0xff202020).withOpacity(0.65)),
+                                      color: const Color(0xff202020)
+                                          .withOpacity(0.65)),
                                 )
                               ],
                             ),
@@ -295,7 +296,8 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w700,
                                                     fontFamily: "Nunito",
-                                                    color: const Color(0xff202020)
+                                                    color: const Color(
+                                                            0xff202020)
                                                         .withOpacity(0.65))),
                                             const TextSpan(
                                                 text: '0557902660',
@@ -372,7 +374,8 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w700,
                                                     fontFamily: "Nunito",
-                                                    color: const Color(0xff202020)
+                                                    color: const Color(
+                                                            0xff202020)
                                                         .withOpacity(0.65))),
                                             const TextSpan(
                                                 text: '1111111111',
@@ -449,7 +452,8 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w700,
                                                     fontFamily: "Nunito",
-                                                    color: const Color(0xff202020)
+                                                    color: const Color(
+                                                            0xff202020)
                                                         .withOpacity(0.65))),
                                             const TextSpan(
                                                 text: 'Boumerdes , Corso',
@@ -545,7 +549,198 @@ class _doctorDetailsState extends State<doctorDetails> {
                                 borderRadius: BorderRadius.circular(20.r)),
                             child: MaterialButton(
                                 onPressed: () {
-                                  _showCustomDialog(context);
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        backgroundColor: Colors.white,
+                                        surfaceTintColor: Colors.white,
+                                        content: Container(
+                                          width: double.infinity,
+                                          height: 182.h,
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              const Text(
+                                                "Choose from available booking time :",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w700,
+                                                    color: Color(0xff202020),
+                                                    fontFamily: 'Nunito',
+                                                    fontSize: 16),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 0.h),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceAround,
+                                                  children: [
+                                                    Ink(
+                                                      decoration: BoxDecoration(
+                                                          boxShadow: [
+                                                            const BoxShadow(
+                                                                spreadRadius:
+                                                                    1.2,
+                                                                offset: Offset(
+                                                                    0, 0),
+                                                                blurRadius: 1.2,
+                                                                color: Color(
+                                                                    0xff2CDBC6))
+                                                          ],
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(15),
+                                                          color: Colors.white,
+                                                          border: Border.all(
+                                                              color: Colors
+                                                                  .transparent)),
+                                                      height: 40,
+                                                      width: 110,
+                                                      child: InkWell(
+                                                        onTap: () {},
+                                                        child: const Center(
+                                                          child: Text(
+                                                            "today",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700,
+                                                                color: Color(
+                                                                    0xff202020),
+                                                                fontFamily:
+                                                                    'Nunito',
+                                                                fontSize: 16),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Ink(
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.white,
+                                                          boxShadow: [
+                                                            const BoxShadow(
+                                                                spreadRadius:
+                                                                    1.2,
+                                                                offset: Offset(
+                                                                    0, 0),
+                                                                blurRadius: 1.2,
+                                                                color: Color(
+                                                                    0xff2CDBC6))
+                                                          ],
+                                                          border: Border.all(
+                                                            color: Colors
+                                                                .transparent,
+                                                            width: 0,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      15)),
+                                                      height: 40,
+                                                      width: 110,
+                                                      child: InkWell(
+                                                        onTap: () {},
+                                                        child: const Center(
+                                                          child: Text(
+                                                            "tomorrow",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700,
+                                                                color: Color(
+                                                                    0xff202020),
+                                                                fontFamily:
+                                                                    'Nunito',
+                                                                fontSize: 16),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Ink(
+                                                decoration: BoxDecoration(
+                                                    color:
+                                                        const Color(0xff00C8D5),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15)),
+                                                height: 40,
+                                                width: 230,
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (BuildContext
+                                                                    context) =>
+                                                                Patient_info(
+                                                                  doctorEntity:
+                                                                      doctor
+                                                                          .first,
+                                                                  today:
+                                                                      isTodaySelected,
+                                                                )));
+                                                  },
+                                                  child: const Center(
+                                                    child: Text(
+                                                      "Next",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          color: Colors.white,
+                                                          fontFamily: 'Nunito',
+                                                          fontSize: 16),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Ink(
+                                                height: 40,
+                                                width: 230,
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: const Color(
+                                                                0xff202020)
+                                                            .withOpacity(0.5),
+                                                        width: 2),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15)),
+                                                child: InkWell(
+                                                  child: InkWell(
+                                                    onTap: () {},
+                                                    child: Center(
+                                                      child: Text(
+                                                        "Cancel",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            color: const Color(
+                                                                    0xff202020)
+                                                                .withOpacity(
+                                                                    0.8),
+                                                            fontFamily:
+                                                                'Nunito',
+                                                            fontSize: 16),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
                                 },
                                 child: Padding(
                                   padding:
@@ -565,146 +760,5 @@ class _doctorDetailsState extends State<doctorDetails> {
                     return const Loading();
                   }
                 })));
-  }
-
-  void _showCustomDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.white,
-          content: Container(
-            width: double.infinity,
-            height: 182.h,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                const Text(
-                  "Choose from available booking time :",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xff202020),
-                      fontFamily: 'Nunito',
-                      fontSize: 16),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 0.h),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Ink(
-                        decoration: BoxDecoration(
-                            boxShadow: [
-                              const BoxShadow(
-                                  spreadRadius: 1.2,
-                                  offset: Offset(0, 0),
-                                  blurRadius: 1.2,
-                                  color: Color(0xff2CDBC6))
-                            ],
-                            borderRadius: BorderRadius.circular(15),
-                            color: Colors.white,
-                            border: Border.all(color: Colors.transparent)),
-                        height: 40,
-                        width: 110,
-                        child: InkWell(
-                          onTap: () {},
-                          child: const Center(
-                            child: Text(
-                              "today",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  color: Color(0xff202020),
-                                  fontFamily: 'Nunito',
-                                  fontSize: 16),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Ink(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: [
-                              const BoxShadow(
-                                  spreadRadius: 1.2,
-                                  offset: Offset(0, 0),
-                                  blurRadius: 1.2,
-                                  color: Color(0xff2CDBC6))
-                            ],
-                            border: Border.all(
-                              color: Colors.transparent,
-                              width: 0,
-                            ),
-                            borderRadius: BorderRadius.circular(15)),
-                        height: 40,
-                        width: 110,
-                        child: InkWell(
-                          onTap: () {},
-                          child: const Center(
-                            child: Text(
-                              "tomorrow",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  color: Color(0xff202020),
-                                  fontFamily: 'Nunito',
-                                  fontSize: 16),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Ink(
-                  decoration: BoxDecoration(
-                      color: const Color(0xff00C8D5),
-                      borderRadius: BorderRadius.circular(15)),
-                  height: 40,
-                  width: 230,
-                  child: InkWell(
-                    onTap: () {},
-                    child: const Center(
-                      child: Text(
-                        "Next",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                            fontFamily: 'Nunito',
-                            fontSize: 16),
-                      ),
-                    ),
-                  ),
-                ),
-                Ink(
-                  height: 40,
-                  width: 230,
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                          color: const Color(0xff202020).withOpacity(0.5), width: 2),
-                      borderRadius: BorderRadius.circular(15)),
-                  child: InkWell(
-                    child: InkWell(
-                      onTap: () {},
-                      child: Center(
-                        child: Text(
-                          "Cancel",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              color: const Color(0xff202020).withOpacity(0.8),
-                              fontFamily: 'Nunito',
-                              fontSize: 16),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
   }
 }
