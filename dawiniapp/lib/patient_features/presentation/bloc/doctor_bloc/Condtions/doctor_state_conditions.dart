@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 
 // ignore: non_constant_identifier_names
 Widget DoctorStateConditions(DoctorState state, List<DoctorEntity> data,
-    {required device}) {
+    {required int fontSize}) {
   if (state is DoctorLoading) {
     return const Loading();
   } else if (state is SeeAllDoctors) {
-    return Doctors(doctors: data, device: device);
+    return Doctors(doctors: data, fontSize: fontSize);
   } else if (state is DoctorLoaded) {
-    return Doctors(doctors: data, device: device);
+    return Doctors(doctors: data, fontSize: fontSize);
   } else if (state is FilterByWilaya) {
     List<DoctorEntity> doctors;
 
@@ -49,7 +49,10 @@ Widget DoctorStateConditions(DoctorState state, List<DoctorEntity> data,
             .toList();
       }
     }
-    return Doctors(doctors: doctors, device: device);
+    return Doctors(
+      doctors: doctors,
+      fontSize: fontSize,
+    );
   } else if (state is DoctorSearchName) {
     List<DoctorEntity>? doctors;
     if (state.name.isEmpty) {
@@ -90,7 +93,7 @@ Widget DoctorStateConditions(DoctorState state, List<DoctorEntity> data,
       }
     }
 
-    return Doctors(doctors: doctors, device: device);
+    return Doctors(doctors: doctors, fontSize: fontSize);
   } else if (state is DoctorFilterSpeciality) {
     List<DoctorEntity>? doctors;
     if (state.speciality.toLowerCase() == 'all') {
@@ -128,7 +131,7 @@ Widget DoctorStateConditions(DoctorState state, List<DoctorEntity> data,
             .toList();
       }
     }
-    return Doctors(doctors: doctors, device: device);
+    return Doctors(doctors: doctors, fontSize: fontSize);
   } else if (state is DoctorLoadingFailure) {
     return ErrorWidget(state.message);
   } else {

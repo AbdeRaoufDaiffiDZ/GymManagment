@@ -10,7 +10,9 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class tomorrow extends StatefulWidget {
-  const tomorrow({super.key, required this.uid});
+  final int fontSize;
+
+  const tomorrow({super.key, required this.uid, required this.fontSize});
   final String uid;
 
   @override
@@ -107,20 +109,20 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
                                         color: const Color(0xff202020)
                                             .withOpacity(0.6),
                                         fontFamily: "Nunito",
-                                        fontSize: 14.sp,
+                                        fontSize: 14.sp - widget.fontSize.sp,
                                       ),
                                     ),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(top: 5.h),
                                     child: Text(
-                                      (data.turn).toString(), 
+                                      (data.turn).toString(),
                                       style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         color: const Color(0xff202020)
                                             .withOpacity(0.6),
                                         fontFamily: "Nunito",
-                                        fontSize: 29.sp,
+                                        fontSize: 29.sp - widget.fontSize.sp,
                                       ),
                                     ),
                                   ),
@@ -153,7 +155,8 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
                                           "${data.firstName} ${data.lastName}",
                                           style: TextStyle(
                                             fontFamily: "Nunito",
-                                            fontSize: 16.sp,
+                                            fontSize:
+                                                16.sp - widget.fontSize.sp,
                                             fontWeight: FontWeight.w700,
                                           ),
                                         ),
@@ -166,9 +169,11 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
                                         fit: BoxFit.scaleDown,
                                         alignment: Alignment.topLeft,
                                         child: Text(
-                                          "${text.age}: ${data.age}",      style: TextStyle(
+                                          "${text.age}: ${data.age}",
+                                          style: TextStyle(
                                             fontFamily: "Nunito",
-                                            fontSize: 14.sp,
+                                            fontSize:
+                                                14.sp - widget.fontSize.sp,
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
@@ -184,7 +189,8 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
                                           "${text.gender}: ${data.gender}",
                                           style: TextStyle(
                                             fontFamily: "Nunito",
-                                            fontSize: 19.sp,
+                                            fontSize:
+                                                19.sp - widget.fontSize.sp,
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
@@ -204,7 +210,8 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
                                               data.phoneNumber,
                                               style: TextStyle(
                                                 fontFamily: 'Nunito',
-                                                fontSize: 16.sp,
+                                                fontSize:
+                                                    16.sp - widget.fontSize.sp,
                                                 fontWeight: FontWeight.w600,
                                                 color: const Color(0xff202020)
                                                     .withOpacity(0.85),
@@ -242,11 +249,13 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
                                   child: Center(
                                     child: Text(
                                       text.call,
-                                      style: const TextStyle(
-                                        color: Color(0xff0AA9A9),
-                                        fontFamily: "Nunito",
-                                        fontWeight: FontWeight.w700,
-                                      ),
+                                      style: TextStyle(
+                                          color: Color(0xff0AA9A9),
+                                          fontFamily: "Nunito",
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 14.sp -
+                                              widget.fontSize.sp // TODO:
+                                          ),
                                     ),
                                   ),
                                 ),
@@ -261,11 +270,12 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
                       child: Padding(
                         padding: EdgeInsets.only(top: 20.w),
                         child: Text(
-                          text.nopatinet,  style: TextStyle(
+                          text.nopatinet,
+                          style: TextStyle(
                             fontWeight: FontWeight.w700,
                             color: const Color(0xff202020).withOpacity(0.6),
                             fontFamily: "Nunito",
-                            fontSize: 18.sp,
+                            fontSize: 18.sp - widget.fontSize.sp,
                           ),
                         ),
                       ),
@@ -279,11 +289,11 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
           return const Center();
         } else if (state is PatientsInfoLoading) {
           return const Loading();
-         
-        }
-        else { patientsInfoBloc.add(onGetPatinets(uid: widget.uid, false, context));
+        } else {
+          patientsInfoBloc.add(onGetPatinets(uid: widget.uid, false, context));
 
-          return const Loading();}
+          return const Loading();
+        }
       },
     );
   }

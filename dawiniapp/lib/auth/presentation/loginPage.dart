@@ -12,11 +12,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'Widget/bezierContainer.dart';
 
 class LoginPage extends StatefulWidget {
+  final int fontSize;
+
   final String? error;
   const LoginPage({
     super.key,
     this.title,
     this.error,
+    required this.fontSize,
   });
 
   final String? title;
@@ -187,7 +190,9 @@ class _LoginPageState extends State<LoginPage> {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => SignUpPage()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => SignUpPage(fontSize: widget.fontSize)));
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 20),
@@ -245,6 +250,7 @@ class _LoginPageState extends State<LoginPage> {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
         appBar: myAppbar(
+          fontSize: widget.fontSize,
           fromWhere: true, // navigate to doctor side
         ),
         body: SizedBox(

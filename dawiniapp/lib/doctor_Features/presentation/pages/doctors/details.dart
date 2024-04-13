@@ -17,9 +17,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class doctorDetails extends StatefulWidget {
   final String uid;
-  final device;
+  final int fontSize;
 
-  const doctorDetails({super.key, required this.uid, this.device});
+  const doctorDetails({super.key, required this.uid, required this.fontSize});
 
   @override
   State<doctorDetails> createState() => _doctorDetailsState();
@@ -50,6 +50,8 @@ class _doctorDetailsState extends State<doctorDetails> {
     final PatientsBloc patientsBloc = BlocProvider.of<PatientsBloc>(context);
     final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
     final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
+    final bool isFrench = Localizations.localeOf(context).languageCode == "fr";
+
     final AppLocalizations locale = AppLocalizations.of(context)!;
 
     final uid = widget.uid;
@@ -260,6 +262,8 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                       Patient_info(
                                                         doctorEntity: doctor,
                                                         today: isTodaySelected,
+                                                        fontSize:
+                                                            widget.fontSize,
                                                       )));
                                         }
                                       },
@@ -270,7 +274,8 @@ class _doctorDetailsState extends State<doctorDetails> {
                                               fontWeight: FontWeight.w700,
                                               color: Colors.white,
                                               fontFamily: 'Nunito',
-                                              fontSize: 16.sp),
+                                              fontSize:
+                                                  16.sp - widget.fontSize.sp),
                                         ),
                                       ),
                                     ),
@@ -298,7 +303,8 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                 color: const Color(0xff202020)
                                                     .withOpacity(0.8),
                                                 fontFamily: 'Nunito',
-                                                fontSize: 16.sp),
+                                                fontSize:
+                                                    16.sp - widget.fontSize.sp),
                                           ),
                                         ),
                                       ),
@@ -458,7 +464,9 @@ class _doctorDetailsState extends State<doctorDetails> {
                                             : locale.not_at_service,
                                         style: TextStyle(
                                             fontFamily: 'Nunito',
-                                            fontSize: 12.sp,
+                                            fontSize: isFrench
+                                                ? 10.sp - widget.fontSize.sp
+                                                : 12.sp - widget.fontSize.sp,
                                             fontWeight: FontWeight.w600,
                                             color: const Color(0XFF202020))),
                                   ],
@@ -478,7 +486,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                 Text(
                                   "${locale.dr}. ${isArabic ? doctor.first.firstNameArabic : doctor.first.firstName} ${isArabic ? doctor.first.lastNameArabic : doctor.first.lastName}",
                                   style: TextStyle(
-                                      fontSize: 20.sp,
+                                      fontSize: 20.sp - widget.fontSize.sp,
                                       fontWeight: FontWeight.w700,
                                       fontFamily: "Nunito",
                                       color: const Color(0xff202020)),
@@ -488,7 +496,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                       ? doctor.first.specialityArabic
                                       : doctor.first.speciality,
                                   style: TextStyle(
-                                      fontSize: 17.sp,
+                                      fontSize: 17.sp - widget.fontSize.sp,
                                       fontWeight: FontWeight.w600,
                                       fontFamily: "Nunito",
                                       color: const Color(0xff202020)
@@ -511,7 +519,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                             child: Text(
                               locale.general_information,
                               style: TextStyle(
-                                  fontSize: 20.sp,
+                                  fontSize: 20.sp - widget.fontSize.sp,
                                   fontWeight: FontWeight.w700,
                                   fontFamily: "Nunito",
                                   color: const Color(0xff202020)),
@@ -539,7 +547,8 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                 text:
                                                     "${locale.phone_number}: ",
                                                 style: TextStyle(
-                                                    fontSize: 14.sp,
+                                                    fontSize: 14.sp -
+                                                        widget.fontSize.sp,
                                                     fontWeight: FontWeight.w700,
                                                     fontFamily: "Nunito",
                                                     color: const Color(
@@ -548,7 +557,8 @@ class _doctorDetailsState extends State<doctorDetails> {
                                             TextSpan(
                                                 text: doctor.first.phoneNumber,
                                                 style: TextStyle(
-                                                    fontSize: 14.sp,
+                                                    fontSize: 14.sp -
+                                                        widget.fontSize.sp,
                                                     fontWeight: FontWeight.w700,
                                                     fontFamily: "Nunito",
                                                     color: const Color(
@@ -594,7 +604,8 @@ class _doctorDetailsState extends State<doctorDetails> {
                                             Text(
                                               locale.call,
                                               style: TextStyle(
-                                                  fontSize: 8.sp,
+                                                  fontSize:
+                                                      8.sp - widget.fontSize.sp,
                                                   color:
                                                       const Color(0xff0AA9A9),
                                                   fontFamily: "Nunito",
@@ -702,7 +713,8 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                 text:
                                                     '${locale.link_location} : ',
                                                 style: TextStyle(
-                                                    fontSize: 14.sp,
+                                                    fontSize: 14.sp -
+                                                        widget.fontSize.sp,
                                                     fontWeight: FontWeight.w700,
                                                     fontFamily: "Nunito",
                                                     color: const Color(
@@ -712,7 +724,8 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                 text:
                                                     "${doctor.first.city}, ${doctor.first.wilaya}",
                                                 style: TextStyle(
-                                                    fontSize: 14.sp,
+                                                    fontSize: 14.sp -
+                                                        widget.fontSize.sp,
                                                     fontWeight: FontWeight.w700,
                                                     fontFamily: "Nunito",
                                                     color: const Color(
@@ -757,7 +770,8 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                 Text(
                                                   locale.on_maps,
                                                   style: TextStyle(
-                                                      fontSize: 8.sp,
+                                                      fontSize: 8.sp -
+                                                          widget.fontSize.sp,
                                                       color: const Color(
                                                           0xff0AA9A9),
                                                       fontFamily: "Nunito",
@@ -787,7 +801,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                             child: Text(
                               "${locale.experience}:",
                               style: TextStyle(
-                                  fontSize: 20.sp,
+                                  fontSize: 20.sp - widget.fontSize.sp,
                                   fontWeight: FontWeight.w700,
                                   fontFamily: "Nunito",
                                   color: const Color(0xff202020)),
@@ -828,7 +842,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                       fontWeight: FontWeight.w700,
                                       color: Colors.white,
                                       fontFamily: 'Nunito',
-                                      fontSize: 22.sp),
+                                      fontSize: 22.sp - widget.fontSize.sp),
                                 ),
                               ),
                             )),

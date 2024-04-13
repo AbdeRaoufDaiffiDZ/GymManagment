@@ -11,8 +11,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class doctorsideHome extends StatefulWidget {
+  final int fontSize;
+
   const doctorsideHome({
     super.key,
+    required this.fontSize,
   });
 
   @override
@@ -38,17 +41,21 @@ class _doctorsideHomeState extends State<doctorsideHome> {
           return user != null
               ? doctorview(
                   uid: user.uid,
+                  fontSize: widget.fontSize,
                 )
-              : AuthBlocMap();
+              : AuthBlocMap(fontSize: widget.fontSize);
 //
         });
   }
 }
 
 class WelcomePage extends StatefulWidget {
+  final int fontSize;
+
   const WelcomePage({
     super.key,
     this.title,
+    required this.fontSize,
   });
 
   final String? title;
@@ -62,7 +69,9 @@ class _WelcomePageState extends State<WelcomePage> {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LoginPage()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => LoginPage(fontSize: widget.fontSize)));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -90,7 +99,9 @@ class _WelcomePageState extends State<WelcomePage> {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => SignUpPage()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => SignUpPage(fontSize: widget.fontSize)));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,

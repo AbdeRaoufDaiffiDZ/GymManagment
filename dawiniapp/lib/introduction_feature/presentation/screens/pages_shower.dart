@@ -10,10 +10,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/pages/myApp.dart';
 
 class PagesShower extends StatefulWidget {
+  final int fontSize;
+
   final String? uid;
   const PagesShower({
     super.key,
     this.uid,
+    required this.fontSize,
   });
 
   @override
@@ -41,13 +44,14 @@ class _PagesShowerState extends State<PagesShower> {
         } else if (state is IgnoreIntorductionState) {
           if (state.Screen == 'doctor') {
             if (uid == null) {
-              return const doctorsideHome();
+              return doctorsideHome(fontSize: widget.fontSize);
             } else {
-              return const WelcomePage();
+              return WelcomePage(fontSize: widget.fontSize);
             }
             /////////////////////////////////////    here you will go to patients screen
           } else {
-            return const Mypage(
+            return Mypage(
+              fontSize: widget.fontSize,
               popOrNot: false,
             );
           }

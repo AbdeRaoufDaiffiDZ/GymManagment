@@ -7,7 +7,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class favorite extends StatefulWidget {
-  favorite({super.key});
+  final int fontSize;
+
+  favorite({super.key, required this.fontSize});
 
   @override
   State<favorite> createState() => _favoriteState();
@@ -18,7 +20,7 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     TabController tabcontroller = TabController(length: 2, vsync: this);
     final AppLocalizations text = AppLocalizations.of(context)!;
-    
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -30,13 +32,13 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
               margin: EdgeInsets.only(top: 12.h),
               width: 200.w,
               height: 30.h,
-              child:  FittedBox(
+              child: FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
                   text.my_favorite,
                   style: TextStyle(
                       color: const Color(0XFF202020),
-                      fontSize: 33.sp,
+                      fontSize: 33.sp - widget.fontSize.sp,
                       fontWeight: FontWeight.w700,
                       fontFamily: 'Nunito'),
                 ),
@@ -67,7 +69,7 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
                               child: Text(
                                 text.doctors,
                                 style: TextStyle(
-                                    fontSize: 22.dg,
+                                    fontSize: 22.dg - widget.fontSize.sp,
                                     fontWeight: FontWeight.w700,
                                     fontFamily: "Nunito"),
                               ),
@@ -83,7 +85,7 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
                               child: Text(
                                 text.clinics,
                                 style: TextStyle(
-                                    fontSize: 22.sp,
+                                    fontSize: 22.sp - widget.fontSize.sp,
                                     fontWeight: FontWeight.w700,
                                     fontFamily: "Nunito"),
                               ),
@@ -92,9 +94,14 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
                         ),
                       ]),
                   Expanded(
-                      child: TabBarView(
-                          controller: tabcontroller,
-                          children: const [myfavdoctors(), myfavclincs()])),
+                      child: TabBarView(controller: tabcontroller, children: [
+                    myfavdoctors(
+                      fontSize: widget.fontSize,
+                    ),
+                    myfavclincs(
+                      fontSize: widget.fontSize,
+                    )
+                  ])),
                 ]))),
       ),
     );

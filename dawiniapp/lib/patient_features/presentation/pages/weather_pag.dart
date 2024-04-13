@@ -17,9 +17,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Weather extends StatefulWidget {
+  final int fontSize;
 
   const Weather({
     super.key,
+    required this.fontSize,
   });
 
   @override
@@ -41,8 +43,12 @@ class _DoctorPageState extends State<Weather> {
     return Scaffold(
         floatingActionButton: MaterialButton(
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => SettingsPage()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SettingsPage(
+                          fontSize: widget.fontSize,
+                        )));
           },
           child: Icon(Icons.settings),
         ),
@@ -106,11 +112,12 @@ class _DoctorPageState extends State<Weather> {
         return ListView(
           children: [
             myAppbar(
+              fontSize: widget.fontSize,
               fromWhere: false, // navigate to doctor side
             ),
             Container(
               child: Column(children: [
-                SearchMenu(isHome: true),
+                SearchMenu(fontSize: widget.fontSize, isHome: true),
                 SizedBox(height: 10.h),
 
                 // Container(
@@ -191,7 +198,7 @@ class _DoctorPageState extends State<Weather> {
                           child: AutoSizeText(text.specialty,
                               style: TextStyle(
                                   fontFamily: 'Nunito',
-                                  fontSize: 20.sp,
+                                  fontSize: 20.sp - widget.fontSize.sp,
                                   fontWeight: FontWeight.w600,
                                   color: const Color(0xFF2CDBC6))),
                         ),
@@ -222,7 +229,9 @@ class _DoctorPageState extends State<Weather> {
                   ),
                 ),
 
-                SpecialityList(),
+                SpecialityList(
+                  fontSize: widget.fontSize,
+                ),
                 Padding(
                   padding: isArabic
                       ? EdgeInsets.only(right: 7.w)
@@ -234,7 +243,7 @@ class _DoctorPageState extends State<Weather> {
                         Text(text.recommended_doctors,
                             style: TextStyle(
                                 fontFamily: 'Nunito',
-                                fontSize: 19.sp,
+                                fontSize: 19.sp - widget.fontSize.sp,
                                 fontWeight: FontWeight.w600)),
                         GestureDetector(
                           onTap: () {
@@ -242,7 +251,9 @@ class _DoctorPageState extends State<Weather> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => doctors()));
+                                    builder: (context) => doctors(
+                                          fontSize: widget.fontSize,
+                                        )));
                           },
                           child: SizedBox(
                             width: 80.w,
@@ -251,7 +262,7 @@ class _DoctorPageState extends State<Weather> {
                               child: AutoSizeText(text.see_all,
                                   style: TextStyle(
                                       fontFamily: 'Nunito',
-                                      fontSize: 20.sp,
+                                      fontSize: 20.sp - widget.fontSize.sp,
                                       fontWeight: FontWeight.w600,
                                       color: const Color(0xFF2CDBC6))),
                             ),
@@ -261,16 +272,23 @@ class _DoctorPageState extends State<Weather> {
                     ),
                   ),
                 ),
-                Container(child: RecommandedDoctors()),
+                Container(
+                    child: RecommandedDoctors(
+                  fontSize: widget.fontSize,
+                )),
               ]),
             ),
           ],
         );
       case 1:
         patientsBloc.add(onPatientsReload());
-        return Myappointemtns();
+        return Myappointemtns(
+          fontSize: widget.fontSize,
+        );
       case 2:
-        return favorite();
+        return favorite(
+          fontSize: widget.fontSize,
+        );
       default:
         return Container();
     }
@@ -278,7 +296,9 @@ class _DoctorPageState extends State<Weather> {
 }
 
 class doctors extends StatefulWidget {
-  const doctors({super.key});
+  final int fontSize;
+
+  const doctors({super.key, required this.fontSize});
 
   @override
   State<doctors> createState() => _doctorsState();
@@ -291,9 +311,12 @@ class _doctorsState extends State<doctors> {
       body: ListView(
         children: [
           SearchMenu(
+            fontSize: widget.fontSize,
             isHome: false,
           ),
-          DoctorsList(device: "widget.device"),
+          DoctorsList(
+            fontSize: widget.fontSize,
+          ),
         ],
       ),
     );
