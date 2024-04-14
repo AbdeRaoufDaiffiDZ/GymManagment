@@ -39,7 +39,7 @@
     "keepappointment":"Tenir rendez-vous",
     "cancelappointmentbottun":"Annuler rendez-vous",
     "deletedata":"Suprimmer les données",
-    "currentturn":"tour en cours",
+    "currentturn":"tour en cours ",
     "tomorrowdate":"demain",
     "isat":"est à",
     "myturn":"mon tour",
@@ -71,7 +71,7 @@
     "try_again":"essayer à nouveau",
     "your_appointment_has_been_booked":"Votre rendez-vous a été réservé",
     "your_appointment_has_not_been_booked":"Votre rendez-vous n'a pas été réservé",
-    "successfully":"avec succès",
+    "successfully":" avec succès",
     "you_already_booked_an_appointment":"tu as déjà pris rendez-vous",
     "try_again_after_five_sec":"réessayez après 5 secondes",
     "try_again_after_ten_sec":"réessayez après 10 secondes",
@@ -95,7 +95,12 @@
     "maximum_number_of_patients_per_day":"nombre maximum de patients par jour",
     "set_the_booking_time":"Définir l'heure de la réservation",
     "only":"seulement",
-    "and":"et",
+    "and":" & ",
     "share_your_insights_and_expertise":"Partagez vos idées et votre expertise",
-    "save":"Save"
+    "save":"Save",
+    "my_favorite":"Mon préféré",
+    "on_maps":"Localisation",
+    "read_more":" En savoir plus",
+    "show_less":" Montrer moins",
+    "cancel":"Annuler"
 }

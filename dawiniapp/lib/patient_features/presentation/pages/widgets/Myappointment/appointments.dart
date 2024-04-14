@@ -7,7 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Myappointemtns extends StatefulWidget {
-  const Myappointemtns({Key? key, String? uid}) : super(key: key);
+  const Myappointemtns({super.key, String? uid});
 
   @override
   State<Myappointemtns> createState() => _MyappointemtnsState();
@@ -31,13 +31,13 @@ class _MyappointemtnsState extends State<Myappointemtns>
               margin: EdgeInsets.only(top: 12.h),
               width: 200.w,
               height: 30.h,
-              child: const FittedBox(
+              child:  FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
-                  "My appointments",
+                 text.my_Appointement,
                   style: TextStyle(
-                      color: Color(0XFF202020),
-                      fontSize: 26,
+                      color: const Color(0XFF202020),
+                      fontSize: 26.sp,
                       fontWeight: FontWeight.w700,
                       fontFamily: 'Nunito'),
                 ),

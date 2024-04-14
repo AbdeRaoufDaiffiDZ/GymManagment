@@ -111,11 +111,12 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
       } else if (event is onPatientsAppointmentDelete) {
         try {
           emit(PatientsLoading());
-          final AuthModel auth = AuthModel(
+         
+          if (auth0.user == null) {
+             final AuthModel auth = AuthModel(
               email: "deleteAppointment@gmail.com",
               password: "deleteAppointment");
 
-          if (auth0.user == null) {
             auth0.loginWithEmail(authData: auth);
           }
 
@@ -245,8 +246,8 @@ Future<Object?> showlDialog(
                       TextSpan(
                         text: done
                             ? text
-                                ? locale.successfully + " !"
-                                : "," + locale.you_already_booked_an_appointment
+                                ? "${locale.successfully} !"
+                                : ",${locale.you_already_booked_an_appointment}"
                             : " ",
                         style: TextStyle(
                           fontFamily: "Nunito",
@@ -281,6 +282,8 @@ Future<Object?> showlDialog(
                     if (Navigator.canPop(context)) {
                       Navigator.pop(context);
                       if (done) {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
                         Navigator.pop(context);
                       }
                     }

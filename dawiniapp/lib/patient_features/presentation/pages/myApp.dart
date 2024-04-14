@@ -13,11 +13,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Mypage extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
-  final device;
   final bool popOrNot;
 
-  const Mypage({Key? key, this.device, required this.popOrNot})
-      : super(key: key);
+  const Mypage({super.key, required this.popOrNot});
 
   @override
   State<Mypage> createState() => _MypageState();
@@ -88,8 +86,7 @@ class _MypageState extends State<Mypage> {
     if (type != "doctor" || type == null) {
       return Scaffold(
           key: _scaffoldKey,
-          body: Weather(
-            device: widget.device,
+          body: const Weather(
           ));
     } else {
       return const doctorsideHome();

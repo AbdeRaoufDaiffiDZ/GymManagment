@@ -1,4 +1,4 @@
-// ignore_for_file: annotate_overrides, overridden_fields, must_be_immutable
+// ignore_for_file: annotate_overrides, overridden_fields, must_be_immutable, non_constant_identifier_names
 
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 
@@ -13,7 +13,7 @@ class DoctorModel extends DoctorEntity {
   final String location;
   final String date;
   final String experience;
-  final String description;
+  final int max_number;
   final String firstName;
   final String lastName;
   final String phoneNumber;
@@ -35,7 +35,7 @@ class DoctorModel extends DoctorEntity {
       required this.location,
       required this.date,
       required this.experience,
-      required this.description,
+      required this.max_number,
       required this.uid,
       required this.city,
       required this.turn,
@@ -55,7 +55,7 @@ class DoctorModel extends DoctorEntity {
             numberInList: numberInList,
             location: location,
             date: date,
-            description: description,
+            max_number: max_number,
             experience: experience,
             uid: uid,
             turn: turn,
@@ -77,7 +77,7 @@ class DoctorModel extends DoctorEntity {
         location,
         date,
         experience,
-        description,
+        max_number,
         lastName,
         firstName,
         phoneNumber,
@@ -101,7 +101,7 @@ class DoctorModel extends DoctorEntity {
       'location': location,
       'date': date,
       'experience': experience,
-      'description': description,
+      'max_number': max_number,
       'firstName': firstName,
       'lastName': lastName,
       'phoneNumber': phoneNumber,
@@ -133,7 +133,7 @@ class DoctorModel extends DoctorEntity {
         location: json['location'] ?? " ",
         date: json['date'] ?? " ",
         experience: json['experience'] ?? " ",
-        description: json['description'] ?? " ",
+        max_number: json['max_number'] ?? 0,
         firstNameArabic: json['firstNameArabic'] ?? " ",
         lastNameArabic: json['lastNameArabic'] ?? " ",
         ImageProfileurl: json['ImageProfileurl'] ?? " ",
@@ -154,7 +154,7 @@ class DoctorModel extends DoctorEntity {
       location: location,
       date: date,
       experience: experience,
-      description: description,
+      max_number: max_number,
       numberInList: numberInList,
       recommanded: recommanded,
       firstNameArabic: firstNameArabic,

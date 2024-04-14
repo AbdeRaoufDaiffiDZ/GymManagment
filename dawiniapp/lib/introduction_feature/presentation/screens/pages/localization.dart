@@ -7,7 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class Localisation extends StatefulWidget {
   final String languageSys;
 
-  const Localisation({Key? key, required this.languageSys}) : super(key: key);
+  const Localisation({super.key, required this.languageSys});
 
   @override
   State<Localisation> createState() => _LocalisationState();

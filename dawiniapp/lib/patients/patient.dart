@@ -14,7 +14,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class Patientslist extends StatefulWidget {
   final String uid;
 
-  const Patientslist({Key? key, required this.uid}) : super(key: key);
+  const Patientslist({super.key, required this.uid});
 
   @override
   State<Patientslist> createState() => _PatientslistState();
@@ -115,12 +115,16 @@ class _PatientslistState extends State<Patientslist>
                                 ),
                               ]),
                           Expanded(
-                              child: TabBarView(
-                                  controller: tabcontroller,
-                                  children: [
-                                today(uid: doctor.uid, turn: doctor.turn),
-                                tomorrow(uid: doctor.uid)
-                              ])),
+                              child: Builder(
+                                builder: (context) {
+                                  return TabBarView(
+                                      controller: tabcontroller,
+                                      children: [
+                                    today(uid: doctor.uid, turn: doctor.turn),
+                                    tomorrow(uid: doctor.uid)
+                                  ]);
+                                }
+                              )),
                         ])));
               } else {
                 return const Loading();

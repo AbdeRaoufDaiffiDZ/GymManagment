@@ -109,8 +109,7 @@ class _previousappointmState extends State<previousappointm> {
                                                       ? Alignment.topRight
                                                       : Alignment.topLeft,
                                                   child: Text(
-                                                      text.dr +
-                                                          ". ${doctors.first.lastName}",
+                                                      "${text.dr}. ${isArabic ? doctors[index].lastNameArabic : doctors[index].lastName}",
                                                       style: const TextStyle(
                                                           fontSize: 19,
                                                           fontWeight:
@@ -128,7 +127,11 @@ class _previousappointmState extends State<previousappointm> {
                                                       : Alignment.topLeft,
                                                   fit: BoxFit.scaleDown,
                                                   child: Text(
-                                                      doctors.first.speciality,
+                                                      isArabic
+                                                          ? doctors.first
+                                                              .specialityArabic
+                                                          : doctors
+                                                              .first.speciality,
                                                       style: const TextStyle(
                                                           fontFamily: 'Nunito',
                                                           fontSize: 18,
@@ -160,7 +163,7 @@ class _previousappointmState extends State<previousappointm> {
                                                             fontSize: 15.sp,
                                                             fontWeight:
                                                                 FontWeight.w600,
-                                                            color: Color(
+                                                            color: const Color(
                                                                 0XFF202020))),
                                                   ),
                                                 ],

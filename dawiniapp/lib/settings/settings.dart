@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
 
 import 'package:dawini_full/introduction_feature/domain/usecases/set_language_usecase.dart';
 import 'package:dawini_full/main.dart';

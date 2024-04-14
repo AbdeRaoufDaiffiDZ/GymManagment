@@ -10,7 +10,7 @@ part 'patients_info_event.dart';
 part 'patients_info_state.dart';
 
 class PatientsInfoBloc extends Bloc<PatientsInfoEvent, PatientsInfoState> {
-  PatientsInfoBloc(PatientsInfoState initialState) : super(initialState) {
+  PatientsInfoBloc(super.initialState) {
     final GetDoctorPatinetsInfousecase getDoctorPatinetsInfo =
         GetDoctorPatinetsInfousecase();
     on<PatientsInfoEvent>((event, emit) async {
@@ -18,13 +18,14 @@ class PatientsInfoBloc extends Bloc<PatientsInfoEvent, PatientsInfoState> {
         emit(PatientsInfoLoading());
         // updateDoctorCabinData.updateState(
         //     event.doctor.numberInList, event.state);
+        final bool today = event.today;
         final data =
-            await getDoctorPatinetsInfo.excute(event.uid, event.today); // TODO:
+            await getDoctorPatinetsInfo.excute(event.uid, today); 
 
         if (kDebugMode) {
           print(data);
         }
-        data.fold((l) async {
+        data.fold((l)  {
           ScaffoldMessenger.of(event.context).showSnackBar(SnackBar(
               content: Text(l.message),
               backgroundColor: const Color.fromARGB(255, 255, 58, 58)));

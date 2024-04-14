@@ -242,8 +242,8 @@ class _SearchMenuState extends State<SearchMenu> {
                   menuItemStyleData: MenuItemStyleData(
                     height: 30,
                     padding: isArabic
-                        ? EdgeInsets.only(right: 12, left: 14)
-                        : EdgeInsets.only(left: 12, right: 14),
+                        ? const EdgeInsets.only(right: 12, left: 14)
+                        : const EdgeInsets.only(left: 12, right: 14),
                   ),
                 ),
               ),

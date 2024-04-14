@@ -9,9 +9,9 @@ class ClinicWidget extends StatefulWidget {
   List<ClinicEntity> clinics;
 
   ClinicWidget({
-    Key? key,
+    super.key,
     required this.clinics,
-  }) : super(key: key);
+  });
 
   @override
   State<ClinicWidget> createState() => _ClinicWidgetState();

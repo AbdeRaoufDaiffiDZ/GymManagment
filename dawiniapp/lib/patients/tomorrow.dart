@@ -114,7 +114,7 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
                                   Padding(
                                     padding: EdgeInsets.only(top: 5.h),
                                     child: Text(
-                                      (data.turn).toString(), // TODO:
+                                      (data.turn).toString(), 
                                       style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         color: const Color(0xff202020)
@@ -166,9 +166,7 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
                                         fit: BoxFit.scaleDown,
                                         alignment: Alignment.topLeft,
                                         child: Text(
-                                          text.age +
-                                              ": ${data.age}", // TODO: age does not exist in patient entity, create it
-                                          style: TextStyle(
+                                          "${text.age}: ${data.age}",      style: TextStyle(
                                             fontFamily: "Nunito",
                                             fontSize: 14.sp,
                                             fontWeight: FontWeight.w600,
@@ -183,7 +181,7 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
                                         fit: BoxFit.scaleDown,
                                         alignment: Alignment.topLeft,
                                         child: Text(
-                                          text.gender + ": ${data.gender}",
+                                          "${text.gender}: ${data.gender}",
                                           style: TextStyle(
                                             fontFamily: "Nunito",
                                             fontSize: 19.sp,
@@ -263,8 +261,7 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
                       child: Padding(
                         padding: EdgeInsets.only(top: 20.w),
                         child: Text(
-                          text.nopatinet, // TODO:   langugae here
-                          style: TextStyle(
+                          text.nopatinet,  style: TextStyle(
                             fontWeight: FontWeight.w700,
                             color: const Color(0xff202020).withOpacity(0.6),
                             fontFamily: "Nunito",
@@ -280,10 +277,13 @@ class _tomorrowState extends State<tomorrow> with TickerProviderStateMixin {
           );
         } else if (state is PatientsInfoLoadingError) {
           return const Center();
+        } else if (state is PatientsInfoLoading) {
+          return const Loading();
+         
         }
-        patientsInfoBloc.add(onGetPatinets(uid: widget.uid, false, context));
+        else { patientsInfoBloc.add(onGetPatinets(uid: widget.uid, false, context));
 
-        return const Loading();
+          return const Loading();}
       },
     );
   }

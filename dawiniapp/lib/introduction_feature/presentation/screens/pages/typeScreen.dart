@@ -9,7 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class UserTypeSelector extends StatefulWidget {
   final String type;
 
-  const UserTypeSelector({Key? key, required this.type}) : super(key: key);
+  const UserTypeSelector({super.key, required this.type});
 
   @override
   State<UserTypeSelector> createState() => _UserTypeSelectorState();

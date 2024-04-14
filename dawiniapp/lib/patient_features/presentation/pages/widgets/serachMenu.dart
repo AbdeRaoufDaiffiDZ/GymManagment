@@ -32,7 +32,8 @@ class _SearchMenuState extends State<SearchMenu> {
   //   "Annaba",
   //   "Bouira"
   // ];
-  // TODO:
+  // 
+  
   @override
   Widget build(BuildContext context) {
     final AppLocalizations text = AppLocalizations.of(context)!;

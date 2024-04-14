@@ -9,7 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class myAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String? uid;
   final bool fromWhere;
-  myAppbar({Key? key, this.uid, required this.fromWhere}) : super(key: key);
+  myAppbar({super.key, this.uid, required this.fromWhere});
   final SetTypeUseCase setTypeUseCase = SetTypeUseCase();
 
   @override

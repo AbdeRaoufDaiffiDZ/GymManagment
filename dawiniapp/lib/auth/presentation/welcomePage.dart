@@ -47,9 +47,9 @@ class _doctorsideHomeState extends State<doctorsideHome> {
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({
-    Key? key,
+    super.key,
     this.title,
-  }) : super(key: key);
+  });
 
   final String? title;
 

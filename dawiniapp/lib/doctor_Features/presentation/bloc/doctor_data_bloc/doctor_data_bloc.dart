@@ -54,8 +54,8 @@ class DoctorPatientsBloc
           List<DoctorEntity> doctor = data;
           if (event.turn < 0) {
             doctor[event.doctor.numberInList].turn = 0;
-          } else if (data[event.doctor.numberInList].numberOfPatient <
-              event.turn) {
+          } else if (event.turn > data[event.doctor.numberInList].numberOfPatient
+               ) {
             doctor[event.doctor.numberInList].turn =
                 data[event.doctor.numberInList].numberOfPatient;
           } else {

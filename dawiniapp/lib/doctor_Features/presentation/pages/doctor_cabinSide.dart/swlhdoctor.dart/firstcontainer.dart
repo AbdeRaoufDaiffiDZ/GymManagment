@@ -21,6 +21,8 @@ class _firstConatinerState extends State<firstConatiner> {
   Widget build(BuildContext context) {
     final AppLocalizations locale = AppLocalizations.of(context)!;
     final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
+    final bool isFrench = Localizations.localeOf(context).languageCode == "fr";
+
     switch (widget.doctor.date) {
       case "today":
         date = "${locale.today} ${locale.only}";
@@ -60,7 +62,7 @@ class _firstConatinerState extends State<firstConatiner> {
                     child: widget.doctor.ImageProfileurl == ''
                         ? ClipOval(
                             child: SizedBox.fromSize(
-                            size: Size.fromRadius(48.0), // Adjust radius
+                            size: const Size.fromRadius(48.0), // Adjust radius
                             child: Image.asset(
                               "assets/images/maleDoctor.png",
                               alignment: Alignment.center,
@@ -69,7 +71,7 @@ class _firstConatinerState extends State<firstConatiner> {
                           ))
                         : ClipOval(
                             child: SizedBox.fromSize(
-                              size: Size.fromRadius(48.0), // Adjust radius
+                              size: const Size.fromRadius(48.0), // Adjust radius
                               child: Image.network(
                                 widget.doctor.ImageProfileurl,
                                 fit: BoxFit.cover,
@@ -88,7 +90,7 @@ class _firstConatinerState extends State<firstConatiner> {
                     alignment:
                         isArabic ? Alignment.topRight : Alignment.topLeft,
                     child: Text(
-                      "${locale.dr}. ${widget.doctor.firstName}",
+                      "${locale.dr}. ${isArabic ? widget.doctor.firstNameArabic : widget.doctor.firstName}",
                       style: TextStyle(
                           fontFamily: "Nunito",
                           fontSize: 17.sp,
@@ -104,7 +106,7 @@ class _firstConatinerState extends State<firstConatiner> {
                     alignment:
                         isArabic ? Alignment.topRight : Alignment.topLeft,
                     child: Text.rich(TextSpan(
-                        text: "${locale.max_number_of_patients} : ", // TODO:
+                        text: "${locale.max_number_of_patients} : ", 
                         style: TextStyle(
                             fontFamily: "Nunito",
                             color: const Color(0xff202020).withOpacity(0.7),
@@ -113,7 +115,7 @@ class _firstConatinerState extends State<firstConatiner> {
                         children: [
                           TextSpan(
                             text: widget.doctor.numberOfPatient
-                                .toString(), // TODO:
+                                .toString(), 
                             style: TextStyle(
                                 fontFamily: "Nunito",
                                 color: const Color(0xff0AA9A9).withOpacity(0.7),
@@ -131,7 +133,7 @@ class _firstConatinerState extends State<firstConatiner> {
                     alignment:
                         isArabic ? Alignment.topRight : Alignment.topLeft,
                     child: Text.rich(TextSpan(
-                        text: "${locale.booking_period} : ", // TODO:
+                        text: "${locale.booking_period} : ", 
                         style: TextStyle(
                             fontFamily: "Nunito",
                             color: const Color(0xff202020).withOpacity(0.7),
@@ -139,7 +141,7 @@ class _firstConatinerState extends State<firstConatiner> {
                             fontWeight: FontWeight.w600),
                         children: [
                           TextSpan(
-                            text: date, // TODO:
+                            text: date, 
                             style: TextStyle(
                                 fontFamily: "Nunito",
                                 color: const Color(0xff0AA9A9).withOpacity(0.7),
@@ -172,8 +174,8 @@ class _firstConatinerState extends State<firstConatiner> {
                       child: Text(
                     locale.edit,
                     style: TextStyle(
-                        fontSize: 10.sp,
-                        color: Color(0xff0AA9A9),
+                        fontSize: isFrench ? 8.sp:10.sp,
+                        color: const Color(0xff0AA9A9),
                         fontFamily: "Nunito",
                         fontWeight: FontWeight.w700),
                   )),

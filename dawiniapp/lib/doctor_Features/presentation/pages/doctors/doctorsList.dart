@@ -133,13 +133,17 @@ class _DoctorsState extends State<Doctors> {
                                   fit: BoxFit.cover,
                                 )),
                       Container(
-                        margin: EdgeInsets.only(left: 4.w),
+                        margin: isArabic
+                            ? EdgeInsets.only(right: 4.w)
+                            : EdgeInsets.only(left: 4.w),
                         width: double.infinity,
                         height: 20.h,
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
-                          alignment: Alignment.topLeft,
-                          child: Text("Dr.${data[index].lastName}",
+                          alignment:
+                              isArabic ? Alignment.topRight : Alignment.topLeft,
+                          child: Text(
+                              "${text.dr}. ${isArabic ? data[index].lastNameArabic : data[index].lastName}",
                               style: const TextStyle(
                                   fontFamily: 'Nunito',
                                   fontSize: 17,
@@ -148,13 +152,19 @@ class _DoctorsState extends State<Doctors> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 4.w),
+                        margin: isArabic
+                            ? EdgeInsets.only(right: 4.w)
+                            : EdgeInsets.only(left: 4.w),
                         width: double.infinity,
                         height: 20.h,
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
-                          alignment: Alignment.topLeft,
-                          child: Text(data[index].speciality,
+                          alignment:
+                              isArabic ? Alignment.topRight : Alignment.topLeft,
+                          child: Text(
+                              isArabic
+                                  ? data[index].specialityArabic
+                                  : data[index].speciality,
                               style: const TextStyle(
                                   fontFamily: 'Nunito',
                                   fontSize: 15,
@@ -163,12 +173,15 @@ class _DoctorsState extends State<Doctors> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 2.w),
+                        margin: isArabic
+                            ? EdgeInsets.only(right: 2.w)
+                            : EdgeInsets.only(left: 2.w),
                         width: double.infinity,
                         height: 20.h,
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
-                          alignment: Alignment.topLeft,
+                          alignment:
+                              isArabic ? Alignment.topRight : Alignment.topLeft,
                           child: Row(
                             children: [
                               Icon(

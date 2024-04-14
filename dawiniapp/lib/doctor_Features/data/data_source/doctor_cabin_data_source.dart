@@ -123,6 +123,8 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
     } else {
       turn = turn;
     }
+  
+int length = data.length;
     final uid = auth.currentUser!.uid; /////////////////////////
     await _databaseReference
         .ref("/doctorsList/$numberInList/")
@@ -130,13 +132,16 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
         .update({"turn": turn})
         .then((value) => print("done!"))
         .catchError((e) => print("error"));
+        if(data.first.firstName == "No Patients "){
+length = 0;
+        }
     await _databaseReference
         .ref()
         .child("/user_data/Doctors/$uid")
         .update({"turn": turn});
-    // await _databaseReference
-    //     .ref("/doctorsList/$numberInList/numberOfPatient")
-    //     .set(data.length);
+    await _databaseReference
+        .ref("/doctorsList/$numberInList/numberOfPatient")
+        .set(length);
   }
 
   @override
@@ -164,7 +169,7 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
       "atSerivce": doctor.atSerivce,
       "city": doctor.city,
       "date": doctor.date,
-      "description": doctor.description,
+      "max_number": doctor.max_number,
       "experience": doctor.experience,
       "firstName": doctor.firstName,
       "lastName": doctor.lastName,
@@ -190,7 +195,7 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
       "atSerivce": doctor.atSerivce,
       "city": doctor.city,
       "date": doctor.date,
-      "description": doctor.description,
+      "max_number": doctor.max_number,
       "experience": doctor.experience,
       "firstName": doctor.firstName,
       "lastName": doctor.lastName,
