@@ -17,6 +17,8 @@ class UserTypeSelector extends StatefulWidget {
 
 class _UserTypeSelectorState extends State<UserTypeSelector> {
   bool isSelected = false;
+  bool isPatient = false;
+  bool isDoctor = false;
   @override
   Widget build(BuildContext context) {
     final IntroductionBloc bloc = BlocProvider.of<IntroductionBloc>(context);
@@ -50,9 +52,9 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
                       offset: const Offset(0, 0),
                     ),
                   ],
-                  borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(25),
-                      topRight: Radius.circular(25))),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(25.r),
+                      topRight: Radius.circular(25.r))),
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 15.w),
                 child: Column(
@@ -82,11 +84,14 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
                       padding: EdgeInsets.only(top: 8.h),
                       child: Center(
                           child: usertypeContainer(
-                              text.whoareyou, "patient", bloc)),
+                              WhoIs: isPatient,
+                              text.whoareyou,
+                              "patient",
+                              bloc)),
                     ),
                     Center(
-                        child:
-                            usertypeContainer(text.iamdoctor, "doctor", bloc)),
+                        child: usertypeContainer(
+                            WhoIs: isDoctor, text.iamdoctor, "doctor", bloc)),
                     Padding(
                       padding: EdgeInsets.only(top: 8.h),
                       child: Center(
@@ -98,11 +103,16 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
                             color: Color(0xffECF2F2),
                           ),
                           child: IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                if(isSelected){
+                                 bloc.add(const NextPage(id: 3));
+
+                                }
+                              },
                               icon: Icon(
                                 Icons.arrow_forward,
                                 size: 29.w,
-                                color: const Color(0xff0AA9A9),
+                                color: isSelected ? Color(0xff0AA9A9):Color.fromARGB(94, 10, 169, 169), 
                               )),
                         ),
                       ),
@@ -115,36 +125,42 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
         ])));
   }
 
-  Widget usertypeContainer(String MyType, String type, IntroductionBloc bloc) {
+  Widget usertypeContainer(String MyType, String type, IntroductionBloc bloc,
+      {required bool WhoIs}) {
     final AppLocalizations text = AppLocalizations.of(context)!;
 
     return InkWell(
       onTap: () {
+      setState(() {
         if (MyType == text.whoareyou) {
-          bloc.add(const onTypeChoose(type: "patient"));
-          print("object1");
-        } else if (MyType == text.iamdoctor) {
-          bloc.add(const onTypeChoose(type: "doctor"));
-          print("object2");
-          ;
-        }
-        isSelected = true;
+            isPatient = true;
+            isDoctor = false;
+            bloc.add(const onTypeChoose(type: "patient"));
+            print("object1");
+          } else if (MyType == text.iamdoctor) {
+            isPatient = false;
+            isDoctor = true;
+            bloc.add(const onTypeChoose(type: "doctor"));
+            print("object2");
+          }
+          isSelected = true;
+      });
       },
       child: Container(
-        margin: const EdgeInsets.all(8),
+        margin: EdgeInsets.all(8.w),
         width: 220.w,
         height: 45.h,
         decoration: BoxDecoration(
           color: Color(0xffFAFAFA),
           boxShadow: [
             BoxShadow(
-              color: const Color(0XFF000000).withOpacity(0.3),
+              color:  Color(0XFF000000).withOpacity(0.3),
               blurRadius: 2,
               spreadRadius: 0,
               offset: const Offset(0, 0),
             ),
           ],
-          border: Border.all(width: 0.w, color: Colors.transparent),
+          border: Border.all(width: 1.w, color:WhoIs ? Colors.green : Colors.transparent),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Center(

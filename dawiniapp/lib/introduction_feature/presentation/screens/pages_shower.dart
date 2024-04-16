@@ -11,12 +11,13 @@ import 'package:dawini_full/patient_features/presentation/pages/myApp.dart';
 
 class PagesShower extends StatefulWidget {
   final int fontSize;
-
+  final int? pageNumber;
   final String? uid;
   const PagesShower({
     super.key,
     this.uid,
     required this.fontSize,
+    this.pageNumber,
   });
 
   @override
@@ -56,7 +57,11 @@ class _PagesShowerState extends State<PagesShower> {
             );
           }
         } else {
-          bloc.add(const NextPage(id: 1));
+          if (widget.pageNumber != null) {
+            bloc.add(NextPage(id: widget.pageNumber!));
+          } else {
+            bloc.add(const NextPage(id: 1));
+          }
 
           return const Center();
         }

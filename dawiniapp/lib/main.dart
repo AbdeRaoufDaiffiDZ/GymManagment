@@ -10,7 +10,6 @@ import 'package:dawini_full/doctor_Features/presentation/bloc/patients_info_bloc
 import 'package:dawini_full/firebase_options.dart';
 import 'package:dawini_full/injection_container.dart';
 import 'package:dawini_full/introduction_feature/presentation/bloc/bloc/introduction_bloc.dart';
-import 'package:dawini_full/introduction_feature/presentation/screens/pages/typeScreen.dart';
 import 'package:dawini_full/introduction_feature/presentation/screens/pages_shower.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
@@ -60,8 +59,9 @@ Future<void> main() async {
 }
 
 class MyApp extends StatefulWidget {
+  final int? pageNumber;
   const MyApp({
-    super.key,
+    super.key, this.pageNumber,
   });
 
   @override
@@ -124,15 +124,14 @@ class _MyAppState extends State<MyApp> {
                       AppLocalizations.localizationsDelegates,
                   supportedLocales: AppLocalizations.supportedLocales,
                   debugShowCheckedModeBanner: false,
-<<<<<<< HEAD
-                  home: const UserTypeSelector
-                  (type:"" ,
-=======
-                  home: MyWidget(
-                    fontSize: fontSize == null
-                        ? 2
-                        : fontSize!, // TODO HERE YOU CHANGE THE FONT SIZE, USER IS ABLE TO CHANGE FONTS SIZE FROM THIS PARM
->>>>>>> 3a9000e527e5f7e2002072991d7214aa9c40ef4b
+                  home:  PagesShower(
+                    pageNumber:widget.pageNumber,
+                  fontSize: 0,
+                    // home: MyWidget(
+                    //   fontSize: fontSize == null
+                    //       ? 2
+                    //       : fontSize!, // TODO HERE YOU CHANGE THE FONT SIZE, USER IS ABLE TO CHANGE FONTS SIZE FROM THIS PARM
+                    // )
                   ));
             }));
   }

@@ -1,4 +1,5 @@
 import 'package:dawini_full/introduction_feature/presentation/bloc/bloc/introduction_bloc.dart';
+import 'package:dawini_full/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,6 +20,7 @@ class _LocalisationState extends State<Localisation> {
   Widget build(BuildContext context) {
     final IntroductionBloc bloc = BlocProvider.of<IntroductionBloc>(context);
     final AppLocalizations text = AppLocalizations.of(context)!;
+    final String languageCode = Localizations.localeOf(context).languageCode;
 
     return Scaffold(
       body: SafeArea(
@@ -28,9 +30,9 @@ class _LocalisationState extends State<Localisation> {
             //   margin: EdgeInsets.all(8.h),
             //   child: Image.asset("assets/images/cc.png"),
             // ),
-            languageContainer("English", bloc, widget.languageSys),
-            languageContainer("Français", bloc, widget.languageSys),
-            languageContainer("العربية", bloc, widget.languageSys),
+            languageContainer("English", "en",bloc, languageCode),
+            languageContainer("Français","fr", bloc, languageCode),
+            languageContainer("العربية", "ar",bloc, languageCode),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 50.w, vertical: 16.h),
               height: 50.h,
@@ -45,6 +47,11 @@ class _LocalisationState extends State<Localisation> {
                   if (isSelected) {
                     bloc.add(const NextPage(id: 2));
                   }
+                   Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>  const MyApp(pageNumber: 2,)
+                ));
                 },
                 child: Center(
                   child: Text(
@@ -66,14 +73,14 @@ class _LocalisationState extends State<Localisation> {
   }
 
   Widget languageContainer(
-      String language, IntroductionBloc bloc, String languageSys) {
+      String language, String languageCode, IntroductionBloc bloc, String languageSys) {
     return Container(
       margin: EdgeInsets.all(8.h),
       width: 150.w,
       height: 40.h,
       decoration: BoxDecoration(
         border: Border.all(
-          color: languageSys == language
+          color: languageSys == languageCode
               ? const Color(0xFF2CDBC6)
               : Colors.grey.shade300,
           width: 2.w,
@@ -82,7 +89,7 @@ class _LocalisationState extends State<Localisation> {
       ),
       child: InkWell(
         onTap: () {
-          bloc.add(onLanguageChoose(language: language));
+          bloc.add(onLanguageChoose(language: languageCode));
           setState(() {
             isSelected = true;
           });
