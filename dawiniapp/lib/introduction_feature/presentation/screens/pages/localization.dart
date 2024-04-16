@@ -47,11 +47,7 @@ class _LocalisationState extends State<Localisation> {
                   if (isSelected) {
                     bloc.add(const NextPage(id: 2));
                   }
-                   Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>  const MyApp(pageNumber: 2,)
-                ));
+                  
                 },
                 child: Center(
                   child: Text(
@@ -93,6 +89,11 @@ class _LocalisationState extends State<Localisation> {
           setState(() {
             isSelected = true;
           });
+           Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>  const MyApp(pageNumber:null,)
+                ));
         },
         child: Center(
           child: Text(
