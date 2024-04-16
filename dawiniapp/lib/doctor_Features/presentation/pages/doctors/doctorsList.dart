@@ -14,8 +14,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DoctorsList extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
-  final device;
-  const DoctorsList({super.key, this.device});
+  final int fontSize;
+
+  const DoctorsList({
+    super.key,
+    required this.fontSize,
+  });
 
   @override
   State<DoctorsList> createState() => _DoctorsListState();
@@ -26,7 +30,6 @@ class _DoctorsListState extends State<DoctorsList> {
   Widget build(BuildContext context) {
     // ignore: non_constant_identifier_names
     final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
-
     return StreamBuilder<List<DoctorEntity>>(
         stream: getDoctorsInfoUseCase.streamDoctorInfo(),
         builder: (context, snapshot) {
@@ -55,7 +58,8 @@ class _DoctorsListState extends State<DoctorsList> {
             }
             return BlocBuilder<DoctorBloc, DoctorState>(
                 builder: (context, state) {
-              return DoctorStateConditions(state, data, device: widget.device);
+              return DoctorStateConditions(state, data,
+                  fontSize: widget.fontSize);
             });
           }
         });
@@ -63,10 +67,10 @@ class _DoctorsListState extends State<DoctorsList> {
 }
 
 class Doctors extends StatefulWidget {
-  final device;
+  final int fontSize;
   final List<DoctorEntity> doctors;
 
-  const Doctors({super.key, required this.doctors, this.device});
+  const Doctors({super.key, required this.fontSize, required this.doctors});
 
   @override
   State<Doctors> createState() => _DoctorsState();
@@ -101,7 +105,7 @@ class _DoctorsState extends State<Doctors> {
                   MaterialPageRoute(
                       builder: (context) => doctorDetails(
                           uid: widget.doctors[index].uid,
-                          device: widget.device)),
+                          fontSize: widget.fontSize)),
                 );
               },
               child: Container(
@@ -144,9 +148,9 @@ class _DoctorsState extends State<Doctors> {
                               isArabic ? Alignment.topRight : Alignment.topLeft,
                           child: Text(
                               "${text.dr}. ${isArabic ? data[index].lastNameArabic : data[index].lastName}",
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontFamily: 'Nunito',
-                                  fontSize: 17,
+                                  fontSize: 17.sp - widget.fontSize.sp,
                                   fontWeight: FontWeight.w600,
                                   color: Color(0XFF202020))),
                         ),
@@ -165,9 +169,9 @@ class _DoctorsState extends State<Doctors> {
                               isArabic
                                   ? data[index].specialityArabic
                                   : data[index].speciality,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontFamily: 'Nunito',
-                                  fontSize: 15,
+                                  fontSize: 15.sp - widget.fontSize.sp,
                                   fontWeight: FontWeight.w600,
                                   color: Color(0XFF000000))),
                         ),
@@ -192,7 +196,7 @@ class _DoctorsState extends State<Doctors> {
                               Text("${data[index].city},${data[index].wilaya}",
                                   style: TextStyle(
                                       fontFamily: 'Nunito',
-                                      fontSize: 15.sp,
+                                      fontSize: 15.sp - widget.fontSize.sp,
                                       fontWeight: FontWeight.w600,
                                       color: const Color(0XFF202020)
                                           .withOpacity(0.75))),
@@ -223,9 +227,9 @@ class _DoctorsState extends State<Doctors> {
                                   data[index].atSerivce
                                       ? text.at_service
                                       : text.not_at_service,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontFamily: 'Nunito',
-                                      fontSize: 16,
+                                      fontSize: 16.sp - widget.fontSize.sp,
                                       fontWeight: FontWeight.w600,
                                       color: Color(0XFF202020))),
                             ],

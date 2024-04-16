@@ -9,7 +9,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SpecialityList extends StatefulWidget {
-  const SpecialityList({super.key});
+  final int fontSize;
+
+  const SpecialityList({super.key, required this.fontSize});
 
   @override
   State<SpecialityList> createState() => _SpecialityListState();
@@ -71,7 +73,9 @@ class _SpecialityListState extends State<SpecialityList> {
                       ),
                       Text(
                         mylist[index]["text"] as String,
-                        style: const TextStyle(fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14 - widget.fontSize.sp),
                       ),
                     ],
                   ),

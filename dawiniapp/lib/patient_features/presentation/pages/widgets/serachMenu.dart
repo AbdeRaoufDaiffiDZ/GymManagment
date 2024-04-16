@@ -9,8 +9,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearchMenu extends StatefulWidget {
+    final int fontSize;
+
   const SearchMenu({
-    super.key,
+    super.key, required this.fontSize,
   });
   @override
   State<SearchMenu> createState() => _SearchMenuState();
@@ -90,7 +92,7 @@ class _SearchMenuState extends State<SearchMenu> {
                               hintText: text.searchforadoctor,
                               hintStyle: TextStyle(
                                 fontSize: _calculateFontSize(
-                                    textController.text.length),
+                                    textController.text.length)- widget.fontSize.sp ,
                               ),
                             ),
                           ),
@@ -116,7 +118,7 @@ class _SearchMenuState extends State<SearchMenu> {
                         child: Center(
                           child: AutoSizeText(text.province,
                               style: TextStyle(
-                                  fontSize: 17.sp,
+                                  fontSize: 17.sp - widget.fontSize.sp,
                                   fontWeight: FontWeight.w600,
                                   color: Colors.white)),
                         ),
@@ -134,7 +136,7 @@ class _SearchMenuState extends State<SearchMenu> {
                               child: AutoSizeText(item,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                      fontSize: 18.sp,
+                                      fontSize: 18.sp- widget.fontSize.sp,
                                       fontWeight: FontWeight.w600,
                                       color: Colors.white)),
                             ),

@@ -9,7 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthBlocMap extends StatefulWidget {
-  const AuthBlocMap({super.key});
+  final int fontSize;
+
+  const AuthBlocMap({super.key, required this.fontSize});
 
   @override
   State<AuthBlocMap> createState() => _AuthBlocMapState();
@@ -21,15 +23,17 @@ class _AuthBlocMapState extends State<AuthBlocMap> {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         if (state is LoginState) {
-          return const LoginPage();
+          return LoginPage(fontSize: widget.fontSize);
         } else if (state is SuccessasfulLogin) {
-          return const doctorsideHome();
+          return doctorsideHome(
+            fontSize: widget.fontSize,
+          );
         } else if (state is LoadAuthState) {
           return const Loading();
         } else if (state is ErrorAuthState) {
-          return LoginPage(error: state.error);
+          return LoginPage(error: state.error, fontSize: widget.fontSize);
         } else if (state is RegisterState) {
-          return const SignUpPage();
+          return SignUpPage(fontSize: widget.fontSize);
         } else if (state is ResetPassSatate) {}
         return Container();
       },

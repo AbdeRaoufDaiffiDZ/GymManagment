@@ -9,10 +9,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearchMenu extends StatefulWidget {
+  final int fontSize;
+
   final bool isHome;
   const SearchMenu({
     super.key,
     required this.isHome,
+    required this.fontSize,
   });
   @override
   State<SearchMenu> createState() => _SearchMenuState();
@@ -25,7 +28,7 @@ class _SearchMenuState extends State<SearchMenu> {
   final TextEditingController textController = TextEditingController();
 
   double _calculateFontSize(int textLength) {
-    return 16.sp - (textLength * 0.7.sp);
+    return 16.sp - widget.fontSize.sp - (textLength * 0.7.sp);
   }
 
   @override
@@ -91,9 +94,8 @@ class _SearchMenuState extends State<SearchMenu> {
                                         border: InputBorder.none,
                                         hintText: text.searchforadoctor,
                                         hintStyle: TextStyle(
-                                          fontSize: _calculateFontSize(
-                                              textController.text.length),
-                                        ),
+                                            fontSize: _calculateFontSize(
+                                                textController.text.length)),
                                       ),
                                     )),
                               ),
@@ -105,7 +107,9 @@ class _SearchMenuState extends State<SearchMenu> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const doctors()));
+                                      builder: (context) => doctors(
+                                            fontSize: widget.fontSize,
+                                          )));
                             },
                             child: Row(children: [
                               Icon(
@@ -182,7 +186,9 @@ class _SearchMenuState extends State<SearchMenu> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const doctors()));
+                              builder: (context) => doctors(
+                                    fontSize: widget.fontSize,
+                                  )));
                     } else {
                       setState(() {
                         selected = wilaya;

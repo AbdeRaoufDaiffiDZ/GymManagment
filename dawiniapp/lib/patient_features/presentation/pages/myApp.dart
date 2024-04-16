@@ -12,10 +12,12 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Mypage extends StatefulWidget {
+    final int fontSize;
+
   // ignore: prefer_typing_uninitialized_variables
   final bool popOrNot;
 
-  const Mypage({super.key, required this.popOrNot});
+  const Mypage({super.key, required this.popOrNot, required this.fontSize});
 
   @override
   State<Mypage> createState() => _MypageState();
@@ -86,10 +88,10 @@ class _MypageState extends State<Mypage> {
     if (type != "doctor" || type == null) {
       return Scaffold(
           key: _scaffoldKey,
-          body: const Weather(
+          body:  Weather(fontSize: widget.fontSize
           ));
     } else {
-      return const doctorsideHome();
+      return  doctorsideHome(fontSize: widget.fontSize,);
     }
   }
 

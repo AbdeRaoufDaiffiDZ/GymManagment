@@ -7,9 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class myAppbar extends StatelessWidget implements PreferredSizeWidget {
+
   final String? uid;
+    final int fontSize;
+
   final bool fromWhere;
-  myAppbar({super.key, this.uid, required this.fromWhere});
+  myAppbar({super.key, this.uid, required this.fromWhere, required this.fontSize});
   final SetTypeUseCase setTypeUseCase = SetTypeUseCase();
 
   @override
@@ -37,14 +40,14 @@ class myAppbar extends StatelessWidget implements PreferredSizeWidget {
                   await setTypeUseCase.execute("patient");
 
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const Weather()));
+                      MaterialPageRoute(builder: (context) =>  Weather(fontSize: fontSize,)));
                 } else {
                   await setTypeUseCase.execute("doctor");
 
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const doctorsideHome()));
+                          builder: (context) =>  doctorsideHome(fontSize: fontSize)));
                 }
               },
               icon: Icon(

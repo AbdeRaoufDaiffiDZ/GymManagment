@@ -11,8 +11,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class myfavdoctors extends StatefulWidget {
+  final int fontSize;
+
   const myfavdoctors({
     super.key,
+    required this.fontSize,
   });
 
   @override
@@ -99,8 +102,11 @@ class _favoriteState extends State<myfavdoctors> with TickerProviderStateMixin {
                                                   MaterialPageRoute(
                                                       builder: (context) =>
                                                           doctorDetails(
-                                                              uid: doctor[index]
-                                                                  .uid)),
+                                                            uid: doctor[index]
+                                                                .uid,
+                                                            fontSize:
+                                                                widget.fontSize,
+                                                          )),
                                                 );
                                               },
                                               child: Container(
@@ -110,7 +116,7 @@ class _favoriteState extends State<myfavdoctors> with TickerProviderStateMixin {
                                                   decoration: BoxDecoration(
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            16),
+                                                            16.r),
                                                     border: Border.all(
                                                       color: Colors
                                                           .grey, // Set the border color
@@ -172,8 +178,11 @@ class _favoriteState extends State<myfavdoctors> with TickerProviderStateMixin {
                                                               style: TextStyle(
                                                                   fontFamily:
                                                                       'Nunito',
-                                                                  fontSize:
-                                                                      17.sp,
+                                                                  fontSize: 17
+                                                                          .sp -
+                                                                      widget
+                                                                          .fontSize
+                                                                          .sp,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w600,
@@ -198,8 +207,7 @@ class _favoriteState extends State<myfavdoctors> with TickerProviderStateMixin {
                                                                   .topLeft,
                                                           child: Text(
                                                               isArabic
-                                                                  ? doctor[
-                                                                          index]
+                                                                  ? doctor[index]
                                                                       .specialityArabic
                                                                   : doctor[
                                                                           index]
@@ -207,8 +215,11 @@ class _favoriteState extends State<myfavdoctors> with TickerProviderStateMixin {
                                                               style: TextStyle(
                                                                   fontFamily:
                                                                       'Nunito',
-                                                                  fontSize:
-                                                                      15.sp,
+                                                                  fontSize: 15
+                                                                          .sp -
+                                                                      widget
+                                                                          .fontSize
+                                                                          .sp,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w600,
@@ -245,8 +256,11 @@ class _favoriteState extends State<myfavdoctors> with TickerProviderStateMixin {
                                                                   style: TextStyle(
                                                                       fontFamily:
                                                                           'Nunito',
-                                                                      fontSize:
-                                                                          15.sp,
+                                                                      fontSize: 15
+                                                                              .sp -
+                                                                          widget
+                                                                              .fontSize
+                                                                              .sp,
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .w600,
@@ -296,8 +310,10 @@ class _favoriteState extends State<myfavdoctors> with TickerProviderStateMixin {
                                                                   style: TextStyle(
                                                                       fontFamily:
                                                                           'Nunito',
-                                                                      fontSize:
-                                                                          16.sp,
+                                                                      fontSize: 16.sp -
+                                                                          widget
+                                                                              .fontSize
+                                                                              .sp,
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .w600,

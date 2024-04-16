@@ -7,7 +7,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Myappointemtns extends StatefulWidget {
-  const Myappointemtns({super.key, String? uid});
+  final int fontSize;
+
+  const Myappointemtns({super.key, String? uid, required this.fontSize});
 
   @override
   State<Myappointemtns> createState() => _MyappointemtnsState();
@@ -31,13 +33,13 @@ class _MyappointemtnsState extends State<Myappointemtns>
               margin: EdgeInsets.only(top: 12.h),
               width: 200.w,
               height: 30.h,
-              child:  FittedBox(
+              child: FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
-                 text.my_Appointement,
+                  text.my_Appointement,
                   style: TextStyle(
                       color: const Color(0XFF202020),
-                      fontSize: 26.sp,
+                      fontSize: 26.sp - widget.fontSize.sp,
                       fontWeight: FontWeight.w700,
                       fontFamily: 'Nunito'),
                 ),
@@ -68,7 +70,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                               child: Text(
                                 text.current,
                                 style: TextStyle(
-                                    fontSize: 20.sp,
+                                    fontSize: 20.sp - widget.fontSize.sp,
                                     fontWeight: FontWeight.w700,
                                     fontFamily: "Nunito"),
                               ),
@@ -84,7 +86,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                               child: Text(
                                 text.previous,
                                 style: TextStyle(
-                                    fontSize: 20.sp,
+                                    fontSize: 20.sp - widget.fontSize.sp,
                                     fontWeight: FontWeight.w700,
                                     fontFamily: "Nunito"),
                               ),
@@ -93,9 +95,14 @@ class _MyappointemtnsState extends State<Myappointemtns>
                         ),
                       ]),
                   Expanded(
-                      child: TabBarView(
-                          controller: tabcontroller,
-                          children: const [newcurrent(), previousappointm()])),
+                      child: TabBarView(controller: tabcontroller, children: [
+                    newcurrent(
+                      fontSize: widget.fontSize,
+                    ),
+                    previousappointm(
+                      fontSize: widget.fontSize,
+                    )
+                  ])),
                 ]))),
       ),
     );

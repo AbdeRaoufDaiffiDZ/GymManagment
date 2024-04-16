@@ -10,7 +10,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RecommandedDoctors extends StatefulWidget {
-  const RecommandedDoctors({super.key});
+  final int fontSize;
+
+  const RecommandedDoctors({super.key, required this.fontSize});
 
   @override
   State<RecommandedDoctors> createState() => _RecommandedDoctorsState();
@@ -74,7 +76,9 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => doctorDetails(
-                                uid: doctors[index].uid, device: 'device')),
+                                  fontSize: widget.fontSize,
+                                  uid: doctors[index].uid,
+                                )),
                       );
                     },
                     child: Container(
@@ -107,35 +111,43 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                                         fit: BoxFit.cover,
                                       )),
                             Container(
-                              margin: isArabic ? EdgeInsets.only(right: 4.w):EdgeInsets.only(left: 4.w),
+                              margin: isArabic
+                                  ? EdgeInsets.only(right: 4.w)
+                                  : EdgeInsets.only(left: 4.w),
                               width: double.infinity,
                               height: 20.h,
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,
-                                alignment: isArabic ?Alignment.topRight:Alignment.topLeft,
+                                alignment: isArabic
+                                    ? Alignment.topRight
+                                    : Alignment.topLeft,
                                 child: Text(
-                                     "${text.dr}. ${isArabic ? doctors[index].lastNameArabic : doctors[index].lastName}",
+                                    "${text.dr}. ${isArabic ? doctors[index].lastNameArabic : doctors[index].lastName}",
                                     style: TextStyle(
                                         fontFamily: 'Nunito',
-                                        fontSize: 17.sp,
+                                        fontSize: 17.sp - widget.fontSize.sp,
                                         fontWeight: FontWeight.w600,
                                         color: const Color(0XFF202020))),
                               ),
                             ),
                             Container(
-                              margin:isArabic ? EdgeInsets.only(left: 4.w): EdgeInsets.only(left: 4.w),
+                              margin: isArabic
+                                  ? EdgeInsets.only(left: 4.w)
+                                  : EdgeInsets.only(left: 4.w),
                               width: double.infinity,
                               height: 20.h,
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,
-                                alignment: isArabic ? Alignment.topRight:Alignment.topLeft,
+                                alignment: isArabic
+                                    ? Alignment.topRight
+                                    : Alignment.topLeft,
                                 child: Text(
                                     isArabic
                                         ? doctors[index].specialityArabic
                                         : doctors[index].speciality,
                                     style: TextStyle(
                                         fontFamily: 'Nunito',
-                                        fontSize: 15.sp,
+                                        fontSize: 15.sp - widget.fontSize.sp,
                                         fontWeight: FontWeight.w600,
                                         color: const Color(0XFF000000))),
                               ),
@@ -146,7 +158,9 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                               height: 20.h,
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,
-                                alignment: isArabic ? Alignment.topRight:Alignment.topLeft,
+                                alignment: isArabic
+                                    ? Alignment.topRight
+                                    : Alignment.topLeft,
                                 child: Row(
                                   children: [
                                     Icon(
@@ -158,7 +172,8 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                                         "${doctors[index].city},${doctors[index].wilaya}",
                                         style: TextStyle(
                                             fontFamily: 'Nunito',
-                                            fontSize: 15.sp,
+                                            fontSize:
+                                                15.sp - widget.fontSize.sp,
                                             fontWeight: FontWeight.w600,
                                             color: const Color(0XFF202020)
                                                 .withOpacity(0.75))),
@@ -191,7 +206,8 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                                             : text.not_at_service,
                                         style: TextStyle(
                                             fontFamily: 'Nunito',
-                                            fontSize: 16.sp,
+                                            fontSize:
+                                                16.sp - widget.fontSize.sp,
                                             fontWeight: FontWeight.w600,
                                             color: const Color(0XFF202020))),
                                   ],

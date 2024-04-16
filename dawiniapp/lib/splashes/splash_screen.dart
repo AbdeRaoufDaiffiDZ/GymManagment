@@ -6,7 +6,8 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Splash extends StatefulWidget {
-  const Splash({super.key});
+  const Splash({super.key, required this.fontSize});
+  final int fontSize;
 
   @override
   State<Splash> createState() => _SplashState();
@@ -37,7 +38,7 @@ class _SplashState extends State<Splash> {
         //       fontSize: 40, fontWeight: FontWeight.bold, color: Colors.black),
         // ),
       )),
-      nextScreen: const MyWidget(),
+      nextScreen:  MyWidget(fontSize: widget.fontSize),
     );
   }
 }

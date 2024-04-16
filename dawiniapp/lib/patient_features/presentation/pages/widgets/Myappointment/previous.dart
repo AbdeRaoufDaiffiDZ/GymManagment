@@ -12,7 +12,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
 class previousappointm extends StatefulWidget {
-  const previousappointm({super.key});
+  final int fontSize;
+
+  const previousappointm({super.key, required this.fontSize});
 
   @override
   State<previousappointm> createState() => _previousappointmState();
@@ -109,9 +111,11 @@ class _previousappointmState extends State<previousappointm> {
                                                       ? Alignment.topRight
                                                       : Alignment.topLeft,
                                                   child: Text(
-                                                      "${text.dr}. ${isArabic ? doctors[index].lastNameArabic : doctors[index].lastName}",
-                                                      style: const TextStyle(
-                                                          fontSize: 19,
+                                                      "${text.dr}. ${isArabic ? doctors.first.lastNameArabic : doctors.first.lastName}",
+                                                      style: TextStyle(
+                                                          fontSize: 19.sp -
+                                                              widget
+                                                                  .fontSize.sp,
                                                           fontWeight:
                                                               FontWeight.w700,
                                                           color: Color(
@@ -132,9 +136,11 @@ class _previousappointmState extends State<previousappointm> {
                                                               .specialityArabic
                                                           : doctors
                                                               .first.speciality,
-                                                      style: const TextStyle(
+                                                      style: TextStyle(
                                                           fontFamily: 'Nunito',
-                                                          fontSize: 18,
+                                                          fontSize: 18.sp -
+                                                              widget
+                                                                  .fontSize.sp,
                                                           fontWeight:
                                                               FontWeight.w600,
                                                           color: Color(
@@ -160,7 +166,9 @@ class _previousappointmState extends State<previousappointm> {
                                                         style: TextStyle(
                                                             fontFamily:
                                                                 'Nunito',
-                                                            fontSize: 15.sp,
+                                                            fontSize: 15.sp -
+                                                                widget.fontSize
+                                                                    .sp,
                                                             fontWeight:
                                                                 FontWeight.w600,
                                                             color: const Color(

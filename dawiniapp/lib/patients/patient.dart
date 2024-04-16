@@ -12,9 +12,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Patientslist extends StatefulWidget {
+  final int fontSize;
+
   final String uid;
 
-  const Patientslist({super.key, required this.uid});
+  const Patientslist({super.key, required this.uid, required this.fontSize});
 
   @override
   State<Patientslist> createState() => _PatientslistState();
@@ -50,9 +52,9 @@ class _PatientslistState extends State<Patientslist>
                   fit: BoxFit.scaleDown,
                   child: Text(
                     text.patientslist,
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: Color(0XFF202020),
-                        fontSize: 25,
+                        fontSize: 25.sp - widget.fontSize.sp,
                         fontWeight: FontWeight.w700,
                         fontFamily: 'Nunito'),
                   ),
@@ -89,8 +91,9 @@ class _PatientslistState extends State<Patientslist>
                                       fit: BoxFit.scaleDown,
                                       child: Text(
                                         text.today,
-                                        style: const TextStyle(
-                                            fontSize: 22,
+                                        style: TextStyle(
+                                            fontSize:
+                                                22.sp - widget.fontSize.sp,
                                             fontWeight: FontWeight.w700,
                                             fontFamily: "Nunito"),
                                       ),
@@ -105,8 +108,9 @@ class _PatientslistState extends State<Patientslist>
                                       fit: BoxFit.scaleDown,
                                       child: Text(
                                         text.tomorrow,
-                                        style: const TextStyle(
-                                            fontSize: 22,
+                                        style: TextStyle(
+                                            fontSize:
+                                                22.sp - widget.fontSize.sp,
                                             fontWeight: FontWeight.w700,
                                             fontFamily: "Nunito"),
                                       ),
@@ -114,17 +118,19 @@ class _PatientslistState extends State<Patientslist>
                                   ),
                                 ),
                               ]),
-                          Expanded(
-                              child: Builder(
-                                builder: (context) {
-                                  return TabBarView(
-                                      controller: tabcontroller,
-                                      children: [
-                                    today(uid: doctor.uid, turn: doctor.turn),
-                                    tomorrow(uid: doctor.uid)
-                                  ]);
-                                }
-                              )),
+                          Expanded(child: Builder(builder: (context) {
+                            return TabBarView(
+                                controller: tabcontroller,
+                                children: [
+                                  today(
+                                      fontSize: widget.fontSize,
+                                      uid: doctor.uid,
+                                      turn: doctor.turn),
+                                  tomorrow(
+                                      fontSize: widget.fontSize,
+                                      uid: doctor.uid)
+                                ]);
+                          })),
                         ])));
               } else {
                 return const Loading();

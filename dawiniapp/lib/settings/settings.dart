@@ -7,7 +7,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({super.key});
+  final int fontSize;
+
+  const SettingsPage({super.key, required this.fontSize});
 
   @override
   _SettingsPageState createState() => _SettingsPageState();
@@ -101,7 +103,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               fontWeight: FontWeight.w700,
                               color: Colors.white,
                               fontFamily: 'Nunito',
-                              fontSize: 22.sp),
+                              fontSize: 22.sp - widget.fontSize.sp),
                         ),
                       ))),
             ),

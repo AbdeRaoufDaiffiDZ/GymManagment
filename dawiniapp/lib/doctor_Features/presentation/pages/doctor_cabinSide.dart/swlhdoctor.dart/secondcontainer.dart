@@ -8,9 +8,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class secondConatiner extends StatefulWidget {
+    final int fontSize;
+
   final String uid;
   final int turn;
-  const secondConatiner({super.key, required this.uid, required this.turn});
+  const secondConatiner({super.key, required this.uid, required this.turn, required this.fontSize});
 
   @override
   State<secondConatiner> createState() => _secondConatinerState();
@@ -69,7 +71,7 @@ class _secondConatinerState extends State<secondConatiner> {
                                       fontWeight: FontWeight.w700,
                                       color: Colors.white,
                                       fontFamily: "Nunito",
-                                      fontSize: 14.sp),
+                                      fontSize: 14.sp- widget.fontSize.sp),
                                 ),
                               ),
                               Padding(
@@ -82,7 +84,7 @@ class _secondConatinerState extends State<secondConatiner> {
                                       fontWeight: FontWeight.w700,
                                       color: Colors.white,
                                       fontFamily: "Nunito",
-                                      fontSize: 29.sp),
+                                      fontSize: 29.sp - widget.fontSize.sp),
                                 ),
                               )
                             ],
@@ -108,7 +110,7 @@ class _secondConatinerState extends State<secondConatiner> {
                                           : "   ",
                                       style: TextStyle(
                                           fontFamily: "Nunito",
-                                          fontSize: 16.sp,
+                                          fontSize: 16.sp- widget.fontSize.sp,
                                           fontWeight: FontWeight.w700),
                                     ),
                                   ),
@@ -127,7 +129,7 @@ class _secondConatinerState extends State<secondConatiner> {
                                           : " ",
                                       style: TextStyle(
                                           fontFamily: "Nunito",
-                                          fontSize: 14.sp,
+                                          fontSize: 14.sp- widget.fontSize.sp,
                                           fontWeight: FontWeight.w600),
                                     ),
                                   ),
@@ -146,7 +148,7 @@ class _secondConatinerState extends State<secondConatiner> {
                                           : " ",
                                       style: TextStyle(
                                           fontFamily: "Nunito",
-                                          fontSize: 19.sp,
+                                          fontSize: 19.sp- widget.fontSize.sp,
                                           fontWeight: FontWeight.w600),
                                     ),
                                   ),
@@ -169,7 +171,7 @@ class _secondConatinerState extends State<secondConatiner> {
                                                 : "   ",
                                             style: TextStyle(
                                                 fontFamily: 'Nunito',
-                                                fontSize: 16.sp,
+                                                fontSize: 16.sp- widget.fontSize.sp,
                                                 fontWeight: FontWeight.w600,
                                                 color: const Color(0xff202020)
                                                     .withOpacity(0.85)),
@@ -196,7 +198,7 @@ class _secondConatinerState extends State<secondConatiner> {
                             style: TextStyle(
                                 fontFamily: "Nunito",
                                 color: const Color(0xff0AA9A9).withOpacity(0.7),
-                                fontSize: 19.sp,
+                                fontSize: 19.sp- widget.fontSize.sp,
                                 fontWeight: FontWeight.bold),
                             children: [
                               TextSpan(
@@ -205,7 +207,7 @@ class _secondConatinerState extends State<secondConatiner> {
                                     fontFamily: "Nunito",
                                     color: const Color(0xff000000)
                                         .withOpacity(0.5),
-                                    fontSize: 18.sp,
+                                    fontSize: 18.sp- widget.fontSize.sp,
                                     fontWeight: FontWeight.w600),
                               )
                             ]),
@@ -270,7 +272,7 @@ class _secondConatinerState extends State<secondConatiner> {
                                       fontWeight: FontWeight.w700,
                                       color: Colors.white,
                                       fontFamily: "Nunito",
-                                      fontSize: 14.sp),
+                                      fontSize: 14.sp- widget.fontSize.sp),
                                 ),
                               ),
                               Padding(
@@ -281,7 +283,7 @@ class _secondConatinerState extends State<secondConatiner> {
                                       fontWeight: FontWeight.w700,
                                       color: Colors.white,
                                       fontFamily: "Nunito",
-                                      fontSize: 29.sp),
+                                      fontSize: 29.sp- widget.fontSize.sp),
                                 ),
                               )
                             ],
@@ -303,7 +305,7 @@ class _secondConatinerState extends State<secondConatiner> {
                                     .firstName, 
                                 style: TextStyle(
                                     fontFamily: "Nunito",
-                                    fontSize: 16.sp,
+                                    fontSize: 16.sp- widget.fontSize.sp,
                                     fontWeight: FontWeight.w700),
                               ),
                             ),

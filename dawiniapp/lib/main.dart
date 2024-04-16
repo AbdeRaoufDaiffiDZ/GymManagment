@@ -55,8 +55,7 @@ Future<void> main() async {
   ]);
 
   runApp(
-    const MyApp(
-    ),
+    const MyApp(),
   );
 }
 
@@ -71,6 +70,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String? language;
+  int? fontSize;
   @override
   void initState() {
     super.initState();
@@ -81,6 +81,9 @@ class _MyAppState extends State<MyApp> {
     });
     lanugageGet().then((value) => setState(() {
           language = value;
+        }));
+    fontSizeGet().then((value) => setState(() {
+          fontSize = value;
         }));
   }
 
@@ -121,8 +124,15 @@ class _MyAppState extends State<MyApp> {
                       AppLocalizations.localizationsDelegates,
                   supportedLocales: AppLocalizations.supportedLocales,
                   debugShowCheckedModeBanner: false,
+<<<<<<< HEAD
                   home: const UserTypeSelector
                   (type:"" ,
+=======
+                  home: MyWidget(
+                    fontSize: fontSize == null
+                        ? 2
+                        : fontSize!, // TODO HERE YOU CHANGE THE FONT SIZE, USER IS ABLE TO CHANGE FONTS SIZE FROM THIS PARM
+>>>>>>> 3a9000e527e5f7e2002072991d7214aa9c40ef4b
                   ));
             }));
   }
@@ -131,10 +141,20 @@ class _MyAppState extends State<MyApp> {
     final snapshot = await SharedPreferences.getInstance();
     return snapshot.getString('language');
   }
+
+  Future<int?> fontSizeGet() async {
+    final snapshot = await SharedPreferences.getInstance();
+    return snapshot.getInt('fontSize');
+  }
 }
 
 class MyWidget extends StatefulWidget {
-  const MyWidget({super.key, });
+  final int fontSize;
+
+  const MyWidget({
+    super.key,
+    required this.fontSize,
+  });
 
   @override
   State<MyWidget> createState() => _MyWidgetState();
@@ -158,15 +178,15 @@ class _MyWidgetState extends State<MyWidget> {
 
   @override
   Widget build(BuildContext context) {
-    
     if (status == true) {
-      return const Scaffold(
+      return Scaffold(
         body: Mypage(
           popOrNot: false,
+          fontSize: widget.fontSize,
         ),
       );
     } else {
-      return const PagesShower();
+      return PagesShower(fontSize: widget.fontSize);
     }
   }
 

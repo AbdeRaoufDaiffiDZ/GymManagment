@@ -10,7 +10,13 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class today extends StatefulWidget {
-  const today({super.key, required this.uid, required this.turn});
+  const today(
+      {super.key,
+      required this.uid,
+      required this.turn,
+      required this.fontSize});
+  final int fontSize;
+
   final String uid;
   final int turn;
 
@@ -115,7 +121,8 @@ class _todayState extends State<today> with TickerProviderStateMixin {
                                                 : const Color(0xff202020)
                                                     .withOpacity(0.6),
                                             fontFamily: "Nunito",
-                                            fontSize: 14.sp,
+                                            fontSize:
+                                                14.sp - widget.fontSize.sp,
                                           ),
                                         ),
                                       ),
@@ -130,7 +137,8 @@ class _todayState extends State<today> with TickerProviderStateMixin {
                                                 : const Color(0xff202020)
                                                     .withOpacity(0.6),
                                             fontFamily: "Nunito",
-                                            fontSize: 29.sp,
+                                            fontSize:
+                                                29.sp - widget.fontSize.sp,
                                           ),
                                         ),
                                       ),
@@ -167,7 +175,8 @@ class _todayState extends State<today> with TickerProviderStateMixin {
                                               "${data.firstName} ${data.lastName}",
                                               style: TextStyle(
                                                 fontFamily: "Nunito",
-                                                fontSize: 16.sp,
+                                                fontSize:
+                                                    16.sp - widget.fontSize.sp,
                                                 fontWeight: FontWeight.w700,
                                               ),
                                             ),
@@ -183,7 +192,8 @@ class _todayState extends State<today> with TickerProviderStateMixin {
                                               "${text.age}: ${data.age} ",
                                               style: TextStyle(
                                                 fontFamily: "Nunito",
-                                                fontSize: 14.sp,
+                                                fontSize:
+                                                    14.sp - widget.fontSize.sp,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                             ),
@@ -199,7 +209,8 @@ class _todayState extends State<today> with TickerProviderStateMixin {
                                               "${text.gender}: ${data.gender}",
                                               style: TextStyle(
                                                 fontFamily: "Nunito",
-                                                fontSize: 19.sp,
+                                                fontSize:
+                                                    19.sp - widget.fontSize.sp,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                             ),
@@ -219,7 +230,8 @@ class _todayState extends State<today> with TickerProviderStateMixin {
                                                   data.phoneNumber,
                                                   style: TextStyle(
                                                     fontFamily: 'Nunito',
-                                                    fontSize: 16.sp,
+                                                    fontSize: 16.sp -
+                                                        widget.fontSize.sp,
                                                     fontWeight: FontWeight.w600,
                                                     color:
                                                         const Color(0xff202020)
@@ -261,7 +273,8 @@ class _todayState extends State<today> with TickerProviderStateMixin {
                                         child: Text(
                                           text.call,
                                           style: TextStyle(
-                                            fontSize: 10.sp,
+                                            fontSize:
+                                                10.sp - widget.fontSize.sp,
                                             color: const Color(0xff0AA9A9),
                                             fontFamily: "Nunito",
                                             fontWeight: FontWeight.w700,
@@ -279,12 +292,12 @@ class _todayState extends State<today> with TickerProviderStateMixin {
                           child: Padding(
                             padding: EdgeInsets.only(top: 20.w),
                             child: Text(
-                              text.nopatinet, 
+                              text.nopatinet,
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 color: const Color(0xff202020).withOpacity(0.6),
                                 fontFamily: "Nunito",
-                                fontSize: 18.sp,
+                                fontSize: 18.sp - widget.fontSize.sp,
                               ),
                             ),
                           ),

@@ -5,9 +5,11 @@ import 'package:dawini_full/auth/presentation/loginPage.dart';
 import 'package:flutter/material.dart';
 
 class SignUpPage extends StatefulWidget {
+    final int fontSize;
+
   const SignUpPage({
     super.key,
-    this.title,
+    this.title, required this.fontSize,
   });
   final String? title;
 
@@ -90,7 +92,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LoginPage()));
+            context, MaterialPageRoute(builder: (context) => LoginPage(fontSize: widget.fontSize)));
       },
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 20),

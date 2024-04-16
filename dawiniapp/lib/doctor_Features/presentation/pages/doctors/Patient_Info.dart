@@ -14,6 +14,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Patient_info extends StatefulWidget {
+    final int fontSize;
+
   final DoctorEntity doctorEntity;
   final bool today;
   final bool ifADoctor;
@@ -21,7 +23,7 @@ class Patient_info extends StatefulWidget {
     super.key,
     required this.doctorEntity,
     required this.today,
-    this.ifADoctor = false,
+    this.ifADoctor = false, required this.fontSize,
   });
 
   @override
@@ -67,7 +69,7 @@ class _Patient_infoState extends State<Patient_info> {
           hintStyle: TextStyle(
             color: const Color(0XFF202020).withOpacity(0.7),
             fontFamily: "Nunito",
-            fontSize: 14.sp,
+            fontSize: 14.sp- widget.fontSize.sp,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -171,7 +173,7 @@ class _Patient_infoState extends State<Patient_info> {
                     child: AutoSizeText(
                       text.please_enter_the_following_information,
                       style: TextStyle(
-                        fontSize: screenHeight * 0.045,
+                        fontSize: screenHeight * 0.045 - widget.fontSize.sp,
                         fontWeight: FontWeight.w600,
                         color: const Color(0xFF202020),
                       ),
@@ -288,8 +290,8 @@ class _Patient_infoState extends State<Patient_info> {
                           fit: BoxFit.scaleDown,
                           child: Text(
                             text.confirmappointment,
-                            style: const TextStyle(
-                              fontSize: 18,
+                            style:  TextStyle(
+                              fontSize: 18.sp - widget.fontSize.sp,
                               fontWeight: FontWeight.w600,
                               color: Colors.white,
                             ),

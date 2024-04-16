@@ -17,7 +17,9 @@ import '../../../../../doctor_Features/domain/entities/doctor.dart';
 import '../../../../../doctor_Features/domain/usecases/doctor_usecase.dart';
 
 class newcurrent extends StatefulWidget {
-  const newcurrent({super.key});
+  final int fontSize;
+
+  const newcurrent({super.key, required this.fontSize});
 
   @override
   State<newcurrent> createState() => _newcurrentState();
@@ -172,7 +174,8 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                 child: Text(
                                                     "${text.dr}. ${isArabic ? doctors.first.lastNameArabic : doctors.first.lastName}",
                                                     style: TextStyle(
-                                                        fontSize: 19.sp,
+                                                        fontSize: 19.sp -
+                                                            widget.fontSize.sp,
                                                         fontWeight:
                                                             FontWeight.w700,
                                                         color: const Color(
@@ -195,7 +198,8 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                             .first.speciality,
                                                     style: TextStyle(
                                                         fontFamily: 'Nunito',
-                                                        fontSize: 18.sp,
+                                                        fontSize: 18.sp -
+                                                            widget.fontSize.sp,
                                                         fontWeight:
                                                             FontWeight.w600,
                                                         color: const Color(
@@ -219,7 +223,8 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                         fontFamily: "Nunito",
                                                         fontWeight:
                                                             FontWeight.w600,
-                                                        fontSize: 15.sp,
+                                                        fontSize: 15.sp -
+                                                            widget.fontSize.sp,
                                                         color: const Color
                                                             .fromRGBO(
                                                             32, 32, 32, 0.6)),
@@ -234,8 +239,11 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w600,
-                                                                  fontSize:
-                                                                      14.sp,
+                                                                  fontSize: 14
+                                                                          .sp -
+                                                                      widget
+                                                                          .fontSize
+                                                                          .sp,
                                                                   color: const Color
                                                                       .fromRGBO(
                                                                       32,
@@ -255,7 +263,9 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                                             FontWeight
                                                                                 .w600,
                                                                         fontSize: 17
-                                                                            .sp,
+                                                                                .sp -
+                                                                            widget
+                                                                                .fontSize.sp,
                                                                         color: const Color(
                                                                             0XFF0AA9A9)))
                                                               ]),
@@ -304,10 +314,12 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                   Icon(Icons.calendar_month,
                                                       size: 14.w),
                                                   Text(
-                                                   " "+ text.today +
+                                                    " " +
+                                                        text.today +
                                                         ": ${data[index].AppointmentDate}",
                                                     style: TextStyle(
-                                                      fontSize: 10.sp,
+                                                        fontSize: 10.sp -
+                                                            widget.fontSize.sp,
                                                         color: const Color(
                                                                 0xff202020)
                                                             .withOpacity(0.8),
@@ -346,7 +358,9 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                                   0xff202020)
                                                               .withOpacity(0.8),
                                                           fontFamily: 'Nunito',
-                                                          fontSize: 10.sp,
+                                                          fontSize: 10.sp -
+                                                              widget
+                                                                  .fontSize.sp,
                                                           fontWeight:
                                                               FontWeight.w600,
                                                         )),
@@ -357,7 +371,9 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                           .toString(),
                                                       style: TextStyle(
                                                           fontFamily: 'Nunito',
-                                                          fontSize: 14.sp,
+                                                          fontSize: 14.sp -
+                                                              widget
+                                                                  .fontSize.sp,
                                                           fontWeight:
                                                               FontWeight.w600,
                                                           color: const Color(
@@ -371,6 +387,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                     ),
                                     InkWell(
                                       onTap: () {
+                                        final fontSize = widget.fontSize;
                                         showGeneralDialog(
                                           context: context,
                                           pageBuilder: (context, animation,
@@ -410,7 +427,9 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .black,
-                                                                fontSize: 15.sp,
+                                                                fontSize: 15
+                                                                        .sp -
+                                                                    fontSize.sp,
                                                                 fontFamily:
                                                                     "Nunito",
                                                                 fontWeight:
@@ -451,8 +470,10 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                                             0.85),
                                                                     fontFamily:
                                                                         "Nunito",
-                                                                    fontSize:
-                                                                        16.sp,
+                                                                    fontSize: 16
+                                                                            .sp -
+                                                                        fontSize
+                                                                            .sp,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w600),
@@ -494,8 +515,10 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                                         .white,
                                                                     fontFamily:
                                                                         "Nunito",
-                                                                    fontSize:
-                                                                        16.sp,
+                                                                    fontSize: 16
+                                                                            .sp -
+                                                                        fontSize
+                                                                            .sp,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w600),
@@ -532,7 +555,8 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w600,
                                                   fontFamily: 'Nunito',
-                                                  fontSize: 14.sp,
+                                                  fontSize: 14.sp -
+                                                      widget.fontSize.sp,
                                                   color:
                                                       const Color(0xff202020))),
                                         ),
@@ -574,8 +598,15 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
   notificationConditions(state, index, doctors,
       {required AppLocalizations text, required bool isArabic}) {
     if (state[index].turn - 2 == (doctors.first.turn)) {
-      NotificationShower( state[index].firstName + " " + state[index].lastName,
-          index, text.dr + ". " + (isArabic ? doctors.first.lastNameArabic:doctors.first.lastName), text.is_near,
+      NotificationShower(
+          state[index].firstName + " " + state[index].lastName,
+          index,
+          text.dr +
+              ". " +
+              (isArabic
+                  ? doctors.first.lastNameArabic
+                  : doctors.first.lastName),
+          text.is_near,
           text: text);
     } else if (state[index].turn - 1 == (doctors.first.turn)) {
       NotificationShower(

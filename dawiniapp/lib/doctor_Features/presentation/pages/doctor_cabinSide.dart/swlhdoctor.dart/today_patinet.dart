@@ -10,9 +10,15 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TodayPatinet extends StatefulWidget {
+  final int fontSize;
+
   final int turn;
   final String uid;
-  const TodayPatinet({super.key, required this.uid, required this.turn});
+  const TodayPatinet(
+      {super.key,
+      required this.uid,
+      required this.turn,
+      required this.fontSize});
 
   @override
   State<TodayPatinet> createState() => _TodayPatinetState();
@@ -103,7 +109,8 @@ class _TodayPatinetState extends State<TodayPatinet> {
                                               fontWeight: FontWeight.w700,
                                               color: Colors.white,
                                               fontFamily: "Nunito",
-                                              fontSize: 14.sp),
+                                              fontSize:
+                                                  14.sp - widget.fontSize.sp),
                                         ),
                                       ),
                                       Padding(
@@ -114,7 +121,8 @@ class _TodayPatinetState extends State<TodayPatinet> {
                                               fontWeight: FontWeight.w700,
                                               color: Colors.white,
                                               fontFamily: "Nunito",
-                                              fontSize: 29.sp),
+                                              fontSize:
+                                                  29.sp - widget.fontSize.sp),
                                         ),
                                       )
                                     ],
@@ -135,7 +143,8 @@ class _TodayPatinetState extends State<TodayPatinet> {
                                         state.patients.first.firstName,
                                         style: TextStyle(
                                             fontFamily: "Nunito",
-                                            fontSize: 16.sp,
+                                            fontSize:
+                                                16.sp - widget.fontSize.sp,
                                             fontWeight: FontWeight.w700),
                                       ),
                                     ),
@@ -190,7 +199,7 @@ class _TodayPatinetState extends State<TodayPatinet> {
                                           : const Color(0xff202020)
                                               .withOpacity(0.6),
                                       fontFamily: "Nunito",
-                                      fontSize: 14.sp),
+                                      fontSize: 14.sp - widget.fontSize.sp),
                                 ),
                               ),
                               Padding(
@@ -204,7 +213,7 @@ class _TodayPatinetState extends State<TodayPatinet> {
                                           : const Color(0xff202020)
                                               .withOpacity(0.6),
                                       fontFamily: "Nunito",
-                                      fontSize: 29.sp),
+                                      fontSize: 29.sp - widget.fontSize.sp),
                                 ),
                               ),
                             ],
@@ -234,7 +243,7 @@ class _TodayPatinetState extends State<TodayPatinet> {
                                     "${data.firstName} ${data.lastName}",
                                     style: TextStyle(
                                         fontFamily: "Nunito",
-                                        fontSize: 16.sp,
+                                        fontSize: 16.sp - widget.fontSize.sp,
                                         fontWeight: FontWeight.w700),
                                   ),
                                 ),
@@ -251,7 +260,7 @@ class _TodayPatinetState extends State<TodayPatinet> {
                                     "${locale.age}: ${data.age} ",
                                     style: TextStyle(
                                         fontFamily: "Nunito",
-                                        fontSize: 14.sp,
+                                        fontSize: 14.sp - widget.fontSize.sp,
                                         fontWeight: FontWeight.w600),
                                   ),
                                 ),
@@ -268,7 +277,7 @@ class _TodayPatinetState extends State<TodayPatinet> {
                                     "${locale.gender}: ${data.gender}",
                                     style: TextStyle(
                                         fontFamily: "Nunito",
-                                        fontSize: 19.sp,
+                                        fontSize: 19.sp - widget.fontSize.sp,
                                         fontWeight: FontWeight.w600),
                                   ),
                                 ),
@@ -289,7 +298,8 @@ class _TodayPatinetState extends State<TodayPatinet> {
                                           data.phoneNumber,
                                           style: TextStyle(
                                               fontFamily: 'Nunito',
-                                              fontSize: 16.sp,
+                                              fontSize:
+                                                  16.sp - widget.fontSize.sp,
                                               fontWeight: FontWeight.w600,
                                               color: const Color(0xff202020)
                                                   .withOpacity(0.85)),
@@ -324,7 +334,7 @@ class _TodayPatinetState extends State<TodayPatinet> {
                                 locale.call,
                                 style: TextStyle(
                                     color: const Color(0xff0AA9A9),
-                                    fontSize: 10.sp,
+                                    fontSize: 10.sp - widget.fontSize.sp,
                                     fontFamily: "Nunito",
                                     fontWeight: FontWeight.w700),
                               )),
