@@ -30,24 +30,19 @@ class _LocalisationState extends State<Localisation> {
             //   margin: EdgeInsets.all(8.h),
             //   child: Image.asset("assets/images/cc.png"),
             // ),
-            languageContainer("English", "en",bloc, languageCode),
-            languageContainer("Français","fr", bloc, languageCode),
-            languageContainer("العربية", "ar",bloc, languageCode),
+            languageContainer("English", "en", bloc, languageCode),
+            languageContainer("Français", "fr", bloc, languageCode),
+            languageContainer("العربية", "ar", bloc, languageCode),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 50.w, vertical: 16.h),
               height: 50.h,
               decoration: BoxDecoration(
-                color: isSelected
-                    ? const Color(0xFF2CDBC6)
-                    : const Color.fromARGB(108, 44, 219, 199),
+                color: const Color(0xFF2CDBC6),
                 borderRadius: BorderRadius.circular(16.h),
               ),
               child: InkWell(
                 onTap: () {
-                  if (isSelected) {
-                    bloc.add(const NextPage(id: 2));
-                  }
-                  
+                  bloc.add(const NextPage(id: 2));
                 },
                 child: Center(
                   child: Text(
@@ -68,8 +63,8 @@ class _LocalisationState extends State<Localisation> {
     );
   }
 
-  Widget languageContainer(
-      String language, String languageCode, IntroductionBloc bloc, String languageSys) {
+  Widget languageContainer(String language, String languageCode,
+      IntroductionBloc bloc, String languageSys) {
     return Container(
       margin: EdgeInsets.all(8.h),
       width: 150.w,
@@ -86,14 +81,13 @@ class _LocalisationState extends State<Localisation> {
       child: InkWell(
         onTap: () {
           bloc.add(onLanguageChoose(language: languageCode));
-          setState(() {
-            isSelected = true;
-          });
-           Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>  const MyApp(pageNumber:null,)
-                ));
+
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const MyApp(
+                        pageNumber: null,
+                      )));
         },
         child: Center(
           child: Text(
