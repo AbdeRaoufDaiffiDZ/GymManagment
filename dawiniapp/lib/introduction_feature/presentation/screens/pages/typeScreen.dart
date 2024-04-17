@@ -23,24 +23,19 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
     final AppLocalizations text = AppLocalizations.of(context)!;
 
     return Scaffold(
-        backgroundColor: const Color(0xffEDF5F5),
-        body: SafeArea(
-            child: Column(children: [
-          Stack(children: [
-            Container(
+      //    backgroundColor: const Color(0xffEDF5F5),
+      body: SingleChildScrollView(
+        child:
+            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          Container(
               color: const Color(0xffEDF5F5),
-              height: 310.h,
-              width: double.infinity,
+              height: 350.h,
+              width: double.maxFinite,
               child: Image.asset(
                 "assets/images/ss.png",
                 fit: BoxFit.scaleDown,
-              ),
-            ),
-          ]),
-          Expanded(
-              child: Padding(
-            padding: EdgeInsets.only(top: 10.h),
-            child: Container(
+              )),
+          Container(
               decoration: BoxDecoration(
                   color: Colors.white,
                   boxShadow: [
@@ -51,44 +46,76 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
                     ),
                   ],
                   borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(25),
-                      topRight: Radius.circular(25))),
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30))),
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 15.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Dawina , ",
-                        style: TextStyle(
-                          color: Color(0xff202020),
-                          fontSize: 15.sp,
-                          fontFamily: 'Nunito',
-                          fontWeight: FontWeight.w600,
-                        )),
-                    Text("For effortless appointment booking .",
-                        style: TextStyle(
-                          color: Color(0xff202020),
-                          fontSize: 15.sp,
-                          fontFamily: 'Nunito',
-                          fontWeight: FontWeight.w600,
-                        )),
-                    Text("Bridging Doctors and Patients",
-                        style: TextStyle(
-                            fontSize: 14.sp,
-                            fontFamily: 'Nunito',
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black45)),
-                    Padding(
-                      padding: EdgeInsets.only(top: 8.h),
-                      child: Center(
-                          child: usertypeContainer(
-                              text.whoareyou, "patient", bloc)),
+                    Container(
+                      height: 25.h,
+                      width: 200.w,
+                      child: FittedBox(
+                        alignment: Alignment.centerLeft,
+                        fit: BoxFit.scaleDown,
+                        child: Text("Dawina , ",
+                            style: TextStyle(
+                              color: Color(0xff202020),
+                              fontSize: 19,
+                              fontFamily: 'Nunito',
+                              fontWeight: FontWeight.w600,
+                            )),
+                      ),
                     ),
-                    Center(
-                        child:
-                            usertypeContainer(text.iamdoctor, "doctor", bloc)),
+                    Container(
+                      height: 25.h,
+                      width: 300.w,
+                      child: FittedBox(
+                        alignment: Alignment.centerLeft,
+                        fit: BoxFit.scaleDown,
+                        child: Text("For effortless appointment booking .",
+                            style: TextStyle(
+                              color: Color(0xff202020),
+                              fontSize: 19,
+                              fontFamily: 'Nunito',
+                              fontWeight: FontWeight.w600,
+                            )),
+                      ),
+                    ),
+                    Container(
+                      height: 25.h,
+                      width: 300.w,
+                      child: FittedBox(
+                        alignment: Alignment.centerLeft,
+                        fit: BoxFit.scaleDown,
+                        child: Text("Bridging Doctors and Patients ",
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontFamily: 'Nunito',
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black45)),
+                      ),
+                    ),
                     Padding(
-                      padding: EdgeInsets.only(top: 8.h),
+                      padding: EdgeInsets.only(top: 5.h),
+                      child: Container(
+                        height: 130.h,
+                        margin: EdgeInsets.only(top: 8),
+                        child: Column(
+                          children: [
+                            Center(
+                                child: usertypeContainer(
+                                    text.whoareyou, "patient", bloc)),
+                            Center(
+                                child: usertypeContainer(
+                                    text.iamdoctor, "doctor", bloc)),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(8),
                       child: Center(
                         child: Container(
                           width: 45.w,
@@ -109,10 +136,10 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
                     ),
                   ],
                 ),
-              ),
-            ),
-          )),
-        ])));
+              ))
+        ]),
+      ),
+    );
   }
 
   Widget usertypeContainer(String MyType, String type, IntroductionBloc bloc) {

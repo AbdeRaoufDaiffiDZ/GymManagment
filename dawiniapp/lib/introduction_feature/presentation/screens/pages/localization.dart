@@ -1,8 +1,8 @@
 import 'package:dawini_full/introduction_feature/presentation/bloc/bloc/introduction_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Localisation extends StatefulWidget {
   final String languageSys;
@@ -21,44 +21,81 @@ class _LocalisationState extends State<Localisation> {
     final AppLocalizations text = AppLocalizations.of(context)!;
 
     return Scaffold(
-      body: SafeArea(
+      backgroundColor: const Color(0xffEDF5F5),
+      body: SingleChildScrollView(
         child: Column(
           children: [
-            // Container(
-            //   margin: EdgeInsets.all(8.h),
-            //   child: Image.asset("assets/images/cc.png"),
-            // ),
-            languageContainer("English", bloc, widget.languageSys),
-            languageContainer("Français", bloc, widget.languageSys),
-            languageContainer("العربية", bloc, widget.languageSys),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 50.w, vertical: 16.h),
-              height: 50.h,
-              decoration: BoxDecoration(
-                color: isSelected
-                    ? const Color(0xFF2CDBC6)
-                    : const Color.fromARGB(108, 44, 219, 199),
-                borderRadius: BorderRadius.circular(16.h),
+              color: const Color(0xffEDF5F5),
+              height: 350.h,
+              width: double.maxFinite,
+              child: Image.asset(
+                "assets/images/ss.png",
+                fit: BoxFit.scaleDown,
               ),
-              child: InkWell(
-                onTap: () {
-                  if (isSelected) {
-                    bloc.add(const NextPage(id: 2));
-                  }
-                },
-                child: Center(
-                  child: Text(
-                    text.next,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 20.sp,
-                      color: Colors.white,
-                      fontFamily: 'Nunito',
-                    ),
+            ),
+            Container(
+              width: double.maxFinite,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0XFF000000).withOpacity(0.1),
+                    blurRadius: 2,
+                    offset: const Offset(0, 0),
                   ),
+                ],
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
                 ),
               ),
-            )
+              child: Padding(
+                padding: EdgeInsets.only(top: 10.h),
+                child: Column(
+                  children: [
+                    languageContainer(
+                      "Anglais",
+                      bloc,
+                      widget.languageSys,
+                    ),
+                    languageContainer(
+                      "Français",
+                      bloc,
+                      widget.languageSys,
+                    ),
+                    languageContainer(
+                      "العربية",
+                      bloc,
+                      widget.languageSys,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Container(
+                        width: 50.w,
+                        height: 50.h,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color(0xffECF2F2),
+                        ),
+                        child: IconButton(
+                          onPressed: () {
+                            if (isSelected) {
+                              bloc.add(const NextPage(id: 2));
+                            }
+                          },
+                          icon: Icon(
+                            Icons.arrow_forward,
+                            size: 31.w,
+                            color: const Color(0xff0AA9A9),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -69,8 +106,8 @@ class _LocalisationState extends State<Localisation> {
       String language, IntroductionBloc bloc, String languageSys) {
     return Container(
       margin: EdgeInsets.all(8.h),
-      width: 150.w,
-      height: 40.h,
+      width: 260.w,
+      height: 50.h,
       decoration: BoxDecoration(
         border: Border.all(
           color: languageSys == language
@@ -91,7 +128,7 @@ class _LocalisationState extends State<Localisation> {
           child: Text(
             language,
             style: TextStyle(
-              fontSize: 18.sp,
+              fontSize: 20.sp,
               fontFamily: 'Nunito',
             ),
           ),
