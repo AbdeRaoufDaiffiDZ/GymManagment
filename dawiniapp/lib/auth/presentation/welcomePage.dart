@@ -30,20 +30,21 @@ class _doctorsideHomeState extends State<doctorsideHome> {
     return StreamBuilder<User?>(
         stream: auth.authState,
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Loading();
-          }
+      
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           }
-
-          final user = snapshot.data;
+if(snapshot.data != null)
+          {final user = snapshot.data;
           return user != null
               ? doctorview(
                   uid: user.uid,
                   fontSize: widget.fontSize,
                 )
-              : AuthBlocMap(fontSize: widget.fontSize);
+              : AuthBlocMap(fontSize: widget.fontSize);}
+              else{
+                return AuthBlocMap(fontSize: widget.fontSize);;
+              }
 //
         });
   }

@@ -102,5 +102,9 @@
     "on_maps":"Localisation",
     "read_more":" En savoir plus",
     "show_less":" Montrer moins",
-    "cancel":"Annuler"
+    "cancel":"Annuler",
+    "hello_doctor_elevate":"Bonjour docteur! Élevez votre rendez-vous grâce à la gestion intelligente de Dawina.",
+    "enter_email":"Entrer votre Email",
+    "login":"Se connecter",
+    "password":"Mot de passe"
 }

@@ -1,7 +1,7 @@
+import 'package:dawini_full/auth/doctorlogin.dart';
 import 'package:dawini_full/auth/presentation/bloc/auth_bloc.dart';
 import 'package:dawini_full/auth/presentation/bloc/auth_state.dart';
-import 'package:dawini_full/auth/presentation/loginPage.dart';
-import 'package:dawini_full/auth/presentation/signup.dart';
+
 import 'package:dawini_full/auth/presentation/welcomePage.dart';
 import 'package:dawini_full/core/loading/loading.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,7 +23,7 @@ class _AuthBlocMapState extends State<AuthBlocMap> {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         if (state is LoginState) {
-          return LoginPage(fontSize: widget.fontSize);
+          return doctorsss(fontSize: widget.fontSize, error: null,);
         } else if (state is SuccessasfulLogin) {
           return doctorsideHome(
             fontSize: widget.fontSize,
@@ -31,10 +31,8 @@ class _AuthBlocMapState extends State<AuthBlocMap> {
         } else if (state is LoadAuthState) {
           return const Loading();
         } else if (state is ErrorAuthState) {
-          return LoginPage(error: state.error, fontSize: widget.fontSize);
-        } else if (state is RegisterState) {
-          return SignUpPage(fontSize: widget.fontSize);
-        } else if (state is ResetPassSatate) {}
+          return doctorsss(error: state.error, fontSize: widget.fontSize, );
+        }  else if (state is ResetPassSatate) {}
         return Container();
       },
     );

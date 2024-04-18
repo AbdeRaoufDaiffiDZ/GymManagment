@@ -103,6 +103,10 @@
     "on_maps":"On Maps",
     "read_more":" Read more",
     "show_less":" Show less",
-    "cancel":"cancel"
+    "cancel":"cancel",
+    "hello_doctor_elevate":"Hello, Doctor! Elevate your appointment with Dawini's smart management.",
+    "enter_email":"Enter your email",
+    "login":"Login",
+    "password":"Password"
 
 }

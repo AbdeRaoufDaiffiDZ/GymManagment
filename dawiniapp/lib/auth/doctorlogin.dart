@@ -1,10 +1,23 @@
+// ignore_for_file: camel_case_types
+
+import 'package:dawini_full/auth/domain/entity/auth_entity.dart';
+import 'package:dawini_full/auth/presentation/bloc/auth_bloc.dart';
+import 'package:dawini_full/auth/presentation/bloc/auth_event.dart';
+import 'package:dawini_full/introduction_feature/presentation/bloc/bloc/introduction_bloc.dart';
 import 'package:dawini_full/introduction_feature/presentation/screens/pages/typeScreen.dart';
+import 'package:dawini_full/introduction_feature/presentation/screens/pages_shower.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class doctorsss extends StatefulWidget {
+  final int fontSize;
+  final String? error;
   const doctorsss({
     super.key,
+    required this.fontSize,
+    required this.error,
   });
 
   @override
@@ -31,6 +44,10 @@ class _doctorsssState extends State<doctorsss> {
 
   @override
   Widget build(BuildContext context) {
+    final AuthBloc authBloc = BlocProvider.of<AuthBloc>(context);
+    final AppLocalizations text = AppLocalizations.of(context)!;
+    final IntroductionBloc bloc = BlocProvider.of<IntroductionBloc>(context);
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -53,20 +70,22 @@ class _doctorsssState extends State<doctorsss> {
                                 vertical: 0.h, horizontal: 8.w),
                             height: 34.w,
                             width: 34.w,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                                 color: Color(0xffECF2F2),
                                 shape: BoxShape.circle),
                             child: IconButton(
                                 onPressed: () {
+                                              bloc.add(NextPage(id: 2));
+
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => UserTypeSelector(
-                                              type: "doctor",
+                                        builder: (context) =>
+                                             PagesShower(fontSize: widget.fontSize,pageNumber: 2,
                                             )),
                                   );
                                 },
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.arrow_back,
                                   size: 23,
                                   color: Color(0xff0AA9A9),
@@ -79,13 +98,13 @@ class _doctorsssState extends State<doctorsss> {
                       height: 80,
                       width: 340,
                       padding: EdgeInsets.symmetric(horizontal: 8.w),
-                      child: Text(
-                        "Hello, Doctor! Elevate your appointment with Dawini's smart management.",
+                      child: Text( text.hello_doctor_elevate,
+                        
                         style: TextStyle(
-                          color: Color(0xff202020).withOpacity(0.95),
+                          color: const Color(0xff202020).withOpacity(0.95),
                           fontFamily: 'Nunito',
                           fontWeight: FontWeight.w700,
-                          fontSize: 17.sp,
+                          fontSize: 17.sp - widget.fontSize.sp,
                         ),
                       ),
                     ),
@@ -94,6 +113,11 @@ class _doctorsssState extends State<doctorsss> {
                       margin: EdgeInsets.symmetric(
                           vertical: 20.h, horizontal: 10.w),
                       child: TextFormField(
+                        onEditingComplete: () {
+                          // Move focus to the next field when "Next" is pressed
+                          FocusScope.of(context).nextFocus();
+                        },
+                        validator: validateEmail,
                         controller: doctorEmail,
                         decoration: InputDecoration(
                           filled: true,
@@ -102,11 +126,11 @@ class _doctorsssState extends State<doctorsss> {
                             borderSide: BorderSide.none,
                             borderRadius: BorderRadius.circular(12.r),
                           ),
-                          hintText: "Enter your email",
+                          hintText: text.enter_email,
                           hintStyle: TextStyle(
                             color: const Color(0XFF202020).withOpacity(0.7),
                             fontFamily: "Nunito",
-                            fontSize: 14.sp,
+                            fontSize: 14.sp - widget.fontSize.sp,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -133,7 +157,7 @@ class _doctorsssState extends State<doctorsss> {
                             borderSide: BorderSide.none,
                             borderRadius: BorderRadius.circular(12.r),
                           ),
-                          hintText: "Password",
+                          hintText: text.password,
                           hintStyle: TextStyle(
                             color: const Color(0XFF202020).withOpacity(0.7),
                             fontFamily: "Nunito",
@@ -143,27 +167,46 @@ class _doctorsssState extends State<doctorsss> {
                         ),
                       ),
                     ),
+                    if (widget.error != null)
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 20.h, horizontal: 15.w),
+                        child: Text(
+                          widget.error!,
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
                     Padding(
                       padding: EdgeInsets.symmetric(
                           vertical: 20.h, horizontal: 12.w),
                       child: GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          if (doctorEmail.text.isNotEmpty &&
+                              doctorPassword.text.isNotEmpty) {
+                            AuthEntity auth = AuthEntity(
+                                email: doctorEmail.text,
+                                password: doctorPassword.text);
+
+                            authBloc.add(
+                                onLoginEvent(context: context, data: auth));
+                          }
+                        },
                         child: Container(
                           height: 45.h,
+                          decoration: BoxDecoration(
+                            color: const Color(0xff00C8D5),
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
                           child: Center(
                             child: Text(
-                              "Enter",
+                              text.login,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: 'Nunito',
-                                fontSize: 25.sp,
+                                fontSize: 25.sp - widget.fontSize.sp,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                          ),
-                          decoration: BoxDecoration(
-                            color: Color(0xff00C8D5),
-                            borderRadius: BorderRadius.circular(12.r),
                           ),
                         ),
                       ),
@@ -176,5 +219,14 @@ class _doctorsssState extends State<doctorsss> {
         ),
       ),
     );
+  }
+
+  String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter an email address.';
+    }
+    // You can optionally add a more robust email validation using a regular expression
+    // but this basic check ensures a value is present
+    return null;
   }
 }

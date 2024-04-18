@@ -58,7 +58,7 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
                     Container(
                       height: 25.h,
                       width: 200.w,
-                      child: FittedBox(
+                      child: const FittedBox(
                         alignment: Alignment.centerLeft,
                         fit: BoxFit.scaleDown,
                         child: Text("Dawina , ",
@@ -73,7 +73,7 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
                     Container(
                       height: 25.h,
                       width: 300.w,
-                      child: FittedBox(
+                      child: const FittedBox(
                         alignment: Alignment.centerLeft,
                         fit: BoxFit.scaleDown,
                         child: Text("For effortless appointment booking .",
@@ -88,7 +88,7 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
                     Container(
                       height: 25.h,
                       width: 300.w,
-                      child: FittedBox(
+                      child: const FittedBox(
                         alignment: Alignment.centerLeft,
                         fit: BoxFit.scaleDown,
                         child: Text("Bridging Doctors and Patients ",
@@ -103,7 +103,7 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
                       padding: EdgeInsets.only(top: 5.h),
                       child: Container(
                         height: 130.h,
-                        margin: EdgeInsets.only(top: 8),
+                        margin: const EdgeInsets.only(top: 8),
                         child: Column(
                           children: [
                             Center(
@@ -114,7 +114,7 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
                                     bloc)),
                             Center(
                                 child: usertypeContainer(
-                                    WhoIs: isPatient,
+                                    WhoIs: isDoctor,
                                     text.iamdoctor,
                                     "doctor",
                                     bloc)),
@@ -123,7 +123,7 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(8),
                       child: Center(
                         child: Container(
                           width: 45.w,
@@ -142,8 +142,8 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
                                 Icons.arrow_forward,
                                 size: 29.w,
                                 color: isSelected
-                                    ? Color(0xff0AA9A9)
-                                    : Color.fromARGB(94, 10, 169, 169),
+                                    ? const Color(0xff0AA9A9)
+                                    : const Color.fromARGB(94, 10, 169, 169),
                               )),
                         ),
                       ),
@@ -182,10 +182,10 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
         width: 220.w,
         height: 45.h,
         decoration: BoxDecoration(
-          color: Color(0xffFAFAFA),
+          color: const Color(0xffFAFAFA),
           boxShadow: [
             BoxShadow(
-              color: Color(0XFF000000).withOpacity(0.3),
+              color: const Color(0XFF000000).withOpacity(0.3),
               blurRadius: 2,
               spreadRadius: 0,
               offset: const Offset(0, 0),
@@ -202,7 +202,7 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
                 fontSize: 18.sp,
                 fontFamily: 'Nunito',
                 fontWeight: FontWeight.w500,
-                color: Color(0xff202020).withOpacity(0.8)),
+                color: const Color(0xff202020).withOpacity(0.8)),
           ),
         ),
       ),
