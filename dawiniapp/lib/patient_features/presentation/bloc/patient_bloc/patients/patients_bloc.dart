@@ -282,9 +282,15 @@ Future<Object?> showlDialog(
                     if (Navigator.canPop(context)) {
                       Navigator.pop(context);
                       if (done) {
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                        Navigator.pop(context);
+                        if (Navigator.canPop(context)) {
+                      Navigator.pop(context);
+                      if (Navigator.canPop(context)) {
+                      Navigator.pop(context);}
+                      if (Navigator.canPop(context)) { // TODO:
+                      Navigator.pop(context);}}
+                        // Navigator.pop(context);
+                        // Navigator.pop(context);
+                        // Navigator.pop(context);
                       }
                     }
                   },

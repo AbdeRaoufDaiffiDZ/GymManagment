@@ -59,8 +59,10 @@ Future<void> main() async {
 }
 
 class MyApp extends StatefulWidget {
+  final int? pageNumber;
   const MyApp({
     super.key,
+    this.pageNumber,
   });
 
   @override
