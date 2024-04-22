@@ -173,7 +173,6 @@ class _MyWidgetState extends State<MyWidget> {
           status = value;
         }));
   }
-
   @override
   Widget build(BuildContext context) {
     if (status == true) {

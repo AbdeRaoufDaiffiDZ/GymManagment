@@ -4,7 +4,7 @@ import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 
 class DoctorModel extends DoctorEntity {
   final String ImageProfileurl;
-
+  final String gender;
   final String firstNameArabic;
   final String lastNameArabic;
   final String specialityArabic;
@@ -25,7 +25,7 @@ class DoctorModel extends DoctorEntity {
   final String uid;
   final int numberOfPatient;
   DoctorModel(
-      {required this.firstNameArabic,
+      {required this.gender,required this.firstNameArabic,
       required this.lastNameArabic,
       required this.specialityArabic,
       required this.ImageProfileurl,
@@ -45,7 +45,7 @@ class DoctorModel extends DoctorEntity {
       required this.firstName,
       required this.lastName,
       required this.phoneNumber})
-      : super(
+      : super(gender:gender,
             firstNameArabic: firstNameArabic,
             lastNameArabic: lastNameArabic,
             specialityArabic: specialityArabic,
@@ -68,7 +68,7 @@ class DoctorModel extends DoctorEntity {
             wilaya: wilaya);
 
   @override
-  List<Object?> get props => [
+  List<Object?> get props => [gender,
         firstNameArabic,
         lastNameArabic,
         specialityArabic,
@@ -92,6 +92,7 @@ class DoctorModel extends DoctorEntity {
 
   Map<String, dynamic> toMap() {
     return {
+      'gender':gender,
       'ImageProfileurl': ImageProfileurl,
       'firstNameArabic': firstNameArabic,
       'specialityArabic': specialityArabic,
@@ -116,6 +117,7 @@ class DoctorModel extends DoctorEntity {
 
   factory DoctorModel.fromJson(Map<dynamic, dynamic> json) {
     return DoctorModel(
+      gender:json['gender'] ?? "male",
         recommanded: json['recommanded'] ?? 0,
         numberOfPatient: json['numberOfPatient'] ?? 0,
         numberInList: json['numberInList'] ?? 0,
@@ -141,6 +143,7 @@ class DoctorModel extends DoctorEntity {
   }
 
   DoctorEntity toEntity() => DoctorEntity(
+    gender:gender,
       numberOfPatient: numberOfPatient,
       uid: uid,
       firstName: firstName,

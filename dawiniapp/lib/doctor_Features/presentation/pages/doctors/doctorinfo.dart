@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 enum AppState { free, picked, cropped }
@@ -133,7 +134,7 @@ class _doctorDetailsState extends State<Lll> {
                                         )
                                       : Image.network(
                                           widget.doctorInfo.ImageProfileurl,
-                                          fit: BoxFit.cover,
+                                          fit: BoxFit.contain,
                                         )
                                   : Image.file(
                                       imageFile!,
@@ -157,14 +158,18 @@ class _doctorDetailsState extends State<Lll> {
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(15.r)),
                             child: MaterialButton(
-                                onPressed: imagee,
+                                onPressed: () {
+                                  if (state == AppState.free) {
+                                    imagee();
+                                  } else if (state == AppState.picked) {
+                                    cropper();
+                                  } else if (state == AppState.cropped) {
+                                    clearImage();
+                                  }
+                                },
                                 child: Row(
                                   children: [
-                                    Icon(
-                                      Icons.camera_alt_rounded,
-                                      color: const Color(0xff0AA9A9),
-                                      size: 9.w,
-                                    ),
+                                    buildButtonIcon(),
                                     Padding(
                                       padding: isArabic
                                           ? EdgeInsets.only(right: 5.w)
@@ -889,6 +894,7 @@ class _doctorDetailsState extends State<Lll> {
                                 }
 
                                 DoctorEntity doctor = DoctorEntity(
+                                    gender: widget.doctorInfo.gender,
                                     recommanded: widget.doctorInfo.recommanded,
                                     numberOfPatient:
                                         widget.doctorInfo.numberOfPatient,
@@ -942,40 +948,47 @@ class _doctorDetailsState extends State<Lll> {
         ));
   }
 
-  /* Future<void> _croppeed() async {
-    CroppedFile? croppedFile = await ImageCropper()
-        .cropImage(sourcePath: imageFile!.path, aspectRatioPresets: [
-      CropAspectRatioPreset.square,
-      CropAspectRatioPreset.ratio3x2,
-      CropAspectRatioPreset.original,
-      CropAspectRatioPreset.ratio4x3,
-      CropAspectRatioPreset.ratio16x9
-    ], uiSettings: [
-      AndroidUiSettings(
-        toolbarColor: Colors.deepOrange,
-        toolbarWidgetColor: Colors.white,
-        toolbarTitle: 'Crop Image',
-        statusBarColor: Colors.deepOrangeAccent,
-        initAspectRatio: CropAspectRatioPreset.original,
-        backgroundColor: Colors.white,
-        lockAspectRatio: false,
-      ),
-    ]);
-
-    if (croppedFile != null) {
-      imageFile = File(croppedFile.path);
-
+  cropper() async {
+    CroppedFile? cropeed = await ImageCropper().cropImage(
+      sourcePath: imageFile!.path,
+      aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+      ],
+      uiSettings: [
+        AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Color(0xff0AA9A9),
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: true),
+        IOSUiSettings(
+          title: 'Cropper',
+        ),
+        WebUiSettings(
+          context: context,
+        ),
+      ],
+    );
+    imageFile = cropeed != null ? File(cropeed.path) : null;
+    if (imageFile != null) {
       setState(() {
         state = AppState.cropped;
       });
     }
-  }*/
+  }
+
+  clearImage() {
+    imageFile = null;
+    setState(() {
+      state = AppState.free;
+    });
+  }
 
   imagee() async {
     ImagePicker imagePicker = ImagePicker();
 
     final pickedImage =
-        await imagePicker.pickImage(source: ImageSource.gallery);
+        await imagePicker.pickImage(source: ImageSource.values[1]);
     imageFile = pickedImage != null ? File(pickedImage.path) : null;
     if (imageFile != null) {
       setState(() {
@@ -1002,6 +1015,30 @@ class _doctorDetailsState extends State<Lll> {
       if (kDebugMode) {
         print(e.toString());
       }
+    }
+  }
+
+  Widget buildButtonIcon() {
+    if (state == AppState.free) {
+      return Icon(
+        Icons.camera_alt_rounded,
+        color: const Color(0xff0AA9A9),
+        size: 9.w,
+      );
+    } else if (state == AppState.picked) {
+      return Icon(
+        Icons.crop,
+        color: const Color(0xff0AA9A9),
+        size: 9.w,
+      );
+    } else if (state == AppState.cropped) {
+      return Icon(
+        Icons.clear,
+        color: const Color(0xff0AA9A9),
+        size: 9.w,
+      );
+    } else {
+      return SizedBox();
     }
   }
 }
