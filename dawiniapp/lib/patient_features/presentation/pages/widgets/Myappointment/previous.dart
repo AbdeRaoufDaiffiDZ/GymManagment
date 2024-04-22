@@ -25,7 +25,7 @@ class _previousappointmState extends State<previousappointm> {
   Widget build(BuildContext context) {
     final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
     final AppLocalizations text = AppLocalizations.of(context)!;
-
+    bool isMale = true;
     return Scaffold(
       backgroundColor: const Color(0XFFFAFAFA),
       body: Padding(
@@ -77,6 +77,9 @@ class _previousappointmState extends State<previousappointm> {
                             .where((element) => element.uid == data[index].uid)
                             .toList();
                         if (doctors.isNotEmpty) {
+                          isMale =
+                              doctors.first.gender == "male" ? true : false;
+
                           return Column(
                             children: [
                               Padding(

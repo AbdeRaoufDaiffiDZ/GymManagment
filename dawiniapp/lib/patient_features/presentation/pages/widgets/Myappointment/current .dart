@@ -31,7 +31,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
     final PatientsBloc patientsBloc = BlocProvider.of<PatientsBloc>(context);
     final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
     AppLocalizations text = AppLocalizations.of(context)!;
-
+    bool isMale = true;
     return Scaffold(
         body: Padding(
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 15.h),
@@ -85,6 +85,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                           notificationConditions(data, index, doctors,
                               text: text, isArabic: isArabic);
                         }
+                        isMale = doctors.first.gender == "male" ? true:false;
                         return Column(
                           children: [
                             Padding(
@@ -136,7 +137,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                               .fromRadius(
                                                               48.0), // Adjust radius
                                                           child: Image.asset(
-                                                            "assets/images/maleDoctor.png",
+                                                       isMale ?     "assets/images/maleDoctor.png": "assets/images/maleDoctor.png" ,// TODO: add female picture
                                                             alignment: Alignment
                                                                 .center,
                                                             scale: 4.3,

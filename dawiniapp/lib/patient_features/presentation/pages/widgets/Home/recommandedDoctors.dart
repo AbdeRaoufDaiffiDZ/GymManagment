@@ -20,7 +20,7 @@ class RecommandedDoctors extends StatefulWidget {
 
 class _RecommandedDoctorsState extends State<RecommandedDoctors> {
   final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
-
+  bool isMale = true; 
   @override
   Widget build(BuildContext context) {
     final AppLocalizations text = AppLocalizations.of(context)!;
@@ -70,6 +70,7 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                     mainAxisExtent: 220.h),
                 itemCount: doctors.length, // Number of items in the grid
                 itemBuilder: (context, index) {
+                  isMale = doctors[index].gender == "male" ? true:false;
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -100,9 +101,9 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                                     .withOpacity(0.3),
                                 height: 100.h,
                                 width: double.infinity,
-                                child: doctors[index].ImageProfileurl == " "
+                                child: (doctors[index].ImageProfileurl == " " || doctors[index].ImageProfileurl == "")
                                     ? Image.asset(
-                                        "assets/images/maleDoctor.png",
+                                       isMale ? "assets/images/maleDoctor.png":"assets/images/maleDoctor.png", // TODO: add female picture
                                         alignment: Alignment.center,
                                         scale: 4.3,
                                       )
