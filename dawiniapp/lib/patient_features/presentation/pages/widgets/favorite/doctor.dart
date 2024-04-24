@@ -103,6 +103,7 @@ class _favoriteState extends State<myfavdoctors> with TickerProviderStateMixin {
                                                   MaterialPageRoute(
                                                       builder: (context) =>
                                                           doctorDetails(
+                                                            doctor: doctor[index],
                                                             uid: doctor[index]
                                                                 .uid,
                                                             fontSize:

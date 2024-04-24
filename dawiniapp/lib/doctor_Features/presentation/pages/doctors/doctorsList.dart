@@ -108,6 +108,7 @@ class _DoctorsState extends State<Doctors> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => doctorDetails(
+                        doctor: data[index],
                             fontSize: widget.fontSize,
                             uid: data[index].uid,
                           )),

@@ -52,9 +52,7 @@ Future<void> main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  runApp(DevicePreview(
-    builder: ((context) => const MyApp()),
-  ));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {

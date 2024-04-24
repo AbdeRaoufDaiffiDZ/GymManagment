@@ -80,6 +80,7 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => doctorDetails(
+                              doctor: doctors[index],
                                   fontSize: widget.fontSize,
                                   uid: doctors[index].uid,
                                 )),
@@ -101,7 +102,7 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                                 margin: const EdgeInsets.all(8),
                                 height: 90.h,
                                 width: double.infinity,
-                                child: doctors[index].ImageProfileurl == " "
+                                child: (doctors[index].ImageProfileurl == " " || doctors[index].ImageProfileurl == "")
                                     ? Image.asset(
                                         "assets/images/maleDoctor.png",
                                         alignment: Alignment.center,
