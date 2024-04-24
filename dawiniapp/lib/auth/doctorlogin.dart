@@ -1,15 +1,12 @@
-// ignore_for_file: camel_case_types
-
 import 'package:dawini_full/auth/domain/entity/auth_entity.dart';
 import 'package:dawini_full/auth/presentation/bloc/auth_bloc.dart';
 import 'package:dawini_full/auth/presentation/bloc/auth_event.dart';
 import 'package:dawini_full/introduction_feature/presentation/bloc/bloc/introduction_bloc.dart';
-import 'package:dawini_full/introduction_feature/presentation/screens/pages/typeScreen.dart';
 import 'package:dawini_full/introduction_feature/presentation/screens/pages_shower.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class doctorsss extends StatefulWidget {
   final int fontSize;
@@ -28,6 +25,14 @@ class _doctorsssState extends State<doctorsss> {
   TextEditingController doctorEmail = TextEditingController();
   TextEditingController doctorPassword = TextEditingController();
   bool _obscureText = true;
+  late FocusNode focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize focusNode in initState
+    focusNode = FocusNode();
+  }
 
   void _togglePasswordVisibility() {
     setState(() {
@@ -39,6 +44,8 @@ class _doctorsssState extends State<doctorsss> {
   void dispose() {
     doctorEmail.dispose();
     doctorPassword.dispose();
+    focusNode.dispose();
+
     super.dispose();
   }
 
@@ -47,7 +54,7 @@ class _doctorsssState extends State<doctorsss> {
     final AuthBloc authBloc = BlocProvider.of<AuthBloc>(context);
     final AppLocalizations text = AppLocalizations.of(context)!;
     final IntroductionBloc bloc = BlocProvider.of<IntroductionBloc>(context);
-
+    //FocusNode focusNode = FocusNode();
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -57,7 +64,7 @@ class _doctorsssState extends State<doctorsss> {
                 child: Column(
                   children: [
                     Padding(
-                      padding: EdgeInsets.symmetric(vertical: 30.h),
+                      padding: EdgeInsets.symmetric(vertical: 10.h),
                       child: Stack(
                         children: [
                           Container(
@@ -75,13 +82,14 @@ class _doctorsssState extends State<doctorsss> {
                                 shape: BoxShape.circle),
                             child: IconButton(
                                 onPressed: () {
-                                              bloc.add(NextPage(id: 2));
+                                  bloc.add(NextPage(id: 2));
 
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                             PagesShower(fontSize: widget.fontSize,pageNumber: 2,
+                                        builder: (context) => PagesShower(
+                                              fontSize: widget.fontSize,
+                                              pageNumber: 2,
                                             )),
                                   );
                                 },
@@ -95,11 +103,10 @@ class _doctorsssState extends State<doctorsss> {
                       ),
                     ),
                     Container(
-                      height: 80,
-                      width: 340,
-                      padding: EdgeInsets.symmetric(horizontal: 8.w),
-                      child: Text( text.hello_doctor_elevate,
-                        
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 16.w, vertical: 0),
+                      child: Text(
+                        text.hello_doctor_elevate,
                         style: TextStyle(
                           color: const Color(0xff202020).withOpacity(0.95),
                           fontFamily: 'Nunito',
@@ -130,7 +137,7 @@ class _doctorsssState extends State<doctorsss> {
                           hintStyle: TextStyle(
                             color: const Color(0XFF202020).withOpacity(0.7),
                             fontFamily: "Nunito",
-                            fontSize: 14.sp - widget.fontSize.sp,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -169,8 +176,8 @@ class _doctorsssState extends State<doctorsss> {
                     ),
                     if (widget.error != null)
                       Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 20.h, horizontal: 15.w),
+                        padding:
+                            EdgeInsets.only(top: 5.h, left: 15.w, right: 15.h),
                         child: Text(
                           widget.error!,
                           style: TextStyle(color: Colors.red),
@@ -178,25 +185,24 @@ class _doctorsssState extends State<doctorsss> {
                       ),
                     Padding(
                       padding: EdgeInsets.symmetric(
-                          vertical: 20.h, horizontal: 12.w),
-                      child: GestureDetector(
-                        onTap: () {
-                          if (doctorEmail.text.isNotEmpty &&
-                              doctorPassword.text.isNotEmpty) {
-                            AuthEntity auth = AuthEntity(
-                                email: doctorEmail.text,
-                                password: doctorPassword.text);
-
-                            authBloc.add(
-                                onLoginEvent(context: context, data: auth));
-                          }
-                        },
-                        child: Container(
-                          height: 45.h,
-                          decoration: BoxDecoration(
+                          vertical: 30.h, horizontal: 10.w),
+                      child: Ink(
+                        height: 45.h,
+                        decoration: BoxDecoration(
                             color: const Color(0xff00C8D5),
-                            borderRadius: BorderRadius.circular(12.r),
-                          ),
+                            borderRadius: BorderRadius.circular(8.r)),
+                        child: InkWell(
+                          onTap: () {
+                            if (doctorEmail.text.isNotEmpty &&
+                                doctorPassword.text.isNotEmpty) {
+                              AuthEntity auth = AuthEntity(
+                                  email: doctorEmail.text,
+                                  password: doctorPassword.text);
+
+                              authBloc.add(
+                                  onLoginEvent(context: context, data: auth));
+                            }
+                          },
                           child: Center(
                             child: Text(
                               text.login,

@@ -1,8 +1,9 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, sort_child_properties_last, prefer_typing_uninitialized_variables, camel_case_types
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
+import 'package:dawini_full/auth/presentation/welcomePage.dart';
 import 'package:dawini_full/doctor_Features/presentation/pages/doctors/doctorsList.dart';
+import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/appBar.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/recommandedDoctors.dart';
@@ -41,6 +42,7 @@ class _DoctorPageState extends State<Weather> {
     final AppLocalizations text = AppLocalizations.of(context)!;
 
     return Scaffold(
+        backgroundColor: Color(0xffFAFAFA),
         floatingActionButton: MaterialButton(
           onPressed: () {
             Navigator.push(
@@ -52,51 +54,48 @@ class _DoctorPageState extends State<Weather> {
           },
           child: Icon(Icons.settings),
         ),
-        backgroundColor: Colors.white,
         bottomNavigationBar: Container(
+          height: 73.h,
           decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.4),
-                spreadRadius: 6.r,
-                blurRadius: 2.r,
-                offset: Offset(0, 3),
-              ),
-            ],
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(40.r),
-              topRight: Radius.circular(40.r),
-            ),
+                topLeft: Radius.circular(15), topRight: Radius.circular(15)),
             border: Border.all(
-              color: Colors.white,
-              width: 1.w,
-            ),
+                width: 1.4,
+                color: Color(0xff202020)
+                    .withOpacity(0.2)), // Adjust border width and color
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(25.r),
-                topRight: Radius.circular(25.r)),
+                topLeft: Radius.circular(16), topRight: Radius.circular(16)),
             child: BottomNavigationBar(
-                backgroundColor: Colors.white,
-                iconSize: 21.sp,
-                unselectedFontSize: 13.sp,
-                selectedFontSize: 13.sp,
-                currentIndex: selectedindex2,
-                onTap: (value) {
-                  setState(() {
-                    selectedindex2 = value;
-                  });
-                },
-                selectedItemColor: Color(0xFF2CDBC6),
-                items: [
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.home), label: text.home),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.medical_information),
-                      label: text.my_Appointement),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.favorite), label: text.favorite)
-                ]),
+              iconSize: 21.sp,
+              backgroundColor: Color(0xffFFFFFF),
+              unselectedFontSize: 13.sp,
+              selectedFontSize: 13.sp,
+              currentIndex: selectedindex2,
+              onTap: (value) {
+                setState(() {
+                  selectedindex2 = value;
+                });
+              },
+              selectedItemColor: Color(0xFF2CDBC6),
+              unselectedItemColor: Color(0xff202020).withOpacity(0.6),
+              items: [
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.home), label: text.home),
+                BottomNavigationBarItem(
+                    icon: Image.asset(
+                      "assets/images/myapoin.png",
+                      scale: 1.2,
+                      color: selectedindex2 == 1
+                          ? Color(0xFF2CDBC6)
+                          : Color(0xff202020).withOpacity(1),
+                    ),
+                    label: text.my_Appointement),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.favorite), label: text.favorite)
+              ],
+            ),
           ),
         ),
         drawerEnableOpenDragGesture: false,
@@ -187,7 +186,7 @@ class _DoctorPageState extends State<Weather> {
                   margin: EdgeInsets.only(top: 4.h),
                   padding: isArabic
                       ? EdgeInsets.only(right: 9.w)
-                      : EdgeInsets.only(left: 9.w),
+                      : EdgeInsets.only(left: 4.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -198,33 +197,34 @@ class _DoctorPageState extends State<Weather> {
                           child: AutoSizeText(text.specialty,
                               style: TextStyle(
                                   fontFamily: 'Nunito',
-                                  fontSize: 20.sp - widget.fontSize.sp,
+                                  fontSize: 16.sp - widget.fontSize.sp,
                                   fontWeight: FontWeight.w600,
-                                  color: const Color(0xFF2CDBC6))),
+                                  color: const Color(0xFF202020))),
                         ),
                       ),
-                      //   GestureDetector(     ///  this is search speciality button
-                      //     onTap: () {
-                      //       Navigator.push(
-                      //           context,
-                      //           MaterialPageRoute(
-                      //               builder: (context) => doctorsideHome(
-                      //                     popOrNot: true,
-                      //                   )));
-                      //     },
-                      //     child: SizedBox(
-                      //       width: 80.w,
-                      //       height: 20.h,
-                      //       child: Center(
-                      //         child: AutoSizeText(text.search,
-                      //             style: TextStyle(
-                      //                 fontFamily: 'Nunito',
-                      //                 fontSize: 20.sp,
-                      //                 fontWeight: FontWeight.w600,
-                      //                 color: const Color(0xFF2CDBC6))),
-                      //       ),
-                      //     ),
-                      //   ),
+                      GestureDetector(
+                        ///  this is search speciality button
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => doctorsideHome(
+                                        fontSize: 2,
+                                      )));
+                        },
+                        child: SizedBox(
+                          width: 80.w,
+                          height: 20.h,
+                          child: Center(
+                            child: AutoSizeText(text.search,
+                                style: TextStyle(
+                                    fontFamily: 'Nunito',
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: const Color(0xFF0AA9A9))),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -235,7 +235,7 @@ class _DoctorPageState extends State<Weather> {
                 Padding(
                   padding: isArabic
                       ? EdgeInsets.only(right: 7.w)
-                      : EdgeInsets.only(left: 7.w),
+                      : EdgeInsets.only(left: 12.w),
                   child: Container(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -243,8 +243,8 @@ class _DoctorPageState extends State<Weather> {
                         Text(text.recommended_doctors,
                             style: TextStyle(
                                 fontFamily: 'Nunito',
-                                fontSize: 19.sp - widget.fontSize.sp,
-                                fontWeight: FontWeight.w600)),
+                                fontSize: 16.sp - widget.fontSize.sp,
+                                fontWeight: FontWeight.bold)),
                         GestureDetector(
                           onTap: () {
                             dataBloc.add(onSeeAllDoctors());
@@ -262,9 +262,9 @@ class _DoctorPageState extends State<Weather> {
                               child: AutoSizeText(text.see_all,
                                   style: TextStyle(
                                       fontFamily: 'Nunito',
-                                      fontSize: 20.sp - widget.fontSize.sp,
+                                      fontSize: 15.sp - widget.fontSize.sp,
                                       fontWeight: FontWeight.w600,
-                                      color: const Color(0xFF2CDBC6))),
+                                      color: const Color(0xFF0AA9A9))),
                             ),
                           ),
                         )
@@ -308,6 +308,7 @@ class _doctorsState extends State<doctors> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffFAFAFA),
       body: ListView(
         children: [
           SearchMenu(

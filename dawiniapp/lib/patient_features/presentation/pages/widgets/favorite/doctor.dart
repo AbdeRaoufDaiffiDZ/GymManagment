@@ -7,8 +7,8 @@ import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart'
 import 'package:dawini_full/doctor_Features/presentation/pages/doctors/details.dart';
 import 'package:dawini_full/patient_features/domain/usecases/patients_usecase.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class myfavdoctors extends StatefulWidget {
   final int fontSize;
@@ -31,6 +31,7 @@ class _favoriteState extends State<myfavdoctors> with TickerProviderStateMixin {
     final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
 
     return Scaffold(
+        backgroundColor: const Color(0XFFFAFAFA),
         body: Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 15.h),
             child: FutureBuilder(

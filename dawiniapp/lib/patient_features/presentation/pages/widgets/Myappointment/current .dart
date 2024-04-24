@@ -3,15 +3,15 @@
 import 'dart:ui';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:dawini_full/core/error/ErrorWidget.dart';
 import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:dawini_full/core/error/ErrorWidget.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../../doctor_Features/domain/entities/doctor.dart';
 import '../../../../../doctor_Features/domain/usecases/doctor_usecase.dart';
@@ -33,59 +33,61 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
     AppLocalizations text = AppLocalizations.of(context)!;
     bool isMale = true;
     return Scaffold(
+        backgroundColor: const Color(0XFFFAFAFA),
         body: Padding(
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 15.h),
-      child:
-          BlocBuilder<PatientsBloc, PatientsState>(builder: (context, state) {
-        if (state is PatientsLoaded) {
-          String datetime =
-              DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
-          String datetimeTomorrow = DateFormat("yyyy-MM-dd")
-              .format(DateTime.now().add(const Duration(days: 1)))
-              .toString();
-          final data = state.patients
-              .where((element) =>
-                  element.AppointmentDate == datetime ||
-                  element.AppointmentDate == datetimeTomorrow)
-              .toList();
-          final bool isArabic =
-              Localizations.localeOf(context).languageCode == "ar";
+          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 15.h),
+          child: BlocBuilder<PatientsBloc, PatientsState>(
+              builder: (context, state) {
+            if (state is PatientsLoaded) {
+              String datetime =
+                  DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
+              String datetimeTomorrow = DateFormat("yyyy-MM-dd")
+                  .format(DateTime.now().add(const Duration(days: 1)))
+                  .toString();
+              final data = state.patients
+                  .where((element) =>
+                      element.AppointmentDate == datetime ||
+                      element.AppointmentDate == datetimeTomorrow)
+                  .toList();
+              final bool isArabic =
+                  Localizations.localeOf(context).languageCode == "ar";
 
-          return ListView.builder(
-              itemCount: data.length,
-              itemBuilder: (context, index) {
-                return StreamBuilder<List<DoctorEntity>>(
-                    stream: getDoctorsInfoUseCase.streamDoctorInfo(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Loading();
-                      }
-                      if (snapshot.hasError) {
-                        return ErrorPage(
-                          error: snapshot.error,
-                        );
-                        // Text('Error: ${snapshot.error}');
-                      }
-                      late final List<DoctorEntity> doctor;
-                      if (snapshot.data == null) {
-                        doctor = [];
-                      } else {
-                        if (snapshot.data!.isEmpty) {
-                          doctor = [];
-                        } else {
-                          doctor = snapshot.data!;
-                        }
-                      }
-                      List<DoctorEntity> doctors = doctor
-                          .where((element) => element.uid == data[index].uid)
-                          .toList();
+              return ListView.builder(
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    return StreamBuilder<List<DoctorEntity>>(
+                        stream: getDoctorsInfoUseCase.streamDoctorInfo(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Loading();
+                          }
+                          if (snapshot.hasError) {
+                            return ErrorPage(
+                              error: snapshot.error,
+                            );
+                            // Text('Error: ${snapshot.error}');
+                          }
+                          late final List<DoctorEntity> doctor;
+                          if (snapshot.data == null) {
+                            doctor = [];
+                          } else {
+                            if (snapshot.data!.isEmpty) {
+                              doctor = [];
+                            } else {
+                              doctor = snapshot.data!;
+                            }
+                          }
+                          List<DoctorEntity> doctors = doctor
+                              .where(
+                                  (element) => element.uid == data[index].uid)
+                              .toList();
 
                       if (doctors.isNotEmpty) {
                         if (data[index].today) {
                           notificationConditions(data, index, doctors,
                               text: text, isArabic: isArabic);
                         }
-                        isMale = doctors.first.gender == "male" ? true:false;
                         return Column(
                           children: [
                             Padding(
@@ -137,7 +139,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                               .fromRadius(
                                                               48.0), // Adjust radius
                                                           child: Image.asset(
-                                                       isMale ?     "assets/images/maleDoctor.png": "assets/images/maleDoctor.png" ,// TODO: add female picture
+                                                            "assets/images/maleDoctor.png",
                                                             alignment: Alignment
                                                                 .center,
                                                             scale: 4.3,
@@ -404,186 +406,189 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                 scale:
                                                     Tween(begin: 0.5, end: 1.0)
                                                         .animate(a1),
-                                                child: FadeTransition(
-                                                  opacity: Tween<double>(
-                                                          begin: 0.4, end: 1)
-                                                      .animate(a1),
-                                                  child: AlertDialog(
-                                                    contentPadding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 10.h,
-                                                            horizontal: 10.w),
-                                                    content: Container(
-                                                      height: 150.h,
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                            text.cancelappointment,
-                                                            maxLines: 2,
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize: 15
-                                                                        .sp -
-                                                                    fontSize.sp,
-                                                                fontFamily:
-                                                                    "Nunito",
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                          GestureDetector(
-                                                            onTap: () {
-                                                              if (Navigator
-                                                                  .canPop(
-                                                                      context)) {
-                                                                Navigator.pop(
-                                                                    context);
-                                                              }
-                                                            },
-                                                            child: Container(
-                                                              height: 40.h,
-                                                              width: 200.w,
-                                                              decoration: BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(20
-                                                                              .r),
-                                                                  border: Border.all(
-                                                                      color: const Color(
-                                                                              0XFF202020)
-                                                                          .withOpacity(
-                                                                              0.6),
-                                                                      width:
-                                                                          1)),
-                                                              child: Center(
-                                                                  child: Text(
-                                                                text.keepappointment,
+                                                    child: FadeTransition(
+                                                      opacity: Tween<double>(
+                                                              begin: 0.4,
+                                                              end: 1)
+                                                          .animate(a1),
+                                                      child: AlertDialog(
+                                                        contentPadding:
+                                                            EdgeInsets
+                                                                .symmetric(
+                                                                    vertical:
+                                                                        10.h,
+                                                                    horizontal:
+                                                                        10.w),
+                                                        content: Container(
+                                                          height: 150.h,
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Text(
+                                                                text.cancelappointment,
+                                                                maxLines: 2,
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
                                                                 style: TextStyle(
-                                                                    color: const Color(
-                                                                            0XFF202020)
-                                                                        .withOpacity(
-                                                                            0.85),
-                                                                    fontFamily:
-                                                                        "Nunito",
-                                                                    fontSize: 16
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize: 15
                                                                             .sp -
                                                                         fontSize
                                                                             .sp,
+                                                                    fontFamily:
+                                                                        "Nunito",
                                                                     fontWeight:
                                                                         FontWeight
-                                                                            .w600),
-                                                              )),
-                                                            ),
-                                                          ),
-                                                          GestureDetector(
-                                                            onTap: () {
-                                                              patientsBloc.add(
-                                                                  onPatientsAppointmentDelete(
+                                                                            .bold),
+                                                              ),
+                                                              GestureDetector(
+                                                                onTap: () {
+                                                                  if (Navigator
+                                                                      .canPop(
+                                                                          context)) {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  }
+                                                                },
+                                                                child:
+                                                                    Container(
+                                                                  height: 40.h,
+                                                                  width: 200.w,
+                                                                  decoration: BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(20
+                                                                              .r),
+                                                                      border: Border.all(
+                                                                          color: const Color(0XFF202020).withOpacity(
+                                                                              0.6),
+                                                                          width:
+                                                                              1)),
+                                                                  child: Center(
+                                                                      child:
+                                                                          Text(
+                                                                    text.keepappointment,
+                                                                    style: TextStyle(
+                                                                        color: const Color(0XFF202020).withOpacity(
+                                                                            0.85),
+                                                                        fontFamily:
+                                                                            "Nunito",
+                                                                        fontSize: 16.sp -
+                                                                            fontSize
+                                                                                .sp,
+                                                                        fontWeight:
+                                                                            FontWeight.w600),
+                                                                  )),
+                                                                ),
+                                                              ),
+                                                              GestureDetector(
+                                                                onTap: () {
+                                                                  patientsBloc.add(onPatientsAppointmentDelete(
                                                                       context,
                                                                       patients:
                                                                           state.patients[
                                                                               index]));
-                                                              if (Navigator
-                                                                  .canPop(
-                                                                      context)) {
-                                                                Navigator.pop(
-                                                                    context);
-                                                              }
-                                                            },
-                                                            child: Container(
-                                                              height: 40.h,
-                                                              width: 200.w,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: const Color(
-                                                                    0XFF04CBCB),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
+                                                                  if (Navigator
+                                                                      .canPop(
+                                                                          context)) {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  }
+                                                                },
+                                                                child:
+                                                                    Container(
+                                                                  height: 40.h,
+                                                                  width: 200.w,
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color: const Color(
+                                                                        0XFF04CBCB),
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
                                                                             20.r),
+                                                                  ),
+                                                                  child: Center(
+                                                                      child:
+                                                                          Text(
+                                                                    text.cancelappointmentbottun,
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontFamily:
+                                                                            "Nunito",
+                                                                        fontSize: 16.sp -
+                                                                            fontSize
+                                                                                .sp,
+                                                                        fontWeight:
+                                                                            FontWeight.w600),
+                                                                  )),
+                                                                ),
                                                               ),
-                                                              child: Center(
-                                                                  child: Text(
-                                                                text.cancelappointmentbottun,
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontFamily:
-                                                                        "Nunito",
-                                                                    fontSize: 16
-                                                                            .sp -
-                                                                        fontSize
-                                                                            .sp,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600),
-                                                              )),
-                                                            ),
+                                                            ],
                                                           ),
-                                                        ],
+                                                        ),
+                                                        shape:
+                                                            OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      10.r),
+                                                          borderSide:
+                                                              BorderSide.none,
+                                                        ),
                                                       ),
                                                     ),
-                                                    shape: OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10.r),
-                                                      borderSide:
-                                                          BorderSide.none,
-                                                    ),
                                                   ),
-                                                ),
-                                              ),
+                                                );
+                                              },
                                             );
                                           },
-                                        );
-                                      },
-                                      child: Container(
-                                        height: 28.h,
-                                        width: 270.w,
-                                        decoration: BoxDecoration(
-                                            color: const Color(0xffE0F3F2),
-                                            borderRadius:
-                                                BorderRadius.circular(12.r)),
-                                        child: Center(
-                                          child: Text(
-                                              text.cancelappointmentbottun,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontFamily: 'Nunito',
-                                                  fontSize: 14.sp -
-                                                      widget.fontSize.sp,
-                                                  color:
-                                                      const Color(0xff202020))),
-                                        ),
-                                      ),
-                                    )
-                                  ],
+                                          child: Container(
+                                            height: 28.h,
+                                            width: 270.w,
+                                            decoration: BoxDecoration(
+                                                color: const Color(0xffE0F3F2),
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        12.r)),
+                                            child: Center(
+                                              child: Text(
+                                                  text.cancelappointmentbottun,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontFamily: 'Nunito',
+                                                      fontSize: 14.sp -
+                                                          widget.fontSize.sp,
+                                                      color: const Color(
+                                                          0xff202020))),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ],
-                        );
-                      } else {
-                        return const Loading();
-                      }
-                    });
-              });
-        } else if (state is PatientsLoadingError) {
-          if (kDebugMode) {
-            print(state.error);
-          }
-          return const Loading();
-        } else {
-          return const Loading();
-        }
-      }),
-    ));
+                              ],
+                            );
+                          } else {
+                            return const Loading();
+                          }
+                        });
+                  });
+            } else if (state is PatientsLoadingError) {
+              if (kDebugMode) {
+                print(state.error);
+              }
+              return const Loading();
+            } else {
+              return const Loading();
+            }
+          }),
+        ));
   }
 
   NotificationShower(String patientName, int index, String doctorName, body,
