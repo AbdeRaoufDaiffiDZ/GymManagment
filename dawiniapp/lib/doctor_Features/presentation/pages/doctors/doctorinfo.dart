@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 enum AppState { free, picked, cropped }
@@ -27,6 +28,7 @@ class Lll extends StatefulWidget {
 
 class _doctorDetailsState extends State<Lll> {
   File? imageFile;
+  bool isMale = true;
   String ImageUrl = "";
   late AppState state;
   TextEditingController first_phone_number = TextEditingController();
@@ -41,6 +43,7 @@ class _doctorDetailsState extends State<Lll> {
   @override
   void initState() {
     super.initState();
+    isMale = widget.doctorInfo.gender == "male" ? true : false;
     state = AppState.free;
     first_phone_number.text = widget.doctorInfo.phoneNumber;
     location_link.text = widget.doctorInfo.location;
@@ -127,17 +130,19 @@ class _doctorDetailsState extends State<Lll> {
                                           widget.doctorInfo.ImageProfileurl ==
                                               "")
                                       ? Image.asset(
-                                          "assets/images/maleDoctor.png",
+                                          isMale
+                                              ? "assets/images/maleDoctor.png"
+                                              : "assets/images/maleDoctor.png", // TODO: add female picture
                                           fit: BoxFit.scaleDown,
                                           scale: 1.2.w,
                                         )
                                       : Image.network(
                                           widget.doctorInfo.ImageProfileurl,
-                                          fit: BoxFit.cover,
+                                          fit: BoxFit.contain,
                                         )
                                   : Image.file(
                                       imageFile!,
-                                      fit: BoxFit.fill,
+                                      fit: BoxFit.contain,
                                     )),
                         ),
                         Container(
@@ -157,14 +162,16 @@ class _doctorDetailsState extends State<Lll> {
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(15.r)),
                             child: MaterialButton(
-                                onPressed: imagee,
+                                onPressed: () {
+                                  if (state == AppState.free) {
+                                    imagee();
+                                  } else if (state == AppState.cropped) {
+                                    clearImage();
+                                  }
+                                },
                                 child: Row(
                                   children: [
-                                    Icon(
-                                      Icons.camera_alt_rounded,
-                                      color: const Color(0xff0AA9A9),
-                                      size: 9.w,
-                                    ),
+                                    buildButtonIcon(),
                                     Padding(
                                       padding: isArabic
                                           ? EdgeInsets.only(right: 5.w)
@@ -871,6 +878,8 @@ class _doctorDetailsState extends State<Lll> {
                               color: const Color(0xff00C8D5),
                               borderRadius: BorderRadius.circular(20.r)),
                           child: MaterialButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.r)),
                               onPressed: () async {
                                 String date = "all";
                                 switch (val) {
@@ -889,6 +898,7 @@ class _doctorDetailsState extends State<Lll> {
                                 }
 
                                 DoctorEntity doctor = DoctorEntity(
+                                    gender: widget.doctorInfo.gender,
                                     recommanded: widget.doctorInfo.recommanded,
                                     numberOfPatient:
                                         widget.doctorInfo.numberOfPatient,
@@ -920,20 +930,15 @@ class _doctorDetailsState extends State<Lll> {
                                 if (_formKey.currentState!.validate()) {
                                   await toUpload(widget.doctorInfo.uid, doctor,
                                       doctorPatientsBloc);
-
-                                  Navigator.pop(context, 'Cancel');
                                 }
                               },
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 5.w),
-                                child: Text(
-                                  locale.save,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.white,
-                                      fontFamily: 'Nunito',
-                                      fontSize: 22.sp - widget.fontSize.sp),
-                                ),
+                              child: Text(
+                                locale.save,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white,
+                                    fontFamily: 'Nunito',
+                                    fontSize: 22.sp - widget.fontSize.sp),
                               ))),
                     ),
                   ]),
@@ -942,44 +947,47 @@ class _doctorDetailsState extends State<Lll> {
         ));
   }
 
-  /* Future<void> _croppeed() async {
-    CroppedFile? croppedFile = await ImageCropper()
-        .cropImage(sourcePath: imageFile!.path, aspectRatioPresets: [
-      CropAspectRatioPreset.square,
-      CropAspectRatioPreset.ratio3x2,
-      CropAspectRatioPreset.original,
-      CropAspectRatioPreset.ratio4x3,
-      CropAspectRatioPreset.ratio16x9
-    ], uiSettings: [
-      AndroidUiSettings(
-        toolbarColor: Colors.deepOrange,
-        toolbarWidgetColor: Colors.white,
-        toolbarTitle: 'Crop Image',
-        statusBarColor: Colors.deepOrangeAccent,
-        initAspectRatio: CropAspectRatioPreset.original,
-        backgroundColor: Colors.white,
-        lockAspectRatio: false,
-      ),
-    ]);
+  clearImage() {
+    imageFile = null;
+    setState(() {
+      state = AppState.free;
+    });
+  }
 
-    if (croppedFile != null) {
-      imageFile = File(croppedFile.path);
-
-      setState(() {
-        state = AppState.cropped;
-      });
-    }
-  }*/
+  Future<CroppedFile> cropImage(XFile image) async {
+    final cropeed = await ImageCropper().cropImage(
+      sourcePath: image.path,
+      aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+      ],
+      uiSettings: [
+        AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Color(0xff0AA9A9),
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: true),
+        IOSUiSettings(
+          title: 'Cropper',
+        ),
+        WebUiSettings(
+          context: context,
+        ),
+      ],
+    );
+    return cropeed!;
+  }
 
   imagee() async {
     ImagePicker imagePicker = ImagePicker();
 
     final pickedImage =
-        await imagePicker.pickImage(source: ImageSource.gallery);
-    imageFile = pickedImage != null ? File(pickedImage.path) : null;
-    if (imageFile != null) {
+        await imagePicker.pickImage(source: ImageSource.values[1]);
+    if (pickedImage != null) {
+      final croppedImage = await cropImage(pickedImage);
+      imageFile = File(croppedImage.path);
       setState(() {
-        state = AppState.picked;
+        state = AppState.cropped;
       });
     }
   }
@@ -998,10 +1006,35 @@ class _doctorDetailsState extends State<Lll> {
         doctor.ImageProfileurl = ImageUrl;
       }
       doctorPatientsBloc.add(onDataUpdate(doctor: doctor));
+      Navigator.pop(context, 'Cancel');
     } catch (e) {
       if (kDebugMode) {
         print(e.toString());
       }
+    }
+  }
+
+  Widget buildButtonIcon() {
+    if (state == AppState.free) {
+      return Icon(
+        Icons.camera_alt_rounded,
+        color: const Color(0xff0AA9A9),
+        size: 9.w,
+      );
+    } else if (state == AppState.picked) {
+      return Icon(
+        Icons.crop,
+        color: const Color(0xff0AA9A9),
+        size: 9.w,
+      );
+    } else if (state == AppState.cropped) {
+      return Icon(
+        Icons.clear,
+        color: const Color(0xff0AA9A9),
+        size: 9.w,
+      );
+    } else {
+      return SizedBox();
     }
   }
 }

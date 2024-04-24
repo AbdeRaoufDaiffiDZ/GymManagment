@@ -55,7 +55,7 @@ class _DoctorPageState extends State<Weather> {
           child: Icon(Icons.settings),
         ),
         bottomNavigationBar: Container(
-          height: 60.h,
+          height: 73.h,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(15), topRight: Radius.circular(15)),
@@ -69,6 +69,7 @@ class _DoctorPageState extends State<Weather> {
                 topLeft: Radius.circular(16), topRight: Radius.circular(16)),
             child: BottomNavigationBar(
               iconSize: 21.sp,
+              backgroundColor: Color(0xffFFFFFF),
               unselectedFontSize: 13.sp,
               selectedFontSize: 13.sp,
               currentIndex: selectedindex2,

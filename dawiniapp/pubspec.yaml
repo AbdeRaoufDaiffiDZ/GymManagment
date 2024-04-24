@@ -65,6 +65,7 @@ dependencies:
   google_nav_bar: null
   google_sign_in: ^6.2.1
   http: null
+  image_cropper: null
   image_picker: null
   internet_connection_checker: null
   intl: any

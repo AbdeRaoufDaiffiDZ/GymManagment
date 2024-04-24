@@ -83,7 +83,7 @@ class _DoctorsState extends State<Doctors> {
     final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
 
     List<DoctorEntity> data = widget.doctors;
-
+    bool isMale = true;
     return GestureDetector(
       onTap: () {},
       child: Container(
@@ -100,6 +100,8 @@ class _DoctorsState extends State<Doctors> {
 
           itemCount: data.length, // Number of items in the grid
           itemBuilder: (context, index) {
+            isMale = data[index].gender == "male" ? true : false;
+
             return GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -127,12 +129,9 @@ class _DoctorsState extends State<Doctors> {
                           margin: const EdgeInsets.all(8),
                           height: 90.h,
                           width: double.infinity,
-                          decoration: BoxDecoration(
-                              color: const Color(0xffF3F4F4),
-                              borderRadius: BorderRadius.circular(6)),
                           child: data[index].ImageProfileurl == " "
                               ? Image.asset(
-                                  "assets/images/doctor.png",
+                                  "assets/images/maleDoctor.png",
                                   alignment: Alignment.center,
                                 )
                               : Image.network(

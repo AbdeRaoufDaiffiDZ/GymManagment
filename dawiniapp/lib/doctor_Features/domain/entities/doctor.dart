@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 
 class DoctorEntity extends Equatable {
   final int recommanded;
+  final String gender;
   final String location;
   final String date;
   final String experience;
@@ -27,7 +28,7 @@ class DoctorEntity extends Equatable {
   int turn;
 
   DoctorEntity(
-      {required this.firstNameArabic,
+      {required this.gender,required this.firstNameArabic,
       required this.lastNameArabic,
       required this.specialityArabic,
       required this.ImageProfileurl,
@@ -49,7 +50,7 @@ class DoctorEntity extends Equatable {
       required this.phoneNumber});
 
   @override
-  List<Object?> get props => [
+  List<Object?> get props => [gender,
         firstName,
         firstNameArabic,
         lastNameArabic,
@@ -75,6 +76,7 @@ class DoctorEntity extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {
+      'gender':gender,
       'ImageProfileurl': ImageProfileurl,
       'firstNameArabic': firstNameArabic,
       'specialityArabic': specialityArabic,

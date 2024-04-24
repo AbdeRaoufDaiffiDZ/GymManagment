@@ -51,7 +51,7 @@ class _doctorDetailsState extends State<doctorDetails> {
     final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
     final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
     final bool isFrench = Localizations.localeOf(context).languageCode == "fr";
-
+    bool isMale = true;
     final AppLocalizations locale = AppLocalizations.of(context)!;
 
     final uid = widget.uid;
@@ -310,6 +310,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                       );
                     }
 
+                    isMale = doctor.first.gender == "male" ? true : false;
                     return ListView(children: [
                       Padding(
                         padding: EdgeInsets.only(top: 8.h),
@@ -408,12 +409,13 @@ class _doctorDetailsState extends State<doctorDetails> {
                             width: double.infinity,
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20.w),
-                                child: doctor.first.ImageProfileurl == ' '
+                                child: (doctor.first.ImageProfileurl == "" || doctor.first.ImageProfileurl == " " )
                                     ? Image.asset(
-                                        "assets/images/maleDoctor.png",
+                                        isMale
+                                            ? "assets/images/maleDoctor.png"
+                                            : "assets/images/maleDoctor.png", // TODO: add picture female
                                         alignment: Alignment.center,
-                                        scale: 4.3,
-                                      )
+fit: BoxFit.scaleDown,                                      )
                                     : Image.network(
                                         doctor.first.ImageProfileurl,
                                         fit: BoxFit.cover,
@@ -892,14 +894,14 @@ class _doctorDetailsState extends State<doctorDetails> {
                       ),
                       Center(
                         child: Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical: 10.h, horizontal: 14.w),
-                          height: 50.h,
-                          width: 250.w,
-                          decoration: BoxDecoration(
-                              color: const Color(0xff00C8D5),
-                              borderRadius: BorderRadius.circular(20.r)),
-                          child: Padding(
+                            margin: EdgeInsets.symmetric(
+                                vertical: 10.h, horizontal: 14.w),
+                            height: 50.h,
+                            width: 250.w,
+                            decoration: BoxDecoration(
+                                color: const Color(0xff00C8D5),
+                                borderRadius: BorderRadius.circular(20.r)),
+                            child: Padding(
                               padding: EdgeInsets.symmetric(horizontal: 5.w),
                               child: MaterialButton(
                                 onPressed: () {

@@ -25,7 +25,7 @@ class _firstConatinerState extends State<firstConatiner> {
     final AppLocalizations locale = AppLocalizations.of(context)!;
     final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
     final bool isFrench = Localizations.localeOf(context).languageCode == "fr";
-
+    bool isMale = widget.doctor.gender == "male" ? true : false;
     switch (widget.doctor.date) {
       case "today":
         date = "${locale.today} ${locale.only}";
@@ -62,12 +62,15 @@ class _firstConatinerState extends State<firstConatiner> {
                         color: const Color(0xff202020).withOpacity(0.4))),
                 child: GestureDetector(
                     onTap: () {},
-                    child: widget.doctor.ImageProfileurl == ''
+                    child: (widget.doctor.ImageProfileurl == '' ||
+                            widget.doctor.ImageProfileurl == ' ')
                         ? ClipOval(
                             child: SizedBox.fromSize(
                             size: const Size.fromRadius(48.0), // Adjust radius
                             child: Image.asset(
-                              "assets/images/maleDoctor.png",
+                              isMale
+                                  ? "assets/images/maleDoctor.png"
+                                  : "assets/images/maleDoctor.png", // TODO: add female picture
                               alignment: Alignment.center,
                               scale: 4.3,
                             ),

@@ -73,10 +73,10 @@ class _SearchMenuState extends State<SearchMenu> {
                             children: [
                               Container(
                                   margin: EdgeInsets.only(left: 4.w),
-                                  height: 40.h,
-                                  width: 40.w,
+                                  height: 18.h,
+                                  width: 18.w,
                                   child: Image.asset(
-                                    "assets/images/dawina.png",
+                                    "assets/images/sof.png",
                                     fit: BoxFit.contain,
                                   )),
                               Expanded(
