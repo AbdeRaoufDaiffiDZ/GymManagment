@@ -59,15 +59,18 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
           return GestureDetector(
             onTap: () {},
             child: Container(
-              margin: const EdgeInsets.only(
-                  top: 1), // Adjust the top margin as needed
+              margin: EdgeInsets.symmetric(
+                  vertical: 8.h,
+                  horizontal: 10.w), // Adjust the top margin as needed
               child: GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2, // Number of columns in the grid
-                    crossAxisSpacing: 2.w, // Spacing between columns
-                    mainAxisExtent: 220.h),
+                    crossAxisSpacing: 10.w, // Spacing between columns
+                    mainAxisExtent: 178.h,
+                    mainAxisSpacing: 12.h),
+
                 itemCount: doctors.length, // Number of items in the grid
                 itemBuilder: (context, index) {
                   return GestureDetector(
@@ -82,13 +85,12 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                       );
                     },
                     child: Container(
-                        margin: EdgeInsets.symmetric(
-                            vertical: 7.h, horizontal: 7.w),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16.r),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10.r),
                           border: Border.all(
-                            color: Colors.grey, // Set the border color
-                            width: 1.w, // Set the border width
+                            color: Color(0XFF202020).withOpacity(0.09),
+                            width: 1.2.w, // Set the border width
                           ),
                         ),
                         child: Column(
@@ -96,24 +98,28 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                           children: [
                             Container(
                                 margin: const EdgeInsets.all(8),
-                                color: const Color.fromARGB(31, 204, 204, 204)
-                                    .withOpacity(0.3),
-                                height: 100.h,
+                                height: 90.h,
                                 width: double.infinity,
+                                decoration: BoxDecoration(
+                                    color: const Color(0xffF3F4F4),
+                                    borderRadius: BorderRadius.circular(6)),
                                 child: doctors[index].ImageProfileurl == " "
                                     ? Image.asset(
-                                        "assets/images/maleDoctor.png",
+                                        "assets/images/doctor.png",
                                         alignment: Alignment.center,
-                                        scale: 4.3,
                                       )
-                                    : Image.network(
-                                        doctors[index].ImageProfileurl,
-                                        fit: BoxFit.cover,
+                                    : ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(6.r),
+                                        child: Image.network(
+                                          doctors[index].ImageProfileurl,
+                                          fit: BoxFit.cover,
+                                        ),
                                       )),
                             Container(
                               margin: isArabic
                                   ? EdgeInsets.only(right: 4.w)
-                                  : EdgeInsets.only(left: 4.w),
+                                  : EdgeInsets.only(left: 5.w),
                               width: double.infinity,
                               height: 20.h,
                               child: FittedBox(
@@ -133,9 +139,9 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                             Container(
                               margin: isArabic
                                   ? EdgeInsets.only(left: 4.w)
-                                  : EdgeInsets.only(left: 4.w),
+                                  : EdgeInsets.only(left: 5.w),
                               width: double.infinity,
-                              height: 20.h,
+                              height: 15.h,
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,
                                 alignment: isArabic
@@ -153,9 +159,9 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                               ),
                             ),
                             Container(
-                              margin: EdgeInsets.only(left: 2.w),
+                              margin: EdgeInsets.only(left: 3.w),
                               width: double.infinity,
-                              height: 20.h,
+                              height: 15.h,
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,
                                 alignment: isArabic
@@ -184,9 +190,9 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                             Container(
                               margin: isArabic
                                   ? EdgeInsets.only(right: 3.w)
-                                  : EdgeInsets.only(left: 3.w),
+                                  : EdgeInsets.only(left: 5.w),
                               width: double.infinity,
-                              height: 20.h,
+                              height: 15.h,
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,
                                 alignment: isArabic
@@ -197,7 +203,7 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                                     Icon(Icons.circle,
                                         size: 12.sp,
                                         color: doctors[index].atSerivce
-                                            ? Colors.teal
+                                            ? Color(0xff2CDBC6)
                                             : Colors.red),
                                     SizedBox(width: 4.w),
                                     Text(

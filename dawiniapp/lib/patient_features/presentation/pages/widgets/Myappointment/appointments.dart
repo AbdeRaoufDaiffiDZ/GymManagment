@@ -25,6 +25,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        backgroundColor: const Color(0XFFFAFAFA),
         appBar: AppBar(
           elevation: 0.0,
           backgroundColor: const Color(0XFFFAFAFA),

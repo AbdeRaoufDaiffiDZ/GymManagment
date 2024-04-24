@@ -23,7 +23,8 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
 
     return DefaultTabController(
       length: 2,
-      child: Scaffold(
+      child: Scaffold(      backgroundColor: const Color(0XFFFAFAFA),
+
         appBar: AppBar(
           elevation: 0.0,
           backgroundColor: const Color(0XFFFAFAFA),

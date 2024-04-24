@@ -25,7 +25,7 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
     final AppLocalizations text = AppLocalizations.of(context)!;
 
     return Scaffold(
-      //    backgroundColor: const Color(0xffEDF5F5),
+      backgroundColor: const Color(0xffEDF5F5),
       body: SingleChildScrollView(
         child:
             Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -184,15 +184,23 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
         decoration: BoxDecoration(
           color: const Color(0xffFAFAFA),
           boxShadow: [
-            BoxShadow(
-              color: const Color(0XFF000000).withOpacity(0.3),
-              blurRadius: 2,
-              spreadRadius: 0,
-              offset: const Offset(0, 0),
-            ),
+            WhoIs
+                ? BoxShadow(
+                    color: Color(0xff04CBCB),
+                    blurRadius: 2,
+                    spreadRadius: 0,
+                    offset: const Offset(0, 0),
+                  )
+                : BoxShadow(
+                    color: Color(0xff202020).withOpacity(0.3),
+                    blurRadius: 2,
+                    spreadRadius: 0,
+                    offset: const Offset(0, 0),
+                  ),
           ],
-          border: Border.all(
-              width: 1.w, color: WhoIs ? Colors.green : Colors.transparent),
+          /*   border: Border.all(
+              width: 1.w,
+              color: WhoIs ? Color(0xff04CBCB) : Colors.transparent),*/
           borderRadius: BorderRadius.circular(10),
         ),
         child: Center(

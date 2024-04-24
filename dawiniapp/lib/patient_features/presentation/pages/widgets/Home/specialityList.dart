@@ -5,8 +5,8 @@ import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart'
 import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SpecialityList extends StatefulWidget {
   final int fontSize;
@@ -25,12 +25,12 @@ class _SpecialityListState extends State<SpecialityList> {
     final AppLocalizations text = AppLocalizations.of(context)!;
 
     final List<Map<String, String>> mylist = [
-      {"text": text.all, "icon": "assets/images/generalist.png"},
-      {"text": text.generalist, "icon": "assets/images/generalist.png"},
-      {"text": text.dentist, "icon": "assets/images/dentist.png"},
-      {"text": text.opthalm, "icon": "assets/images/opthalm.png"},
-      {"text": text.endocrino, "icon": "assets/images/endocrino.png"},
-      {"text": text.cardiology, "icon": "assets/images/cardiology.png"},
+      {"text": text.all, "icon": "assets/images/xxxx.png"},
+      {"text": text.generalist, "icon": "assets/images/xxxx.png"},
+      {"text": text.dentist, "icon": "assets/images/Cardioo.png"},
+      {"text": text.opthalm, "icon": "assets/images/dentiste.png"},
+      {"text": text.endocrino, "icon": "assets/images/eyee.png"},
+      {"text": text.cardiology, "icon": "assets/images/Group.png"},
     ];
     return StreamBuilder<List<DoctorEntity>>(
         stream: getDoctorsInfoUseCase.streamDoctorInfo(),
@@ -46,7 +46,7 @@ class _SpecialityListState extends State<SpecialityList> {
             }
           }
           return Container(
-            height: 100.h,
+            height: 85.h,
             child: ListView.builder(
               itemCount: mylist.length,
               itemBuilder: (context, index) {
@@ -55,14 +55,16 @@ class _SpecialityListState extends State<SpecialityList> {
                   child: Column(
                     children: [
                       Container(
-                        height: 50.h,
-                        width: 50.w,
+                        height: 45.h,
+                        width: 45.w,
                         decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.grey.shade200,
-                        ),
+                            shape: BoxShape.circle,
+                            color: Color(0xffE6F5F3).withOpacity(0.7)),
                         child: GestureDetector(
-                          child: Image.asset(mylist[index]["icon"] as String),
+                          child: Image.asset(
+                            mylist[index]["icon"] as String,
+                            scale: 1.2,
+                          ),
                           onTap: () {
                             dataBloc.add(onDoctorsearchByspeciality(
                                 doctors: data,
@@ -71,11 +73,15 @@ class _SpecialityListState extends State<SpecialityList> {
                           },
                         ),
                       ),
-                      Text(
-                        mylist[index]["text"] as String,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14 - widget.fontSize.sp),
+                      Padding(
+                        padding: EdgeInsets.only(top: 4.h),
+                        child: Text(
+                          mylist[index]["text"] as String,
+                          style: TextStyle(
+                              color: Color(0xff202020).withOpacity(0.7),
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14 - widget.fontSize.sp),
+                        ),
                       ),
                     ],
                   ),

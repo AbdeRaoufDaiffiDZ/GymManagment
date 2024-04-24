@@ -4,9 +4,9 @@ import 'package:dawini_full/core/error/ErrorWidget.dart';
 import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart';
+import 'package:dawini_full/doctor_Features/presentation/pages/doctors/details.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/Condtions/doctor_state_conditions.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
-import 'package:dawini_full/doctor_Features/presentation/pages/doctors/details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -87,15 +87,17 @@ class _DoctorsState extends State<Doctors> {
     return GestureDetector(
       onTap: () {},
       child: Container(
-        margin:
-            const EdgeInsets.only(top: 1), // Adjust the top margin as needed
+        margin: EdgeInsets.symmetric(
+            vertical: 8.h, horizontal: 10.w), // Adjust the top margin as needed
         child: GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2, // Number of columns in the grid
-              crossAxisSpacing: 2.w, // Spacing between columns
-              mainAxisExtent: 220.h),
+              crossAxisSpacing: 10.w, // Spacing between columns
+              mainAxisExtent: 178.h,
+              mainAxisSpacing: 12.h),
+
           itemCount: data.length, // Number of items in the grid
           itemBuilder: (context, index) {
             return GestureDetector(
@@ -104,17 +106,18 @@ class _DoctorsState extends State<Doctors> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => doctorDetails(
-                          uid: widget.doctors[index].uid,
-                          fontSize: widget.fontSize)),
+                            fontSize: widget.fontSize,
+                            uid: data[index].uid,
+                          )),
                 );
               },
               child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 7.h, horizontal: 7.w),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16.r),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10.r),
                     border: Border.all(
-                      color: Colors.grey, // Set the border color
-                      width: 1.w, // Set the border width
+                      color: Color(0XFF202020).withOpacity(0.09),
+                      width: 1.2.w, // Set the border width
                     ),
                   ),
                   child: Column(
@@ -122,15 +125,15 @@ class _DoctorsState extends State<Doctors> {
                     children: [
                       Container(
                           margin: const EdgeInsets.all(8),
-                          color: const Color.fromARGB(31, 204, 204, 204)
-                              .withOpacity(0.3),
-                          height: 100.h,
+                          height: 90.h,
                           width: double.infinity,
+                          decoration: BoxDecoration(
+                              color: const Color(0xffF3F4F4),
+                              borderRadius: BorderRadius.circular(6)),
                           child: data[index].ImageProfileurl == " "
                               ? Image.asset(
-                                  "assets/images/maleDoctor.png",
+                                  "assets/images/doctor.png",
                                   alignment: Alignment.center,
-                                  scale: 4.3,
                                 )
                               : Image.network(
                                   data[index].ImageProfileurl,
@@ -152,15 +155,15 @@ class _DoctorsState extends State<Doctors> {
                                   fontFamily: 'Nunito',
                                   fontSize: 17.sp - widget.fontSize.sp,
                                   fontWeight: FontWeight.w600,
-                                  color: Color(0XFF202020))),
+                                  color: const Color(0XFF202020))),
                         ),
                       ),
                       Container(
                         margin: isArabic
-                            ? EdgeInsets.only(right: 4.w)
+                            ? EdgeInsets.only(left: 4.w)
                             : EdgeInsets.only(left: 4.w),
                         width: double.infinity,
-                        height: 20.h,
+                        height: 15.h,
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
                           alignment:
@@ -173,15 +176,13 @@ class _DoctorsState extends State<Doctors> {
                                   fontFamily: 'Nunito',
                                   fontSize: 15.sp - widget.fontSize.sp,
                                   fontWeight: FontWeight.w600,
-                                  color: Color(0XFF000000))),
+                                  color: const Color(0XFF000000))),
                         ),
                       ),
                       Container(
-                        margin: isArabic
-                            ? EdgeInsets.only(right: 2.w)
-                            : EdgeInsets.only(left: 2.w),
+                        margin: EdgeInsets.only(left: 2.w),
                         width: double.infinity,
-                        height: 20.h,
+                        height: 15.h,
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
                           alignment:
@@ -207,9 +208,9 @@ class _DoctorsState extends State<Doctors> {
                       Container(
                         margin: isArabic
                             ? EdgeInsets.only(right: 3.w)
-                            : EdgeInsets.only(left: 3.w),
+                            : EdgeInsets.only(left: 4.w),
                         width: double.infinity,
-                        height: 20.h,
+                        height: 15.h,
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
                           alignment: isArabic
@@ -220,7 +221,7 @@ class _DoctorsState extends State<Doctors> {
                               Icon(Icons.circle,
                                   size: 12.sp,
                                   color: data[index].atSerivce
-                                      ? Colors.teal
+                                      ? Color(0xff2CDBC6)
                                       : Colors.red),
                               SizedBox(width: 4.w),
                               Text(
@@ -231,7 +232,7 @@ class _DoctorsState extends State<Doctors> {
                                       fontFamily: 'Nunito',
                                       fontSize: 16.sp - widget.fontSize.sp,
                                       fontWeight: FontWeight.w600,
-                                      color: Color(0XFF202020))),
+                                      color: const Color(0XFF202020))),
                             ],
                           ),
                         ),

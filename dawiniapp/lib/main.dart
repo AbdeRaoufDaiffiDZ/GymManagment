@@ -4,11 +4,8 @@ import 'dart:async';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:dawini_full/auth/domain/usecases/auth_usecase.dart';
-import 'package:dawini_full/auth/presentation/bloc/auth_bloc.dart';
-import 'package:dawini_full/auth/presentation/welcomePage.dart';
-import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_data_bloc/doctor_data_bloc.dart';
+import 'package:dawini_full/auth/presentation/bloc/auth_bloc.dart';import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_data_bloc/doctor_data_bloc.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/patients_info_bloc/patients_info_bloc.dart';
-import 'package:dawini_full/auth/doctorlogin.dart';
 import 'package:dawini_full/firebase_options.dart';
 import 'package:dawini_full/injection_container.dart';
 import 'package:dawini_full/introduction_feature/presentation/bloc/bloc/introduction_bloc.dart';

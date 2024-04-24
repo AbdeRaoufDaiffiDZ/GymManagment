@@ -5,8 +5,8 @@ import 'package:dawini_full/patient_features/presentation/pages/weather_pag.dart
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SearchMenu extends StatefulWidget {
   final int fontSize;
@@ -57,12 +57,12 @@ class _SearchMenuState extends State<SearchMenu> {
               child: Padding(
                 padding: isArabic
                     ? EdgeInsets.only(left: 8.w, right: 10.h)
-                    : EdgeInsets.only(right: 8.w, left: 10.h),
+                    : EdgeInsets.only(right: 6.w, left: 10.w),
                 child: Container(
                   height: 40.h,
                   decoration: BoxDecoration(
+                    color: Color(0xffECF2F2),
                     borderRadius: BorderRadius.circular(12.r),
-                    color: const Color(0XFFECF2F2),
                   ),
                   child: Container(
                     padding: isArabic
@@ -71,34 +71,31 @@ class _SearchMenuState extends State<SearchMenu> {
                     child: !widget.isHome
                         ? Row(
                             children: [
-                              Icon(
-                                Icons.search,
-                                size: 22.sp,
-                                color: const Color(0xFF2CDBC6),
-                              ),
+                              Container(
+                                  margin: EdgeInsets.only(left: 4.w),
+                                  height: 40.h,
+                                  width: 40.w,
+                                  child: Image.asset(
+                                    "assets/images/dawina.png",
+                                    fit: BoxFit.contain,
+                                  )),
                               Expanded(
                                 child: Padding(
-                                    padding: isArabic
-                                        ? EdgeInsets.only(right: 4.w)
-                                        : EdgeInsets.only(left: 4.w),
-                                    child: TextField(
-                                      controller: textController,
-                                      onChanged: (text) {
-                                        dataBloc.add(onDoctorsearchByName(
-                                            doctorName: text));
-                                        // clinicBloc.add(onClinicsearchByName(clinicName: text));
-
-                                        ///
-                                      },
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: text.searchforadoctor,
-                                        hintStyle: TextStyle(
-                                            fontSize: _calculateFontSize(
-                                                textController.text.length)),
-                                      ),
-                                    )),
-                              ),
+                                  padding: isArabic
+                                      ? EdgeInsets.only(right: 4.w)
+                                      : EdgeInsets.only(left: 4.w, top: 3.h),
+                                  child: Text(
+                                    text.searchforadoctor,
+                                    style: TextStyle(
+                                        fontSize: _calculateFontSize(
+                                            textController.text.length),
+                                        fontFamily: "Nunito",
+                                        color:
+                                            Color(0xff202020).withOpacity(0.7),
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              )
                             ],
                           )
                         : GestureDetector(
@@ -112,22 +109,28 @@ class _SearchMenuState extends State<SearchMenu> {
                                           )));
                             },
                             child: Row(children: [
-                              Icon(
-                                Icons.search,
-                                size: 22.sp,
-                                color: const Color(0xFF2CDBC6),
-                              ),
+                              Container(
+                                  margin: EdgeInsets.only(left: 4.w),
+                                  height: 18.h,
+                                  width: 18.w,
+                                  child: Image.asset(
+                                    "assets/images/sof.png",
+                                    fit: BoxFit.contain,
+                                  )),
                               Expanded(
                                 child: Padding(
                                   padding: isArabic
                                       ? EdgeInsets.only(right: 4.w)
-                                      : EdgeInsets.only(left: 4.w),
+                                      : EdgeInsets.only(left: 5.w, top: 3.h),
                                   child: Text(
                                     text.searchforadoctor,
                                     style: TextStyle(
-                                      fontSize: _calculateFontSize(
-                                          textController.text.length),
-                                    ),
+                                        fontSize: _calculateFontSize(
+                                            textController.text.length),
+                                        fontFamily: "Nunito",
+                                        color:
+                                            Color(0xff202020).withOpacity(0.7),
+                                        fontWeight: FontWeight.w500),
                                   ),
                                 ),
                               )
@@ -147,13 +150,12 @@ class _SearchMenuState extends State<SearchMenu> {
                     children: [
                       Expanded(
                         child: SizedBox(
-                          width: 30.w,
                           height: 20.h,
                           child: FittedBox(
                             fit: BoxFit.scaleDown,
                             child: Text(text.province,
                                 style: TextStyle(
-                                    fontSize: 15.sp,
+                                    fontSize: 11.sp,
                                     fontWeight: FontWeight.w600,
                                     color: Colors.white)),
                           ),
@@ -217,21 +219,22 @@ class _SearchMenuState extends State<SearchMenu> {
                   },
                   buttonStyleData: ButtonStyleData(
                     height: 40.h,
-                    width: 100.w,
+                    width: 85.w,
                     padding: isArabic
                         ? EdgeInsets.only(right: 5.w, left: 10.w)
                         : EdgeInsets.only(left: 5.w, right: 10.w),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12.r),
+                      borderRadius: BorderRadius.circular(9.r),
                       border: Border.all(
-                        color: const Color(0xFF2CDBC6),
+                        color: const Color(0xff00C8D5),
                       ),
-                      color: const Color(0xFF2CDBC6),
+                      color: const Color(0xff00C8D5),
                     ),
                   ),
                   iconStyleData: IconStyleData(
                     icon: const Icon(
-                      Icons.arrow_downward_outlined,
+                      Icons.arrow_drop_down_sharp,
+                      size: 17,
                     ),
                     iconSize: 14.sp,
                     iconEnabledColor: Colors.white,
@@ -240,9 +243,8 @@ class _SearchMenuState extends State<SearchMenu> {
                     maxHeight: 200.h,
                     width: 120.w,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(14.r),
-                      color: Colors.teal.shade100,
-                    ),
+                        borderRadius: BorderRadius.circular(14.r),
+                        color: Color(0xff00C8D5)),
                     offset: Offset(0.w, 0.h),
                   ),
                   menuItemStyleData: MenuItemStyleData(
