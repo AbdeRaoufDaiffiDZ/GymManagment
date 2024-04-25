@@ -625,8 +625,11 @@ class _doctorDetailsState extends State<doctorDetails> {
                                             Text(
                                               locale.call,
                                               style: TextStyle(
-                                                  fontSize:
-                                                      12.sp - widget.fontSize.sp,
+                                                  fontSize: isFrench
+                                                      ? 10.sp -
+                                                          widget.fontSize.sp
+                                                      : 12.sp -
+                                                          widget.fontSize.sp,
                                                   color:
                                                       const Color(0xff0AA9A9),
                                                   fontFamily: "Nunito",
@@ -655,7 +658,8 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                 text:
                                                     "${locale.phone_number}: ",
                                                 style: TextStyle(
-                                                    fontSize: 14.sp- widget.fontSize.sp,
+                                                    fontSize: 14.sp -
+                                                        widget.fontSize.sp,
                                                     fontWeight: FontWeight.w700,
                                                     fontFamily: "Nunito",
                                                     color: const Color(
@@ -664,7 +668,8 @@ class _doctorDetailsState extends State<doctorDetails> {
                                             TextSpan(
                                                 text: doctor.first.phoneNumber,
                                                 style: TextStyle(
-                                                    fontSize: 14.sp - widget.fontSize.sp,
+                                                    fontSize: 14.sp -
+                                                        widget.fontSize.sp,
                                                     fontWeight: FontWeight.w700,
                                                     fontFamily: "Nunito",
                                                     color: Color(0xff202020)))
@@ -677,10 +682,12 @@ class _doctorDetailsState extends State<doctorDetails> {
                                         : EdgeInsets.only(top: 0.h, left: 65.w),
                                     child: InkWell(
                                       customBorder: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12.r)),
+                                          borderRadius:
+                                              BorderRadius.circular(12.r)),
                                       onTap: () async {
-                                        final Uri uri =
-                                            Uri(scheme: "tel"); // path: data.);
+                                        final Uri uri = Uri(
+                                              scheme: "tel",
+                                              path: doctor.first.phoneNumber);
                                         if (await canLaunchUrl(uri)) {
                                           await launchUrl(
                                               uri); //////////calling
@@ -707,10 +714,14 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                 color: const Color(0xff0AA9A9),
                                               ),
                                             ),
-                                             Text(
-                                              "Call",
+                                            Text(
+                                              locale.call,
                                               style: TextStyle(
-                                                  fontSize: 12.sp - widget.fontSize.sp,
+                                                  fontSize: isFrench
+                                                      ? 10.sp -
+                                                          widget.fontSize.sp
+                                                      : 12.sp -
+                                                          widget.fontSize.sp,
                                                   color: Color(0xff0AA9A9),
                                                   fontFamily: "Nunito",
                                                   fontWeight: FontWeight.w700),
@@ -773,7 +784,8 @@ class _doctorDetailsState extends State<doctorDetails> {
                                       child: Center(
                                         child: InkWell(
                                           customBorder: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12.r)),
+                                              borderRadius:
+                                                  BorderRadius.circular(12.r)),
                                           onTap: () async {
                                             final url = doctor.first.location;
                                             if (await canLaunch(url)) {
@@ -797,8 +809,12 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                 Text(
                                                   locale.on_maps,
                                                   style: TextStyle(
-                                                      fontSize: 12.sp -
-                                                          widget.fontSize.sp,
+                                                      fontSize: isFrench
+                                                          ? 10.sp -
+                                                              widget.fontSize.sp
+                                                          : 12.sp -
+                                                              widget
+                                                                  .fontSize.sp,
                                                       color: const Color(
                                                           0xff0AA9A9),
                                                       fontFamily: "Nunito",
