@@ -409,13 +409,15 @@ class _doctorDetailsState extends State<doctorDetails> {
                             width: double.infinity,
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20.w),
-                                child: (doctor.first.ImageProfileurl == "" || doctor.first.ImageProfileurl == " " )
+                                child: (doctor.first.ImageProfileurl == "" ||
+                                        doctor.first.ImageProfileurl == " ")
                                     ? Image.asset(
                                         isMale
                                             ? "assets/images/maleDoctor.png"
-                                            : "assets/images/maleDoctor.png", // TODO: add picture female
+                                            : "assets/images/famme.png",
                                         alignment: Alignment.center,
-fit: BoxFit.scaleDown,                                      )
+                                        fit: BoxFit.scaleDown,
+                                      )
                                     : Image.network(
                                         doctor.first.ImageProfileurl,
                                         fit: BoxFit.cover,
@@ -525,24 +527,21 @@ fit: BoxFit.scaleDown,                                      )
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Row(
-                                children: [
-                                  SizedBox(
-                                      height: 18.h,
-                                      width: 190.w,
-                                      child: FittedBox(
+                              Container(
+                                  height: 18.h,
+                                  width: 300.w,
+                                  child: Row(
+                                    children: [
+                                      FittedBox(
                                         fit: BoxFit.scaleDown,
-                                        alignment: isArabic
-                                            ? Alignment.topRight
-                                            : Alignment.topLeft,
+                                        alignment: Alignment.topLeft,
                                         child: RichText(
                                           text: TextSpan(children: [
                                             TextSpan(
                                                 text:
-                                                    "${locale.phone_number}: ",
+                                                    "${locale.phone_number} : ",
                                                 style: TextStyle(
-                                                    fontSize: 14.sp -
-                                                        widget.fontSize.sp,
+                                                    fontSize: 14,
                                                     fontWeight: FontWeight.w700,
                                                     fontFamily: "Nunito",
                                                     color: const Color(
@@ -551,67 +550,61 @@ fit: BoxFit.scaleDown,                                      )
                                             TextSpan(
                                                 text: doctor.first.phoneNumber,
                                                 style: TextStyle(
-                                                    fontSize: 14.sp -
-                                                        widget.fontSize.sp,
+                                                    fontSize: 14,
                                                     fontWeight: FontWeight.w700,
                                                     fontFamily: "Nunito",
-                                                    color: const Color(
-                                                        0xff202020)))
+                                                    color: Color(0xff202020)))
                                           ]),
                                         ),
-                                      )),
-                                  Padding(
-                                    padding: isArabic
-                                        ? EdgeInsets.only(top: 0.h, right: 65.w)
-                                        : EdgeInsets.only(top: 0.h, left: 65.w),
-                                    child: Container(
-                                      height: 20.w,
-                                      width: 42.w,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: const Color(0xff0AA9A9)),
-                                          borderRadius:
-                                              BorderRadius.circular(12.w)),
-                                      child: InkWell(
+                                      ),
+                                      Spacer(),
+                                      InkWell(
                                         onTap: () async {
                                           final Uri uri = Uri(
-                                              scheme: "tel",
-                                              path: doctor.first.phoneNumber);
+                                              scheme: "tel"); // path: data.);
                                           if (await canLaunchUrl(uri)) {
                                             await launchUrl(
                                                 uri); //////////calling
                                           }
                                         },
-                                        child: Center(
-                                            child: Row(
-                                          children: [
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 2.w,
-                                                  vertical: 5.h),
-                                              child: Icon(
-                                                Icons.phone,
-                                                size: 9.sp,
-                                                color: const Color(0xff0AA9A9),
-                                              ),
-                                            ),
-                                            Text(
-                                              locale.call,
-                                              style: TextStyle(
-                                                  fontSize:
-                                                      8.sp - widget.fontSize.sp,
+                                        child: Container(
+                                          height: 20.w,
+                                          width: 42.w,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color:
+                                                      const Color(0xff0AA9A9)),
+                                              borderRadius:
+                                                  BorderRadius.circular(12.r)),
+                                          child: Center(
+                                              child: Row(
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 2.w,
+                                                    vertical: 4.h),
+                                                child: Icon(
+                                                  Icons.phone,
+                                                  size: 10.sp,
                                                   color:
                                                       const Color(0xff0AA9A9),
-                                                  fontFamily: "Nunito",
-                                                  fontWeight: FontWeight.w700),
-                                            ),
-                                          ],
-                                        )),
+                                                ),
+                                              ),
+                                              const Text(
+                                                "Call",
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Color(0xff0AA9A9),
+                                                    fontFamily: "Nunito",
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                            ],
+                                          )),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                    ],
+                                  )),
                               // Row(
                               //   children: [
                               //     Container(
@@ -691,18 +684,18 @@ fit: BoxFit.scaleDown,                                      )
                               //   ],
                               // ),
 
-                              Row(
-                                children: [
-                                  Container(
-                                      height: 18.h,
-                                      width: 190.w,
-                                      child: FittedBox(
+                              Container(
+                                  height: 18.h,
+                                  width: 300.w,
+                                  child: Row(
+                                    children: [
+                                      FittedBox(
                                         fit: BoxFit.scaleDown,
                                         alignment: Alignment.topLeft,
                                         child: RichText(
                                           text: TextSpan(children: [
                                             TextSpan(
-                                                text: 'Phone number 2 : ',
+                                                text: 'Phone number : ',
                                                 style: TextStyle(
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w700,
@@ -719,62 +712,62 @@ fit: BoxFit.scaleDown,                                      )
                                                     color: Color(0xff202020)))
                                           ]),
                                         ),
-                                      )),
-                                  Padding(
-                                    padding: isArabic
-                                        ? EdgeInsets.only(top: 55.h, right: 8.w)
-                                        : EdgeInsets.only(top: 0.h, left: 65.w),
-                                    child: InkWell(
-                                      onTap: () async {
-                                        final Uri uri =
-                                            Uri(scheme: "tel"); // path: data.);
-                                        if (await canLaunchUrl(uri)) {
-                                          await launchUrl(
-                                              uri); //////////calling
-                                        }
-                                      },
-                                      child: Container(
-                                        height: 20.w,
-                                        width: 42.w,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: const Color(0xff0AA9A9)),
-                                            borderRadius:
-                                                BorderRadius.circular(12.r)),
-                                        child: Center(
-                                            child: Row(
-                                          children: [
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 2.w,
-                                                  vertical: 4.h),
-                                              child: Icon(
-                                                Icons.phone,
-                                                size: 10.sp,
-                                                color: const Color(0xff0AA9A9),
-                                              ),
-                                            ),
-                                            const Text(
-                                              "Call",
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Color(0xff0AA9A9),
-                                                  fontFamily: "Nunito",
-                                                  fontWeight: FontWeight.w700),
-                                            ),
-                                          ],
-                                        )),
                                       ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Container(
-                                      height: 18.h,
-                                      width: 220.w,
-                                      child: FittedBox(
+                                      Spacer(),
+                                      InkWell(
+                                        onTap: () async {
+                                          final Uri uri = Uri(
+                                              scheme: "tel"); // path: data.);
+                                          if (await canLaunchUrl(uri)) {
+                                            await launchUrl(
+                                                uri); //////////calling
+                                          }
+                                        },
+                                        child: Container(
+                                          height: 20.w,
+                                          width: 42.w,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color:
+                                                      const Color(0xff0AA9A9)),
+                                              borderRadius:
+                                                  BorderRadius.circular(12.r)),
+                                          child: Center(
+                                              child: Row(
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 2.w,
+                                                    vertical: 4.h),
+                                                child: Icon(
+                                                  Icons.phone,
+                                                  size: 10.sp,
+                                                  color:
+                                                      const Color(0xff0AA9A9),
+                                                ),
+                                              ),
+                                              const Text(
+                                                "Call",
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Color(0xff0AA9A9),
+                                                    fontFamily: "Nunito",
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                            ],
+                                          )),
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+
+                              Container(
+                                  height: 18.h,
+                                  width: 300.w,
+                                  child: Row(
+                                    children: [
+                                      FittedBox(
                                         fit: BoxFit.scaleDown,
                                         alignment: isArabic
                                             ? Alignment.topRight
@@ -785,8 +778,7 @@ fit: BoxFit.scaleDown,                                      )
                                                 text:
                                                     '${locale.link_location} : ',
                                                 style: TextStyle(
-                                                    fontSize: 14.sp -
-                                                        widget.fontSize.sp,
+                                                    fontSize: 14,
                                                     fontWeight: FontWeight.w700,
                                                     fontFamily: "Nunito",
                                                     color: const Color(
@@ -804,61 +796,57 @@ fit: BoxFit.scaleDown,                                      )
                                                         0xff202020)))
                                           ]),
                                         ),
-                                      )),
-                                  Padding(
-                                    padding: isArabic
-                                        ? EdgeInsets.only(top: 0.h, right: 8.w)
-                                        : EdgeInsets.only(top: 0.h, left: 8.w),
-                                    child: Container(
-                                      height: 20.w,
-                                      width: 70.w,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: const Color(0xff0AA9A9)),
-                                          borderRadius:
-                                              BorderRadius.circular(12.w)),
-                                      child: Center(
-                                        child: InkWell(
-                                          onTap: () async {
-                                            final url = doctor.first.location;
-                                            if (await canLaunch(url)) {
-                                              await launch(url);
-                                            }
-                                          },
-                                          child: Center(
-                                            child: Row(
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: 2.w,
-                                                      vertical: 4.h),
-                                                  child: Icon(
-                                                    Icons.location_on,
-                                                    size: 10.sp,
-                                                    color:
-                                                        const Color(0xff0AA9A9),
-                                                  ),
-                                                ),
-                                                Text(
-                                                  locale.on_maps,
-                                                  style: TextStyle(
-                                                      fontSize: 8.sp -
-                                                          widget.fontSize.sp,
+                                      ),
+                                      Spacer(),
+                                      Container(
+                                        height: 20.w,
+                                        width: 70.w,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: const Color(0xff0AA9A9)),
+                                            borderRadius:
+                                                BorderRadius.circular(12.w)),
+                                        child: Center(
+                                          child: InkWell(
+                                            onTap: () async {
+                                              final url = doctor.first.location;
+                                              if (await canLaunch(url)) {
+                                                await launch(url);
+                                              }
+                                            },
+                                            child: Center(
+                                              child: Row(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 2.w,
+                                                            vertical: 4.h),
+                                                    child: Icon(
+                                                      Icons.location_on,
+                                                      size: 10.sp,
                                                       color: const Color(
                                                           0xff0AA9A9),
-                                                      fontFamily: "Nunito",
-                                                      fontWeight:
-                                                          FontWeight.w700),
-                                                ),
-                                              ],
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    locale.on_maps,
+                                                    style: TextStyle(
+                                                        fontSize: 12,
+                                                        color: const Color(
+                                                            0xff0AA9A9),
+                                                        fontFamily: "Nunito",
+                                                        fontWeight:
+                                                            FontWeight.w700),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                    ],
+                                  )),
                             ],
                           )),
                       Container(

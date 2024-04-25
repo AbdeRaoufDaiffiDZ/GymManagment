@@ -78,6 +78,7 @@ dependencies:
   readmore: ^3.0.0
   shared_preferences: null
   url_launcher: ^6.2.5
+  scroll_bottom_navigation_bar: ^4.0.0
 dev_dependencies:
   build_runner: null
 
