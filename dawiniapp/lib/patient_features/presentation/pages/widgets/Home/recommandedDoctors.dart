@@ -30,6 +30,7 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
     int compareNumbers(DoctorEntity a, DoctorEntity b) =>
         b.recommanded - a.recommanded;
     final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
+    final bool isFrench = Localizations.localeOf(context).languageCode == "fr";
 
     return BlocBuilder<DoctorBloc, DoctorState>(builder: (context, state) {
       return StreamBuilder<List<DoctorEntity>>(
@@ -56,13 +57,21 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
               } else {
                 if (state is DoctorFilterSpeciality) {
                   if (state.speciality != text.all.toLowerCase()) {
-                    doctors = snapshot.data!
-                        .where((element) => isArabic
-                            ? element.specialityArabic.toLowerCase() ==
-                                state.speciality
-                            : element.speciality.toLowerCase() ==
-                                state.speciality)
-                        .toList();
+                    if (isFrench) {
+                      doctors = snapshot.data!
+                          .where((element) =>  element.specialityFrench.toLowerCase() ==
+                                  state.speciality
+                          )
+                          .toList();
+                    } else {
+                      doctors = snapshot.data!
+                          .where((element) => isArabic
+                              ? element.specialityArabic.toLowerCase() ==
+                                  state.speciality
+                              : element.speciality.toLowerCase() ==
+                                  state.speciality)
+                          .toList();
+                    }
                   } else {
                     doctors = snapshot.data!;
                   }
@@ -93,8 +102,8 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                   itemBuilder: (context, index) {
                     isMale = doctors[index].gender == "male" ? true : false;
                     return InkWell(
-                        customBorder: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.r)),
+                      customBorder: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.r)),
                       onTap: () {
                         Navigator.push(
                           context,
