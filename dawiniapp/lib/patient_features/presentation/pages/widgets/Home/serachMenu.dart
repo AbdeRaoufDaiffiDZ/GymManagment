@@ -34,6 +34,7 @@ class _SearchMenuState extends State<SearchMenu> {
   @override
   Widget build(BuildContext context) {
     final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
+    final TextEditingController _textController = TextEditingController();
 
     final DoctorBloc dataBloc = BlocProvider.of<DoctorBloc>(context);
     // final ClinicsBloc clinicBloc = BlocProvider.of<ClinicsBloc>(context);
@@ -84,16 +85,34 @@ class _SearchMenuState extends State<SearchMenu> {
                                   padding: isArabic
                                       ? EdgeInsets.only(right: 4.w)
                                       : EdgeInsets.only(left: 4.w, top: 3.h),
-                                  child: Text(
-                                    text.searchforadoctor,
-                                    style: TextStyle(
+                                  child: TextField(
+                                    controller: _textController,
+                                    onChanged: (text) {
+                                      dataBloc.add(onDoctorsearchByName(
+                                          doctorName: text));
+                                      // clinicBloc.add(onClinicsearchByName(clinicName: text));
+
+                                      ///
+                                    },
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: text.searchforadoctor,
+                                      hintStyle: TextStyle(
                                         fontSize: _calculateFontSize(
-                                            textController.text.length),
-                                        fontFamily: "Nunito",
-                                        color:
-                                            Color(0xff202020).withOpacity(0.7),
-                                        fontWeight: FontWeight.w500),
+                                            _textController.text.length),
+                                      ),
+                                    ),
                                   ),
+                                  // Text(
+                                  //   text.searchforadoctor,
+                                  //   style: TextStyle(
+                                  //       fontSize: _calculateFontSize(
+                                  //           textController.text.length),
+                                  //       fontFamily: "Nunito",
+                                  //       color:
+                                  //           Color(0xff202020).withOpacity(0.7),
+                                  //       fontWeight: FontWeight.w500),
+                                  // ),
                                 ),
                               )
                             ],

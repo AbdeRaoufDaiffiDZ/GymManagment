@@ -24,8 +24,12 @@ class DoctorModel extends DoctorEntity {
   final int turn;
   final String uid;
   final int numberOfPatient;
+  final String specialityFrench;
+
   DoctorModel(
-      {required this.gender,required this.firstNameArabic,
+      {required this.specialityFrench,
+      required this.gender,
+      required this.firstNameArabic,
       required this.lastNameArabic,
       required this.specialityArabic,
       required this.ImageProfileurl,
@@ -45,7 +49,9 @@ class DoctorModel extends DoctorEntity {
       required this.firstName,
       required this.lastName,
       required this.phoneNumber})
-      : super(gender:gender,
+      : super(
+            specialityFrench: specialityFrench,
+            gender: gender,
             firstNameArabic: firstNameArabic,
             lastNameArabic: lastNameArabic,
             specialityArabic: specialityArabic,
@@ -68,7 +74,9 @@ class DoctorModel extends DoctorEntity {
             wilaya: wilaya);
 
   @override
-  List<Object?> get props => [gender,
+  List<Object?> get props => [
+        gender,
+        specialityFrench,
         firstNameArabic,
         lastNameArabic,
         specialityArabic,
@@ -92,7 +100,8 @@ class DoctorModel extends DoctorEntity {
 
   Map<String, dynamic> toMap() {
     return {
-      'gender':gender,
+      'specialityFrench': specialityFrench,
+      'gender': gender,
       'ImageProfileurl': ImageProfileurl,
       'firstNameArabic': firstNameArabic,
       'specialityArabic': specialityArabic,
@@ -117,7 +126,8 @@ class DoctorModel extends DoctorEntity {
 
   factory DoctorModel.fromJson(Map<dynamic, dynamic> json) {
     return DoctorModel(
-      gender:json['gender'] ?? "male",
+        specialityFrench: json['specialityFrench'] ?? " ",
+        gender: json['gender'] ?? "male",
         recommanded: json['recommanded'] ?? 0,
         numberOfPatient: json['numberOfPatient'] ?? 0,
         numberInList: json['numberInList'] ?? 0,
@@ -143,7 +153,8 @@ class DoctorModel extends DoctorEntity {
   }
 
   DoctorEntity toEntity() => DoctorEntity(
-    gender:gender,
+      specialityFrench: specialityFrench,
+      gender: gender,
       numberOfPatient: numberOfPatient,
       uid: uid,
       firstName: firstName,

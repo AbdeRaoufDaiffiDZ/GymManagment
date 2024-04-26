@@ -29,56 +29,64 @@ class _SpecialityListState extends State<SpecialityList> {
       {"text": text.endocrino, "icon": "assets/images/eyee.png"},
       {"text": text.cardiology, "icon": "assets/images/Group.png"},
     ];
-    return Container(
-      height: 85.h,
-      child: ListView.builder(
-        itemCount: mylist.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 8.h),
-            child: Column(
-              children: [
-                Container(
-                  height: 45.h,
-                  width: 45.w,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: mylist[index]["text"] as String == speciality
-                          ? Color.fromARGB(0, 0, 242, 250).withOpacity(0.7)
-                          : Color(0xffE6F5F3).withOpacity(0.7)),
-                  child: InkWell(
-                    customBorder: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(100.r)),
-                    child: Image.asset(
-                      mylist[index]["icon"] as String,
-                      scale: 1.2,
-                    ),
-                    onTap: () {
-                      setState(() {
-                        speciality = mylist[index]["text"] as String;
-                      });
-                      dataBloc.add(onDoctorsearchByspeciality(
-                          speciality:
-                              (mylist[index]["text"] as String).toLowerCase(),));
-                    },
+    return StreamBuilder<List<DoctorEntity>>(
+        stream: getDoctorsInfoUseCase.streamDoctorInfo(),
+        builder: (context, snapshot) {
+          late final List<DoctorEntity> data;
+          if (snapshot.data == null) {
+            data = [];
+          } else {
+            if (snapshot.data!.isEmpty) {
+              data = [];
+            } else {
+              data = snapshot.data!;
+            }
+          }
+          return Container(
+            height: 85.h,
+            child: ListView.builder(
+              itemCount: mylist.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 8.h),
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 45.h,
+                        width: 45.w,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color(0xffE6F5F3).withOpacity(0.7)),
+                        child: GestureDetector(
+                          child: Image.asset(
+                            mylist[index]["icon"] as String,
+                            scale: 1.2,
+                          ),
+                          onTap: () {
+                            dataBloc.add(onDoctorsearchByspeciality(
+                                doctors: data,
+                                speciality: (mylist[index]["text"] as String)
+                                    .toLowerCase()));
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 4.h),
+                        child: Text(
+                          mylist[index]["text"] as String,
+                          style: TextStyle(
+                              color: Color(0xff202020).withOpacity(0.7),
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14 - widget.fontSize.sp),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 4.h),
-                  child: Text(
-                    mylist[index]["text"] as String,
-                    style: TextStyle(
-                        color: Color(0xff202020).withOpacity(0.7),
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14 - widget.fontSize.sp),
-                  ),
-                ),
-              ],
+                );
+              },
+              scrollDirection: Axis.horizontal,
             ),
           );
-        },
-        scrollDirection: Axis.horizontal,
-      ),
-    );
+        });
   }
 }

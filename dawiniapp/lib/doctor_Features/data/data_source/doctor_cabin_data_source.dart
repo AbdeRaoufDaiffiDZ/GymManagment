@@ -185,6 +185,7 @@ length = 0;
       'firstNameArabic': doctor.firstNameArabic,
       'specialityArabic': doctor.specialityArabic,
       'lastNameArabic': doctor.lastNameArabic,
+      'specialityFrench':doctor.specialityFrench
     });
 
     await _databaseReference
@@ -192,7 +193,7 @@ length = 0;
         .child("/user_data/Doctors/${doctor.uid}")
         .update({
       "Wilaya": doctor.wilaya,
-      "atSerivce": doctor.atSerivce,
+      "isWorking": doctor.atSerivce,
       "city": doctor.city,
       "date": doctor.date,
       "max_number": doctor.max_number,

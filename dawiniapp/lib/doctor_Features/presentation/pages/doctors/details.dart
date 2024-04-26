@@ -18,8 +18,13 @@ import 'package:url_launcher/url_launcher.dart';
 class doctorDetails extends StatefulWidget {
   final String uid;
   final int fontSize;
+  final DoctorEntity doctor;
 
-  const doctorDetails({super.key, required this.uid, required this.fontSize});
+  const doctorDetails(
+      {super.key,
+      required this.uid,
+      required this.fontSize,
+      required this.doctor});
 
   @override
   State<doctorDetails> createState() => _doctorDetailsState();
@@ -130,21 +135,21 @@ class _doctorDetailsState extends State<doctorDetails> {
                                       children: [
                                         Ink(
                                           decoration: BoxDecoration(
-                                              color: !today
-                                                  ? const Color.fromRGBO(
-                                                      244, 67, 54, 0.322)
-                                                  : Colors.white,
                                               boxShadow: [
                                                 BoxShadow(
                                                     spreadRadius: 1.2,
                                                     offset: const Offset(0, 0),
                                                     blurRadius: 1.2,
-                                                    color: isTodaySelected
-                                                        ? const Color(
-                                                            0xff2CDBC6)
-                                                        : const Color(
-                                                                0xff202020)
-                                                            .withOpacity(0.8))
+                                                    color: !today
+                                                        ? Color.fromARGB(
+                                                            71, 244, 67, 54)
+                                                        : isTodaySelected
+                                                            ? const Color(
+                                                                0xff2CDBC6)
+                                                            : const Color(
+                                                                    0xff202020)
+                                                                .withOpacity(
+                                                                    0.8))
                                               ],
                                               borderRadius:
                                                   BorderRadius.circular(15.w),
@@ -154,6 +159,11 @@ class _doctorDetailsState extends State<doctorDetails> {
                                           height: 40.h,
                                           width: 90.w,
                                           child: InkWell(
+                                            customBorder:
+                                                RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15.r)),
                                             onTap: () {
                                               setState(() {
                                                 if (today && tomorrow ||
@@ -181,21 +191,21 @@ class _doctorDetailsState extends State<doctorDetails> {
                                         ),
                                         Ink(
                                           decoration: BoxDecoration(
-                                              color: tomorrow
-                                                  ? Colors.white
-                                                  : const Color.fromRGBO(
-                                                      244, 67, 54, 0.322),
                                               boxShadow: [
                                                 BoxShadow(
                                                     spreadRadius: 1.2,
                                                     offset: const Offset(0, 0),
                                                     blurRadius: 1.2,
-                                                    color: isTomorrowSelected
-                                                        ? const Color(
-                                                            0xff2CDBC6)
-                                                        : const Color(
-                                                                0xff202020)
-                                                            .withOpacity(0.8))
+                                                    color: !tomorrow
+                                                        ? Color.fromARGB(
+                                                            71, 244, 67, 54)
+                                                        : isTomorrowSelected
+                                                            ? const Color(
+                                                                0xff2CDBC6)
+                                                            : const Color(
+                                                                    0xff202020)
+                                                                .withOpacity(
+                                                                    0.8))
                                               ],
                                               border: Border.all(
                                                 color: Colors.transparent,
@@ -206,6 +216,11 @@ class _doctorDetailsState extends State<doctorDetails> {
                                           height: 40.h,
                                           width: 90.w,
                                           child: InkWell(
+                                            customBorder:
+                                                RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15.r)),
                                             onTap: () {
                                               setState(() {
                                                 if (today && tomorrow ||
@@ -240,23 +255,29 @@ class _doctorDetailsState extends State<doctorDetails> {
                                     height: 40.h,
                                     width: 230.w,
                                     child: InkWell(
+                                      customBorder: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15.r)),
                                       onTap: () {
                                         // TODO: limit by number of patients
-                                        if (!isTodaySelected &&
-                                                !isTomorrowSelected ||
-                                            !doctor.atSerivce) {
-                                        } else {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (BuildContext
-                                                          context) =>
-                                                      Patient_info(
-                                                        doctorEntity: doctor,
-                                                        today: isTodaySelected,
-                                                        fontSize:
-                                                            widget.fontSize,
-                                                      )));
+                                        if (tomorrow && today) {
+                                          if (!isTodaySelected &&
+                                                  !isTomorrowSelected ||
+                                              !doctor.atSerivce) {
+                                          } else {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        Patient_info(
+                                                          doctorEntity: doctor,
+                                                          today:
+                                                              isTodaySelected,
+                                                          fontSize:
+                                                              widget.fontSize,
+                                                        )));
+                                          }
                                         }
                                       },
                                       child: Center(
@@ -283,21 +304,22 @@ class _doctorDetailsState extends State<doctorDetails> {
                                         borderRadius:
                                             BorderRadius.circular(15.w)),
                                     child: InkWell(
-                                      child: InkWell(
-                                        onTap: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: Center(
-                                          child: Text(
-                                            locale.cancel,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w700,
-                                                color: const Color(0xff202020)
-                                                    .withOpacity(0.8),
-                                                fontFamily: 'Nunito',
-                                                fontSize:
-                                                    16.sp - widget.fontSize.sp),
-                                          ),
+                                      customBorder: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15.r)),
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Center(
+                                        child: Text(
+                                          locale.cancel,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff202020)
+                                                  .withOpacity(0.8),
+                                              fontFamily: 'Nunito',
+                                              fontSize:
+                                                  16.sp - widget.fontSize.sp),
                                         ),
                                       ),
                                     ),
@@ -556,9 +578,20 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                     color: Color(0xff202020)))
                                           ]),
                                         ),
-                                      ),
-                                      Spacer(),
-                                      InkWell(
+                                      )),
+                                  Padding(
+                                    padding: isArabic
+                                        ? EdgeInsets.only(top: 0.h, right: 65.w)
+                                        : EdgeInsets.only(top: 0.h, left: 65.w),
+                                    child: Container(
+                                      height: 20.w,
+                                      width: 42.w,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: const Color(0xff0AA9A9)),
+                                          borderRadius:
+                                              BorderRadius.circular(12.w)),
+                                      child: InkWell(
                                         onTap: () async {
                                           final Uri uri = Uri(
                                               scheme: "tel"); // path: data.);
@@ -567,44 +600,36 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                 uri); //////////calling
                                           }
                                         },
-                                        child: Container(
-                                          height: 20.w,
-                                          width: 42.w,
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color:
-                                                      const Color(0xff0AA9A9)),
-                                              borderRadius:
-                                                  BorderRadius.circular(12.r)),
-                                          child: Center(
-                                              child: Row(
-                                            children: [
-                                              Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 2.w,
-                                                    vertical: 4.h),
-                                                child: Icon(
-                                                  Icons.phone,
-                                                  size: 10.sp,
+                                        child: Center(
+                                            child: Row(
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 2.w,
+                                                  vertical: 5.h),
+                                              child: Icon(
+                                                Icons.phone,
+                                                size: 9.sp,
+                                                color: const Color(0xff0AA9A9),
+                                              ),
+                                            ),
+                                            Text(
+                                              locale.call,
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      8.sp - widget.fontSize.sp,
                                                   color:
                                                       const Color(0xff0AA9A9),
-                                                ),
-                                              ),
-                                              const Text(
-                                                "Call",
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: Color(0xff0AA9A9),
-                                                    fontFamily: "Nunito",
-                                                    fontWeight:
-                                                        FontWeight.w700),
-                                              ),
-                                            ],
-                                          )),
-                                        ),
+                                                  fontFamily: "Nunito",
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                          ],
+                                        )),
                                       ),
-                                    ],
-                                  )),
+                                    ),
+                                  ),
+                                ],
+                              ),
                               // Row(
                               //   children: [
                               //     Container(
@@ -684,90 +709,94 @@ class _doctorDetailsState extends State<doctorDetails> {
                               //   ],
                               // ),
 
-                              Container(
-                                  height: 18.h,
-                                  width: 300.w,
-                                  child: Row(
-                                    children: [
-                                      FittedBox(
+                              Row(
+                                children: [
+                                  Container(
+                                      height: 18.h,
+                                      width: 190.w,
+                                      child: FittedBox(
                                         fit: BoxFit.scaleDown,
-                                        alignment: Alignment.topLeft,
+                                        alignment: isArabic
+                                            ? Alignment.topRight
+                                            : Alignment.topLeft,
                                         child: RichText(
                                           text: TextSpan(children: [
                                             TextSpan(
-                                                text: 'Phone number : ',
+                                                text: 'Phone number 2 : ',
                                                 style: TextStyle(
-                                                    fontSize: 14,
+                                                    fontSize: 14.sp -
+                                                        widget.fontSize.sp,
                                                     fontWeight: FontWeight.w700,
                                                     fontFamily: "Nunito",
                                                     color: const Color(
                                                             0xff202020)
                                                         .withOpacity(0.65))),
-                                            const TextSpan(
-                                                text: '1111111111',
+                                            TextSpan(
+                                                text: doctor.first.phoneNumber,
                                                 style: TextStyle(
-                                                    fontSize: 14,
+                                                    fontSize: 14.sp -
+                                                        widget.fontSize.sp,
                                                     fontWeight: FontWeight.w700,
                                                     fontFamily: "Nunito",
                                                     color: Color(0xff202020)))
                                           ]),
                                         ),
-                                      ),
-                                      Spacer(),
-                                      InkWell(
-                                        onTap: () async {
-                                          final Uri uri = Uri(
-                                              scheme: "tel"); // path: data.);
-                                          if (await canLaunchUrl(uri)) {
-                                            await launchUrl(
-                                                uri); //////////calling
-                                          }
-                                        },
-                                        child: Container(
-                                          height: 20.w,
-                                          width: 42.w,
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color:
-                                                      const Color(0xff0AA9A9)),
-                                              borderRadius:
-                                                  BorderRadius.circular(12.r)),
-                                          child: Center(
-                                              child: Row(
-                                            children: [
-                                              Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 2.w,
-                                                    vertical: 4.h),
-                                                child: Icon(
-                                                  Icons.phone,
-                                                  size: 10.sp,
-                                                  color:
-                                                      const Color(0xff0AA9A9),
-                                                ),
+                                      )),
+                                  Padding(
+                                    padding: isArabic
+                                        ? EdgeInsets.only(top: 55.h, right: 8.w)
+                                        : EdgeInsets.only(top: 0.h, left: 65.w),
+                                    child: InkWell(
+                                      onTap: () async {
+                                        final Uri uri =
+                                            Uri(scheme: "tel"); // path: data.);
+                                        if (await canLaunchUrl(uri)) {
+                                          await launchUrl(
+                                              uri); //////////calling
+                                        }
+                                      },
+                                      child: Container(
+                                        height: 20.w,
+                                        width: 42.w,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: const Color(0xff0AA9A9)),
+                                            borderRadius:
+                                                BorderRadius.circular(12.r)),
+                                        child: Center(
+                                            child: Row(
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 2.w,
+                                                  vertical: 4.h),
+                                              child: Icon(
+                                                Icons.phone,
+                                                size: 10.sp,
+                                                color: const Color(0xff0AA9A9),
                                               ),
-                                              const Text(
-                                                "Call",
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: Color(0xff0AA9A9),
-                                                    fontFamily: "Nunito",
-                                                    fontWeight:
-                                                        FontWeight.w700),
-                                              ),
-                                            ],
-                                          )),
-                                        ),
+                                            ),
+                                            const Text(
+                                              "Call",
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Color(0xff0AA9A9),
+                                                  fontFamily: "Nunito",
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                          ],
+                                        )),
                                       ),
-                                    ],
-                                  )),
-
-                              Container(
-                                  height: 18.h,
-                                  width: 300.w,
-                                  child: Row(
-                                    children: [
-                                      FittedBox(
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Container(
+                                      height: 18.h,
+                                      width: 220.w,
+                                      child: FittedBox(
                                         fit: BoxFit.scaleDown,
                                         alignment: isArabic
                                             ? Alignment.topRight
@@ -796,57 +825,61 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                         0xff202020)))
                                           ]),
                                         ),
-                                      ),
-                                      Spacer(),
-                                      Container(
-                                        height: 20.w,
-                                        width: 70.w,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: const Color(0xff0AA9A9)),
-                                            borderRadius:
-                                                BorderRadius.circular(12.w)),
-                                        child: Center(
-                                          child: InkWell(
-                                            onTap: () async {
-                                              final url = doctor.first.location;
-                                              if (await canLaunch(url)) {
-                                                await launch(url);
-                                              }
-                                            },
-                                            child: Center(
-                                              child: Row(
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 2.w,
-                                                            vertical: 4.h),
-                                                    child: Icon(
-                                                      Icons.location_on,
-                                                      size: 10.sp,
+                                      )),
+                                  Padding(
+                                    padding: isArabic
+                                        ? EdgeInsets.only(top: 0.h, right: 8.w)
+                                        : EdgeInsets.only(top: 0.h, left: 8.w),
+                                    child: Container(
+                                      height: 20.w,
+                                      width: 70.w,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: const Color(0xff0AA9A9)),
+                                          borderRadius:
+                                              BorderRadius.circular(12.w)),
+                                      child: Center(
+                                        child: InkWell(
+                                          onTap: () async {
+                                            final url = doctor.first.location;
+                                            if (await canLaunch(url)) {
+                                              await launch(url);
+                                            }
+                                          },
+                                          child: Center(
+                                            child: Row(
+                                              children: [
+                                                Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 2.w,
+                                                      vertical: 4.h),
+                                                  child: Icon(
+                                                    Icons.location_on,
+                                                    size: 10.sp,
+                                                    color:
+                                                        const Color(0xff0AA9A9),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  locale.on_maps,
+                                                  style: TextStyle(
+                                                      fontSize: 8.sp -
+                                                          widget.fontSize.sp,
                                                       color: const Color(
                                                           0xff0AA9A9),
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    locale.on_maps,
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        color: const Color(
-                                                            0xff0AA9A9),
-                                                        fontFamily: "Nunito",
-                                                        fontWeight:
-                                                            FontWeight.w700),
-                                                  ),
-                                                ],
-                                              ),
+                                                      fontFamily: "Nunito",
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ),
                                       ),
-                                    ],
-                                  )),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ],
                           )),
                       Container(
@@ -889,21 +922,20 @@ class _doctorDetailsState extends State<doctorDetails> {
                             decoration: BoxDecoration(
                                 color: const Color(0xff00C8D5),
                                 borderRadius: BorderRadius.circular(20.r)),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 5.w),
-                              child: MaterialButton(
-                                onPressed: () {
-                                  _showCustomDialog(
-                                      context, locale, doctor.first);
-                                },
-                                child: Text(
-                                  locale.book_appointment,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.white,
-                                      fontFamily: 'Nunito',
-                                      fontSize: 22.sp),
-                                ),
+                            child: MaterialButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.r)),
+                              onPressed: () {
+                                _showCustomDialog(
+                                    context, locale, doctor.first);
+                              },
+                              child: Text(
+                                locale.book_appointment,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white,
+                                    fontFamily: 'Nunito',
+                                    fontSize: 22.sp),
                               ),
                             )),
                       ),

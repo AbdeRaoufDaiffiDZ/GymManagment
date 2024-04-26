@@ -898,6 +898,8 @@ class _doctorDetailsState extends State<Lll> {
                                 }
 
                                 DoctorEntity doctor = DoctorEntity(
+                                    specialityFrench:
+                                        widget.doctorInfo.specialityFrench,
                                     gender: widget.doctorInfo.gender,
                                     recommanded: widget.doctorInfo.recommanded,
                                     numberOfPatient:

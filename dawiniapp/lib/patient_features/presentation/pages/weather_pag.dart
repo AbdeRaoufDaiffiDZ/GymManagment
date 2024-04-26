@@ -203,15 +203,17 @@ class _DoctorPageState extends State<Weather> {
                                   color: const Color(0xFF202020))),
                         ),
                       ),
-                      GestureDetector(
+                      InkWell(
+                          customBorder: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(100.r)),
                         ///  this is search speciality button
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => doctorsideHome(
-                                        fontSize: 2,
-                                      )));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => doctorsideHome(
+                          //               fontSize: 2,
+                          //             )));
                         },
                         child: SizedBox(
                           width: 80.w,
@@ -246,7 +248,9 @@ class _DoctorPageState extends State<Weather> {
                                 fontFamily: 'Nunito',
                                 fontSize: 16.sp - widget.fontSize.sp,
                                 fontWeight: FontWeight.bold)),
-                        GestureDetector(
+                        InkWell(
+                            customBorder: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(100.r)),
                           onTap: () {
                             dataBloc.add(onSeeAllDoctors());
                             Navigator.push(
