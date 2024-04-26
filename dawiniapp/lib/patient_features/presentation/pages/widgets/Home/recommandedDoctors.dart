@@ -4,7 +4,6 @@ import 'package:dawini_full/core/error/ErrorWidget.dart';
 import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart';
-import 'package:dawini_full/doctor_Features/presentation/bloc/patients_info_bloc/patients_info_bloc.dart';
 import 'package:dawini_full/doctor_Features/presentation/pages/doctors/details.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
 import 'package:flutter/material.dart';
@@ -59,9 +58,9 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                   if (state.speciality != text.all.toLowerCase()) {
                     if (isFrench) {
                       doctors = snapshot.data!
-                          .where((element) =>  element.specialityFrench.toLowerCase() ==
-                                  state.speciality
-                          )
+                          .where((element) =>
+                              element.specialityFrench.toLowerCase() ==
+                              state.speciality)
                           .toList();
                     } else {
                       doctors = snapshot.data!
@@ -109,10 +108,9 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => doctorDetails(
-                                    doctor: doctors[index],
+  doctor: doctors[index],
                                     fontSize: widget.fontSize,
-                                    uid: doctors[index].uid,
-                                  )),
+                                    uid: doctors[index].uid,                                  )),
                         );
                       },
                       child: Container(

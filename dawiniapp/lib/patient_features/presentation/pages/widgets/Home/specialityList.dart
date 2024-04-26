@@ -1,4 +1,7 @@
 // ignore_for_file: file_names, sized_box_for_whitespace
+
+import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
+import 'package:dawini_full/doctor_Features/domain/usecases/doctor_usecase.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,12 +18,12 @@ class SpecialityList extends StatefulWidget {
 }
 
 class _SpecialityListState extends State<SpecialityList> {
-      String speciality = "";
-
   @override
   Widget build(BuildContext context) {
     final DoctorBloc dataBloc = BlocProvider.of<DoctorBloc>(context);
+    final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
     final AppLocalizations text = AppLocalizations.of(context)!;
+
     final List<Map<String, String>> mylist = [
       {"text": text.all, "icon": "assets/images/xxxx.png"},
       {"text": text.generalist, "icon": "assets/images/xxxx.png"},

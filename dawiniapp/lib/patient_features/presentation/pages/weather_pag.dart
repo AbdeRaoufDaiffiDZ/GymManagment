@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, sort_child_properties_last, prefer_typing_uninitialized_variables, camel_case_types
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:dawini_full/auth/presentation/welcomePage.dart';
 import 'package:dawini_full/doctor_Features/presentation/pages/doctors/doctorsList.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/patient_bloc/patients/patients_bloc.dart';
@@ -204,8 +203,9 @@ class _DoctorPageState extends State<Weather> {
                         ),
                       ),
                       InkWell(
-                          customBorder: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(100.r)),
+                        customBorder: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(100.r)),
+
                         ///  this is search speciality button
                         onTap: () {
                           // Navigator.push(
@@ -231,7 +231,6 @@ class _DoctorPageState extends State<Weather> {
                     ],
                   ),
                 ),
-
                 SpecialityList(
                   fontSize: widget.fontSize,
                 ),
@@ -249,8 +248,8 @@ class _DoctorPageState extends State<Weather> {
                                 fontSize: 16.sp - widget.fontSize.sp,
                                 fontWeight: FontWeight.bold)),
                         InkWell(
-                            customBorder: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(100.r)),
+                          customBorder: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100.r)),
                           onTap: () {
                             dataBloc.add(onSeeAllDoctors());
                             Navigator.push(

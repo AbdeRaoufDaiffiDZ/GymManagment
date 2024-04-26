@@ -45,7 +45,7 @@ class onDoctorsearchByName extends DoctorEvent {
 class onDoctorsearchByspeciality extends DoctorEvent {
   final String speciality;
   const onDoctorsearchByspeciality(
-      { required this.speciality});
+      { required this.speciality, required List<DoctorEntity> doctors});
 
   @override
   List<Object> get props => [speciality];
