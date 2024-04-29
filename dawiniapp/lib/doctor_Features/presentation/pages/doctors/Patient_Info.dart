@@ -14,7 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Patient_info extends StatefulWidget {
-    final int fontSize;
+  final int fontSize;
 
   final DoctorEntity doctorEntity;
   final bool today;
@@ -23,7 +23,8 @@ class Patient_info extends StatefulWidget {
     super.key,
     required this.doctorEntity,
     required this.today,
-    this.ifADoctor = false, required this.fontSize,
+    this.ifADoctor = false,
+    required this.fontSize,
   });
 
   @override
@@ -69,7 +70,7 @@ class _Patient_infoState extends State<Patient_info> {
           hintStyle: TextStyle(
             color: const Color(0XFF202020).withOpacity(0.7),
             fontFamily: "Nunito",
-            fontSize: 14.sp- widget.fontSize.sp,
+            fontSize: 14.sp - widget.fontSize.sp,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -212,72 +213,75 @@ class _Patient_infoState extends State<Patient_info> {
                     ],
                   ),
                 ),
-                GestureDetector(
-                  onTap: () async {
-                    {
-                      setState(() {
-                        lastPressedTime = DateTime.now();
-                      });
-                      saveLastPressedTime(widget.doctorEntity.uid);
-                      // Your button action here
-                      String missing = text.please_write_your;
-                      if (_firstNameController.text.isEmpty) {
-                        missing = "$missing ${text.first_name},";
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      vertical: screenHeight * 0.04,
+                      horizontal: screenWidth * 0.08),
+                  child: InkWell(
+                    customBorder: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(screenWidth * 0.04)),
+focusColor: Colors.red,                    onTap: () async {
+                      {
+                        setState(() {
+                          lastPressedTime = DateTime.now();
+                        });
+                        saveLastPressedTime(widget.doctorEntity.uid);
+                        // Your button action here
+                        String missing = text.please_write_your;
+                        if (_firstNameController.text.isEmpty) {
+                          missing = "$missing ${text.first_name},";
+                        }
+                        if (_lastNameController.text.isEmpty) {
+                          missing = "$missing ${text.family_name},";
+                        }
+                        if (_ageController.text.isEmpty ||
+                            int.parse(_ageController.text) > 130) {
+                          missing = "$missing ${text.age},";
+                        }
+                        if (_phoneNumberController.text.isEmpty ||
+                            _phoneNumberController.text.length < 10) {
+                          missing = "$missing ${text.phone_number},";
+                        }
+                        if (_addressController.text.isEmpty) {
+                          missing = "$missing ${text.home_adress},";
+                        }
+                        if (_firstNameController.text.isEmpty ||
+                            _lastNameController.text.isEmpty ||
+                            _phoneNumberController.text.length < 10 ||
+                            int.parse(_ageController.text) > 130 ||
+                            _ageController.text.isEmpty ||
+                            _phoneNumberController.text.isEmpty ||
+                            _addressController.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(missing),
+                            backgroundColor: Colors.red,
+                          ));
+                        } else {
+                          final token = await _fcm.getToken();
+                          PatientEntity patient = PatientEntity(
+                              token: token.toString(),
+                              gender: "_genderController.text",
+                              AppointmentDate: widget.today
+                                  ? datetimeToday
+                                  : datetimeTomrrow, //////////////////////////////////
+                              turn: 0,
+                              age: _ageController.text,
+                              address: _addressController.text,
+                              firstName: _firstNameController.text,
+                              lastName: _lastNameController.text,
+                              phoneNumber: _phoneNumberController.text,
+                              today: true,
+                              DoctorName: widget.doctorEntity.lastName,
+                              uid: widget.doctorEntity.uid);
+                          dataBloc.add(onPatientsSetAppointments(
+                              context, widget.ifADoctor,
+                              patients: patient));
+                        }
                       }
-                      if (_lastNameController.text.isEmpty) {
-                        missing = "$missing ${text.family_name},";
-                      }
-                      if (_ageController.text.isEmpty ||
-                          int.parse(_ageController.text) > 130) {
-                        missing = "$missing ${text.age},";
-                      }
-                      if (_phoneNumberController.text.isEmpty ||
-                          _phoneNumberController.text.length < 10) {
-                        missing = "$missing ${text.phone_number},";
-                      }
-                      if (_addressController.text.isEmpty) {
-                        missing = "$missing ${text.home_adress},";
-                      }
-                      if (_firstNameController.text.isEmpty ||
-                          _lastNameController.text.isEmpty ||
-                          _phoneNumberController.text.length < 10 ||
-                          int.parse(_ageController.text) > 130 ||
-                          _ageController.text.isEmpty ||
-                          _phoneNumberController.text.isEmpty ||
-                          _addressController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(missing),
-                          backgroundColor: Colors.red,
-                        ));
-                      } else {
-                        final token = await _fcm.getToken();
-                        PatientEntity patient = PatientEntity(
-                            token: token.toString(),
-                            gender: "_genderController.text",
-                            AppointmentDate: widget.today
-                                ? datetimeToday
-                                : datetimeTomrrow, //////////////////////////////////
-                            turn: 0,
-                            age: _ageController.text,
-                            address: _addressController.text,
-                            firstName: _firstNameController.text,
-                            lastName: _lastNameController.text,
-                            phoneNumber: _phoneNumberController.text,
-                            today: true,
-                            DoctorName: widget.doctorEntity.lastName,
-                            uid: widget.doctorEntity.uid);
-                        dataBloc.add(onPatientsSetAppointments(
-                            context, widget.ifADoctor,
-                            patients: patient));
-                      }
-                    }
 
-// Disable button if can't press
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical: screenHeight * 0.04,
-                        horizontal: screenWidth * 0.08),
+                      // Disable button if can't press
+                    },
                     child: Container(
                       height: screenHeight * 0.07,
                       width: double.infinity,
@@ -290,7 +294,7 @@ class _Patient_infoState extends State<Patient_info> {
                           fit: BoxFit.scaleDown,
                           child: Text(
                             text.confirmappointment,
-                            style:  TextStyle(
+                            style: TextStyle(
                               fontSize: 18.sp - widget.fontSize.sp,
                               fontWeight: FontWeight.w600,
                               color: Colors.white,

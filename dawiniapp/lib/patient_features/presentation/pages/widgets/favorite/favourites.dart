@@ -70,7 +70,7 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
                               child: Text(
                                 text.doctors,
                                 style: TextStyle(
-                                    fontSize: 22.dg - widget.fontSize.sp,
+                                    fontSize: 20.sp - widget.fontSize.sp,
                                     fontWeight: FontWeight.w700,
                                     fontFamily: "Nunito"),
                               ),
@@ -86,7 +86,7 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
                               child: Text(
                                 text.clinics,
                                 style: TextStyle(
-                                    fontSize: 22.sp - widget.fontSize.sp,
+                                    fontSize: 20.sp - widget.fontSize.sp,
                                     fontWeight: FontWeight.w700,
                                     fontFamily: "Nunito"),
                               ),
