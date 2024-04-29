@@ -81,9 +81,9 @@ class _DoctorPageState extends State<Weather> {
                 BottomNavigationBarItem(
                     icon: Icon(Icons.home), label: text.home),
                 BottomNavigationBarItem(
-                    icon: Container(
-                      height: 25.h,
-                      width: 25.w,
+                    icon: SizedBox(
+                      height: 24.h,
+                      width: 24.w,
                       child: Image.asset(
                         "assets/images/myapoin.png",
                         color: selectedindex2 == 1
@@ -91,7 +91,7 @@ class _DoctorPageState extends State<Weather> {
                             : Color(0xff202020).withOpacity(1),
                       ),
                     ),
-                    label: text.my_Appointement),
+                    label: text.my_appointemen),
                 BottomNavigationBarItem(
                     icon: Icon(Icons.favorite_rounded), label: text.favorite)
               ],

@@ -188,7 +188,7 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
                 ? BoxShadow(
                     color: Color(0xff04CBCB),
                     blurRadius: 2,
-                    spreadRadius: 0,
+                    spreadRadius: 1,
                     offset: const Offset(0, 0),
                   )
                 : BoxShadow(

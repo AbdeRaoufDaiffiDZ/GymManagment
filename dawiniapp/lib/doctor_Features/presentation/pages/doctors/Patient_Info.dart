@@ -8,13 +8,13 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Patient_info extends StatefulWidget {
-    final int fontSize;
+  final int fontSize;
 
   final DoctorEntity doctorEntity;
   final bool today;
@@ -23,7 +23,8 @@ class Patient_info extends StatefulWidget {
     super.key,
     required this.doctorEntity,
     required this.today,
-    this.ifADoctor = false, required this.fontSize,
+    this.ifADoctor = false,
+    required this.fontSize,
   });
 
   @override
@@ -69,7 +70,7 @@ class _Patient_infoState extends State<Patient_info> {
           hintStyle: TextStyle(
             color: const Color(0XFF202020).withOpacity(0.7),
             fontFamily: "Nunito",
-            fontSize: 14.sp- widget.fontSize.sp,
+            fontSize: 14.sp - widget.fontSize.sp,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -129,6 +130,7 @@ class _Patient_infoState extends State<Patient_info> {
     final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
 
     return Scaffold(
+      backgroundColor: Color(0xffFCFCFC),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -142,7 +144,7 @@ class _Patient_infoState extends State<Patient_info> {
                       ? EdgeInsets.only(
                           right: screenWidth * 0.04, top: screenHeight * 0.03)
                       : EdgeInsets.only(
-                          left: screenWidth * 0.04, top: screenHeight * 0.03),
+                          left: screenWidth * 0.02, top: screenHeight * 0.03),
                   child: Container(
                     height: screenWidth * 0.11,
                     width: screenWidth * 0.11,
@@ -152,7 +154,7 @@ class _Patient_infoState extends State<Patient_info> {
                     ),
                     child: Center(
                       child: IconButton(
-                        iconSize: screenWidth * 0.06,
+                        iconSize: screenWidth * 0.07,
                         onPressed: () {
                           Navigator.pop(context);
                         },
@@ -166,15 +168,15 @@ class _Patient_infoState extends State<Patient_info> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: screenHeight * 0.015),
+                  margin: EdgeInsets.only(top: screenHeight * 0.015, left: 6.w),
                   width: double.infinity,
-                  height: screenHeight * 0.035,
+                  height: screenHeight * 0.07,
                   child: Center(
                     child: AutoSizeText(
                       text.please_enter_the_following_information,
                       style: TextStyle(
                         fontSize: screenHeight * 0.045 - widget.fontSize.sp,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w500,
                         color: const Color(0xFF202020),
                       ),
                     ),
@@ -182,12 +184,12 @@ class _Patient_infoState extends State<Patient_info> {
                 ),
                 Container(
                   key: _formKey,
-                  height: screenHeight * 0.55,
+                  height: screenHeight * 0.65,
                   margin: EdgeInsets.symmetric(
-                      vertical: screenHeight * 0.025), // Adjust margin
+                      vertical: screenHeight * 0.025), 
                   child: Column(
                     mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween, // Use spaceBetween
+                        MainAxisAlignment.spaceBetween, 
                     children: [
                       buildInputField(null,
                           controller: _firstNameController,
@@ -202,6 +204,10 @@ class _Patient_infoState extends State<Patient_info> {
                           hintText: text.age,
                           textInputType: TextInputType.number),
                       buildInputField(null,
+                          controller: _genderController,
+                          hintText: text.gender,
+                          textInputType: TextInputType.text),
+                      buildInputField(null,
                           controller: _phoneNumberController,
                           hintText: text.phone_number,
                           textInputType: TextInputType.number),
@@ -212,7 +218,7 @@ class _Patient_infoState extends State<Patient_info> {
                     ],
                   ),
                 ),
-                GestureDetector(
+                InkWell(
                   onTap: () async {
                     {
                       setState(() {
@@ -276,10 +282,10 @@ class _Patient_infoState extends State<Patient_info> {
                   },
                   child: Padding(
                     padding: EdgeInsets.symmetric(
-                        vertical: screenHeight * 0.04,
+                        vertical: screenHeight * 0.02,
                         horizontal: screenWidth * 0.08),
                     child: Container(
-                      height: screenHeight * 0.07,
+                      height: screenHeight * 0.08,
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: const Color(0XFF04CBCB),
@@ -290,8 +296,8 @@ class _Patient_infoState extends State<Patient_info> {
                           fit: BoxFit.scaleDown,
                           child: Text(
                             text.confirmappointment,
-                            style:  TextStyle(
-                              fontSize: 18.sp - widget.fontSize.sp,
+                            style: TextStyle(
+                              fontSize: 20.sp - widget.fontSize.sp,
                               fontWeight: FontWeight.w600,
                               color: Colors.white,
                             ),

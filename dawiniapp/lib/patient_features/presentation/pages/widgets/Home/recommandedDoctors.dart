@@ -108,9 +108,10 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => doctorDetails(
-  doctor: doctors[index],
+                                    doctor: doctors[index],
                                     fontSize: widget.fontSize,
-                                    uid: doctors[index].uid,                                  )),
+                                    uid: doctors[index].uid,
+                                  )),
                         );
                       },
                       child: Container(
@@ -126,6 +127,7 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
+                                  color: Color(0xffF3F4F4),
                                   margin: const EdgeInsets.all(8),
                                   height: 90.h,
                                   width: double.infinity,
