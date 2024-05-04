@@ -5,9 +5,9 @@ import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/patients_info_bloc/patients_info_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TodayPatinet extends StatefulWidget {
   final int fontSize;
@@ -69,94 +69,7 @@ class _TodayPatinetState extends State<TodayPatinet> {
               itemBuilder: (context, index) {
                 final data = state.patients[index];
                 if (state.patients.first.firstName == "No Patients ") {
-                  return Center(
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8, horizontal: 8),
-                          child: Container(
-                            height: 90.h,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(
-                                    width: 1.5,
-                                    color: Colors.grey.withOpacity(0.23)),
-                                borderRadius: BorderRadius.circular(12.r)),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 66.w,
-                                  decoration: BoxDecoration(
-                                    borderRadius: isArabic
-                                        ? BorderRadius.only(
-                                            topRight: Radius.circular(12.r),
-                                            bottomRight: Radius.circular(12.r))
-                                        : BorderRadius.only(
-                                            topLeft: Radius.circular(12.r),
-                                            bottomLeft: Radius.circular(12.r)),
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.only(top: 4.w),
-                                        child: Text(
-                                          "",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.white,
-                                              fontFamily: "Nunito",
-                                              fontSize:
-                                                  14.sp - widget.fontSize.sp),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(top: 5.h),
-                                        child: Text(
-                                          "",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.white,
-                                              fontFamily: "Nunito",
-                                              fontSize:
-                                                  29.sp - widget.fontSize.sp),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 4.h, horizontal: 6.w),
-                                  child: Container(
-                                    width: 190.w,
-                                    height: 22.h,
-                                    child: FittedBox(
-                                      fit: BoxFit.scaleDown,
-                                      alignment: isArabic
-                                          ? Alignment.topRight
-                                          : Alignment.topLeft,
-                                      child: Text(
-                                        state.patients.first.firstName,
-                                        style: TextStyle(
-                                            fontFamily: "Nunito",
-                                            fontSize:
-                                                16.sp - widget.fontSize.sp,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
+                  return Container();
                 }
                 return Padding(
                   padding: EdgeInsets.only(
@@ -243,7 +156,7 @@ class _TodayPatinetState extends State<TodayPatinet> {
                                     "${data.firstName} ${data.lastName}",
                                     style: TextStyle(
                                         fontFamily: "Nunito",
-                                        fontSize: 16.sp - widget.fontSize.sp,
+                                        fontSize: 16,
                                         fontWeight: FontWeight.w700),
                                   ),
                                 ),
@@ -257,10 +170,12 @@ class _TodayPatinetState extends State<TodayPatinet> {
                                       ? Alignment.topRight
                                       : Alignment.topLeft,
                                   child: Text(
-                                    "${locale.age}: ${data.age} ",
+                                    "${data.age} years old ",
                                     style: TextStyle(
+                                        color: Color(0xff2020202)
+                                            .withOpacity(0.85),
                                         fontFamily: "Nunito",
-                                        fontSize: 14.sp - widget.fontSize.sp,
+                                        fontSize: 14,
                                         fontWeight: FontWeight.w600),
                                   ),
                                 ),
@@ -274,17 +189,17 @@ class _TodayPatinetState extends State<TodayPatinet> {
                                       ? Alignment.topRight
                                       : Alignment.topLeft,
                                   child: Text(
-                                    "${locale.gender}: ${data.gender}",
+                                    "${data.gender}",
                                     style: TextStyle(
                                         fontFamily: "Nunito",
-                                        fontSize: 19.sp - widget.fontSize.sp,
+                                        fontSize: 19,
                                         fontWeight: FontWeight.w600),
                                   ),
                                 ),
                               ),
                               const Spacer(),
                               Container(
-                                width: 100.w,
+                                width: 120.w,
                                 height: 17.h,
                                 child: FittedBox(
                                     fit: BoxFit.scaleDown,
@@ -293,16 +208,18 @@ class _TodayPatinetState extends State<TodayPatinet> {
                                         : Alignment.topLeft,
                                     child: Row(
                                       children: [
-                                        const Icon(Icons.phone, size: 15),
-                                        Text(
-                                          data.phoneNumber,
-                                          style: TextStyle(
-                                              fontFamily: 'Nunito',
-                                              fontSize:
-                                                  16.sp - widget.fontSize.sp,
-                                              fontWeight: FontWeight.w600,
-                                              color: const Color(0xff202020)
-                                                  .withOpacity(0.85)),
+                                        const Icon(Icons.phone, size: 16),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 4.w),
+                                          child: Text(
+                                            data.phoneNumber,
+                                            style: TextStyle(
+                                                fontFamily: 'Nunito',
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600,
+                                                color: const Color(0xff202020)
+                                                    .withOpacity(0.85)),
+                                          ),
                                         ),
                                       ],
                                     )),
@@ -313,7 +230,7 @@ class _TodayPatinetState extends State<TodayPatinet> {
                         Padding(
                           padding: isArabic
                               ? EdgeInsets.only(top: 55.h, right: 5.w)
-                              : EdgeInsets.only(top: 55.h, left: 5.w),
+                              : EdgeInsets.only(top: 55.h, left: 15.w),
                           child: InkWell(
                             onTap: () async {
                               final Uri uri =
@@ -323,10 +240,11 @@ class _TodayPatinetState extends State<TodayPatinet> {
                               }
                             },
                             child: Container(
-                              height: 20.w,
-                              width: 42.w,
+                              height: 18.w,
+                              width: 36.w,
                               decoration: BoxDecoration(
                                   border: Border.all(
+                                      width: 1.4,
                                       color: const Color(0xff0AA9A9)),
                                   borderRadius: BorderRadius.circular(12.r)),
                               child: Center(
@@ -334,7 +252,7 @@ class _TodayPatinetState extends State<TodayPatinet> {
                                 locale.call,
                                 style: TextStyle(
                                     color: const Color(0xff0AA9A9),
-                                    fontSize: 10.sp - widget.fontSize.sp,
+                                    fontSize: 10.sp,
                                     fontFamily: "Nunito",
                                     fontWeight: FontWeight.w700),
                               )),

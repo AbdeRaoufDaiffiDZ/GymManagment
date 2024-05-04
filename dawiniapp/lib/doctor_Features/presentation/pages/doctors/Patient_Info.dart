@@ -8,10 +8,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Patient_info extends StatefulWidget {
   final int fontSize;
@@ -130,6 +130,7 @@ class _Patient_infoState extends State<Patient_info> {
     final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
 
     return Scaffold(
+      backgroundColor: Color(0xffFCFCFC),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -221,7 +222,7 @@ class _Patient_infoState extends State<Patient_info> {
                     customBorder: RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.circular(screenWidth * 0.04)),
-focusColor: Colors.red,                    onTap: () async {
+                    onTap: () async {
                       {
                         setState(() {
                           lastPressedTime = DateTime.now();

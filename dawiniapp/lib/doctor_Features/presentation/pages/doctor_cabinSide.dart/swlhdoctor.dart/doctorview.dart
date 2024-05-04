@@ -11,8 +11,8 @@ import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/app
 import 'package:dawini_full/patients/patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class doctorview extends StatefulWidget {
   final int fontSize;
@@ -100,7 +100,7 @@ class _LanguageScreenState extends State<doctorview> {
                         Padding(
                           padding: isArabic
                               ? EdgeInsets.only(right: 5.w, top: 7.h)
-                              : EdgeInsets.only(left: 5.w, top: 7.h),
+                              : EdgeInsets.only(left: 5.w, top: 4.h),
                           child: Text(
                             doctor.atSerivce
                                 ? locale.booking_allowed
@@ -111,7 +111,7 @@ class _LanguageScreenState extends State<doctorview> {
                                     ? Colors.black
                                     : const Color(0xff202020).withOpacity(0.7),
                                 fontFamily: 'Nunito',
-                                fontSize: 17.sp - widget.fontSize.sp),
+                                fontSize: 19),
                           ),
                         ),
                       ],
@@ -127,7 +127,7 @@ class _LanguageScreenState extends State<doctorview> {
                         style: TextStyle(
                             fontFamily: "Nunito",
                             color: const Color(0xff202020),
-                            fontSize: 16.sp - widget.fontSize.sp,
+                            fontSize: 16,
                             fontWeight: FontWeight.w700),
                       ),
                     ),
@@ -152,7 +152,7 @@ class _LanguageScreenState extends State<doctorview> {
                                     style: TextStyle(
                                         fontFamily: "Nunito",
                                         color: Color(0xff202020),
-                                        fontSize: 17.sp - widget.fontSize.sp,
+                                        fontSize: 17,
                                         fontWeight: FontWeight.w800)))),
                         const Spacer(),
                         Container(
@@ -180,7 +180,7 @@ class _LanguageScreenState extends State<doctorview> {
                                   style: TextStyle(
                                       fontFamily: "Nunito",
                                       color: Color(0xff0AA9A9),
-                                      fontSize: 14.sp - widget.fontSize.sp,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w600)),
                             ),
                           ),
@@ -188,7 +188,7 @@ class _LanguageScreenState extends State<doctorview> {
                       ],
                     ),
                     SizedBox(
-                        height: 170.h,
+                        height: 200.h,
                         child: TodayPatinet(
                           uid: doctor.uid,
                           turn: doctor.turn,
@@ -210,9 +210,16 @@ class _LanguageScreenState extends State<doctorview> {
                             child: Container(
                               margin: EdgeInsets.symmetric(
                                   vertical: 8.h, horizontal: 0.w),
-                              width: 100.w,
+                              width: 88.w,
                               height: 40.h,
                               decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color:
+                                            Color(0xff202020).withOpacity(0.2),
+                                        blurRadius: 0.1,
+                                        spreadRadius: 1.6)
+                                  ],
                                   color: const Color(0xff00C8D5),
                                   borderRadius: BorderRadius.circular(25.r)),
                               child: Row(
@@ -221,7 +228,7 @@ class _LanguageScreenState extends State<doctorview> {
                                   Padding(
                                     padding: isArabic
                                         ? EdgeInsets.only(right: 13.w)
-                                        : EdgeInsets.only(left: 13.w),
+                                        : EdgeInsets.only(left: 15.w),
                                     child: Icon(
                                       Icons.arrow_back_ios,
                                       color: Colors.white,
@@ -233,7 +240,7 @@ class _LanguageScreenState extends State<doctorview> {
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontFamily: "Nunito",
-                                        fontSize: 17.sp - widget.fontSize.sp,
+                                        fontSize: 17,
                                         fontWeight: FontWeight.w600),
                                   ),
                                 ],
@@ -258,7 +265,14 @@ class _LanguageScreenState extends State<doctorview> {
                                     vertical: 8.h, horizontal: 0.w),
                                 width: 60.w,
                                 height: 60.h,
-                                decoration: const BoxDecoration(
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color:
+                                            Color(0xff202020).withOpacity(0.2),
+                                        blurRadius: 0.1,
+                                        spreadRadius: 1.6)
+                                  ],
                                   shape: BoxShape.circle,
                                   color: Color(0xff00C8D5),
                                 ),
@@ -274,9 +288,16 @@ class _LanguageScreenState extends State<doctorview> {
                                   doctor: doctor, turn: doctor.turn + 1));
                             },
                             child: Container(
-                              width: 100.w,
+                              width: 88.w,
                               height: 40.h,
                               decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color:
+                                            Color(0xff202020).withOpacity(0.2),
+                                        blurRadius: 0.1,
+                                        spreadRadius: 1.6)
+                                  ],
                                   color: const Color(0xff00C8D5),
                                   borderRadius: BorderRadius.circular(25)),
                               child: Row(
@@ -285,13 +306,13 @@ class _LanguageScreenState extends State<doctorview> {
                                   Padding(
                                     padding: isArabic
                                         ? EdgeInsets.only(right: 17.w)
-                                        : EdgeInsets.only(left: 17.w),
+                                        : EdgeInsets.only(left: 18.w),
                                     child: Text(
                                       locale.next,
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontFamily: "Nunito",
-                                          fontSize: 17.sp - widget.fontSize.sp,
+                                          fontSize: 17,
                                           fontWeight: FontWeight.w600),
                                     ),
                                   ),

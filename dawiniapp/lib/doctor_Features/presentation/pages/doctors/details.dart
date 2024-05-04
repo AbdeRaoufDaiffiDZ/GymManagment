@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types, prefer_typing_uninitialized_variables, non_constant_identifier_names, no_leading_underscores_for_local_identifiers, deprecated_member_use
+//_file: camel_case_types, prefer_typing_uninitialized_variables, non_constant_identifier_names, no_leading_underscores_for_local_identifiers, deprecated_member_use
 
 import 'package:dawini_full/core/error/ErrorWidget.dart';
 import 'package:dawini_full/core/loading/loading.dart';
@@ -106,228 +106,244 @@ class _doctorDetailsState extends State<doctorDetails> {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return AlertDialog(
-                            backgroundColor: Colors.white,
-                            surfaceTintColor: Colors.white,
-                            content: SizedBox(
-                              width: double.infinity,
-                              height: 182.h,
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    locale.choose_from_available_booking_time,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        color: const Color(0xff202020),
-                                        fontFamily: 'Nunito',
-                                        fontSize: 16.sp),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 0.h),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Ink(
-                                          decoration: BoxDecoration(
-                                              boxShadow: [
-                                                BoxShadow(
-                                                    spreadRadius: 1.2,
-                                                    offset: const Offset(0, 0),
-                                                    blurRadius: 1.2,
-                                                    color: !today
-                                                        ? Color.fromARGB(
-                                                            71, 244, 67, 54)
-                                                        : isTodaySelected
-                                                            ? const Color(
-                                                                0xff2CDBC6)
-                                                            : const Color(
-                                                                    0xff202020)
-                                                                .withOpacity(
-                                                                    0.8))
-                                              ],
-                                              borderRadius:
-                                                  BorderRadius.circular(15.w),
-                                              border: Border.all(
+                          return StatefulBuilder(builder: (context, setState) {
+                            return AlertDialog(
+                              surfaceTintColor: Color(0xffFAFAFA),
+                              content: SizedBox(
+                                width: double.infinity,
+                                height: 182.h,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text(
+                                      locale.choose_from_available_booking_time,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          color: const Color(0xff202020),
+                                          fontFamily: 'Nunito',
+                                          fontSize: 15.sp),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 0.h),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Ink(
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      spreadRadius:
+                                                          isTodaySelected
+                                                              ? 1
+                                                              : 0,
+                                                      offset:
+                                                          const Offset(0, 0),
+                                                      blurRadius: 2,
+                                                      color: !today
+                                                          ? Color.fromARGB(
+                                                              71, 244, 67, 54)
+                                                          : isTodaySelected
+                                                              ? const Color(
+                                                                  0xff0AA9A9)
+                                                              : const Color(
+                                                                      0xff202020)
+                                                                  .withOpacity(
+                                                                      0.5))
+                                                ],
+                                                borderRadius:
+                                                    BorderRadius.circular(12.r),
+                                                border: Border.all(
+                                                    color: Colors.transparent,
+                                                    width: 0)),
+                                            height: 40.h,
+                                            width: 90.w,
+                                            child: InkWell(
+                                              customBorder:
+                                                  RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12.r)),
+                                              onTap: () {
+                                                setState(() {
+                                                  if (today && tomorrow ||
+                                                      today && !tomorrow) {
+                                                    isTodaySelected = true;
+                                                    isTomorrowSelected = false;
+                                                  }
+                                                });
+                                              },
+                                              child: Center(
+                                                child: Text(
+                                                  locale.today,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: const Color(
+                                                              0xff202020)
+                                                          .withOpacity(0.75),
+                                                      fontFamily: 'Nunito',
+                                                      fontSize: 15.sp),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 1.w,
+                                          ),
+                                          Ink(
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      spreadRadius:
+                                                          isTomorrowSelected
+                                                              ? 1
+                                                              : 0,
+                                                      offset:
+                                                          const Offset(0, 0),
+                                                      blurRadius: 2,
+                                                      color: !tomorrow
+                                                          ? Colors.amber
+                                                          : isTomorrowSelected
+                                                              ? const Color(
+                                                                  0xff0AA9A9)
+                                                              : const Color(
+                                                                      0xff202020)
+                                                                  .withOpacity(
+                                                                      0.5))
+                                                ],
+                                                border: Border.all(
                                                   color: Colors.transparent,
-                                                  width: 0)),
-                                          height: 40.h,
-                                          width: 90.w,
-                                          child: InkWell(
-                                            customBorder:
-                                                RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15.r)),
-                                            onTap: () {
-                                              setState(() {
-                                                if (today && tomorrow ||
-                                                    today && !tomorrow) {
-                                                  isTodaySelected = true;
-                                                  isTomorrowSelected = false;
-                                                }
-                                              });
-                                            },
-                                            child: Center(
-                                              child: Text(
-                                                locale.today,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w700,
-                                                    color:
-                                                        const Color(0xff202020),
-                                                    fontFamily: 'Nunito',
-                                                    fontSize: 16.sp),
+                                                  width: 0,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        12.r)),
+                                            height: 40.h,
+                                            width: 90.w,
+                                            child: InkWell(
+                                              customBorder:
+                                                  RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12.r)),
+                                              onTap: () {
+                                                setState(() {
+                                                  if (today && tomorrow ||
+                                                      !today && tomorrow) {
+                                                    isTodaySelected =
+                                                        false; // Deselect the other option
+                                                    isTomorrowSelected = true;
+                                                  }
+                                                });
+                                              },
+                                              child: Center(
+                                                child: Text(
+                                                  locale.tomorrow,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: const Color(
+                                                              0xff202020)
+                                                          .withOpacity(0.75),
+                                                      fontFamily: 'Nunito',
+                                                      fontSize: 15.sp),
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        SizedBox(
-                                          width: 1.w,
-                                        ),
-                                        Ink(
-                                          decoration: BoxDecoration(
-                                              boxShadow: [
-                                                BoxShadow(
-                                                    spreadRadius: 1.2,
-                                                    offset: const Offset(0, 0),
-                                                    blurRadius: 1.2,
-                                                    color: !tomorrow
-                                                        ? Color.fromARGB(
-                                                            71, 244, 67, 54)
-                                                        : isTomorrowSelected
-                                                            ? const Color(
-                                                                0xff2CDBC6)
-                                                            : const Color(
-                                                                    0xff202020)
-                                                                .withOpacity(
-                                                                    0.8))
-                                              ],
-                                              border: Border.all(
-                                                color: Colors.transparent,
-                                                width: 0,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(15.w)),
-                                          height: 40.h,
-                                          width: 90.w,
-                                          child: InkWell(
-                                            customBorder:
-                                                RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15.r)),
-                                            onTap: () {
-                                              setState(() {
-                                                if (today && tomorrow ||
-                                                    !today && tomorrow) {
-                                                  isTodaySelected =
-                                                      false; // Deselect the other option
-                                                  isTomorrowSelected = true;
-                                                }
-                                              });
-                                            },
-                                            child: Center(
-                                              child: Text(
-                                                locale.tomorrow,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w700,
-                                                    color:
-                                                        const Color(0xff202020),
-                                                    fontFamily: 'Nunito',
-                                                    fontSize: 16.sp),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  Ink(
-                                    decoration: BoxDecoration(
-                                        color: const Color(0xff00C8D5),
-                                        borderRadius:
-                                            BorderRadius.circular(15.w)),
-                                    height: 40.h,
-                                    width: 230.w,
-                                    child: InkWell(
-                                      customBorder: RoundedRectangleBorder(
+                                    Ink(
+                                      decoration: BoxDecoration(
+                                          color: const Color(0xff00C8D5),
                                           borderRadius:
-                                              BorderRadius.circular(15.r)),
-                                      onTap: () {
-                                        // TODO: limit by number of patients
-                                        if (tomorrow && today) {
-                                          if (!isTodaySelected &&
-                                                  !isTomorrowSelected ||
-                                              !doctor.atSerivce) {
-                                          } else {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (BuildContext
-                                                            context) =>
-                                                        Patient_info(
-                                                          doctorEntity: doctor,
-                                                          today:
-                                                              isTodaySelected,
-                                                          fontSize:
-                                                              widget.fontSize,
-                                                        )));
+                                              BorderRadius.circular(15.w)),
+                                      height: 40.h,
+                                      width: 230.w,
+                                      child: InkWell(
+                                        customBorder: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15.r)),
+                                        onTap: () {
+                                          // TODO: limit by number of patients
+                                          if (tomorrow && today) {
+                                            if (!isTodaySelected &&
+                                                    !isTomorrowSelected ||
+                                                !doctor.atSerivce) {
+                                            } else {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          Patient_info(
+                                                            doctorEntity:
+                                                                doctor,
+                                                            today:
+                                                                isTodaySelected,
+                                                            fontSize:
+                                                                widget.fontSize,
+                                                          )));
+                                            }
                                           }
-                                        }
-                                      },
-                                      child: Center(
-                                        child: Text(
-                                          locale.next,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.white,
-                                              fontFamily: 'Nunito',
-                                              fontSize:
-                                                  16.sp - widget.fontSize.sp),
+                                        },
+                                        child: Center(
+                                          child: Text(
+                                            locale.next,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                color: Colors.white,
+                                                fontFamily: 'Nunito',
+                                                fontSize:
+                                                    19.sp - widget.fontSize.sp),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  Ink(
-                                    height: 40.h,
-                                    width: 230.w,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: const Color(0xff202020)
-                                                .withOpacity(0.5),
-                                            width: 2),
-                                        borderRadius:
-                                            BorderRadius.circular(15.w)),
-                                    child: InkWell(
-                                      customBorder: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15.r)),
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Center(
-                                        child: Text(
-                                          locale.cancel,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w700,
+                                    Ink(
+                                      height: 40.h,
+                                      width: 230.w,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
                                               color: const Color(0xff202020)
-                                                  .withOpacity(0.8),
-                                              fontFamily: 'Nunito',
-                                              fontSize:
-                                                  16.sp - widget.fontSize.sp),
+                                                  .withOpacity(0.5),
+                                              width: 2),
+                                          borderRadius:
+                                              BorderRadius.circular(15.w)),
+                                      child: InkWell(
+                                        customBorder: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15.r)),
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Center(
+                                          child: Text(
+                                            locale.cancel,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                color: const Color(0xff202020)
+                                                    .withOpacity(0.8),
+                                                fontFamily: 'Nunito',
+                                                fontSize:
+                                                    19.sp - widget.fontSize.sp),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
+                            );
+                          });
                         },
                       );
                     }
@@ -593,6 +609,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                       width: 42.w,
                                       decoration: BoxDecoration(
                                           border: Border.all(
+                                              width: 1.4,
                                               color: const Color(0xff0AA9A9)),
                                           borderRadius:
                                               BorderRadius.circular(12.w)),
@@ -686,8 +703,8 @@ class _doctorDetailsState extends State<doctorDetails> {
                                               BorderRadius.circular(12.r)),
                                       onTap: () async {
                                         final Uri uri = Uri(
-                                              scheme: "tel",
-                                              path: doctor.first.phoneNumber);
+                                            scheme: "tel",
+                                            path: doctor.first.phoneNumber);
                                         if (await canLaunchUrl(uri)) {
                                           await launchUrl(
                                               uri); //////////calling
@@ -698,6 +715,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                         width: 42.w,
                                         decoration: BoxDecoration(
                                             border: Border.all(
+                                                width: 1.4,
                                                 color: const Color(0xff0AA9A9)),
                                             borderRadius:
                                                 BorderRadius.circular(12.r)),
@@ -778,6 +796,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                       width: 70.w,
                                       decoration: BoxDecoration(
                                           border: Border.all(
+                                              width: 1.4,
                                               color: const Color(0xff0AA9A9)),
                                           borderRadius:
                                               BorderRadius.circular(12.w)),
@@ -865,10 +884,10 @@ class _doctorDetailsState extends State<doctorDetails> {
                       ),
                       Center(
                         child: Container(
-                            margin: EdgeInsets.symmetric(
-                                vertical: 10.h, horizontal: 14.w),
-                            height: 50.h,
-                            width: 250.w,
+                            margin: EdgeInsets.only(
+                                top: 70.h, left: 14.w, right: 14.w),
+                            height: 45.h,
+                            width: 245.w,
                             decoration: BoxDecoration(
                                 color: const Color(0xff00C8D5),
                                 borderRadius: BorderRadius.circular(20.r)),
@@ -885,7 +904,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                     fontWeight: FontWeight.w700,
                                     color: Colors.white,
                                     fontFamily: 'Nunito',
-                                    fontSize: 22.sp),
+                                    fontSize: 20.sp),
                               ),
                             )),
                       ),

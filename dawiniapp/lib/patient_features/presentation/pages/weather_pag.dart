@@ -54,21 +54,19 @@ class _DoctorPageState extends State<Weather> {
           child: Icon(Icons.settings),
         ),
         bottomNavigationBar: Container(
-          height: 73.h,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15), topRight: Radius.circular(15)),
-            border: Border.all(
-                width: 1.4,
-                color: Color(0xff202020)
-                    .withOpacity(0.2)), // Adjust border width and color
-          ),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
+              ),
+              border:
+                  Border.all(width: 1.4, color: Colors.grey.withOpacity(0.3))),
           child: ClipRRect(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(16), topRight: Radius.circular(16)),
             child: BottomNavigationBar(
               iconSize: 21.sp,
-              backgroundColor: Color(0xffFFFFFF),
+              backgroundColor: Colors.white,
               unselectedFontSize: 13.sp,
               selectedFontSize: 13.sp,
               currentIndex: selectedindex2,
@@ -83,16 +81,19 @@ class _DoctorPageState extends State<Weather> {
                 BottomNavigationBarItem(
                     icon: Icon(Icons.home), label: text.home),
                 BottomNavigationBarItem(
-                    icon: Image.asset(
-                      "assets/images/myapoin.png",
-                      scale: 1.2,
-                      color: selectedindex2 == 1
-                          ? Color(0xFF2CDBC6)
-                          : Color(0xff202020).withOpacity(1),
+                    icon: SizedBox(
+                      height: 24.h,
+                      width: 24.w,
+                      child: Image.asset(
+                        "assets/images/myapoin.png",
+                        color: selectedindex2 == 1
+                            ? Color(0xFF2CDBC6)
+                            : Color(0xff202020).withOpacity(1),
+                      ),
                     ),
-                    label: text.my_Appointement),
+                    label: text.my_appointemen),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.favorite), label: text.favorite)
+                    icon: Icon(Icons.favorite_rounded), label: text.favorite)
               ],
             ),
           ),
@@ -202,8 +203,9 @@ class _DoctorPageState extends State<Weather> {
                         ),
                       ),
                       InkWell(
-                          customBorder: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(100.r)),
+                        customBorder: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(100.r)),
+
                         ///  this is search speciality button
                         onTap: () {
                           // Navigator.push(
@@ -220,7 +222,7 @@ class _DoctorPageState extends State<Weather> {
                             child: AutoSizeText(text.search,
                                 style: TextStyle(
                                     fontFamily: 'Nunito',
-                                    fontSize: 16.sp,
+                                    fontSize: 15.sp,
                                     fontWeight: FontWeight.w600,
                                     color: const Color(0xFF0AA9A9))),
                           ),
@@ -229,7 +231,6 @@ class _DoctorPageState extends State<Weather> {
                     ],
                   ),
                 ),
-
                 SpecialityList(
                   fontSize: widget.fontSize,
                 ),
@@ -247,8 +248,8 @@ class _DoctorPageState extends State<Weather> {
                                 fontSize: 16.sp - widget.fontSize.sp,
                                 fontWeight: FontWeight.bold)),
                         InkWell(
-                            customBorder: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(100.r)),
+                          customBorder: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100.r)),
                           onTap: () {
                             dataBloc.add(onSeeAllDoctors());
                             Navigator.push(
@@ -265,7 +266,7 @@ class _DoctorPageState extends State<Weather> {
                               child: AutoSizeText(text.see_all,
                                   style: TextStyle(
                                       fontFamily: 'Nunito',
-                                      fontSize: 15.sp - widget.fontSize.sp,
+                                      fontSize: 15.sp,
                                       fontWeight: FontWeight.w600,
                                       color: const Color(0xFF0AA9A9))),
                             ),

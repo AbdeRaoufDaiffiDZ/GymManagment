@@ -4,15 +4,19 @@ import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/patients_info_bloc/patients_info_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class secondConatiner extends StatefulWidget {
-    final int fontSize;
+  final int fontSize;
 
   final String uid;
   final int turn;
-  const secondConatiner({super.key, required this.uid, required this.turn, required this.fontSize});
+  const secondConatiner(
+      {super.key,
+      required this.uid,
+      required this.turn,
+      required this.fontSize});
 
   @override
   State<secondConatiner> createState() => _secondConatinerState();
@@ -34,6 +38,7 @@ class _secondConatinerState extends State<secondConatiner> {
                 state.patients.where((element) => element.turn == widget.turn);
 
             return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
                   padding:
@@ -71,7 +76,7 @@ class _secondConatinerState extends State<secondConatiner> {
                                       fontWeight: FontWeight.w700,
                                       color: Colors.white,
                                       fontFamily: "Nunito",
-                                      fontSize: 14.sp- widget.fontSize.sp),
+                                      fontSize: 14.sp),
                                 ),
                               ),
                               Padding(
@@ -79,12 +84,12 @@ class _secondConatinerState extends State<secondConatiner> {
                                 child: Text(
                                   data.isNotEmpty
                                       ? (data.first.turn).toString()
-                                      : widget.turn.toString(), 
+                                      : widget.turn.toString(),
                                   style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       color: Colors.white,
                                       fontFamily: "Nunito",
-                                      fontSize: 29.sp - widget.fontSize.sp),
+                                      fontSize: 29.sp),
                                 ),
                               )
                             ],
@@ -110,7 +115,7 @@ class _secondConatinerState extends State<secondConatiner> {
                                           : "   ",
                                       style: TextStyle(
                                           fontFamily: "Nunito",
-                                          fontSize: 16.sp- widget.fontSize.sp,
+                                          fontSize: 16.sp - widget.fontSize.sp,
                                           fontWeight: FontWeight.w700),
                                     ),
                                   ),
@@ -125,11 +130,13 @@ class _secondConatinerState extends State<secondConatiner> {
                                         : Alignment.topLeft,
                                     child: Text(
                                       data.isNotEmpty
-                                          ? "${locale.age}: ${data.first.age} "
+                                          ? "${data.first.age} years old "
                                           : " ",
                                       style: TextStyle(
+                                          color: Color(0xff202020)
+                                              .withOpacity(0.85),
                                           fontFamily: "Nunito",
-                                          fontSize: 14.sp- widget.fontSize.sp,
+                                          fontSize: 15.sp,
                                           fontWeight: FontWeight.w600),
                                     ),
                                   ),
@@ -144,18 +151,20 @@ class _secondConatinerState extends State<secondConatiner> {
                                         : Alignment.topLeft,
                                     child: Text(
                                       data.isNotEmpty
-                                          ? "${locale.gender}: ${data.first.gender} "
+                                          ? "${data.first.gender} "
                                           : " ",
                                       style: TextStyle(
+                                          color: Color(0xff202020)
+                                              .withOpacity(0.85),
                                           fontFamily: "Nunito",
-                                          fontSize: 19.sp- widget.fontSize.sp,
+                                          fontSize: 19.sp,
                                           fontWeight: FontWeight.w600),
                                     ),
                                   ),
                                 ),
                                 const Spacer(),
                                 Container(
-                                  width: 100.w,
+                                  width: 120.w,
                                   height: 17.h,
                                   child: FittedBox(
                                       fit: BoxFit.scaleDown,
@@ -164,17 +173,20 @@ class _secondConatinerState extends State<secondConatiner> {
                                           : Alignment.topLeft,
                                       child: Row(
                                         children: [
-                                          const Icon(Icons.phone, size: 15),
-                                          Text(
-                                            data.isNotEmpty
-                                                ? data.first.phoneNumber
-                                                : "   ",
-                                            style: TextStyle(
-                                                fontFamily: 'Nunito',
-                                                fontSize: 16.sp- widget.fontSize.sp,
-                                                fontWeight: FontWeight.w600,
-                                                color: const Color(0xff202020)
-                                                    .withOpacity(0.85)),
+                                          const Icon(Icons.phone, size: 16),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 4.w),
+                                            child: Text(
+                                              data.isNotEmpty
+                                                  ? data.first.phoneNumber
+                                                  : "   ",
+                                              style: TextStyle(
+                                                  fontFamily: 'Nunito',
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: const Color(0xff202020)
+                                                      .withOpacity(0.85)),
+                                            ),
                                           ),
                                         ],
                                       )),
@@ -198,7 +210,7 @@ class _secondConatinerState extends State<secondConatiner> {
                             style: TextStyle(
                                 fontFamily: "Nunito",
                                 color: const Color(0xff0AA9A9).withOpacity(0.7),
-                                fontSize: 19.sp- widget.fontSize.sp,
+                                fontSize: 19.sp - widget.fontSize.sp,
                                 fontWeight: FontWeight.bold),
                             children: [
                               TextSpan(
@@ -207,7 +219,7 @@ class _secondConatinerState extends State<secondConatiner> {
                                     fontFamily: "Nunito",
                                     color: const Color(0xff000000)
                                         .withOpacity(0.5),
-                                    fontSize: 18.sp- widget.fontSize.sp,
+                                    fontSize: 18.sp - widget.fontSize.sp,
                                     fontWeight: FontWeight.w600),
                               )
                             ]),
@@ -217,107 +229,72 @@ class _secondConatinerState extends State<secondConatiner> {
                 ),
               ],
             );
-          }
-          else {
-            return   Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                  child: Container(
-                    height: 90.h,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(
-                            width: 1.5, color: Colors.grey.withOpacity(0.23)),
-                        borderRadius: BorderRadius.circular(12.r)),
-                    child: const Center()  ),
-                );
-              
-          }
-        } else {
-          return Center(
-            child: Column(
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                  child: Container(
-                    height: 90.h,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(
-                            width: 1.5, color: Colors.grey.withOpacity(0.23)),
-                        borderRadius: BorderRadius.circular(12.r)),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 66.w,
-                          decoration: BoxDecoration(
-                            borderRadius: isArabic
-                                ? BorderRadius.only(
-                                    topRight: Radius.circular(12.r),
-                                    bottomRight: Radius.circular(12.r))
-                                : BorderRadius.only(
-                                    topLeft: Radius.circular(12.r),
-                                    bottomLeft: Radius.circular(12.r)),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(top: 4.w),
-                                child: Text(
-                                  "",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.white,
-                                      fontFamily: "Nunito",
-                                      fontSize: 14.sp- widget.fontSize.sp),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(top: 5.h),
-                                child: Text(
-                                  "",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.white,
-                                      fontFamily: "Nunito",
-                                      fontSize: 29.sp- widget.fontSize.sp),
-                                ),
-                              )
-                            ],
+          } else {
+            return Padding(
+              padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 8.h),
+              child: Container(
+                  height: 60.h,
+                  width: double.infinity,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        height: 25.h,
+                        width: 240.w,
+                        child: FittedBox(
+                          alignment: Alignment.topLeft,
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            "No patient is currently being examined . ",
+                            style: TextStyle(
+                                fontFamily: "Nunito",
+                                fontWeight: FontWeight.w700,
+                                fontSize: 22,
+                                color: Color(0xff202020).withOpacity(0.75)),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 4.h, horizontal: 6.w),
-                          child: Container(
-                            width: 190.w,
-                            height: 22.h,
-                            child: FittedBox(
-                              fit: BoxFit.scaleDown,
-                              alignment: isArabic
-                                  ? Alignment.topRight
-                                  : Alignment.topLeft,
-                              child: Text(
-                                state.patients.first
-                                    .firstName, 
+                      ),
+                      Container(
+                          height: 25.h,
+                          width: 270.w,
+                          child: FittedBox(
+                            alignment: Alignment.topLeft,
+                            fit: BoxFit.scaleDown,
+                            child: Text.rich(TextSpan(
+                                text: "Use the",
                                 style: TextStyle(
                                     fontFamily: "Nunito",
-                                    fontSize: 16.sp- widget.fontSize.sp,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
+                                    color: const Color(0xff202020)
+                                        .withOpacity(0.7),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600),
+                                children: [
+                                  TextSpan(
+                                    text: " 'Next' ",
+                                    style: TextStyle(
+                                        fontFamily: "Nunito",
+                                        color: const Color(0xff0AA9A9),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  TextSpan(
+                                    text: "button to start the turn sequence .",
+                                    style: TextStyle(
+                                        fontFamily: "Nunito",
+                                        color: const Color(0xff202020)
+                                            .withOpacity(0.7),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600),
+                                  )
+                                ])),
+                          )),
+                    ],
+                  )),
+            );
+          }
+        } else {
+          return Center();
         }
       } else if (state is PatientsInfoLoadingError) {
         // patientsInfoBloc.add(onGetPatinets(uid: widget.uid));
@@ -336,13 +313,10 @@ class _secondConatinerState extends State<secondConatiner> {
             // ),
             );
       } else if (state is PatientsInfoLoading) {
-
         return const Loading();
-      }
-      else {
-                patientsInfoBloc.add(onGetPatinets(uid: widget.uid, true, context));
+      } else {
+        patientsInfoBloc.add(onGetPatinets(uid: widget.uid, true, context));
         return const Loading();
-
       }
     });
   }

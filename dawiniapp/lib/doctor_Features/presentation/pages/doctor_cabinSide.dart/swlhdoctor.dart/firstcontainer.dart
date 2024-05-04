@@ -3,8 +3,8 @@
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/doctor_Features/presentation/pages/doctors/doctorinfo.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class firstConatiner extends StatefulWidget {
   final int fontSize;
@@ -46,8 +46,8 @@ class _firstConatinerState extends State<firstConatiner> {
         height: 80.h,
         decoration: BoxDecoration(
             color: Colors.white,
-            border:
-                Border.all(width: 1.5.w, color: Colors.grey.withOpacity(0.23)),
+            border: Border.all(
+                width: 1.4, color: Color(0x20202020).withOpacity(0.13)),
             borderRadius: BorderRadius.circular(12.r)),
         child: Row(
           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -70,7 +70,7 @@ class _firstConatinerState extends State<firstConatiner> {
                             child: Image.asset(
                               isMale
                                   ? "assets/images/maleDoctor.png"
-                                  : "assets/images/maleDoctor.png", // TODO: add female picture
+                                  : "assets/images/fammeDoctor.png", // TODO: add female picture
                               alignment: Alignment.center,
                               scale: 4.3,
                             ),
@@ -100,7 +100,7 @@ class _firstConatinerState extends State<firstConatiner> {
                       "${locale.dr}. ${isArabic ? widget.doctor.firstNameArabic : widget.doctor.firstName}",
                       style: TextStyle(
                           fontFamily: "Nunito",
-                          fontSize: 17.sp - widget.fontSize.sp,
+                          fontSize: 17.sp,
                           fontWeight: FontWeight.w600),
                     ),
                   ),
@@ -117,7 +117,7 @@ class _firstConatinerState extends State<firstConatiner> {
                         style: TextStyle(
                             fontFamily: "Nunito",
                             color: const Color(0xff202020).withOpacity(0.7),
-                            fontSize: 12.sp - widget.fontSize.sp,
+                            fontSize: 11.sp,
                             fontWeight: FontWeight.w600),
                         children: [
                           TextSpan(
@@ -125,7 +125,7 @@ class _firstConatinerState extends State<firstConatiner> {
                             style: TextStyle(
                                 fontFamily: "Nunito",
                                 color: const Color(0xff0AA9A9).withOpacity(0.7),
-                                fontSize: 12.sp - widget.fontSize.sp,
+                                fontSize: 11.sp,
                                 fontWeight: FontWeight.w600),
                           )
                         ])),
@@ -151,7 +151,7 @@ class _firstConatinerState extends State<firstConatiner> {
                             style: TextStyle(
                                 fontFamily: "Nunito",
                                 color: const Color(0xff0AA9A9).withOpacity(0.7),
-                                fontSize: 12.sp - widget.fontSize.sp,
+                                fontSize: 11.sp,
                                 fontWeight: FontWeight.w600),
                           )
                         ])),
@@ -160,7 +160,7 @@ class _firstConatinerState extends State<firstConatiner> {
               ],
             ),
             Padding(
-              padding: EdgeInsets.only(top: 44.h),
+              padding: EdgeInsets.only(top: 48.h, left: 6.w),
               child: InkWell(
                 onTap: () {
                   Navigator.push(
@@ -172,18 +172,17 @@ class _firstConatinerState extends State<firstConatiner> {
                               )));
                 }, ////////////////////////
                 child: Container(
-                  height: 20.h,
-                  width: 42.w,
+                  height: 18.h,
+                  width: 36.w,
                   decoration: BoxDecoration(
-                      border: Border.all(color: const Color(0xff0AA9A9)),
+                      border: Border.all(
+                          color: const Color(0xff0AA9A9), width: 1.4),
                       borderRadius: BorderRadius.circular(12.r)),
                   child: Center(
                       child: Text(
                     locale.edit,
                     style: TextStyle(
-                        fontSize: isFrench
-                            ? 8.sp - widget.fontSize.sp
-                            : 10.sp - widget.fontSize.sp,
+                        fontSize: isFrench ? 8.sp : 10.sp,
                         color: const Color(0xff0AA9A9),
                         fontFamily: "Nunito",
                         fontWeight: FontWeight.w700),

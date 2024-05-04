@@ -108,7 +108,7 @@ class _DoctorsState extends State<Doctors> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => doctorDetails(
-                        doctor: data[index],
+                            doctor: data[index],
                             fontSize: widget.fontSize,
                             uid: data[index].uid,
                           )),
@@ -127,6 +127,7 @@ class _DoctorsState extends State<Doctors> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
+                          color: Color(0xffF3F4F4),
                           margin: const EdgeInsets.all(8),
                           height: 90.h,
                           width: double.infinity,
