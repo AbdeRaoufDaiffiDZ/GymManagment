@@ -41,7 +41,9 @@
     "currentturn":"الدور الحالي",
     "tomorrowdate":"مواعيد الغد",
     "isat":" ",
-    "myturn":"دورك",
+    "myturn":"دوري",
+    "yourturn":"دورك",
+
     "searchforadoctor":"بحث عن طبيب",
     "next":"التالي",
     "whoareyou":"ابحث عن طبيب",

@@ -695,7 +695,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                       )),
                                   Padding(
                                     padding: isArabic
-                                        ? EdgeInsets.only(top: 55.h, right: 8.w)
+                                        ? EdgeInsets.only(top: 0.h, right: 65.w)
                                         : EdgeInsets.only(top: 0.h, left: 65.w),
                                     child: InkWell(
                                       customBorder: RoundedRectangleBorder(

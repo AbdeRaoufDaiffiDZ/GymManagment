@@ -59,7 +59,7 @@ class _DoctorsListState extends State<DoctorsList> {
             return BlocBuilder<DoctorBloc, DoctorState>(
                 builder: (context, state) {
               return DoctorStateConditions(state, data,
-                  fontSize: widget.fontSize);
+                  fontSize: widget.fontSize, context: context);
             });
           }
         });

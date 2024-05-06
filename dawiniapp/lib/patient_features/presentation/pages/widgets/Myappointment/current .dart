@@ -31,7 +31,6 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
     final PatientsBloc patientsBloc = BlocProvider.of<PatientsBloc>(context);
     final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
     AppLocalizations text = AppLocalizations.of(context)!;
-    bool isMale = true;
     return Scaffold(
         backgroundColor: const Color(0XFFFAFAFA),
         body: Padding(
@@ -72,7 +71,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                           children: [
                             Text(
                               text.noAppointmentsHere,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   color: Color(0Xff202020),
                                   fontFamily: "Nunito",
                                   fontSize: 22,
@@ -82,7 +81,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                               text.imgTxt,
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Color(0Xff202020).withOpacity(0.5),
+                                  color: const Color(0Xff202020).withOpacity(0.5),
                                   fontFamily: "Nunito",
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500),
@@ -140,7 +139,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                           boxShadow: [
                                             BoxShadow(
                                                 spreadRadius: 1.3,
-                                                color: Color(0Xff202020)
+                                                color: const Color(0Xff202020)
                                                     .withOpacity(0.1),
                                                 blurRadius: 1)
                                           ],
@@ -340,7 +339,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                   icon: Icon(
                                                     Icons.arrow_forward_ios,
                                                     size: 17,
-                                                    color: Color(0xff20202020)
+                                                    color: const Color(0xff20202020)
                                                         .withOpacity(0.7),
                                                   ))
                                             ],
@@ -497,7 +496,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                             .animate(a1),
                                                         child: AlertDialog(
                                                           surfaceTintColor:
-                                                              Color(0xffFAFAFA),
+                                                              const Color(0xffFAFAFA),
                                                           contentPadding:
                                                               EdgeInsets
                                                                   .symmetric(
@@ -519,7 +518,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                                                                       TextAlign
                                                                           .center,
                                                                   style: TextStyle(
-                                                                      color: Color(
+                                                                      color: const Color(
                                                                           0Xff202020),
                                                                       fontSize:
                                                                           15.sp,
@@ -685,7 +684,7 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
             id: index,
             channelKey: 'basic_channel',
             title: "${text.turn} $body",
-            body: "$patientName ${text.myturn} $doctorName $body"));
+            body: "$patientName ${text.yourturn} $doctorName $body"));
   }
 
   notificationConditions(state, index, doctors,

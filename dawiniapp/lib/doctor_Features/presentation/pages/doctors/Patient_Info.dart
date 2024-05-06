@@ -11,7 +11,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Patient_info extends StatefulWidget {
   final int fontSize;
@@ -44,7 +43,6 @@ class _Patient_infoState extends State<Patient_info> {
   String datetimeToday = DateFormat("yyyy-MM-dd").format(DateTime.now());
   String datetimeTomrrow = DateFormat("yyyy-MM-dd")
       .format(DateTime.now().add(const Duration(days: 1)));
-  DateTime? lastPressedTime;
 
   Widget buildInputField(List<TextInputFormatter>? textInputFormatter,
       {required TextEditingController controller,
@@ -92,33 +90,6 @@ class _Patient_infoState extends State<Patient_info> {
   @override
   void initState() {
     super.initState();
-    loadLastPressedTime(widget.doctorEntity.uid);
-  }
-
-  void loadLastPressedTime(uid) async {
-    // Load from shared preferences
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    lastPressedTime = prefs.getString("$uid/lastPressedTime") != null
-        ? DateTime.parse(prefs.getString("$uid/lastPressedTime")!)
-        : null;
-  }
-
-  void saveLastPressedTime(uid) async {
-    // Save to shared preferences
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("$uid/lastPressedTime", DateTime.now().toString());
-  }
-
-  bool canPressButton() {
-    if (lastPressedTime == null) {
-      return true;
-    } else {
-      final difference = DateTime.now().difference(lastPressedTime!);
-
-      return widget.ifADoctor
-          ? difference.inSeconds >= 5
-          : difference.inSeconds >= 5; // Change 1 to your desired limit
-    }
   }
 
   @override
@@ -170,7 +141,7 @@ class _Patient_infoState extends State<Patient_info> {
                 Container(
                   margin: EdgeInsets.only(top: screenHeight * 0.015),
                   width: double.infinity,
-                  height: screenHeight * 0.035,
+                  height: screenHeight * 0.045,
                   child: Center(
                     child: AutoSizeText(
                       text.please_enter_the_following_information,
@@ -224,10 +195,6 @@ class _Patient_infoState extends State<Patient_info> {
                             BorderRadius.circular(screenWidth * 0.04)),
                     onTap: () async {
                       {
-                        setState(() {
-                          lastPressedTime = DateTime.now();
-                        });
-                        saveLastPressedTime(widget.doctorEntity.uid);
                         // Your button action here
                         String missing = text.please_write_your;
                         if (_firstNameController.text.isEmpty) {
@@ -277,7 +244,7 @@ class _Patient_infoState extends State<Patient_info> {
                               uid: widget.doctorEntity.uid);
                           dataBloc.add(onPatientsSetAppointments(
                               context, widget.ifADoctor,
-                              patients: patient));
+                              patients: patient, uid: widget.doctorEntity.uid));
                         }
                       }
 
