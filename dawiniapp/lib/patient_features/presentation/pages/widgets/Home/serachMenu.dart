@@ -10,12 +10,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SearchMenu extends StatefulWidget {
   final int fontSize;
-
+  final String? selectedWilaya;
   final bool isHome;
   const SearchMenu({
     super.key,
     required this.isHome,
     required this.fontSize,
+    required this.selectedWilaya,
   });
   @override
   State<SearchMenu> createState() => _SearchMenuState();
@@ -32,7 +33,17 @@ class _SearchMenuState extends State<SearchMenu> {
   }
 
   @override
+  void initState() {
+    selected = widget.selectedWilaya;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if(widget.isHome){
+          selected = widget.selectedWilaya;
+
+    }
     final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
     final TextEditingController _textController = TextEditingController();
 
@@ -125,6 +136,7 @@ class _SearchMenuState extends State<SearchMenu> {
                                   MaterialPageRoute(
                                       builder: (context) => doctors(
                                             fontSize: widget.fontSize,
+                                            wilayaSelected: null,
                                           )));
                             },
                             child: Row(children: [
@@ -202,36 +214,38 @@ class _SearchMenuState extends State<SearchMenu> {
                       .toList(),
                   value: selected,
                   onChanged: (wilaya) {
+                    setState(() {
+                      selected = wilaya;
+
+                      if (wilaya == text.alger) {
+                        selectedValue = "Alger";
+                      } else if (wilaya == text.boumerdes) {
+                        selectedValue = "Boumerdes";
+                      } else if (wilaya == text.oran) {
+                        selectedValue = "Oran";
+                      } else if (wilaya == text.chlef) {
+                        selectedValue = "Chlef";
+                      } else if (wilaya == text.bejaia) {
+                        selectedValue = "Bejaia";
+                      } else if (wilaya == text.annaba) {
+                        selectedValue = "Annaba";
+                      } else if (wilaya == text.bouira) {
+                        selectedValue = "Bouira";
+                      } else {
+                        selectedValue = "Province";
+                      }
+                    });
                     if (widget.isHome) {
-                      dataBloc.add(onSeeAllDoctors());
+                      dataBloc.add(onDoctorsearchByWilaya(
+                          wilaya: selectedValue.toString().toLowerCase()));
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => doctors(
                                     fontSize: widget.fontSize,
+                                    wilayaSelected: selected,
                                   )));
                     } else {
-                      setState(() {
-                        selected = wilaya;
-
-                        if (wilaya == text.alger) {
-                          selectedValue = "Alger";
-                        } else if (wilaya == text.boumerdes) {
-                          selectedValue = "Boumerdes";
-                        } else if (wilaya == text.oran) {
-                          selectedValue = "Oran";
-                        } else if (wilaya == text.chlef) {
-                          selectedValue = "Chlef";
-                        } else if (wilaya == text.bejaia) {
-                          selectedValue = "Bejaia";
-                        } else if (wilaya == text.annaba) {
-                          selectedValue = "Annaba";
-                        } else if (wilaya == text.bouira) {
-                          selectedValue = "Bouira";
-                        } else {
-                          selectedValue = "Province";
-                        }
-                      });
                       dataBloc.add(onDoctorsearchByWilaya(
                           wilaya: selectedValue.toString().toLowerCase()));
                     }

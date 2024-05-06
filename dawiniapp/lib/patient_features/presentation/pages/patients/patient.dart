@@ -4,8 +4,9 @@ import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_data_bloc/doctor_data_bloc.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/patients_info_bloc/patients_info_bloc.dart';
-import 'package:dawini_full/patients/today.dart';
-import 'package:dawini_full/patients/tomorrow.dart';
+import 'package:dawini_full/patient_features/presentation/pages/patients/today.dart';
+import 'package:dawini_full/patient_features/presentation/pages/patients/tomorrow.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

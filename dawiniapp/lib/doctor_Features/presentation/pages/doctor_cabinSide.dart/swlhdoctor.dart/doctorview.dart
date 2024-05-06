@@ -7,8 +7,8 @@ import 'package:dawini_full/doctor_Features/presentation/pages/doctor_cabinSide.
 import 'package:dawini_full/doctor_Features/presentation/pages/doctor_cabinSide.dart/swlhdoctor.dart/secondcontainer.dart';
 import 'package:dawini_full/doctor_Features/presentation/pages/doctor_cabinSide.dart/swlhdoctor.dart/today_patinet.dart';
 import 'package:dawini_full/doctor_Features/presentation/pages/doctors/Patient_Info.dart';
+import 'package:dawini_full/patient_features/presentation/pages/patients/patient.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/appBar.dart';
-import 'package:dawini_full/patients/patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

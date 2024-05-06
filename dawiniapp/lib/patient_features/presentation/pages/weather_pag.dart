@@ -116,7 +116,11 @@ class _DoctorPageState extends State<Weather> {
             ),
             Container(
               child: Column(children: [
-                SearchMenu(fontSize: widget.fontSize, isHome: true),
+                SearchMenu(
+                  fontSize: widget.fontSize,
+                  isHome: true,
+                  selectedWilaya: text.province,
+                ),
                 SizedBox(height: 10.h),
 
                 // Container(
@@ -257,6 +261,7 @@ class _DoctorPageState extends State<Weather> {
                                 MaterialPageRoute(
                                     builder: (context) => doctors(
                                           fontSize: widget.fontSize,
+                                          wilayaSelected: null,
                                         )));
                           },
                           child: SizedBox(
@@ -301,8 +306,9 @@ class _DoctorPageState extends State<Weather> {
 
 class doctors extends StatefulWidget {
   final int fontSize;
-
-  const doctors({super.key, required this.fontSize});
+  final String? wilayaSelected;
+  const doctors(
+      {super.key, required this.fontSize, required this.wilayaSelected});
 
   @override
   State<doctors> createState() => _doctorsState();
@@ -318,6 +324,7 @@ class _doctorsState extends State<doctors> {
           SearchMenu(
             fontSize: widget.fontSize,
             isHome: false,
+            selectedWilaya: widget.wilayaSelected,
           ),
           DoctorsList(
             fontSize: widget.fontSize,
