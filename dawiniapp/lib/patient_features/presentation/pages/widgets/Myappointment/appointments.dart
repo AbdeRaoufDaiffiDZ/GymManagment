@@ -37,7 +37,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
               child: FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
-                  text.my_Appointement,
+                  text.my_appointement,
                   style: TextStyle(
                       color: const Color(0XFF202020),
                       fontSize: 26.sp - widget.fontSize.sp,

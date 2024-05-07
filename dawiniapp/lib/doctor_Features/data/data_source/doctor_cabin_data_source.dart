@@ -27,7 +27,7 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
   static final FirebaseAuth auth = FirebaseAuth.instance;
   static final LocalDataSourceDoctors localDataSourcePatients =
       LocalDataSourceImplDoctor();
-      final String path = "/debug/doctorsList"; // "/doctorsList" is the true path
+      final String path = "/doctorsList"; // "/doctorsList" is the true path
   @override
   Future<List<DoctorModel>> getDoctorsInfo() async {
     final result = await _databaseReference.ref().child(path).get();

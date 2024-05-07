@@ -91,7 +91,7 @@ class _DoctorPageState extends State<Weather> {
                             : Color(0xff202020).withOpacity(1),
                       ),
                     ),
-                    label: text.my_appointemen),
+                    label: text.my_appointement),
                 BottomNavigationBarItem(
                     icon: Icon(Icons.favorite_rounded), label: text.favorite)
               ],

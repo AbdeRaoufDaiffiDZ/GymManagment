@@ -1,7 +1,7 @@
 {
     "helloWorld": "Hello World!",
     "home":"home",
-    "my_Appointement":"Mon rendez-vous",
+    "my_appointement":"Mon rendez-vous",
     "favorite":"Préférée",
     "recommended_clinics":"Cliniques recommandées",
     "see_all":"Voir tout",

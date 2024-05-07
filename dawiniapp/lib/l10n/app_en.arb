@@ -1,8 +1,7 @@
 {
     "helloWorld": "Hello World!",
     "home":"Home",
-    "my_Appointement":"My Appointement",
-    "my_appointemen":"my Appointement",
+    "my_appointement":"my Appointement",
     "favorite":"favorite",
     "recommended_clinics":"Recommended clinics",
     "see_all":"See All",

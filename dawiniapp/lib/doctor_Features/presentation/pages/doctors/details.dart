@@ -175,7 +175,8 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                       today && !tomorrow) {
                                                     isTodaySelected = true;
                                                     isTomorrowSelected = false;
-                                                  }
+                                                  } 
+                                                  
                                                 });
                                               },
                                               child: Center(
@@ -274,7 +275,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                 BorderRadius.circular(15.r)),
                                         onTap: () {
                                           // TODO: limit by number of patients
-                                          if (tomorrow && today) {
+                                          if (tomorrow || today) {
                                             if (!isTodaySelected &&
                                                     !isTomorrowSelected ||
                                                 !doctor.atSerivce) {
