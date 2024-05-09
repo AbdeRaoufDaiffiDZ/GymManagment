@@ -24,10 +24,10 @@ class _SpecialityListState extends State<SpecialityList> {
     final List<Map<String, String>> mylist = [
       {"text": text.all, "icon": "assets/images/xxxx.png"},
       {"text": text.generalist, "icon": "assets/images/xxxx.png"},
-      {"text": text.dentist, "icon": "assets/images/Cardioo.png"},
-      {"text": text.opthalm, "icon": "assets/images/dentiste.png"},
-      {"text": text.endocrino, "icon": "assets/images/eyee.png"},
-      {"text": text.cardiology, "icon": "assets/images/Group.png"},
+      {"text": text.dentist, "icon": "assets/images/dentiste.png"},
+      {"text": text.opthalm, "icon": "assets/images/eyee.png"},
+      {"text": text.endocrino, "icon": "assets/images/Group.png"},
+      {"text": text.cardiology, "icon": "assets/images/Cardioo.png"},
     ];
     return Container(
       height: 85.h,

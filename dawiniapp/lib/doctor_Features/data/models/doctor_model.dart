@@ -4,6 +4,7 @@ import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 
 class DoctorModel extends DoctorEntity {
   final String ImageProfileurl;
+  final String phoneNumber2;
   final String gender;
   final String firstNameArabic;
   final String lastNameArabic;
@@ -28,6 +29,7 @@ class DoctorModel extends DoctorEntity {
 
   DoctorModel(
       {required this.specialityFrench,
+      required this.phoneNumber2,
       required this.gender,
       required this.firstNameArabic,
       required this.lastNameArabic,
@@ -50,6 +52,7 @@ class DoctorModel extends DoctorEntity {
       required this.lastName,
       required this.phoneNumber})
       : super(
+            phoneNumber2: phoneNumber2,
             specialityFrench: specialityFrench,
             gender: gender,
             firstNameArabic: firstNameArabic,
@@ -75,6 +78,7 @@ class DoctorModel extends DoctorEntity {
 
   @override
   List<Object?> get props => [
+        phoneNumber2,
         gender,
         specialityFrench,
         firstNameArabic,
@@ -101,6 +105,7 @@ class DoctorModel extends DoctorEntity {
   Map<String, dynamic> toMap() {
     return {
       'specialityFrench': specialityFrench,
+      'phoneNumber2': phoneNumber2,
       'gender': gender,
       'ImageProfileurl': ImageProfileurl,
       'firstNameArabic': firstNameArabic,
@@ -126,6 +131,7 @@ class DoctorModel extends DoctorEntity {
 
   factory DoctorModel.fromJson(Map<dynamic, dynamic> json) {
     return DoctorModel(
+        phoneNumber2: json['phoneNumber2'] ?? " ",
         specialityFrench: json['specialityFrench'] ?? " ",
         gender: json['gender'] ?? "male",
         recommanded: json['recommanded'] ?? 0,
@@ -153,6 +159,7 @@ class DoctorModel extends DoctorEntity {
   }
 
   DoctorEntity toEntity() => DoctorEntity(
+      phoneNumber2: phoneNumber2,
       specialityFrench: specialityFrench,
       gender: gender,
       numberOfPatient: numberOfPatient,
