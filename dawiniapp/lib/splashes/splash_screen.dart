@@ -38,7 +38,7 @@ class _SplashState extends State<Splash> {
         //       fontSize: 40, fontWeight: FontWeight.bold, color: Colors.black),
         // ),
       )),
-      nextScreen:  MyWidget(fontSize: widget.fontSize),
+      nextScreen:  MyWidget(fontSize: widget.fontSize, locale: null,),
     );
   }
 }

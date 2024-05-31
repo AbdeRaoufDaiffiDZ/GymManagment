@@ -684,7 +684,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                             0xff202020)
                                                         .withOpacity(0.65))),
                                             TextSpan(
-                                                text: doctor.first.phoneNumber,
+                                                text: doctor.first.phoneNumber2,
                                                 style: TextStyle(
                                                     fontSize: 14.sp -
                                                         widget.fontSize.sp,
@@ -705,7 +705,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                       onTap: () async {
                                         final Uri uri = Uri(
                                             scheme: "tel",
-                                            path: doctor.first.phoneNumber);
+                                            path: doctor.first.phoneNumber2);
                                         if (await canLaunchUrl(uri)) {
                                           await launchUrl(
                                               uri); //////////calling

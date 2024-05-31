@@ -1,8 +1,9 @@
+import 'package:dawini_full/introduction_feature/data/lanugage_constant.dart';
 import 'package:dawini_full/introduction_feature/presentation/bloc/bloc/introduction_bloc.dart';
 import 'package:dawini_full/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Localisation extends StatefulWidget {
@@ -19,8 +20,10 @@ class _LocalisationState extends State<Localisation> {
   @override
   Widget build(BuildContext context) {
     final IntroductionBloc bloc = BlocProvider.of<IntroductionBloc>(context);
-    final AppLocalizations text = AppLocalizations.of(context)!;
+    // final AppLocalizations text = AppLocalizations.of(context)!;
     final String languageCode = Localizations.localeOf(context).languageCode;
+     double screenHeight = MediaQuery.of(context).size.height;
+     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       backgroundColor: const Color(0xffEDF5F5),
@@ -29,7 +32,7 @@ class _LocalisationState extends State<Localisation> {
           children: [
             Container(
               color: const Color(0xffEDF5F5),
-              height: 350.h,
+              height: 0.5*screenHeight,
               width: double.maxFinite,
               child: Image.asset(
                 "assets/images/ss.png",
@@ -38,6 +41,7 @@ class _LocalisationState extends State<Localisation> {
             ),
             Container(
               width: double.maxFinite,
+              height: 0.5*screenHeight,
               decoration: BoxDecoration(
                 color: Colors.white,
                 boxShadow: [
@@ -53,17 +57,17 @@ class _LocalisationState extends State<Localisation> {
                 ),
               ),
               child: Padding(
-                padding: EdgeInsets.only(top: 10.h),
+                padding: EdgeInsets.only(top: (0.5*screenHeight) * 0.1),
                 child: Column(
                   children: [
-                    languageContainer("English", "en", bloc, languageCode),
-                    languageContainer("Français", "fr", bloc, languageCode),
-                    languageContainer("العربية", "ar", bloc, languageCode),
+                    languageContainer("English", "en", bloc, languageCode, screenHeight),
+                    languageContainer("Français", "fr", bloc, languageCode, screenHeight),
+                    languageContainer("العربية", "ar", bloc, languageCode, screenHeight),
                     Padding(
-                      padding: EdgeInsets.all(8),
+                      padding: EdgeInsets.all((0.5*screenHeight) * 0.01),
                       child: Container(
-                        width: 50.w,
-                        height: 50.h,
+                        width: (0.5*screenHeight) * 0.13,
+                        height: (0.5*screenHeight) * 0.13,
                         decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                           color: Color(0xffECF2F2),
@@ -72,10 +76,12 @@ class _LocalisationState extends State<Localisation> {
                           onPressed: () {
                             bloc.add(const NextPage(id: 2));
                           },
-                          icon: Icon(
-                            Icons.arrow_forward,
-                            size: 31.w,
-                            color: const Color(0xff0AA9A9),
+                          icon: Center(
+                            child: Icon(
+                              Icons.arrow_forward,
+                              size: ((0.5*screenHeight) * 0.13)* 0.6,
+                              color: const Color(0xff0AA9A9),
+                            ),
                           ),
                         ),
                       ),
@@ -91,11 +97,11 @@ class _LocalisationState extends State<Localisation> {
   }
 
   Widget languageContainer(String language, String languageCode,
-      IntroductionBloc bloc, String languageSys) {
+      IntroductionBloc bloc, String languageSys, double screenHeight) {
     return Container(
-      margin: EdgeInsets.all(8.h),
+      margin: EdgeInsets.all((0.5*screenHeight) * 0.02),
       width: 260.w,
-      height: 50.h,
+      height: (0.5*screenHeight) * 0.15,
       decoration: BoxDecoration(
         border: Border.all(
           color: languageSys == languageCode
@@ -106,15 +112,19 @@ class _LocalisationState extends State<Localisation> {
         borderRadius: BorderRadius.circular(16.h),
       ),
       child: InkWell(
-        onTap: () {
-          bloc.add(onLanguageChoose(language: languageCode));
+        onTap: () async {
+         
+                      Locale locale = await setLocale(languageCode);
+                      MyApp.setLocale(context, locale);
+                    
+          // bloc.add(onLanguageChoose(language: languageCode));
 
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const MyApp(
-                        pageNumber: null,
-                      )));
+          // Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //         builder: (context) => const MyApp(
+          //               pageNumber: null,
+          //             )));
         },
         child: Center(
           child: Text(

@@ -22,7 +22,7 @@ class DoctorEntity extends Equatable {
   final String specialityFrench;
 
   final String phoneNumber;
-    final String phoneNumber2;
+  final String phoneNumber2;
 
   final String wilaya;
   final String city;
@@ -57,7 +57,8 @@ class DoctorEntity extends Equatable {
       required this.phoneNumber});
 
   @override
-  List<Object?> get props => [phoneNumber2,
+  List<Object?> get props => [
+        phoneNumber2,
         specialityFrench,
         gender,
         firstName,
@@ -86,6 +87,7 @@ class DoctorEntity extends Equatable {
   Map<String, dynamic> toMap() {
     return {
       'specialityFrench': specialityFrench,
+      'phoneNumber2': phoneNumber2,
       'gender': gender,
       'ImageProfileurl': ImageProfileurl,
       'firstNameArabic': firstNameArabic,

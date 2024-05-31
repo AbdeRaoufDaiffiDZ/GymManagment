@@ -23,7 +23,8 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
   Widget build(BuildContext context) {
     final IntroductionBloc bloc = BlocProvider.of<IntroductionBloc>(context);
     final AppLocalizations text = AppLocalizations.of(context)!;
-
+  double screenHeight = MediaQuery.of(context).size.height;
+     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: const Color(0xffEDF5F5),
       body: SingleChildScrollView(
@@ -31,13 +32,14 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
             Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Container(
               color: const Color(0xffEDF5F5),
-              height: 350.h,
+              height:  0.5*screenHeight,
               width: double.maxFinite,
               child: Image.asset(
                 "assets/images/ss.png",
                 fit: BoxFit.scaleDown,
               )),
           Container(
+            height: 0.5*screenHeight,
               decoration: BoxDecoration(
                   color: Colors.white,
                   boxShadow: [
@@ -51,59 +53,59 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30))),
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 15.w),
+                padding: EdgeInsets.symmetric(vertical: 0.5*screenHeight*0.01, horizontal: 15.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      height: 25.h,
+                      height:0.5*screenHeight*0.1,
                       width: 200.w,
-                      child: const FittedBox(
+                      child:  FittedBox(
                         alignment: Alignment.centerLeft,
                         fit: BoxFit.scaleDown,
                         child: Text("Dawina , ",
                             style: TextStyle(
                               color: Color(0xff202020),
-                              fontSize: 19,
+                              fontSize: 19.sp,
                               fontFamily: 'Nunito',
                               fontWeight: FontWeight.w600,
                             )),
                       ),
                     ),
                     Container(
-                      height: 25.h,
+                      height: 0.5*screenHeight*0.1,
                       width: 300.w,
-                      child: const FittedBox(
+                      child:  FittedBox(
                         alignment: Alignment.centerLeft,
                         fit: BoxFit.scaleDown,
                         child: Text("For effortless appointment booking .",
                             style: TextStyle(
                               color: Color(0xff202020),
-                              fontSize: 19,
+                              fontSize: 19.sp,
                               fontFamily: 'Nunito',
                               fontWeight: FontWeight.w600,
                             )),
                       ),
                     ),
                     Container(
-                      height: 25.h,
+                      height: 0.5*screenHeight*0.1,
                       width: 300.w,
-                      child: const FittedBox(
+                      child:  FittedBox(
                         alignment: Alignment.centerLeft,
                         fit: BoxFit.scaleDown,
                         child: Text("Bridging Doctors and Patients ",
                             style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 16.sp,
                                 fontFamily: 'Nunito',
                                 fontWeight: FontWeight.w600,
                                 color: Colors.black45)),
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 5.h),
+                      padding: EdgeInsets.only(top: 0.5*screenHeight*0.01),
                       child: Container(
-                        height: 130.h,
-                        margin: const EdgeInsets.only(top: 8),
+                        height: 0.5*screenHeight*0.4,
+                        margin:  EdgeInsets.only(top: 0.5*screenHeight*0.01),
                         child: Column(
                           children: [
                             Center(
@@ -111,23 +113,23 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
                                     WhoIs: isPatient,
                                     text.whoareyou,
                                     "patient",
-                                    bloc)),
+                                    bloc, screenHeight)),
                             Center(
                                 child: usertypeContainer(
                                     WhoIs: isDoctor,
                                     text.iamdoctor,
                                     "doctor",
-                                    bloc)),
+                                    bloc, screenHeight)),
                           ],
                         ),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8),
+                      padding:  EdgeInsets.all(0.5*screenHeight*0.01),
                       child: Center(
                         child: Container(
-                          width: 45.w,
-                          height: 45.h,
+                          width: 0.5*screenHeight*0.15,
+                          height: 0.5*screenHeight*0.15,
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                             color: Color(0xffECF2F2),
@@ -140,7 +142,7 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
                               },
                               icon: Icon(
                                 Icons.arrow_forward,
-                                size: 29.w,
+                                size: 0.5*screenHeight*0.08,
                                 color: isSelected
                                     ? const Color(0xff0AA9A9)
                                     : const Color.fromARGB(94, 10, 169, 169),
@@ -156,7 +158,7 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
     );
   }
 
-  Widget usertypeContainer(String MyType, String type, IntroductionBloc bloc,
+  Widget usertypeContainer(String MyType, String type, IntroductionBloc bloc,double screenHeight,
       {required bool WhoIs}) {
     final AppLocalizations text = AppLocalizations.of(context)!;
 
@@ -178,9 +180,9 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
         });
       },
       child: Container(
-        margin: EdgeInsets.all(8.w),
+        margin: EdgeInsets.all(0.5*screenHeight*0.4*0.05),
         width: 220.w,
-        height: 45.h,
+        height: 0.5*screenHeight*0.4*0.35,
         decoration: BoxDecoration(
           color: const Color(0xffFAFAFA),
           boxShadow: [
@@ -207,7 +209,7 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
           child: Text(
             MyType,
             style: TextStyle(
-                fontSize: 18.sp,
+                fontSize: 16.sp,
                 fontFamily: 'Nunito',
                 fontWeight: FontWeight.w500,
                 color: const Color(0xff202020).withOpacity(0.8)),

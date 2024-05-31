@@ -27,6 +27,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
       child: Scaffold(
         backgroundColor: const Color(0XFFFAFAFA),
         appBar: AppBar(
+          automaticallyImplyLeading:false,
           elevation: 0.0,
           backgroundColor: const Color(0XFFFAFAFA),
           title: Center(
@@ -40,7 +41,7 @@ class _MyappointemtnsState extends State<Myappointemtns>
                   text.my_appointement,
                   style: TextStyle(
                       color: const Color(0XFF202020),
-                      fontSize: 26.sp - widget.fontSize.sp,
+                      fontSize: 30.sp - widget.fontSize.sp,
                       fontWeight: FontWeight.w700,
                       fontFamily: 'Nunito'),
                 ),

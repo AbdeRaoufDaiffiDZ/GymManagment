@@ -35,7 +35,7 @@ class _favoriteState extends State<myfavclincs> with TickerProviderStateMixin {
                     // widget.clinics[index].ClinicName,
                     style: TextStyle(
                         fontFamily: 'Nunito',
-                        fontSize: 50.sp - widget.fontSize.sp, // 25
+                        fontSize: 30.sp - widget.fontSize.sp, // 25
                         fontWeight: FontWeight.w600)),
               ),
             ),

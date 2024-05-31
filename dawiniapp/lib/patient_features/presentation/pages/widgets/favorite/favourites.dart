@@ -26,6 +26,7 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
       child: Scaffold(      backgroundColor: const Color(0XFFFAFAFA),
 
         appBar: AppBar(
+          automaticallyImplyLeading:false,
           elevation: 0.0,
           backgroundColor: const Color(0XFFFAFAFA),
           title: Center(
@@ -38,7 +39,7 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
                   text.my_favorite,
                   style: TextStyle(
                       color: const Color(0XFF202020),
-                      fontSize: 33.sp - widget.fontSize.sp,
+                      fontSize: 30.sp - widget.fontSize.sp,
                       fontWeight: FontWeight.w700,
                       fontFamily: 'Nunito'),
                 ),

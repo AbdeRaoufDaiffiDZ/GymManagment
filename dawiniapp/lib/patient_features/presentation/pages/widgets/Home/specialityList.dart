@@ -70,7 +70,7 @@ class _SpecialityListState extends State<SpecialityList> {
                     style: TextStyle(
                         color: Color(0xff202020).withOpacity(0.7),
                         fontWeight: FontWeight.w600,
-                        fontSize: 14 - widget.fontSize.sp),
+                        fontSize: 14.sp - widget.fontSize.sp),
                   ),
                 ),
               ],

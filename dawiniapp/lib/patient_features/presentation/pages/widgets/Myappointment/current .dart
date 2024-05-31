@@ -52,43 +52,45 @@ class _newcurrentState extends State<newcurrent> with TickerProviderStateMixin {
                   Localizations.localeOf(context).languageCode == "ar";
               if (data.isEmpty) {
                 // No appointments for today or tomorrow
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 60.w),
-                      height: 209.h,
-                      width: 175.w,
-                      child: Image.asset(
-                        "assets/images/Group 43.png",
+                return SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 60.w),
+                        height: 209.h,
+                        width: 175.w,
+                        child: Image.asset(
+                          "assets/images/Group 43.png",
+                        ),
                       ),
-                    ),
-                    Container(
-                        margin: EdgeInsets.only(top: 20.h),
-                        width: 240,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text(
-                              text.noAppointmentsHere,
-                              style: const TextStyle(
-                                  color: Color(0Xff202020),
-                                  fontFamily: "Nunito",
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w800),
-                            ),
-                            Text(
-                              text.imgTxt,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: const Color(0Xff202020).withOpacity(0.5),
-                                  fontFamily: "Nunito",
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        ))
-                  ],
+                      Container(
+                          margin: EdgeInsets.only(top: 20.h),
+                          width: 240.w,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text(
+                                text.noAppointmentsHere,
+                                style:  TextStyle(
+                                    color: Color(0Xff202020),
+                                    fontFamily: "Nunito",
+                                    fontSize: 22.sp - widget.fontSize.sp,
+                                    fontWeight: FontWeight.w800),
+                              ),
+                              Text(
+                                text.imgTxt,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: const Color(0Xff202020).withOpacity(0.5),
+                                    fontFamily: "Nunito",
+                                    fontSize: 16.sp - widget.fontSize.sp,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ))
+                    ],
+                  ),
                 );
               } else {
                 return ListView.builder(

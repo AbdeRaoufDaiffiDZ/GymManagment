@@ -8,6 +8,7 @@ import 'package:dawini_full/auth/presentation/bloc/auth_bloc.dart';import 'packa
 import 'package:dawini_full/doctor_Features/presentation/bloc/patients_info_bloc/patients_info_bloc.dart';
 import 'package:dawini_full/firebase_options.dart';
 import 'package:dawini_full/injection_container.dart';
+import 'package:dawini_full/introduction_feature/data/lanugage_constant.dart';
 import 'package:dawini_full/introduction_feature/presentation/bloc/bloc/introduction_bloc.dart';
 import 'package:dawini_full/introduction_feature/presentation/screens/pages_shower.dart';
 import 'package:dawini_full/patient_features/presentation/bloc/doctor_bloc/doctor_bloc.dart';
@@ -22,6 +23,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -61,7 +63,10 @@ class MyApp extends StatefulWidget {
     super.key,
     this.pageNumber,
   });
-
+static void setLocale(BuildContext context, Locale newLocale) {
+    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    state?.setLocale(newLocale);
+  }
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -69,6 +74,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String? language;
   int? fontSize;
+   Locale? _locale;
   @override
   void initState() {
     super.initState();
@@ -83,7 +89,22 @@ class _MyAppState extends State<MyApp> {
     fontSizeGet().then((value) => setState(() {
           fontSize = value;
         }));
+       _locale = DevicePreview.locale(context);
+
   }
+  
+  setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    getLocale().then((locale) => setLocale(locale));
+    super.didChangeDependencies();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -114,9 +135,7 @@ class _MyAppState extends State<MyApp> {
             splitScreenMode: true,
             builder: (context, child) {
               return MaterialApp(
-                  locale: language == null
-                      ? DevicePreview.locale(context)
-                      : Locale(language!),
+                  locale: _locale,
                   builder: DevicePreview.appBuilder,
                   localizationsDelegates:
                       AppLocalizations.localizationsDelegates,
@@ -125,7 +144,7 @@ class _MyAppState extends State<MyApp> {
                   home: MyWidget(
                     fontSize: fontSize == null
                         ? 2
-                        : fontSize!, // TODO HERE YOU CHANGE THE FONT SIZE, USER IS ABLE TO CHANGE FONTS SIZE FROM THIS PARM
+                        : fontSize!, locale: _locale, // TODO HERE YOU CHANGE THE FONT SIZE, USER IS ABLE TO CHANGE FONTS SIZE FROM THIS PARM
                   ));
             }));
   }
@@ -141,12 +160,13 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
+
 class MyWidget extends StatefulWidget {
   final int fontSize;
-
+final locale;
   const MyWidget({
     super.key,
-    required this.fontSize,
+    required this.fontSize, required this.locale,
   });
 
   @override
@@ -170,20 +190,45 @@ class _MyWidgetState extends State<MyWidget> {
   }
   @override
   Widget build(BuildContext context) {
+        Locale _currentLocale = widget.locale ?? Locale('en');
     if (status == true) {
-      return Scaffold(
-        body: Mypage(
-          popOrNot: false,
-          fontSize: widget.fontSize,
+      return LocaleProvider(
+        currentLocale: _currentLocale,
+        child: Scaffold(
+          body: Mypage(
+            popOrNot: false,
+            fontSize: widget.fontSize,
+          ),
         ),
       );
     } else {
-      return PagesShower(fontSize: widget.fontSize);
+      return LocaleProvider(currentLocale: _currentLocale,
+      child: PagesShower(fontSize: widget.fontSize));
     }
   }
 
   Future<bool?> statusGet() async {
     final snapshot = await SharedPreferences.getInstance();
     return status = snapshot.getBool('ignore');
+  }
+}
+
+
+class LocaleProvider extends InheritedWidget {
+  final Locale currentLocale;
+
+  const LocaleProvider({
+    Key? key,
+    required this.currentLocale,
+    required Widget child,
+  }) : super(key: key, child: child);
+
+  static LocaleProvider? of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<LocaleProvider>();
+  }
+
+  @override
+  bool updateShouldNotify(LocaleProvider oldWidget) {
+    return oldWidget.currentLocale != currentLocale;
   }
 }
