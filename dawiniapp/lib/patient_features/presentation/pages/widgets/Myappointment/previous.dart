@@ -49,33 +49,34 @@ class _previousappointmState extends State<previousappointm> {
                   Localizations.localeOf(context).languageCode == "ar";
               if (data.isEmpty) {
                 // No appointments for today or tomorrow
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 60.w),
-                      height: 209.h,
-                      width: 175.w,
-                      child: Image.asset(
-                        "assets/images/Group 43.png",
+                return Center(
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 60.w),
+                        height: 209.h,
+                        width: 175.w,
+                        child: Image.asset(
+                          "assets/images/Group 43.png",
+                        ),
                       ),
-                    ),
-                    Container(
-                        margin: EdgeInsets.only(top: 20.h),
-                        width: 240,
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          alignment: Alignment.center,
-                          child: Text(
-                            text.noPreviousAppointments,
-                            style: TextStyle(
-                                color: Color(0Xff202020),
-                                fontFamily: "Nunito",
-                                fontSize: 22,
-                                fontWeight: FontWeight.w800),
-                          ),
-                        ))
-                  ],
+                      Container(
+                          margin: EdgeInsets.only(top: 20.h),
+                          width: 240,
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            alignment: Alignment.center,
+                            child: Text(
+                              text.noPreviousAppointments,
+                              style: TextStyle(
+                                  color: Color(0Xff202020),
+                                  fontFamily: "Nunito",
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w800),
+                            ),
+                          ))
+                    ],
+                  ),
                 );
               } else {
                 return ListView.builder(
