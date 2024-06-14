@@ -1,3 +1,4 @@
+import 'package:dawini_full/team.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -126,58 +127,67 @@ class _DawinaInfoState extends State<DawinaInfo> {
                                 ),
                               ),
                             ),
-                            Container(
-                              margin: EdgeInsets.only(bottom: heightt * 0.004),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: const Color(0xff202020)
-                                        .withOpacity(0.1),
-                                    blurRadius: 1,
-                                  )
-                                ],
-                              ),
-                              width: widthh,
-                              height: heightt * 0.08,
-                              child: Row(
-                                children: [
-                                  Container(
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                    ),
-                                    height: 37,
-                                    width: 37,
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 15.0),
-                                      child: Image.asset(
-                                        "assets/images/team.png",
-                                        color: const Color(0xff202020)
-                                            .withOpacity(0.7),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: ((context) => Team())));
+                              },
+                              child: Container(
+                                margin:
+                                    EdgeInsets.only(bottom: heightt * 0.004),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0xff202020)
+                                          .withOpacity(0.1),
+                                      blurRadius: 1,
+                                    )
+                                  ],
+                                ),
+                                width: widthh,
+                                height: heightt * 0.08,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                      ),
+                                      height: 37,
+                                      width: 37,
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 15.0),
+                                        child: Image.asset(
+                                          "assets/images/team.png",
+                                          color: const Color(0xff202020)
+                                              .withOpacity(0.7),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  const Padding(
-                                    padding: EdgeInsets.only(left: 8),
-                                    child: Text(
-                                      "Our Team",
-                                      style: TextStyle(
-                                        fontFamily: "Nunito",
-                                        fontSize: 18,
+                                    const Padding(
+                                      padding: EdgeInsets.only(left: 8),
+                                      child: Text(
+                                        "Our Team",
+                                        style: TextStyle(
+                                          fontFamily: "Nunito",
+                                          fontSize: 18,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  const Spacer(),
-                                  IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(
-                                        color: const Color(0xff202020)
-                                            .withOpacity(0.7),
-                                        Icons.arrow_forward_ios,
-                                        size: 18,
-                                      ))
-                                ],
+                                    const Spacer(),
+                                    IconButton(
+                                        onPressed: () {},
+                                        icon: Icon(
+                                          color: const Color(0xff202020)
+                                              .withOpacity(0.7),
+                                          Icons.arrow_forward_ios,
+                                          size: 18,
+                                        ))
+                                  ],
+                                ),
                               ),
                             ),
                             Container(
