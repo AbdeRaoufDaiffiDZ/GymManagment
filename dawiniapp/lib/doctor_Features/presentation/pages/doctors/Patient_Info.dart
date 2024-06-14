@@ -11,7 +11,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Patient_info extends StatefulWidget {
   final int fontSize;
@@ -44,7 +43,6 @@ class _Patient_infoState extends State<Patient_info> {
   String datetimeToday = DateFormat("yyyy-MM-dd").format(DateTime.now());
   String datetimeTomrrow = DateFormat("yyyy-MM-dd")
       .format(DateTime.now().add(const Duration(days: 1)));
-  DateTime? lastPressedTime;
 
   Widget buildInputField(List<TextInputFormatter>? textInputFormatter,
       {required TextEditingController controller,
@@ -92,33 +90,6 @@ class _Patient_infoState extends State<Patient_info> {
   @override
   void initState() {
     super.initState();
-    loadLastPressedTime(widget.doctorEntity.uid);
-  }
-
-  void loadLastPressedTime(uid) async {
-    // Load from shared preferences
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    lastPressedTime = prefs.getString("$uid/lastPressedTime") != null
-        ? DateTime.parse(prefs.getString("$uid/lastPressedTime")!)
-        : null;
-  }
-
-  void saveLastPressedTime(uid) async {
-    // Save to shared preferences
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("$uid/lastPressedTime", DateTime.now().toString());
-  }
-
-  bool canPressButton() {
-    if (lastPressedTime == null) {
-      return true;
-    } else {
-      final difference = DateTime.now().difference(lastPressedTime!);
-
-      return widget.ifADoctor
-          ? difference.inSeconds >= 5
-          : difference.inSeconds >= 5; // Change 1 to your desired limit
-    }
   }
 
   @override
@@ -144,7 +115,7 @@ class _Patient_infoState extends State<Patient_info> {
                       ? EdgeInsets.only(
                           right: screenWidth * 0.04, top: screenHeight * 0.03)
                       : EdgeInsets.only(
-                          left: screenWidth * 0.02, top: screenHeight * 0.03),
+                          left: screenWidth * 0.04, top: screenHeight * 0.03),
                   child: Container(
                     height: screenWidth * 0.11,
                     width: screenWidth * 0.11,
@@ -154,7 +125,7 @@ class _Patient_infoState extends State<Patient_info> {
                     ),
                     child: Center(
                       child: IconButton(
-                        iconSize: screenWidth * 0.07,
+                        iconSize: screenWidth * 0.06,
                         onPressed: () {
                           Navigator.pop(context);
                         },
@@ -168,15 +139,15 @@ class _Patient_infoState extends State<Patient_info> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: screenHeight * 0.015, left: 6.w),
+                  margin: EdgeInsets.only(top: screenHeight * 0.015),
                   width: double.infinity,
-                  height: screenHeight * 0.07,
+                  height: screenHeight * 0.045,
                   child: Center(
                     child: AutoSizeText(
                       text.please_enter_the_following_information,
                       style: TextStyle(
                         fontSize: screenHeight * 0.045 - widget.fontSize.sp,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                         color: const Color(0xFF202020),
                       ),
                     ),
@@ -184,12 +155,12 @@ class _Patient_infoState extends State<Patient_info> {
                 ),
                 Container(
                   key: _formKey,
-                  height: screenHeight * 0.65,
+                  height: screenHeight * 0.55,
                   margin: EdgeInsets.symmetric(
-                      vertical: screenHeight * 0.025), 
+                      vertical: screenHeight * 0.025), // Adjust margin
                   child: Column(
                     mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween, 
+                        MainAxisAlignment.spaceBetween, // Use spaceBetween
                     children: [
                       buildInputField(null,
                           controller: _firstNameController,
@@ -204,10 +175,6 @@ class _Patient_infoState extends State<Patient_info> {
                           hintText: text.age,
                           textInputType: TextInputType.number),
                       buildInputField(null,
-                          controller: _genderController,
-                          hintText: text.gender,
-                          textInputType: TextInputType.text),
-                      buildInputField(null,
                           controller: _phoneNumberController,
                           hintText: text.phone_number,
                           textInputType: TextInputType.number),
@@ -218,74 +185,73 @@ class _Patient_infoState extends State<Patient_info> {
                     ],
                   ),
                 ),
-                InkWell(
-                  onTap: () async {
-                    {
-                      setState(() {
-                        lastPressedTime = DateTime.now();
-                      });
-                      saveLastPressedTime(widget.doctorEntity.uid);
-                      // Your button action here
-                      String missing = text.please_write_your;
-                      if (_firstNameController.text.isEmpty) {
-                        missing = "$missing ${text.first_name},";
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      vertical: screenHeight * 0.04,
+                      horizontal: screenWidth * 0.08),
+                  child: InkWell(
+                    customBorder: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(screenWidth * 0.04)),
+                    onTap: () async {
+                      {
+                        // Your button action here
+                        String missing = text.please_write_your;
+                        if (_firstNameController.text.isEmpty) {
+                          missing = "$missing ${text.first_name},";
+                        }
+                        if (_lastNameController.text.isEmpty) {
+                          missing = "$missing ${text.family_name},";
+                        }
+                        if (_ageController.text.isEmpty ||
+                            int.parse(_ageController.text) > 130) {
+                          missing = "$missing ${text.age},";
+                        }
+                        if (_phoneNumberController.text.isEmpty ||
+                            _phoneNumberController.text.length < 10) {
+                          missing = "$missing ${text.phone_number},";
+                        }
+                        if (_addressController.text.isEmpty) {
+                          missing = "$missing ${text.home_adress},";
+                        }
+                        if (_firstNameController.text.isEmpty ||
+                            _lastNameController.text.isEmpty ||
+                            _phoneNumberController.text.length < 10 ||
+                            int.parse(_ageController.text) > 130 ||
+                            _ageController.text.isEmpty ||
+                            _phoneNumberController.text.isEmpty ||
+                            _addressController.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(missing),
+                            backgroundColor: Colors.red,
+                          ));
+                        } else {
+                          final token = await _fcm.getToken();
+                          PatientEntity patient = PatientEntity(
+                              token: token.toString(),
+                              gender: "_genderController.text",
+                              AppointmentDate: widget.today
+                                  ? datetimeToday
+                                  : datetimeTomrrow, //////////////////////////////////
+                              turn: 0,
+                              age: _ageController.text,
+                              address: _addressController.text,
+                              firstName: _firstNameController.text,
+                              lastName: _lastNameController.text,
+                              phoneNumber: _phoneNumberController.text,
+                              today: true,
+                              DoctorName: widget.doctorEntity.lastName,
+                              uid: widget.doctorEntity.uid);
+                          dataBloc.add(onPatientsSetAppointments(
+                              context, widget.ifADoctor,
+                              patients: patient, uid: widget.doctorEntity.uid));
+                        }
                       }
-                      if (_lastNameController.text.isEmpty) {
-                        missing = "$missing ${text.family_name},";
-                      }
-                      if (_ageController.text.isEmpty ||
-                          int.parse(_ageController.text) > 130) {
-                        missing = "$missing ${text.age},";
-                      }
-                      if (_phoneNumberController.text.isEmpty ||
-                          _phoneNumberController.text.length < 10) {
-                        missing = "$missing ${text.phone_number},";
-                      }
-                      if (_addressController.text.isEmpty) {
-                        missing = "$missing ${text.home_adress},";
-                      }
-                      if (_firstNameController.text.isEmpty ||
-                          _lastNameController.text.isEmpty ||
-                          _phoneNumberController.text.length < 10 ||
-                          int.parse(_ageController.text) > 130 ||
-                          _ageController.text.isEmpty ||
-                          _phoneNumberController.text.isEmpty ||
-                          _addressController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(missing),
-                          backgroundColor: Colors.red,
-                        ));
-                      } else {
-                        final token = await _fcm.getToken();
-                        PatientEntity patient = PatientEntity(
-                            token: token.toString(),
-                            gender: "_genderController.text",
-                            AppointmentDate: widget.today
-                                ? datetimeToday
-                                : datetimeTomrrow, //////////////////////////////////
-                            turn: 0,
-                            age: _ageController.text,
-                            address: _addressController.text,
-                            firstName: _firstNameController.text,
-                            lastName: _lastNameController.text,
-                            phoneNumber: _phoneNumberController.text,
-                            today: true,
-                            DoctorName: widget.doctorEntity.lastName,
-                            uid: widget.doctorEntity.uid);
-                        dataBloc.add(onPatientsSetAppointments(
-                            context, widget.ifADoctor,
-                            patients: patient));
-                      }
-                    }
 
-// Disable button if can't press
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical: screenHeight * 0.02,
-                        horizontal: screenWidth * 0.08),
+                      // Disable button if can't press
+                    },
                     child: Container(
-                      height: screenHeight * 0.08,
+                      height: screenHeight * 0.07,
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: const Color(0XFF04CBCB),
@@ -297,7 +263,7 @@ class _Patient_infoState extends State<Patient_info> {
                           child: Text(
                             text.confirmappointment,
                             style: TextStyle(
-                              fontSize: 20.sp - widget.fontSize.sp,
+                              fontSize: 18.sp - widget.fontSize.sp,
                               fontWeight: FontWeight.w600,
                               color: Colors.white,
                             ),

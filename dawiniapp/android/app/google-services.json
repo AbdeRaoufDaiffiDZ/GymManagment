@@ -54,7 +54,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:511171532932:android:a15c966779b50226e78ad1",
         "android_client_info": {
-          "package_name": "com.dawini.app.dawini_full"
+          "package_name": "com.app.dawini"
         }
       },
       "oauth_client": [
@@ -62,7 +62,7 @@
           "client_id": "511171532932-hrvb9dtb0u4dthra96qd8vffk8d7u72g.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.dawini.app.dawini_full",
+            "package_name": "com.app.dawini",
             "certificate_hash": "65585f1f433a4878615011d434f69062105084ac"
           }
         },

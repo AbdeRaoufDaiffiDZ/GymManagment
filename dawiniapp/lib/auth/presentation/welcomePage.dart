@@ -4,7 +4,6 @@ import 'package:dawini_full/auth/data/FirebaseAuth/authentification.dart';
 import 'package:dawini_full/auth/presentation/Widget/bloc_map_widget.dart';
 import 'package:dawini_full/auth/presentation/loginPage.dart';
 import 'package:dawini_full/auth/presentation/signup.dart';
-import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/presentation/pages/doctor_cabinSide.dart/swlhdoctor.dart/doctorview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -30,21 +29,21 @@ class _doctorsideHomeState extends State<doctorsideHome> {
     return StreamBuilder<User?>(
         stream: auth.authState,
         builder: (context, snapshot) {
-      
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           }
-if(snapshot.data != null)
-          {final user = snapshot.data;
-          return user != null
-              ? doctorview(
-                  uid: user.uid,
-                  fontSize: widget.fontSize,
-                )
-              : AuthBlocMap(fontSize: widget.fontSize);}
-              else{
-                return AuthBlocMap(fontSize: widget.fontSize);;
-              }
+          if (snapshot.data != null) {
+            final user = snapshot.data;
+            return user != null
+                ? doctorview(
+                    uid: user.uid,
+                    fontSize: widget.fontSize,
+                  )
+                : AuthBlocMap(fontSize: widget.fontSize);
+          } else {
+            return AuthBlocMap(fontSize: widget.fontSize);
+            ;
+          }
 //
         });
   }

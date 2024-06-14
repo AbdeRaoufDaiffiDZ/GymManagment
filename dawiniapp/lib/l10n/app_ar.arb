@@ -1,6 +1,6 @@
 {
     "home":"الرئيسية",
-    "my_Appointement":"مواعيدي",
+    "my_appointement":"مواعيدي",
     "favorite":"المفضل",
     "recommended_clinics":"Recommended clinics",
     "see_all":"الجميع",
@@ -41,7 +41,9 @@
     "currentturn":"الدور الحالي",
     "tomorrowdate":"مواعيد الغد",
     "isat":" ",
-    "myturn":"دورك",
+    "myturn":"دوري",
+    "yourturn":"دورك",
+
     "searchforadoctor":"بحث عن طبيب",
     "next":"التالي",
     "whoareyou":"ابحث عن طبيب",

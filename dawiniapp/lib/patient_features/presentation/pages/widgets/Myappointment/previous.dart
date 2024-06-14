@@ -26,6 +26,7 @@ class _previousappointmState extends State<previousappointm> {
     final GetDoctorsInfoUseCase getDoctorsInfoUseCase = GetDoctorsInfoUseCase();
     final AppLocalizations text = AppLocalizations.of(context)!;
     bool isMale = true;
+
     return Scaffold(
       backgroundColor: const Color(0XFFFAFAFA),
       body: Padding(
@@ -62,7 +63,7 @@ class _previousappointmState extends State<previousappointm> {
                       ),
                       Container(
                           margin: EdgeInsets.only(top: 20.h),
-                          width: 240,
+                          width: 240.w,
                           child: FittedBox(
                             fit: BoxFit.scaleDown,
                             alignment: Alignment.center,

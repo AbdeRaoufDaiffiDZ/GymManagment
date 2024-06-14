@@ -149,7 +149,7 @@ class _doctorDetailsState extends State<Lll> {
                             margin: EdgeInsets.symmetric(
                                 vertical: 10.h, horizontal: 14.w),
                             height: 25.h,
-                            width: 130.w,
+                            width: 105.w,
                             decoration: BoxDecoration(
                                 boxShadow: [
                                   BoxShadow(
@@ -183,9 +183,7 @@ class _doctorDetailsState extends State<Lll> {
                                             color: const Color(0xff202020)
                                                 .withOpacity(0.65),
                                             fontFamily: 'Nunito',
-                                            fontSize: isFrench
-                                                ? 9.sp - -widget.fontSize.sp
-                                                : 11.sp - widget.fontSize.sp),
+                                            fontSize: isFrench ? 9.sp : 11.sp),
                                       ),
                                     )
                                   ],
@@ -204,7 +202,7 @@ class _doctorDetailsState extends State<Lll> {
                               Text(
                                 "${widget.doctorInfo.firstName} ${widget.doctorInfo.lastName}  ${widget.doctorInfo.lastNameArabic} ${widget.doctorInfo.firstNameArabic}",
                                 style: TextStyle(
-                                    fontSize: 17.sp - widget.fontSize.sp,
+                                    fontSize: 17.sp,
                                     fontWeight: FontWeight.w700,
                                     fontFamily: "Nunito",
                                     color: const Color(0xff202020)),
@@ -212,7 +210,7 @@ class _doctorDetailsState extends State<Lll> {
                               Text(
                                 "${widget.doctorInfo.speciality}  ${widget.doctorInfo.specialityArabic}",
                                 style: TextStyle(
-                                    fontSize: 14.sp - widget.fontSize.sp,
+                                    fontSize: 14.sp,
                                     fontWeight: FontWeight.w600,
                                     fontFamily: "Nunito",
                                     color: const Color(0xff202020)
@@ -300,7 +298,7 @@ class _doctorDetailsState extends State<Lll> {
                                     hintStyle: TextStyle(
                                         color: const Color(0xff202020)
                                             .withOpacity(0.75),
-                                        fontSize: 11.sp - widget.fontSize.sp,
+                                        fontSize: 11.sp,
                                         fontFamily: "Nunito",
                                         fontWeight: FontWeight.w700),
                                     prefixIcon: Padding(
@@ -349,7 +347,7 @@ class _doctorDetailsState extends State<Lll> {
                                     hintStyle: TextStyle(
                                         color: const Color(0xff202020)
                                             .withOpacity(0.75),
-                                        fontSize: 10.5.sp - widget.fontSize.sp,
+                                        fontSize: 11.sp,
                                         fontFamily: "Nunito",
                                         fontWeight: FontWeight.w700),
                                     prefixIcon: Padding(
@@ -364,11 +362,12 @@ class _doctorDetailsState extends State<Lll> {
                         ],
                       ),
                     ),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(8.0.r),
-                          child: Container(
+                    Padding(
+                      padding: EdgeInsets.all(8.0.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
                               color: Colors.white,
                               width: 150.w,
                               height: 35.h,
@@ -417,12 +416,11 @@ class _doctorDetailsState extends State<Lll> {
                                       borderRadius:
                                           BorderRadius.circular(5.0.r),
                                     ),
-                                    hintText: locale.please_enter_your +
-                                        locale.cabin_adress,
+                                    hintText: locale.cabin_adress,
                                     hintStyle: TextStyle(
                                         color: const Color(0xff202020)
                                             .withOpacity(0.75),
-                                        fontSize: 11.sp - widget.fontSize.sp,
+                                        fontSize: 11.sp,
                                         fontFamily: "Nunito",
                                         fontWeight: FontWeight.w700),
                                     prefixIcon: Icon(
@@ -431,54 +429,55 @@ class _doctorDetailsState extends State<Lll> {
                                       color: const Color(0xff0AA9A9),
                                     ),
                                   ))),
-                        ),
-                        Container(
-                            color: Colors.white,
-                            width: 150.w,
-                            height: 35.h,
-                            child: TextFormField(
-                                onEditingComplete: () {
-                                  // Move focus to the next field when "Next" is pressed
-                                  FocusScope.of(context).nextFocus();
-                                },
-                                controller: location_link,
-                                style: TextStyle(
-                                  color:
-                                      const Color(0xff202020).withOpacity(0.7),
-                                ),
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(8.r),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 1.5,
-                                        color: Colors.grey.shade300),
-                                    borderRadius: BorderRadius.circular(5.0.r),
+                          Container(
+                              color: Colors.white,
+                              width: 150.w,
+                              height: 35.h,
+                              child: TextFormField(
+                                  onEditingComplete: () {
+                                    // Move focus to the next field when "Next" is pressed
+                                    FocusScope.of(context).nextFocus();
+                                  },
+                                  controller: location_link,
+                                  style: TextStyle(
+                                    color: const Color(0xff202020)
+                                        .withOpacity(0.7),
                                   ),
-                                  prefixIconConstraints: BoxConstraints(
-                                    minWidth: 22.w,
-                                  ),
-                                  isDense: true,
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 1.5,
-                                        color: Colors.grey.shade300),
-                                    borderRadius: BorderRadius.circular(5.0.r),
-                                  ),
-                                  hintText: locale.please_enter_your +
-                                      locale.link_location,
-                                  hintStyle: TextStyle(
-                                      color: const Color(0xff202020)
-                                          .withOpacity(0.75),
-                                      fontSize: 11.sp - widget.fontSize.sp,
-                                      fontFamily: "Nunito",
-                                      fontWeight: FontWeight.w700),
-                                  prefixIcon: Icon(
-                                    Icons.link,
-                                    size: 11.sp,
-                                    color: const Color(0xff0AA9A9),
-                                  ),
-                                ))),
-                      ],
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.all(8.r),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1.5,
+                                          color: Colors.grey.shade300),
+                                      borderRadius:
+                                          BorderRadius.circular(5.0.r),
+                                    ),
+                                    prefixIconConstraints: BoxConstraints(
+                                      minWidth: 22.w,
+                                    ),
+                                    isDense: true,
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1.5,
+                                          color: Colors.grey.shade300),
+                                      borderRadius:
+                                          BorderRadius.circular(5.0.r),
+                                    ),
+                                    hintText: locale.link_location,
+                                    hintStyle: TextStyle(
+                                        color: const Color(0xff202020)
+                                            .withOpacity(0.75),
+                                        fontSize: 11.sp,
+                                        fontFamily: "Nunito",
+                                        fontWeight: FontWeight.w700),
+                                    prefixIcon: Icon(
+                                      Icons.link,
+                                      size: 11.sp,
+                                      color: const Color(0xff0AA9A9),
+                                    ),
+                                  ))),
+                        ],
+                      ),
                     ),
                     Container(
                         margin: EdgeInsets.symmetric(horizontal: 8.w),
@@ -501,6 +500,7 @@ class _doctorDetailsState extends State<Lll> {
                       padding: EdgeInsets.all(8.0.r),
                       child: Container(
                           height: 35.h,
+                          color: Colors.white,
                           child: TextFormField(
                               keyboardType: TextInputType.number,
                               onEditingComplete: () {
@@ -529,7 +529,7 @@ class _doctorDetailsState extends State<Lll> {
                                 suffixIcon: Text("*",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 16.sp - widget.fontSize.sp,
+                                        fontSize: 16.sp,
                                         color: const Color(0xffEF1B1B))),
                                 suffixIconConstraints: BoxConstraints(
                                     minHeight: 38.h, minWidth: 13.w),
@@ -547,7 +547,7 @@ class _doctorDetailsState extends State<Lll> {
                                 hintStyle: TextStyle(
                                     color: const Color(0xff202020)
                                         .withOpacity(0.75),
-                                    fontSize: 11.sp - widget.fontSize.sp,
+                                    fontSize: 11.sp,
                                     fontFamily: "Nunito",
                                     fontWeight: FontWeight.w700),
                                 prefixIcon: Padding(
@@ -855,7 +855,7 @@ class _doctorDetailsState extends State<Lll> {
                                 hintStyle: TextStyle(
                                     color: const Color(0xff202020)
                                         .withOpacity(0.75),
-                                    fontSize: 11.sp - widget.fontSize.sp,
+                                    fontSize: 11.sp,
                                     fontFamily: "Nunito",
                                     fontWeight: FontWeight.w700),
                                 prefixIcon: Padding(
@@ -898,6 +898,8 @@ class _doctorDetailsState extends State<Lll> {
                                 }
 
                                 DoctorEntity doctor = DoctorEntity(
+                                    phoneNumber2:
+                                        widget.doctorInfo.phoneNumber2,
                                     specialityFrench:
                                         widget.doctorInfo.specialityFrench,
                                     gender: widget.doctorInfo.gender,
@@ -1021,19 +1023,19 @@ class _doctorDetailsState extends State<Lll> {
       return Icon(
         Icons.camera_alt_rounded,
         color: const Color(0xff0AA9A9),
-        size: 9.w,
+        size: 11.w,
       );
     } else if (state == AppState.picked) {
       return Icon(
         Icons.crop,
         color: const Color(0xff0AA9A9),
-        size: 9.w,
+        size: 11.w,
       );
     } else if (state == AppState.cropped) {
       return Icon(
         Icons.clear,
         color: const Color(0xff0AA9A9),
-        size: 9.w,
+        size: 11.w,
       );
     } else {
       return SizedBox();

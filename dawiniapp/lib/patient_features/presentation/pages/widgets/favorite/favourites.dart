@@ -23,13 +23,15 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
 
     return DefaultTabController(
       length: 2,
-      child: Scaffold(      backgroundColor: const Color(0XFFFAFAFA),
-
+      child: Scaffold(
+        backgroundColor: const Color(0XFFFAFAFA),
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           elevation: 0.0,
           backgroundColor: const Color(0XFFFAFAFA),
           title: Center(
             child: Container(
+              margin: EdgeInsets.only(top: 22.h),
               width: 200.w,
               height: 30.h,
               child: FittedBox(
@@ -38,7 +40,7 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
                   text.my_favorite,
                   style: TextStyle(
                       color: const Color(0XFF202020),
-                      fontSize: 33.sp - widget.fontSize.sp,
+                      fontSize: 26 - widget.fontSize.sp,
                       fontWeight: FontWeight.w700,
                       fontFamily: 'Nunito'),
                 ),
@@ -49,8 +51,7 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
         body: SafeArea(
             child: Container(
                 color: const Color(0XFFFAFAFA),
-                child: Column(
-                  children: [
+                child: Column(children: [
                   TabBar(
                       controller: tabcontroller,
                       labelColor: Colors.black,
@@ -70,7 +71,7 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
                               child: Text(
                                 text.doctors,
                                 style: TextStyle(
-                                    fontSize: 22.dg - widget.fontSize.sp,
+                                    fontSize: 20.sp - widget.fontSize.sp,
                                     fontWeight: FontWeight.w700,
                                     fontFamily: "Nunito"),
                               ),
@@ -86,7 +87,7 @@ class _favoriteState extends State<favorite> with TickerProviderStateMixin {
                               child: Text(
                                 text.clinics,
                                 style: TextStyle(
-                                    fontSize: 22.sp - widget.fontSize.sp,
+                                    fontSize: 20.sp - widget.fontSize.sp,
                                     fontWeight: FontWeight.w700,
                                     fontFamily: "Nunito"),
                               ),

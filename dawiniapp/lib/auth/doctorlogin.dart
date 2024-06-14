@@ -11,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class doctorsss extends StatefulWidget {
   final int fontSize;
   final String? error;
+
   const doctorsss({
     super.key,
     required this.fontSize,
@@ -18,10 +19,10 @@ class doctorsss extends StatefulWidget {
   });
 
   @override
-  State<doctorsss> createState() => _doctorsssState();
+  State<doctorsss> createState() => _DoctorsssState();
 }
 
-class _doctorsssState extends State<doctorsss> {
+class _DoctorsssState extends State<doctorsss> {
   TextEditingController doctorEmail = TextEditingController();
   TextEditingController doctorPassword = TextEditingController();
   bool _obscureText = true;
@@ -54,143 +55,168 @@ class _doctorsssState extends State<doctorsss> {
     final AuthBloc authBloc = BlocProvider.of<AuthBloc>(context);
     final AppLocalizations text = AppLocalizations.of(context)!;
     final IntroductionBloc bloc = BlocProvider.of<IntroductionBloc>(context);
-    //FocusNode focusNode = FocusNode();
+
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final width = constraints.maxWidth;
+            final height = constraints.maxHeight;
+
+            bool isDesktop = width > 800; // Arbitrary breakpoint for desktop
+
+            return Center(
+              child: Container(
+                width: isDesktop ? 600.w : width, // Adjust width for desktop
                 child: Column(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10.h),
+                    Container(
+                      height: isDesktop ? height * 0.7 : height * 0.5,
+                      color: Colors.red,
                       child: Stack(
                         children: [
-                          Container(
-                            height: 230.h,
-                            width: double.infinity,
-                            child: Image.asset("assets/images/login.png"),
+                          Center(
+                            child: Image.asset(
+                              "assets/images/login.png",
+                              scale: isDesktop ? 0.8 : 1.1,
+                            ),
                           ),
                           Container(
                             margin: EdgeInsets.symmetric(
-                                vertical: 0.h, horizontal: 8.w),
+                                vertical: 10.h, horizontal: 8.w),
                             height: 34.w,
                             width: 34.w,
                             decoration: const BoxDecoration(
-                                color: Color(0xffECF2F2),
-                                shape: BoxShape.circle),
+                              color: Color(0xffECF2F2),
+                              shape: BoxShape.circle,
+                            ),
                             child: IconButton(
-                                onPressed: () {
-                                  bloc.add(NextPage(id: 2));
-
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => PagesShower(
-                                              fontSize: widget.fontSize,
-                                              pageNumber: 2,
-                                            )),
-                                  );
-                                },
-                                icon: const Icon(
+                              onPressed: () {
+                                bloc.add(NextPage(id: 2));
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => PagesShower(
+                                      fontSize: widget.fontSize,
+                                      pageNumber: 2,
+                                    ),
+                                  ),
+                                );
+                              },
+                              icon: Center(
+                                child: Icon(
                                   Icons.arrow_back,
-                                  size: 23,
+                                  size: 21.w,
                                   color: Color(0xff0AA9A9),
-                                )),
+                                ),
+                              ),
+                            ),
                           )
                         ],
                       ),
                     ),
                     Container(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 16.w, vertical: 0),
+                      height: isDesktop ? height * 0.1 : height * 0.14,
+                      margin: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                      ),
                       child: Text(
                         text.hello_doctor_elevate,
                         style: TextStyle(
                           color: const Color(0xff202020).withOpacity(0.95),
                           fontFamily: 'Nunito',
                           fontWeight: FontWeight.w700,
-                          fontSize: 17.sp - widget.fontSize.sp,
+                          fontSize: 17.sp,
                         ),
                       ),
                     ),
                     Container(
-                      height: 45.h,
-                      margin: EdgeInsets.symmetric(
-                          vertical: 20.h, horizontal: 10.w),
-                      child: TextFormField(
-                        onEditingComplete: () {
-                          // Move focus to the next field when "Next" is pressed
-                          FocusScope.of(context).nextFocus();
-                        },
-                        validator: validateEmail,
-                        controller: doctorEmail,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: const Color(0XFFECF2F2),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(12.r),
-                          ),
-                          hintText: text.enter_email,
-                          hintStyle: TextStyle(
-                            color: const Color(0XFF202020).withOpacity(0.7),
-                            fontFamily: "Nunito",
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: 45.h,
-                      margin: EdgeInsets.symmetric(horizontal: 10.w),
-                      child: TextFormField(
-                        obscureText: _obscureText,
-                        controller: doctorPassword,
-                        decoration: InputDecoration(
-                          suffixIcon: GestureDetector(
-                            onTap: _togglePasswordVisibility,
-                            child: Icon(
-                              _obscureText
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
+                      height: isDesktop ? height * 0.2 : height * 0.23,
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 45.h,
+                            margin: EdgeInsets.symmetric(
+                                vertical: 10.h, horizontal: 10.w),
+                            child: TextFormField(
+                              onEditingComplete: () {
+                                // Move focus to the next field when "Next" is pressed
+                                FocusScope.of(context).nextFocus();
+                              },
+                              validator: validateEmail,
+                              controller: doctorEmail,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: const Color(0XFFECF2F2),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(12.r),
+                                ),
+                                hintText: text.enter_email,
+                                hintStyle: TextStyle(
+                                  color:
+                                      const Color(0XFF202020).withOpacity(0.7),
+                                  fontFamily: "Nunito",
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
                             ),
                           ),
-                          filled: true,
-                          fillColor: const Color(0XFFECF2F2),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(12.r),
+                          Container(
+                            height: 45.h,
+                            margin: EdgeInsets.symmetric(horizontal: 10.w),
+                            child: TextFormField(
+                              obscureText: _obscureText,
+                              controller: doctorPassword,
+                              decoration: InputDecoration(
+                                suffixIcon: GestureDetector(
+                                  onTap: _togglePasswordVisibility,
+                                  child: Icon(
+                                    _obscureText
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                  ),
+                                ),
+                                filled: true,
+                                fillColor: const Color(0XFFECF2F2),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(12.r),
+                                ),
+                                hintText: text.password,
+                                hintStyle: TextStyle(
+                                  color:
+                                      const Color(0XFF202020).withOpacity(0.7),
+                                  fontFamily: "Nunito",
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
                           ),
-                          hintText: text.password,
-                          hintStyle: TextStyle(
-                            color: const Color(0XFF202020).withOpacity(0.7),
-                            fontFamily: "Nunito",
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                          if (widget.error != null)
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: 5.h, left: 15.w, right: 15.h),
+                              child: Text(
+                                widget.error!,
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            ),
+                        ],
                       ),
                     ),
-                    if (widget.error != null)
-                      Padding(
-                        padding:
-                            EdgeInsets.only(top: 5.h, left: 15.w, right: 15.h),
-                        child: Text(
-                          widget.error!,
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 30.h, horizontal: 10.w),
+                    Spacer(),
+                    Container(
+                      margin: EdgeInsets.only(bottom: 10.h),
+                      height: height * 0.09,
+                      width: width * 0.9,
                       child: Ink(
-                        height: 45.h,
                         decoration: BoxDecoration(
-                            color: const Color(0xff00C8D5),
-                            borderRadius: BorderRadius.circular(8.r)),
+                          color: const Color(0xff00C8D5),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                         child: InkWell(
                           onTap: () {
                             if (doctorEmail.text.isNotEmpty &&
@@ -209,7 +235,7 @@ class _doctorsssState extends State<doctorsss> {
                               style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: 'Nunito',
-                                fontSize: 25.sp - widget.fontSize.sp,
+                                fontSize: 25.sp,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -220,8 +246,8 @@ class _doctorsssState extends State<doctorsss> {
                   ],
                 ),
               ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );

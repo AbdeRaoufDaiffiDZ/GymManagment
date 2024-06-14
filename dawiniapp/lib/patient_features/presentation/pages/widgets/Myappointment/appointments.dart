@@ -27,20 +27,21 @@ class _MyappointemtnsState extends State<Myappointemtns>
       child: Scaffold(
         backgroundColor: const Color(0XFFFAFAFA),
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           elevation: 0.0,
           backgroundColor: const Color(0XFFFAFAFA),
           title: Center(
             child: Container(
-              margin: EdgeInsets.only(top: 12.h),
+              margin: EdgeInsets.only(top: 22.h),
               width: 200.w,
               height: 30.h,
               child: FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
-                  text.my_Appointement,
+                  text.my_appointement,
                   style: TextStyle(
                       color: const Color(0XFF202020),
-                      fontSize: 26.sp - widget.fontSize.sp,
+                      fontSize: 26 - widget.fontSize.sp,
                       fontWeight: FontWeight.w700,
                       fontFamily: 'Nunito'),
                 ),

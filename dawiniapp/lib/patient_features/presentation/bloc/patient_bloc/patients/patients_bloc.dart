@@ -65,6 +65,7 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
       else if (event is onPatientsSetAppointments) {
         try {
           emit(PatientsLoading());
+          loadLastPressedTime(uid: event.uid);
 
           if (canPressButton(event.ifADoctor)) {
             final AuthModel auth = AuthModel(
@@ -77,7 +78,7 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
                   content: Text("try again"), backgroundColor: Colors.red));
               showlDialog(event.context, false, event.ifADoctor, false);
             } else {
-              saveLastPressedTime();
+              saveLastPressedTime(uid: event.uid);
               final done =
                   await bookDoctorAppointmentUseCase.excute(event.patients);
               if (auth0.user!.uid == "4OCo8desYHfXftOWtkY7DRHRFLm2") {
@@ -111,11 +112,11 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
       } else if (event is onPatientsAppointmentDelete) {
         try {
           emit(PatientsLoading());
-         
+
           if (auth0.user == null) {
-             final AuthModel auth = AuthModel(
-              email: "deleteAppointment@gmail.com",
-              password: "deleteAppointment");
+            final AuthModel auth = AuthModel(
+                email: "deleteAppointment@gmail.com",
+                password: "deleteAppointment");
 
             auth0.loginWithEmail(authData: auth);
           }
@@ -179,13 +180,13 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
     });
   }
 
-  void saveLastPressedTime() async {
+  void saveLastPressedTime({required String uid}) async {
     // Save to shared preferences
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("lastPressedTime", DateTime.now().toString());
   }
 
-  void loadLastPressedTime() async {
+  void loadLastPressedTime({required String uid}) async {
     // Load from shared preferences
     SharedPreferences prefs = await SharedPreferences.getInstance();
     lastPressedTime = prefs.getString("lastPressedTime") != null
@@ -201,7 +202,7 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
 
       return ifADoctor
           ? difference.inSeconds >= 5
-          : difference.inSeconds >= 5; // Change 1 to your desired limit
+          : difference.inMinutes >= 10; // Change 1 to your desired limit
     }
   }
 }
@@ -283,11 +284,15 @@ Future<Object?> showlDialog(
                       Navigator.pop(context);
                       if (done) {
                         if (Navigator.canPop(context)) {
-                      Navigator.pop(context);
-                      if (Navigator.canPop(context)) {
-                      Navigator.pop(context);}
-                      if (Navigator.canPop(context)) { // TODO:
-                      Navigator.pop(context);}}
+                          Navigator.pop(context);
+                          if (Navigator.canPop(context)) {
+                            Navigator.pop(context);
+                          }
+                          if (Navigator.canPop(context)) {
+                            // TODO:
+                            Navigator.pop(context);
+                          }
+                        }
                         // Navigator.pop(context);
                         // Navigator.pop(context);
                         // Navigator.pop(context);
@@ -302,7 +307,7 @@ Future<Object?> showlDialog(
                     ),
                     child: Center(
                       child: Text(
-                        done ? locale.my_Appointement : locale.try_again,
+                        done ? locale.my_appointement : locale.try_again,
                         style: TextStyle(
                           color: Colors.white,
                           fontFamily: "Nunito",

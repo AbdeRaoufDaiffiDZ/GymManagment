@@ -22,12 +22,13 @@ class onPatientsInfoUpdated extends PatientsEvent {
 class onPatientsReload extends PatientsEvent {}
 
 class onPatientsSetAppointments extends PatientsEvent {
+  final String uid;
   final PatientEntity patients;
   final BuildContext context;
   final bool ifADoctor;
 
   const onPatientsSetAppointments(this.context, this.ifADoctor,
-      {required this.patients});
+      {required this.patients, required this.uid,});
 
   @override
   List<Object> get props => [patients, context];

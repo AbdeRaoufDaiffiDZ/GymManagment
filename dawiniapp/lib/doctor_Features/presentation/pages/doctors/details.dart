@@ -175,7 +175,8 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                       today && !tomorrow) {
                                                     isTodaySelected = true;
                                                     isTomorrowSelected = false;
-                                                  }
+                                                  } 
+                                                  
                                                 });
                                               },
                                               child: Center(
@@ -274,7 +275,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                 BorderRadius.circular(15.r)),
                                         onTap: () {
                                           // TODO: limit by number of patients
-                                          if (tomorrow && today) {
+                                          if (tomorrow || today) {
                                             if (!isTodaySelected &&
                                                     !isTomorrowSelected ||
                                                 !doctor.atSerivce) {
@@ -683,7 +684,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                                             0xff202020)
                                                         .withOpacity(0.65))),
                                             TextSpan(
-                                                text: doctor.first.phoneNumber,
+                                                text: doctor.first.phoneNumber2,
                                                 style: TextStyle(
                                                     fontSize: 14.sp -
                                                         widget.fontSize.sp,
@@ -695,7 +696,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                       )),
                                   Padding(
                                     padding: isArabic
-                                        ? EdgeInsets.only(top: 55.h, right: 8.w)
+                                        ? EdgeInsets.only(top: 0.h, right: 65.w)
                                         : EdgeInsets.only(top: 0.h, left: 65.w),
                                     child: InkWell(
                                       customBorder: RoundedRectangleBorder(
@@ -704,7 +705,7 @@ class _doctorDetailsState extends State<doctorDetails> {
                                       onTap: () async {
                                         final Uri uri = Uri(
                                             scheme: "tel",
-                                            path: doctor.first.phoneNumber);
+                                            path: doctor.first.phoneNumber2);
                                         if (await canLaunchUrl(uri)) {
                                           await launchUrl(
                                               uri); //////////calling

@@ -3,6 +3,7 @@
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/patients_info_bloc/patients_info_bloc.dart';
+import 'package:dawini_full/patient_features/presentation/pages/patients/patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -71,197 +72,257 @@ class _TodayPatinetState extends State<TodayPatinet> {
                 if (state.patients.first.firstName == "No Patients ") {
                   return Container();
                 }
-                return Padding(
-                  padding: EdgeInsets.only(
-                      top: 0.h, bottom: 10.h, left: 8.w, right: 8.w),
-                  child: Container(
-                    height: 86.h,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(
-                            width: 1.5,
-                            color: const Color.fromARGB(255, 219, 219, 219)
-                                .withOpacity(0.4)),
-                        borderRadius: BorderRadius.circular(12.r)),
-                    child: Row(
+                return Column(
+                  children: [
+                    Row(
                       children: [
                         Container(
-                          width: 55.w,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: isArabic
-                                ? BorderRadius.only(
-                                    topRight: Radius.circular(12.r),
-                                    bottomRight: Radius.circular(12.r))
-                                : BorderRadius.only(
-                                    topLeft: Radius.circular(12.r),
-                                    bottomLeft: Radius.circular(12.r)),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(top: 4.w),
-                                child: Text(
-                                  locale.turn,
+                            margin: isArabic
+                                ? EdgeInsets.only(right: 8.w)
+                                : EdgeInsets.only(left: 8.w),
+                            width: 130.w,
+                            height: 23.h,
+                            child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                alignment: isArabic
+                                    ? Alignment.bottomRight
+                                    : Alignment.bottomLeft,
+                                child: Text("${locale.today_s_patients} :",
+                                    style: TextStyle(
+                                        fontFamily: "Nunito",
+                                        color: Color(0xff202020),
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w800)))),
+                        const Spacer(),
+                        Container(
+                          margin: isArabic
+                              ? EdgeInsets.only(left: 8.w)
+                              : EdgeInsets.only(right: 8.w),
+                          width: 100.w,
+                          height: 23.h,
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            alignment: isArabic
+                                ? Alignment.bottomLeft
+                                : Alignment.bottomRight,
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: ((context) => Patientslist(
+                                              fontSize: widget.fontSize,
+                                              uid:
+                                                  " doctor.uid", ////////////////////////////////
+                                            ))));
+                              },
+                              child: Text("${locale.see_all} ",
                                   style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      color: data.turn == widget.turn
-                                          ? const Color(0xff00C8D5)
-                                          : const Color(0xff202020)
-                                              .withOpacity(0.6),
                                       fontFamily: "Nunito",
-                                      fontSize: 14.sp - widget.fontSize.sp),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(top: 5.h),
-                                child: Text(
-                                  (data.turn).toString(),
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      color: data.turn == widget.turn
-                                          ? const Color(0xff00C8D5)
-                                          : const Color(0xff202020)
-                                              .withOpacity(0.6),
-                                      fontFamily: "Nunito",
-                                      fontSize: 29.sp - widget.fontSize.sp),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const VerticalDivider(
-                          color: Color(0xff00C8D5),
-                          thickness: 2,
-                          indent: 10,
-                          endIndent: 10,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 4.h, horizontal: 2.w),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 170.w,
-                                height: 22.h,
-                                child: FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  alignment: isArabic
-                                      ? Alignment.topRight
-                                      : Alignment.topLeft,
-                                  child: Text(
-                                    "${data.firstName} ${data.lastName}",
-                                    style: TextStyle(
-                                        fontFamily: "Nunito",
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: 140.w,
-                                height: 15.h,
-                                child: FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  alignment: isArabic
-                                      ? Alignment.topRight
-                                      : Alignment.topLeft,
-                                  child: Text(
-                                    "${data.age} years old ",
-                                    style: TextStyle(
-                                        color: Color(0xff2020202)
-                                            .withOpacity(0.85),
-                                        fontFamily: "Nunito",
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: 100.w,
-                                height: 14.h,
-                                child: FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  alignment: isArabic
-                                      ? Alignment.topRight
-                                      : Alignment.topLeft,
-                                  child: Text(
-                                    "${data.gender}",
-                                    style: TextStyle(
-                                        fontFamily: "Nunito",
-                                        fontSize: 19,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ),
-                              ),
-                              const Spacer(),
-                              Container(
-                                width: 120.w,
-                                height: 17.h,
-                                child: FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    alignment: isArabic
-                                        ? Alignment.topRight
-                                        : Alignment.topLeft,
-                                    child: Row(
-                                      children: [
-                                        const Icon(Icons.phone, size: 16),
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 4.w),
-                                          child: Text(
-                                            data.phoneNumber,
-                                            style: TextStyle(
-                                                fontFamily: 'Nunito',
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
-                                                color: const Color(0xff202020)
-                                                    .withOpacity(0.85)),
-                                          ),
-                                        ),
-                                      ],
-                                    )),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: isArabic
-                              ? EdgeInsets.only(top: 55.h, right: 5.w)
-                              : EdgeInsets.only(top: 55.h, left: 15.w),
-                          child: InkWell(
-                            onTap: () async {
-                              final Uri uri =
-                                  Uri(scheme: "tel", path: data.phoneNumber);
-                              if (await canLaunchUrl(uri)) {
-                                await launchUrl(uri); //////////calling
-                              }
-                            },
-                            child: Container(
-                              height: 18.w,
-                              width: 36.w,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      width: 1.4,
-                                      color: const Color(0xff0AA9A9)),
-                                  borderRadius: BorderRadius.circular(12.r)),
-                              child: Center(
-                                  child: Text(
-                                locale.call,
-                                style: TextStyle(
-                                    color: const Color(0xff0AA9A9),
-                                    fontSize: 10.sp,
-                                    fontFamily: "Nunito",
-                                    fontWeight: FontWeight.w700),
-                              )),
+                                      color: Color(0xff0AA9A9),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600)),
                             ),
                           ),
-                        ),
+                        )
                       ],
                     ),
-                  ),
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 5.h),
+                      child: Container(
+                        height: 86.h,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                                width: 1.5,
+                                color: const Color.fromARGB(255, 219, 219, 219)
+                                    .withOpacity(0.4)),
+                            borderRadius: BorderRadius.circular(12.r)),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 55.w,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: isArabic
+                                    ? BorderRadius.only(
+                                        topRight: Radius.circular(12.r),
+                                        bottomRight: Radius.circular(12.r))
+                                    : BorderRadius.only(
+                                        topLeft: Radius.circular(12.r),
+                                        bottomLeft: Radius.circular(12.r)),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 4.w),
+                                    child: Text(
+                                      locale.turn,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          color: data.turn == widget.turn
+                                              ? const Color(0xff00C8D5)
+                                              : const Color(0xff202020)
+                                                  .withOpacity(0.6),
+                                          fontFamily: "Nunito",
+                                          fontSize: 14.sp - widget.fontSize.sp),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 5.h),
+                                    child: Text(
+                                      (data.turn).toString(),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          color: data.turn == widget.turn
+                                              ? const Color(0xff00C8D5)
+                                              : const Color(0xff202020)
+                                                  .withOpacity(0.6),
+                                          fontFamily: "Nunito",
+                                          fontSize: 29.sp - widget.fontSize.sp),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const VerticalDivider(
+                              color: Color(0xff00C8D5),
+                              thickness: 2,
+                              indent: 10,
+                              endIndent: 10,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 4.h, horizontal: 2.w),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width: 170.w,
+                                    height: 22.h,
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      alignment: isArabic
+                                          ? Alignment.topRight
+                                          : Alignment.topLeft,
+                                      child: Text(
+                                        "${data.firstName} ${data.lastName}",
+                                        style: TextStyle(
+                                            fontFamily: "Nunito",
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: 140.w,
+                                    height: 15.h,
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      alignment: isArabic
+                                          ? Alignment.topRight
+                                          : Alignment.topLeft,
+                                      child: Text(
+                                        "${data.age} years old ",
+                                        style: TextStyle(
+                                            color: Color(0xff2020202)
+                                                .withOpacity(0.85),
+                                            fontFamily: "Nunito",
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: 100.w,
+                                    height: 14.h,
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      alignment: isArabic
+                                          ? Alignment.topRight
+                                          : Alignment.topLeft,
+                                      child: Text(
+                                        "${data.gender}",
+                                        style: TextStyle(
+                                            fontFamily: "Nunito",
+                                            fontSize: 19,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  Container(
+                                    width: 120.w,
+                                    height: 17.h,
+                                    child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        alignment: isArabic
+                                            ? Alignment.topRight
+                                            : Alignment.topLeft,
+                                        child: Row(
+                                          children: [
+                                            const Icon(Icons.phone, size: 16),
+                                            Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 4.w),
+                                              child: Text(
+                                                data.phoneNumber,
+                                                style: TextStyle(
+                                                    fontFamily: 'Nunito',
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w600,
+                                                    color:
+                                                        const Color(0xff202020)
+                                                            .withOpacity(0.85)),
+                                              ),
+                                            ),
+                                          ],
+                                        )),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: isArabic
+                                  ? EdgeInsets.only(top: 55.h, right: 5.w)
+                                  : EdgeInsets.only(top: 55.h, left: 15.w),
+                              child: InkWell(
+                                onTap: () async {
+                                  final Uri uri = Uri(
+                                      scheme: "tel", path: data.phoneNumber);
+                                  if (await canLaunchUrl(uri)) {
+                                    await launchUrl(uri); //////////calling
+                                  }
+                                },
+                                child: Container(
+                                  height: 18.w,
+                                  width: 36.w,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: 1.4,
+                                          color: const Color(0xff0AA9A9)),
+                                      borderRadius:
+                                          BorderRadius.circular(12.r)),
+                                  child: Center(
+                                      child: Text(
+                                    locale.call,
+                                    style: TextStyle(
+                                        color: const Color(0xff0AA9A9),
+                                        fontSize: 10.sp,
+                                        fontFamily: "Nunito",
+                                        fontWeight: FontWeight.w700),
+                                  )),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 );
               }),
         );

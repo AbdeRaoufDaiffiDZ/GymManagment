@@ -27,9 +27,10 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
   static final FirebaseAuth auth = FirebaseAuth.instance;
   static final LocalDataSourceDoctors localDataSourcePatients =
       LocalDataSourceImplDoctor();
+      final String path = "/doctorsList"; // "/doctorsList" is the true path
   @override
   Future<List<DoctorModel>> getDoctorsInfo() async {
-    final result = await _databaseReference.ref().child('/doctorsList').get();
+    final result = await _databaseReference.ref().child(path).get();
     Map<String, dynamic> convertedMap = {};
 
     if (result.value != null) {
@@ -54,7 +55,7 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
   @override
   Stream<List<DoctorModel>> streamDoctors() {
     final result =
-        _databaseReference.ref().child('doctorsList').onValue.map((event) {
+        _databaseReference.ref().child(path).onValue.map((event) {
       List currapted = event.snapshot.value as List;
       final data = currapted.map((e) {
         return DoctorModel.fromJson(e);
@@ -127,7 +128,7 @@ class DoctorCabinDataSourceImp implements DoctorCabinDataSource {
 int length = data.length;
     final uid = auth.currentUser!.uid; /////////////////////////
     await _databaseReference
-        .ref("/doctorsList/$numberInList/")
+        .ref("$path/$numberInList/")
         // .set(turn);
         .update({"turn": turn})
         .then((value) => print("done!"))
@@ -140,7 +141,7 @@ length = 0;
         .child("/user_data/Doctors/$uid")
         .update({"turn": turn});
     await _databaseReference
-        .ref("/doctorsList/$numberInList/numberOfPatient")
+        .ref("$path/$numberInList/numberOfPatient")
         .set(length);
   }
 
@@ -149,7 +150,7 @@ length = 0;
       int numberInList, bool state, DoctorModel doctor) async {
     await _databaseReference
         .ref()
-        .update({"/doctorsList/$numberInList/atSerivce": state})
+        .update({"$path/$numberInList/atSerivce": state})
         .then((value) => print("done!"))
         .catchError((e) => print("error"));
     await _databaseReference
@@ -163,7 +164,7 @@ length = 0;
   Future<void> updateDoctorInfo(DoctorModel doctor) async {
     await _databaseReference
         .ref()
-        .child("/doctorsList/${doctor.numberInList}")
+        .child("$path/${doctor.numberInList}")
         .update({
       "Wilaya": doctor.wilaya,
       "atSerivce": doctor.atSerivce,

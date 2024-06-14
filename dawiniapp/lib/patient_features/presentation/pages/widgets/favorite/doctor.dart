@@ -327,7 +327,34 @@ class _favoriteState extends State<myfavdoctors> with TickerProviderStateMixin {
                           }
                         });
                   } else {
-                    return Container();
+                    return Column(
+                      children: [
+                        Center(
+                          child: Container(
+                            height: 209.h,
+                            width: 200.w,
+                            child: Image.asset(
+                              "assets/images/Group 45 (1).png",
+                            ),
+                          ),
+                        ),
+                        Container(
+                            margin: EdgeInsets.only(top: 1.h, left: 20),
+                            width: 240.w,
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.center,
+                              child: Text(
+                                "No Doctor here",
+                                style: TextStyle(
+                                    color: Color(0Xff202020),
+                                    fontFamily: "Nunito",
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w800),
+                              ),
+                            ))
+                      ],
+                    );
                   }
                 })));
   }

@@ -1,5 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
 
+import 'package:dawini_full/introduction_feature/data/lanugage_constant.dart';
 import 'package:dawini_full/introduction_feature/domain/usecases/set_language_usecase.dart';
 import 'package:dawini_full/main.dart';
 import 'package:flutter/material.dart';
@@ -68,31 +69,16 @@ class _SettingsPageState extends State<SettingsPage> {
                       onPressed: () async {
                         if (newLocale == null ||
                             newLocale!.languageCode.isEmpty) {
-                          final result = await setLanguageUseCase
-                              .execute(currentLocale.languageCode);
-                          if (result == "lanuage setting done") {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const MyApp()));
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text(text.try_again),
-                                backgroundColor: Colors.red));
-                          }
+                        
+                           Locale locale = await setLocale(currentLocale.languageCode);
+                      MyApp.setLocale(context, locale);
+                      Navigator.pop(context);
                         } else {
-                          final result = await setLanguageUseCase
-                              .execute(newLocale!.languageCode);
-                          if (result == "lanuage setting done") {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const MyApp()));
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text(text.try_again),
-                                backgroundColor: Colors.red));
-                          }
+                       
+                           Locale locale = await setLocale(newLocale!.languageCode);
+                      MyApp.setLocale(context, locale);
+                                            Navigator.pop(context);
+
                         }
                       },
                       child: Padding(

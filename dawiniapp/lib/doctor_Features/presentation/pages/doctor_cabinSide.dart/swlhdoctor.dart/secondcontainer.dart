@@ -231,26 +231,40 @@ class _secondConatinerState extends State<secondConatiner> {
             );
           } else {
             return Padding(
-              padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 8.h),
+              padding: EdgeInsets.symmetric( horizontal: 8.h),
               child: Container(
-                  height: 60.h,
+                  height: 71.h,
                   width: double.infinity,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
+                      Container(
+                        child: FittedBox(
+                          alignment: Alignment.topLeft,
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            "${locale.patient_in_examination} : ",
+                            style: TextStyle(
+                                fontFamily: "Nunito",
+                                color: const Color(0xff202020),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                      ),
                       Container(
                         height: 25.h,
                         width: 240.w,
                         child: FittedBox(
-                          alignment: Alignment.topLeft,
+                          alignment: Alignment.centerLeft,
                           fit: BoxFit.scaleDown,
                           child: Text(
                             "No patient is currently being examined . ",
                             style: TextStyle(
                                 fontFamily: "Nunito",
                                 fontWeight: FontWeight.w700,
-                                fontSize: 22,
+                                fontSize: 14,
                                 color: Color(0xff202020).withOpacity(0.75)),
                           ),
                         ),
@@ -268,7 +282,7 @@ class _secondConatinerState extends State<secondConatiner> {
                                     color: const Color(0xff202020)
                                         .withOpacity(0.7),
                                     fontSize: 14,
-                                    fontWeight: FontWeight.w600),
+                                    fontWeight: FontWeight.w700),
                                 children: [
                                   TextSpan(
                                     text: " 'Next' ",
@@ -299,19 +313,19 @@ class _secondConatinerState extends State<secondConatiner> {
       } else if (state is PatientsInfoLoadingError) {
         // patientsInfoBloc.add(onGetPatinets(uid: widget.uid));
 
-        return const Center(
-            // child: Container(
-            //   margin: EdgeInsets.symmetric(horizontal: 8.w),
-            //   child: Text(
-            //     "No patient yet ",
-            //     style: TextStyle(
-            //         fontFamily: "Nunito",
-            //         color: const Color(0xff202020),
-            //         fontSize: 16.sp,
-            //         fontWeight: FontWeight.w700),
-            //   ),
-            // ),
-            );
+        return Center(
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 8.w),
+            child: Text(
+              "No patient yet ",
+              style: TextStyle(
+                  fontFamily: "Nunito",
+                  color: const Color(0xff202020),
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w700),
+            ),
+          ),
+        );
       } else if (state is PatientsInfoLoading) {
         return const Loading();
       } else {
