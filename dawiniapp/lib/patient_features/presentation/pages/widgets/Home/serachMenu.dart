@@ -25,6 +25,7 @@ class SearchMenu extends StatefulWidget {
 class _SearchMenuState extends State<SearchMenu> {
   String? selectedValue;
   String? selected;
+  FocusNode _focusNode = FocusNode();
 
   final TextEditingController textController = TextEditingController();
 
@@ -33,16 +34,25 @@ class _SearchMenuState extends State<SearchMenu> {
   }
 
   @override
+  void dispose() {
+    _focusNode.dispose();
+    textController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     selected = widget.selectedWilaya;
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FocusScope.of(context).requestFocus(_focusNode);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    if(widget.isHome){
-          selected = widget.selectedWilaya;
-
+    if (widget.isHome) {
+      selected = widget.selectedWilaya;
     }
     final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
     final TextEditingController _textController = TextEditingController();
@@ -97,6 +107,7 @@ class _SearchMenuState extends State<SearchMenu> {
                                       ? EdgeInsets.only(right: 4.w)
                                       : EdgeInsets.only(left: 4.w, top: 3.h),
                                   child: TextField(
+                                    focusNode: _focusNode,
                                     controller: _textController,
                                     onChanged: (text) {
                                       dataBloc.add(onDoctorsearchByName(

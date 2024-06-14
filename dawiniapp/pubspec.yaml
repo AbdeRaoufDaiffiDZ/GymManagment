@@ -29,36 +29,36 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   animated_splash_screen: null
-  auto_size_text: ^3.0.0
-  awesome_notifications: ^0.8.2
+  auto_size_text: 
+  awesome_notifications: 
   bloc_test: null
   cloud_firestore: null
-  cloud_functions: ^4.6.8
-  connectivity_plus: ^1.4.0
+  cloud_functions: 
+  connectivity_plus: 
   cupertino_icons: null
   curved_navigation_bar: null
-  custom_refresh_indicator: ^3.0.0
+  custom_refresh_indicator: 
   dartz: null
-  device_info_plus: ^9.1.2
-  device_preview: ^1.1.0
+  device_info_plus: 
+  device_preview: 
   dropdown_button2: null
   equatable: null
   eva_icons_flutter: null
-  firebase_app_check: ^0.2.1+13
-  firebase_auth: null
+  firebase_app_check: 
+  firebase_auth: 
   firebase_core: null
   firebase_database: null
-  firebase_messaging: ^14.7.17
-  firebase_storage: ^11.6.9
+  firebase_messaging:
+  firebase_storage:
   flutter:
     sdk: flutter
   flutter_bloc: null
-  flutter_easyloading: ^3.0.5
+  flutter_easyloading: 
   flutter_local_notifications: null
   flutter_localizations:
     sdk: flutter
   flutter_screenutil: null
-  geolocator: ^11.0.0
+  geolocator:
   get_it: null
   google_fonts: ^6.1.0
   google_maps_flutter: ^2.5.3
