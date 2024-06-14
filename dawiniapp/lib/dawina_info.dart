@@ -1,5 +1,9 @@
+import 'package:dawini_full/introduction_feature/data/lanugage_constant.dart';
+import 'package:dawini_full/introduction_feature/domain/usecases/set_language_usecase.dart';
+import 'package:dawini_full/main.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DawinaInfo extends StatefulWidget {
   const DawinaInfo({super.key});
@@ -9,10 +13,15 @@ class DawinaInfo extends StatefulWidget {
 }
 
 class _DawinaInfoState extends State<DawinaInfo> {
-  String _selectedLanguage = "FR"; // Variable to track selected language
+  Locale? newLocale;
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations text = AppLocalizations.of(context)!;
+    final SetLanguageUseCase setLanguageUseCase = SetLanguageUseCase();
+    Locale currentLocale = Localizations.localeOf(context);
+    final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
+
     return Scaffold(
       backgroundColor: const Color(0xffFAFAFA),
       body: SafeArea(
@@ -26,9 +35,13 @@ class _DawinaInfoState extends State<DawinaInfo> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(left: widthh - 53),
+                      margin: isArabic
+                          ? EdgeInsets.only(right: widthh - 53)
+                          : EdgeInsets.only(left: widthh - 53),
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
                         customBorder: const CircleBorder(),
                         child: Ink(
                           height: heightt * 0.055,
@@ -51,7 +64,9 @@ class _DawinaInfoState extends State<DawinaInfo> {
                       height: heightt * 0.07,
                       width: widthh,
                       child: Padding(
-                        padding: EdgeInsets.only(left: 15.0),
+                        padding: isArabic
+                            ? EdgeInsets.only(right: 15.0)
+                            : EdgeInsets.only(left: 15.0),
                         child: Text(
                           "General",
                           style: TextStyle(
@@ -94,8 +109,9 @@ class _DawinaInfoState extends State<DawinaInfo> {
                                       height: 37,
                                       width: 37,
                                       child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 15.0),
+                                        padding: isArabic
+                                            ? EdgeInsets.only(right: 15.0)
+                                            : EdgeInsets.only(left: 15.0),
                                         child: Image.asset(
                                           "assets/images/bb.png",
                                           color: const Color(0xff202020)
@@ -103,8 +119,10 @@ class _DawinaInfoState extends State<DawinaInfo> {
                                         ),
                                       ),
                                     ),
-                                    const Padding(
-                                      padding: EdgeInsets.only(left: 8),
+                                    Padding(
+                                      padding: isArabic
+                                          ? EdgeInsets.only(right: 15.0)
+                                          : EdgeInsets.only(left: 8),
                                       child: Text(
                                         "What is Dawina ?",
                                         style: TextStyle(
@@ -149,8 +167,9 @@ class _DawinaInfoState extends State<DawinaInfo> {
                                     height: 37,
                                     width: 37,
                                     child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 15.0),
+                                      padding: isArabic
+                                          ? EdgeInsets.only(right: 15.0)
+                                          : EdgeInsets.only(left: 15.0),
                                       child: Image.asset(
                                         "assets/images/team.png",
                                         color: const Color(0xff202020)
@@ -158,8 +177,10 @@ class _DawinaInfoState extends State<DawinaInfo> {
                                       ),
                                     ),
                                   ),
-                                  const Padding(
-                                    padding: EdgeInsets.only(left: 8),
+                                  Padding(
+                                    padding: isArabic
+                                        ? EdgeInsets.only(right: 8)
+                                        : EdgeInsets.only(left: 8),
                                     child: Text(
                                       "Our Team",
                                       style: TextStyle(
@@ -203,8 +224,9 @@ class _DawinaInfoState extends State<DawinaInfo> {
                                     height: 37,
                                     width: 37,
                                     child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 15.0),
+                                      padding: isArabic
+                                          ? EdgeInsets.only(right: 15.0)
+                                          : EdgeInsets.only(left: 15.0),
                                       child: Image.asset(
                                         "assets/images/payment.png",
                                         color: const Color(0xff202020)
@@ -212,8 +234,10 @@ class _DawinaInfoState extends State<DawinaInfo> {
                                       ),
                                     ),
                                   ),
-                                  const Padding(
-                                    padding: EdgeInsets.only(left: 8),
+                                  Padding(
+                                    padding: isArabic
+                                        ? EdgeInsets.only(right: 8)
+                                        : EdgeInsets.only(left: 8),
                                     child: Text(
                                       "Payment",
                                       style: TextStyle(
@@ -234,61 +258,61 @@ class _DawinaInfoState extends State<DawinaInfo> {
                                 ],
                               ),
                             ),
-                            InkWell(
-                              onTap: _launchInstagram,
-                              child: Container(
-                                margin: const EdgeInsets.only(bottom: 3),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: const Color(0xff202020)
-                                          .withOpacity(0.1),
-                                      blurRadius: 1,
-                                    )
-                                  ],
-                                ),
-                                width: widthh,
-                                height: heightt * 0.08,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                      ),
-                                      height: 37,
-                                      width: 37,
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 15.0),
-                                        child: Image.asset(
-                                          "assets/images/social.png",
-                                          color: const Color(0xff202020)
-                                              .withOpacity(0.7),
-                                        ),
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 3),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: const Color(0xff202020)
+                                        .withOpacity(0.1),
+                                    blurRadius: 1,
+                                  )
+                                ],
+                              ),
+                              width: widthh,
+                              height: heightt * 0.08,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                    ),
+                                    height: 37,
+                                    width: 37,
+                                    child: Padding(
+                                      padding: isArabic
+                                          ? EdgeInsets.only(right: 15.0)
+                                          : EdgeInsets.only(left: 15.0),
+                                      child: Image.asset(
+                                        "assets/images/social.png",
+                                        color: const Color(0xff202020)
+                                            .withOpacity(0.7),
                                       ),
                                     ),
-                                    const Padding(
-                                      padding: EdgeInsets.only(left: 8),
-                                      child: Text(
-                                        "Follow us on instagram",
-                                        style: TextStyle(
-                                          fontFamily: "Nunito",
-                                          fontSize: 18,
-                                        ),
+                                  ),
+                                  Padding(
+                                    padding: isArabic
+                                        ? EdgeInsets.only(right: 8)
+                                        : EdgeInsets.only(left: 8),
+                                    child: Text(
+                                      "Follow us on instagram",
+                                      style: TextStyle(
+                                        fontFamily: "Nunito",
+                                        fontSize: 18,
                                       ),
                                     ),
-                                    const Spacer(),
-                                    IconButton(
-                                        onPressed: () {},
-                                        icon: Icon(
-                                          color: const Color(0xff202020)
-                                              .withOpacity(0.7),
-                                          Icons.arrow_forward_ios,
-                                          size: 18,
-                                        ))
-                                  ],
-                                ),
+                                  ),
+                                  const Spacer(),
+                                  IconButton(
+                                      onPressed: _launchInstagram,
+                                      icon: Icon(
+                                        color: const Color(0xff202020)
+                                            .withOpacity(0.7),
+                                        Icons.arrow_forward_ios,
+                                        size: 18,
+                                      ))
+                                ],
                               ),
                             )
                           ],
@@ -298,8 +322,10 @@ class _DawinaInfoState extends State<DawinaInfo> {
                     Container(
                       height: heightt * 0.07,
                       width: widthh,
-                      child: const Padding(
-                        padding: EdgeInsets.only(left: 15, top: 8),
+                      child: Padding(
+                        padding: isArabic
+                            ? EdgeInsets.only(right: 15, top: 8)
+                            : EdgeInsets.only(left: 15, top: 8),
                         child: Text(
                           "Contact us",
                           style: TextStyle(
@@ -314,56 +340,63 @@ class _DawinaInfoState extends State<DawinaInfo> {
                       height: heightt * 0.25,
                       width: widthh,
                       child: Column(children: [
-                        Container(
-                          margin: EdgeInsets.only(bottom: heightt * 0.004),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0xff202020).withOpacity(0.1),
-                                blurRadius: 1,
-                              )
-                            ],
-                          ),
-                          width: widthh,
-                          height: heightt * 0.078,
-                          child: Row(
-                            children: [
-                              Container(
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                ),
-                                height: 37,
-                                width: 37,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 15.0),
-                                  child: Image.asset(
-                                    "assets/images/email.png",
-                                    color: const Color(0xff202020)
-                                        .withOpacity(0.7),
+                        InkWell(
+                          child: Container(
+                            margin: EdgeInsets.only(bottom: heightt * 0.004),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color:
+                                      const Color(0xff202020).withOpacity(0.1),
+                                  blurRadius: 1,
+                                )
+                              ],
+                            ),
+                            width: widthh,
+                            height: heightt * 0.078,
+                            child: Row(
+                              children: [
+                                Container(
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
+                                  height: 37,
+                                  width: 37,
+                                  child: Padding(
+                                    padding: isArabic
+                                        ? EdgeInsets.only(right: 15.0)
+                                        : EdgeInsets.only(left: 15.0),
+                                    child: Image.asset(
+                                      "assets/images/email.png",
+                                      color: const Color(0xff202020)
+                                          .withOpacity(0.7),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(left: 8),
-                                child: Text(
-                                  "Send to us by e-mail",
-                                  style: TextStyle(
-                                    fontFamily: "Nunito",
-                                    fontSize: 18,
+                                Padding(
+                                  padding: isArabic
+                                      ? EdgeInsets.only(right: 8)
+                                      : EdgeInsets.only(left: 8),
+                                  child: Text(
+                                    "Send to us by e-mail",
+                                    style: TextStyle(
+                                      fontFamily: "Nunito",
+                                      fontSize: 18,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const Spacer(),
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    color: const Color(0xff202020)
-                                        .withOpacity(0.7),
-                                    Icons.arrow_forward_ios,
-                                    size: 18,
-                                  ))
-                            ],
+                                const Spacer(),
+                                IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      color: const Color(0xff202020)
+                                          .withOpacity(0.7),
+                                      Icons.arrow_forward_ios,
+                                      size: 18,
+                                    ))
+                              ],
+                            ),
                           ),
                         ),
                         Container(
@@ -388,7 +421,9 @@ class _DawinaInfoState extends State<DawinaInfo> {
                                 height: 37,
                                 width: 37,
                                 child: Padding(
-                                  padding: const EdgeInsets.only(left: 15.0),
+                                  padding: isArabic
+                                      ? EdgeInsets.only(right: 15.0)
+                                      : EdgeInsets.only(left: 15.0),
                                   child: Image.asset(
                                     "assets/images/call.png",
                                     color: const Color(0xff202020)
@@ -396,8 +431,10 @@ class _DawinaInfoState extends State<DawinaInfo> {
                                   ),
                                 ),
                               ),
-                              const Padding(
-                                padding: EdgeInsets.only(left: 8),
+                              Padding(
+                                padding: isArabic
+                                    ? EdgeInsets.only(right: 8)
+                                    : EdgeInsets.only(left: 8),
                                 child: Text(
                                   "Call us",
                                   style: TextStyle(
@@ -408,7 +445,7 @@ class _DawinaInfoState extends State<DawinaInfo> {
                               ),
                               const Spacer(),
                               IconButton(
-                                  onPressed: () {},
+                                  onPressed: _callUs,
                                   icon: Icon(
                                     color: const Color(0xff202020)
                                         .withOpacity(0.7),
@@ -440,7 +477,9 @@ class _DawinaInfoState extends State<DawinaInfo> {
                                 height: 37,
                                 width: 37,
                                 child: Padding(
-                                  padding: const EdgeInsets.only(left: 15.0),
+                                  padding: isArabic
+                                      ? EdgeInsets.only(right: 15.0)
+                                      : EdgeInsets.only(left: 15.0),
                                   child: Image.asset(
                                     "assets/images/feedback.png",
                                     color: const Color(0xff202020)
@@ -448,8 +487,10 @@ class _DawinaInfoState extends State<DawinaInfo> {
                                   ),
                                 ),
                               ),
-                              const Padding(
-                                padding: EdgeInsets.only(left: 8),
+                              Padding(
+                                padding: isArabic
+                                    ? EdgeInsets.only(right: 8)
+                                    : EdgeInsets.only(left: 8),
                                 child: Text(
                                   "Send feedback",
                                   style: TextStyle(
@@ -460,7 +501,7 @@ class _DawinaInfoState extends State<DawinaInfo> {
                               ),
                               const Spacer(),
                               IconButton(
-                                  onPressed: () {},
+                                  onPressed: _feedBack,
                                   icon: Icon(
                                     color: const Color(0xff202020)
                                         .withOpacity(0.7),
@@ -476,13 +517,18 @@ class _DawinaInfoState extends State<DawinaInfo> {
                       height: heightt * 0.1,
                       width: 200,
                       child: Padding(
-                          padding: const EdgeInsets.only(left: 0.0),
+                          padding: isArabic
+                              ? EdgeInsets.only(right: 0.0)
+                              : EdgeInsets.only(left: 0.0),
                           child: Row(children: [
-                            _buildLanguageContainer("EN"),
+                            _buildLanguageContainer(
+                                "EN", currentLocale.languageCode),
                             const Spacer(),
-                            _buildLanguageContainer("FR"),
+                            _buildLanguageContainer(
+                                "FR", currentLocale.languageCode),
                             const Spacer(),
-                            _buildLanguageContainer("AR"),
+                            _buildLanguageContainer(
+                                "AR", currentLocale.languageCode),
                           ])),
                     ),
                   ]),
@@ -493,10 +539,13 @@ class _DawinaInfoState extends State<DawinaInfo> {
     );
   }
 
-  Widget _buildLanguageContainer(String language) {
-    bool isSelected = _selectedLanguage == language;
+  Widget _buildLanguageContainer(String language, String _selectedLanguage) {
+    bool isSelected = _selectedLanguage.toLowerCase() == language.toLowerCase();
+    final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
+
     return Padding(
-      padding: const EdgeInsets.only(left: 8.0),
+      padding:
+          isArabic ? EdgeInsets.only(right: 8.0) : EdgeInsets.only(left: 8.0),
       child: Ink(
         height: 50,
         width: 50,
@@ -516,10 +565,13 @@ class _DawinaInfoState extends State<DawinaInfo> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: InkWell(
-          onTap: () {
+          onTap: () async {
             setState(() {
               _selectedLanguage = language;
+              newLocale = Locale(language.toLowerCase());
             });
+            Locale locale = await setLocale(newLocale!.languageCode);
+            MyApp.setLocale(context, locale);
           },
           child: Center(
             child: Text(
@@ -541,6 +593,22 @@ class _DawinaInfoState extends State<DawinaInfo> {
     if (await canLaunch(nativeUrl)) {
       await launch(nativeUrl);
     } else if (await canLaunch(webUrl)) {
+      await launch(webUrl);
+    } else {
+      print("Can't open Instagram");
+    }
+  }
+
+  _callUs() async {
+    final Uri uri = Uri(scheme: "tel", path: "+213791027049");
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri); //////////calling
+    }
+  }
+  
+  _feedBack() async {
+    const webUrl = "https://forms.gle/ZQt6C44f4boFMZgZ8";
+  if (await canLaunch(webUrl)) {
       await launch(webUrl);
     } else {
       print("Can't open Instagram");
