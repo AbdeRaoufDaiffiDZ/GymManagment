@@ -142,7 +142,7 @@ class _MyAppState extends State<MyApp> {
                   supportedLocales: AppLocalizations.supportedLocales,
                   debugShowCheckedModeBanner: false,
                   home: DawinaInfo()
-                  /* MyWidget(
+                  /*   MyWidget(
                     fontSize: fontSize == null ? 3 : fontSize!,
                     locale:
                         _locale, // TODO HERE YOU CHANGE THE FONT SIZE, USER IS ABLE TO CHANGE FONTS SIZE FROM THIS PARM

@@ -29,23 +29,23 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   animated_splash_screen: null
-  auto_size_text: 
-  awesome_notifications: 
+  auto_size_text:
+  awesome_notifications:
   bloc_test: null
   cloud_firestore: null
-  cloud_functions: 
-  connectivity_plus: 
+  cloud_functions:
+  connectivity_plus:
   cupertino_icons: null
   curved_navigation_bar: null
-  custom_refresh_indicator: 
+  custom_refresh_indicator:
   dartz: null
-  device_info_plus: 
-  device_preview: 
+  device_info_plus:
+  device_preview:
   dropdown_button2: null
   equatable: null
   eva_icons_flutter: null
-  firebase_app_check: 
-  firebase_auth: 
+  firebase_app_check:
+  firebase_auth:
   firebase_core: null
   firebase_database: null
   firebase_messaging:
@@ -53,7 +53,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: null
-  flutter_easyloading: 
+  flutter_easyloading:
   flutter_local_notifications: null
   flutter_localizations:
     sdk: flutter

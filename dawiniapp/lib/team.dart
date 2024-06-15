@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Team extends StatefulWidget {
   const Team({super.key});
@@ -60,291 +61,279 @@ class _TeamState extends State<Team> {
                 width: widthh,
                 child: Column(
                   children: [
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                                color:
-                                    const Color(0xff202020).withOpacity(0.22),
-                                blurRadius: 1,
-                                spreadRadius: 0.2)
-                          ],
-                        ),
-                        width: widthh,
-                        height: heightt * 0.1,
-                        child: Row(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(left: 8),
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                              ),
-                              height: 43.w,
-                              width: 43.w,
-                              child: ClipOval(
-                                child: Image.asset(
-                                  "assets/images/spa.jpeg",
-                                  fit: BoxFit.cover,
-                                ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                              color: const Color(0xff202020).withOpacity(0.15),
+                              blurRadius: 0.5,
+                              spreadRadius: 0)
+                        ],
+                      ),
+                      width: widthh,
+                      height: heightt * 0.1,
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(left: 8),
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            height: 43.w,
+                            width: 43.w,
+                            child: ClipOval(
+                              child: Image.asset(
+                                "assets/images/spa.jpeg",
+                                fit: BoxFit.cover,
                               ),
                             ),
-                            Padding(
-                                padding: EdgeInsets.only(left: 10),
-                                child: Container(
-                                  margin: EdgeInsets.symmetric(vertical: 10),
-                                  child: LayoutBuilder(
-                                    builder: (context, constraints) {
-                                      final heighttt = constraints.maxHeight;
-                                      return Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            height: heighttt * 0.34,
-                                            child: Text(
-                                              "Daiffi Abderaouf",
-                                              style: TextStyle(
-                                                  color: Color(0xff202020),
-                                                  fontFamily: "Nunito",
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
+                          ),
+                          Padding(
+                              padding: EdgeInsets.only(left: 10),
+                              child: Container(
+                                margin: EdgeInsets.symmetric(vertical: 10),
+                                child: LayoutBuilder(
+                                  builder: (context, constraints) {
+                                    final heighttt = constraints.maxHeight;
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          height: heighttt * 0.34,
+                                          child: Text(
+                                            "Daiffi Abderaouf",
+                                            style: TextStyle(
+                                                color: Color(0xff202020),
+                                                fontFamily: "Nunito",
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.bold),
                                           ),
-                                          Container(
-                                            height: heighttt * 0.33,
-                                            child: Text(
-                                              "Founder & CEO",
-                                              style: TextStyle(
-                                                  fontFamily: "Nunito",
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w700,
-                                                  color: Color(0xff202020)
-                                                      .withOpacity(0.7)),
-                                            ),
+                                        ),
+                                        Container(
+                                          height: heighttt * 0.33,
+                                          child: Text(
+                                            "Founder & CEO",
+                                            style: TextStyle(
+                                                fontFamily: "Nunito",
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w700,
+                                                color: Color(0xff202020)
+                                                    .withOpacity(0.7)),
                                           ),
-                                          Container(
-                                            height: heighttt * 0.33,
-                                            child: Text(
-                                              "Mobile apps developer",
-                                              style: TextStyle(
-                                                  fontFamily: "Nunito",
-                                                  fontSize: 11,
-                                                  fontWeight: FontWeight.w700,
-                                                  color: Color(0xff202020)
-                                                      .withOpacity(0.7)),
-                                            ),
+                                        ),
+                                        Container(
+                                          height: heighttt * 0.33,
+                                          child: Text(
+                                            "Mobile apps developer",
+                                            style: TextStyle(
+                                                fontFamily: "Nunito",
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.w700,
+                                                color: Color(0xff202020)
+                                                    .withOpacity(0.7)),
                                           ),
-                                        ],
-                                      );
-                                    },
-                                  ),
-                                )),
-                            Spacer(),
-                            IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  color:
-                                      const Color(0xff202020).withOpacity(0.7),
-                                  Icons.arrow_forward_ios,
-                                  size: 18,
-                                ))
-                          ],
-                        ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ),
+                              )),
+                          Spacer(),
+                          IconButton(
+                              onPressed: () => _launchLinkedIn(
+                                  'https://www.linkedin.com/in/another-profile-1/'),
+                              icon: Icon(
+                                color: const Color(0xff202020).withOpacity(0.7),
+                                Icons.arrow_forward_ios,
+                                size: 18,
+                              ))
+                        ],
                       ),
                     ),
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        margin: EdgeInsets.only(top: heightt * 0.0099),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                                color:
-                                    const Color(0xff202020).withOpacity(0.22),
-                                blurRadius: 1,
-                                spreadRadius: 0.2)
-                          ],
-                        ),
-                        width: widthh,
-                        height: heightt * 0.1,
-                        child: Row(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(left: 8),
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                              ),
-                              height: 43.w,
-                              width: 43.w,
-                              child: ClipOval(
-                                child: Image.asset(
-                                  "assets/images/spa.jpeg",
-                                  fit: BoxFit.cover,
-                                ),
+                    Container(
+                      margin: EdgeInsets.only(top: heightt * 0.015),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                              color: const Color(0xff202020).withOpacity(0.15),
+                              blurRadius: 0.5,
+                              spreadRadius: 0)
+                        ],
+                      ),
+                      width: widthh,
+                      height: heightt * 0.1,
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(left: 8),
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            height: 43.w,
+                            width: 43.w,
+                            child: ClipOval(
+                              child: Image.asset(
+                                "assets/images/spa.jpeg",
+                                fit: BoxFit.cover,
                               ),
                             ),
-                            Padding(
-                                padding: EdgeInsets.only(left: 10),
-                                child: Container(
-                                  margin: EdgeInsets.symmetric(vertical: 10),
-                                  child: LayoutBuilder(
-                                    builder: (context, constraints) {
-                                      final heighttt = constraints.maxHeight;
-                                      return Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            height: heighttt * 0.34,
-                                            child: Text(
-                                              "Daiffi Abderaouf",
-                                              style: TextStyle(
-                                                  color: Color(0xff202020),
-                                                  fontFamily: "Nunito",
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
+                          ),
+                          Padding(
+                              padding: EdgeInsets.only(left: 10),
+                              child: Container(
+                                margin: EdgeInsets.symmetric(vertical: 10),
+                                child: LayoutBuilder(
+                                  builder: (context, constraints) {
+                                    final heighttt = constraints.maxHeight;
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          height: heighttt * 0.34,
+                                          child: Text(
+                                            "Hariri Soufyane",
+                                            style: TextStyle(
+                                                color: Color(0xff202020),
+                                                fontFamily: "Nunito",
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.bold),
                                           ),
-                                          Container(
-                                            height: heighttt * 0.33,
-                                            child: Text(
-                                              "Founder & CEO",
-                                              style: TextStyle(
-                                                  fontFamily: "Nunito",
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w700,
-                                                  color: Color(0xff202020)
-                                                      .withOpacity(0.7)),
-                                            ),
+                                        ),
+                                        Container(
+                                          height: heighttt * 0.33,
+                                          child: Text(
+                                            "Co-Founder",
+                                            style: TextStyle(
+                                                fontFamily: "Nunito",
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w700,
+                                                color: Color(0xff202020)
+                                                    .withOpacity(0.7)),
                                           ),
-                                          Container(
-                                            height: heighttt * 0.33,
-                                            child: Text(
-                                              "Mobile apps developer",
-                                              style: TextStyle(
-                                                  fontFamily: "Nunito",
-                                                  fontSize: 11,
-                                                  fontWeight: FontWeight.w700,
-                                                  color: Color(0xff202020)
-                                                      .withOpacity(0.7)),
-                                            ),
+                                        ),
+                                        Container(
+                                          height: heighttt * 0.33,
+                                          child: Text(
+                                            "Mobile apps developer",
+                                            style: TextStyle(
+                                                fontFamily: "Nunito",
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.w700,
+                                                color: Color(0xff202020)
+                                                    .withOpacity(0.7)),
                                           ),
-                                        ],
-                                      );
-                                    },
-                                  ),
-                                )),
-                            Spacer(),
-                            IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  color:
-                                      const Color(0xff202020).withOpacity(0.7),
-                                  Icons.arrow_forward_ios,
-                                  size: 18,
-                                ))
-                          ],
-                        ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ),
+                              )),
+                          Spacer(),
+                          IconButton(
+                              onPressed: () => _launchLinkedIn(
+                                  'https://www.linkedin.com/in/sofian-hariri-38a683236/'),
+                              icon: Icon(
+                                color: const Color(0xff202020).withOpacity(0.7),
+                                Icons.arrow_forward_ios,
+                                size: 18,
+                              ))
+                        ],
                       ),
                     ),
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        margin: EdgeInsets.only(top: heightt * 0.0099),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                                color:
-                                    const Color(0xff202020).withOpacity(0.22),
-                                blurRadius: 1,
-                                spreadRadius: 0.2)
-                          ],
-                        ),
-                        width: widthh,
-                        height: heightt * 0.1,
-                        child: Row(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(left: 8),
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                              ),
-                              height: 43.w,
-                              width: 43.w,
-                              child: ClipOval(
-                                child: Image.asset(
-                                  "assets/images/spa.jpeg",
-                                  fit: BoxFit.cover,
-                                ),
+                    Container(
+                      margin: EdgeInsets.only(top: heightt * 0.015),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                              color: const Color(0xff202020).withOpacity(0.15),
+                              blurRadius: 0.5,
+                              spreadRadius: 0)
+                        ],
+                      ),
+                      width: widthh,
+                      height: heightt * 0.1,
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(left: 8),
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            height: 43.w,
+                            width: 43.w,
+                            child: ClipOval(
+                              child: Image.asset(
+                                "assets/images/spa.jpeg",
+                                fit: BoxFit.cover,
                               ),
                             ),
-                            Padding(
-                                padding: EdgeInsets.only(left: 10),
-                                child: Container(
-                                  margin: EdgeInsets.symmetric(vertical: 10),
-                                  child: LayoutBuilder(
-                                    builder: (context, constraints) {
-                                      final heighttt = constraints.maxHeight;
-                                      return Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            height: heighttt * 0.34,
-                                            child: Text(
-                                              "Daiffi Abderaouf",
-                                              style: TextStyle(
-                                                  color: Color(0xff202020),
-                                                  fontFamily: "Nunito",
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
+                          ),
+                          Padding(
+                              padding: EdgeInsets.only(left: 10),
+                              child: Container(
+                                margin: EdgeInsets.symmetric(vertical: 10),
+                                child: LayoutBuilder(
+                                  builder: (context, constraints) {
+                                    final heighttt = constraints.maxHeight;
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          height: heighttt * 0.34,
+                                          child: Text(
+                                            "Chergui Walid",
+                                            style: TextStyle(
+                                                color: Color(0xff202020),
+                                                fontFamily: "Nunito",
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.bold),
                                           ),
-                                          Container(
-                                            height: heighttt * 0.33,
-                                            child: Text(
-                                              "Founder & CEO",
-                                              style: TextStyle(
-                                                  fontFamily: "Nunito",
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w700,
-                                                  color: Color(0xff202020)
-                                                      .withOpacity(0.7)),
-                                            ),
+                                        ),
+                                        Container(
+                                          height: heighttt * 0.33,
+                                          child: Text(
+                                            "Co-Founder",
+                                            style: TextStyle(
+                                                fontFamily: "Nunito",
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w700,
+                                                color: Color(0xff202020)
+                                                    .withOpacity(0.7)),
                                           ),
-                                          Container(
-                                            height: heighttt * 0.33,
-                                            child: Text(
-                                              "Mobile apps developer",
-                                              style: TextStyle(
-                                                  fontFamily: "Nunito",
-                                                  fontSize: 11,
-                                                  fontWeight: FontWeight.w700,
-                                                  color: Color(0xff202020)
-                                                      .withOpacity(0.7)),
-                                            ),
+                                        ),
+                                        Container(
+                                          height: heighttt * 0.33,
+                                          child: Text(
+                                            "UI / UX Designer",
+                                            style: TextStyle(
+                                                fontFamily: "Nunito",
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.w700,
+                                                color: Color(0xff202020)
+                                                    .withOpacity(0.7)),
                                           ),
-                                        ],
-                                      );
-                                    },
-                                  ),
-                                )),
-                            Spacer(),
-                            IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  color:
-                                      const Color(0xff202020).withOpacity(0.7),
-                                  Icons.arrow_forward_ios,
-                                  size: 18,
-                                ))
-                          ],
-                        ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ),
+                              )),
+                          Spacer(),
+                          IconButton(
+                              onPressed: () => _launchLinkedIn(
+                                  'https://www.linkedin.com/in/walid-chergui-0b8789283/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app&fbclid=IwZXh0bgNhZW0CMTAAAR27E-Ud79yGDxJIh9SbghETUOsQs5UwELCXtKez_bd-r1vBCwIoMcCleU8_aem_AQtfVb8nZf1giS_cr2diHBun8lraWmql8HNg85Ziwx4aZI7no3UW7M_8Iosd7rJTtBEb0nn874t5OYySxoyYSQmQ'),
+                              icon: Icon(
+                                color: const Color(0xff202020).withOpacity(0.7),
+                                Icons.arrow_forward_ios,
+                                size: 18,
+                              ))
+                        ],
                       ),
                     ),
                   ],
@@ -355,5 +344,13 @@ class _TeamState extends State<Team> {
         ),
       );
     });
+  }
+
+  void _launchLinkedIn(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

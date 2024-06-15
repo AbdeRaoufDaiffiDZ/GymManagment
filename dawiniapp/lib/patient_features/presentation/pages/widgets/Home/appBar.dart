@@ -36,19 +36,20 @@ class myAppbar extends StatelessWidget implements PreferredSizeWidget {
             ),
             IconButton(
               onPressed: () async {
-                if (fromWhere) {
-                  await setTypeUseCase.execute("patient");
+                Scaffold.of(context).openDrawer();
+                // if (fromWhere) {
+                //   await setTypeUseCase.execute("patient");
 
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) =>  Weather(fontSize: fontSize,)));
-                } else {
-                  await setTypeUseCase.execute("doctor");
+                //   Navigator.push(context,
+                //       MaterialPageRoute(builder: (context) =>  Weather(fontSize: fontSize,)));
+                // } else {
+                //   await setTypeUseCase.execute("doctor");
 
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>  doctorsideHome(fontSize: fontSize)));
-                }
+                //   Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //           builder: (context) =>  doctorsideHome(fontSize: fontSize)));
+                // }
               },
               icon: Icon(
                 Icons.menu,
