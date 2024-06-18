@@ -7,6 +7,7 @@ import 'package:dawini_full/doctor_Features/presentation/pages/doctor_cabinSide.
 import 'package:dawini_full/doctor_Features/presentation/pages/doctor_cabinSide.dart/swlhdoctor.dart/secondcontainer.dart';
 import 'package:dawini_full/doctor_Features/presentation/pages/doctor_cabinSide.dart/swlhdoctor.dart/today_patinet.dart';
 import 'package:dawini_full/doctor_Features/presentation/pages/doctors/Patient_Info.dart';
+import 'package:dawini_full/patient_features/presentation/pages/patients/patient.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/appBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -117,16 +118,88 @@ class _LanguageScreenState extends State<doctorview> {
                   fontSize: widget.fontSize,
                   doctor: doctor,
                 ),
+                Padding(
+                  padding: EdgeInsets.only(left: 8.w),
+                  child: Container(
+                    child: FittedBox(
+                      alignment: Alignment.topLeft,
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        "${locale.patient_in_examination} : ",
+                        style: TextStyle(
+                            fontFamily: "Nunito",
+                            color: const Color(0xff202020),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                  ),
+                ),
                 secondConatiner(
                     fontSize: widget.fontSize,
                     uid: doctor.uid,
                     turn: doctor.turn),
-                TodayPatinet(
-                  uid: doctor.uid,
-                  turn: doctor.turn,
-                  fontSize: widget.fontSize,
+                Row(
+                  children: [
+                    Container(
+                        margin: isArabic
+                            ? EdgeInsets.only(right: 8.w)
+                            : EdgeInsets.only(left: 8.w),
+                        width: 130.w,
+                        height: 23.h,
+                        child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            alignment: isArabic
+                                ? Alignment.bottomRight
+                                : Alignment.bottomLeft,
+                            child: Text("${locale.today_s_patients} :",
+                                style: TextStyle(
+                                    fontFamily: "Nunito",
+                                    color: Color(0xff202020),
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w800)))),
+                    const Spacer(),
+                    Container(
+                      margin: isArabic
+                          ? EdgeInsets.only(left: 8.w)
+                          : EdgeInsets.only(right: 8.w),
+                      width: 100.w,
+                      height: 23.h,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: isArabic
+                            ? Alignment.bottomLeft
+                            : Alignment.bottomRight,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) => Patientslist(
+                                          fontSize: widget.fontSize,
+                                          uid: widget
+                                              .uid, ////////////////////////////////
+                                        ))));
+                          },
+                          child: Text("${locale.see_all} ",
+                              style: TextStyle(
+                                  fontFamily: "Nunito",
+                                  color: Color(0xff0AA9A9),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600)),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-                Spacer(),
+                Expanded(
+                  child: TodayPatinet(
+                    uid: doctor.uid,
+                    turn: doctor.turn,
+                    fontSize: widget.fontSize,
+                  ),
+                ),
+                //Spacer(),
                 Container(
                   height: 75.h,
                   child: Row(

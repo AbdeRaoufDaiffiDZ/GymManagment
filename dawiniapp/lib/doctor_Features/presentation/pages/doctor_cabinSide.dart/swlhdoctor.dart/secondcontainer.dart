@@ -231,7 +231,7 @@ class _secondConatinerState extends State<secondConatiner> {
             );
           } else {
             return Padding(
-              padding: EdgeInsets.symmetric( horizontal: 8.h),
+              padding: EdgeInsets.symmetric(horizontal: 8.h),
               child: Container(
                   height: 71.h,
                   width: double.infinity,
@@ -239,20 +239,6 @@ class _secondConatinerState extends State<secondConatiner> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Container(
-                        child: FittedBox(
-                          alignment: Alignment.topLeft,
-                          fit: BoxFit.scaleDown,
-                          child: Text(
-                            "${locale.patient_in_examination} : ",
-                            style: TextStyle(
-                                fontFamily: "Nunito",
-                                color: const Color(0xff202020),
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                      ),
                       Container(
                         height: 25.h,
                         width: 240.w,
@@ -314,16 +300,73 @@ class _secondConatinerState extends State<secondConatiner> {
         // patientsInfoBloc.add(onGetPatinets(uid: widget.uid));
 
         return Center(
-          child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 8.w),
-            child: Text(
-              "No patient yet ",
-              style: TextStyle(
-                  fontFamily: "Nunito",
-                  color: const Color(0xff202020),
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w700),
-            ),
+          child: Column(
+            children: [
+              Container(
+                height: 209.h,
+                width: 175.w,
+                child: Image.asset(
+                  "assets/images/Group 43.png",
+                ),
+              ),
+              Container(
+                  margin: EdgeInsets.only(top: 20.h),
+                  width: 240,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        width: 200.w,
+                        height: 30.h,
+                        child: FittedBox(
+                          alignment: Alignment.center,
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            "text.noAppointmentsHere",
+                            style: TextStyle(
+                                color: Color(0Xff202020),
+                                fontFamily: "Nunito",
+                                fontSize: 22,
+                                fontWeight: FontWeight.w800),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 250.w,
+                        height: 40.h,
+                        child: FittedBox(
+                          alignment: Alignment.center,
+                          fit: BoxFit.scaleDown,
+                          child: RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: "Find a doctor of choice and take ",
+                                  style: TextStyle(
+                                    color: Color(0Xff202020).withOpacity(0.5),
+                                    fontFamily: "Nunito",
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: "\nan appointment",
+                                  style: TextStyle(
+                                    color: Color(0Xff202020).withOpacity(0.5),
+                                    fontFamily: "Nunito",
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ))
+            ],
           ),
         );
       } else if (state is PatientsInfoLoading) {

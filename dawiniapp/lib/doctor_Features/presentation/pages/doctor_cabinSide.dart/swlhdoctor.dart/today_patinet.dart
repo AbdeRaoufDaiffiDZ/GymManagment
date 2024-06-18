@@ -3,7 +3,6 @@
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:dawini_full/core/loading/loading.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/patients_info_bloc/patients_info_bloc.dart';
-import 'package:dawini_full/patient_features/presentation/pages/patients/patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -71,62 +70,62 @@ class _TodayPatinetState extends State<TodayPatinet> {
                 final data = state.patients[index];
                 if (state.patients.first.firstName == "No Patients ") {
                   return Container();
+                  /*Row(
+                    children: [
+                      Container(
+                          margin: isArabic
+                              ? EdgeInsets.only(right: 8.w)
+                              : EdgeInsets.only(left: 8.w),
+                          width: 130.w,
+                          height: 23.h,
+                          child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: isArabic
+                                  ? Alignment.bottomRight
+                                  : Alignment.bottomLeft,
+                              child: Text("${locale.today_s_patients} :",
+                                  style: TextStyle(
+                                      fontFamily: "Nunito",
+                                      color: Color(0xff202020),
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w800)))),
+                      const Spacer(),
+                      Container(
+                        margin: isArabic
+                            ? EdgeInsets.only(left: 8.w)
+                            : EdgeInsets.only(right: 8.w),
+                        width: 100.w,
+                        height: 23.h,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: isArabic
+                              ? Alignment.bottomLeft
+                              : Alignment.bottomRight,
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: ((context) => Patientslist(
+                                            fontSize: widget.fontSize,
+                                            uid:
+                                                " doctor.uid", ////////////////////////////////
+                                          ))));
+                            },
+                            child: Text("${locale.see_all} ",
+                                style: TextStyle(
+                                    fontFamily: "Nunito",
+                                    color: Color(0xff0AA9A9),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600)),
+                          ),
+                        ),
+                      )
+                    ],
+                  );*/
                 }
                 return Column(
                   children: [
-                    Row(
-                      children: [
-                        Container(
-                            margin: isArabic
-                                ? EdgeInsets.only(right: 8.w)
-                                : EdgeInsets.only(left: 8.w),
-                            width: 130.w,
-                            height: 23.h,
-                            child: FittedBox(
-                                fit: BoxFit.scaleDown,
-                                alignment: isArabic
-                                    ? Alignment.bottomRight
-                                    : Alignment.bottomLeft,
-                                child: Text("${locale.today_s_patients} :",
-                                    style: TextStyle(
-                                        fontFamily: "Nunito",
-                                        color: Color(0xff202020),
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w800)))),
-                        const Spacer(),
-                        Container(
-                          margin: isArabic
-                              ? EdgeInsets.only(left: 8.w)
-                              : EdgeInsets.only(right: 8.w),
-                          width: 100.w,
-                          height: 23.h,
-                          child: FittedBox(
-                            fit: BoxFit.scaleDown,
-                            alignment: isArabic
-                                ? Alignment.bottomLeft
-                                : Alignment.bottomRight,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: ((context) => Patientslist(
-                                              fontSize: widget.fontSize,
-                                              uid:
-                                                  " doctor.uid", ////////////////////////////////
-                                            ))));
-                              },
-                              child: Text("${locale.see_all} ",
-                                  style: TextStyle(
-                                      fontFamily: "Nunito",
-                                      color: Color(0xff0AA9A9),
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600)),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
                     Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 8.w, vertical: 5.h),

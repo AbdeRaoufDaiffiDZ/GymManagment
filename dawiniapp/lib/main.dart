@@ -5,7 +5,6 @@ import 'dart:async';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:dawini_full/auth/domain/usecases/auth_usecase.dart';
 import 'package:dawini_full/auth/presentation/bloc/auth_bloc.dart';
-import 'package:dawini_full/dawina_info.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_data_bloc/doctor_data_bloc.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/patients_info_bloc/patients_info_bloc.dart';
 import 'package:dawini_full/firebase_options.dart';
@@ -141,13 +140,11 @@ class _MyAppState extends State<MyApp> {
                       AppLocalizations.localizationsDelegates,
                   supportedLocales: AppLocalizations.supportedLocales,
                   debugShowCheckedModeBanner: false,
-                  home: DawinaInfo()
-                  /*   MyWidget(
-                    fontSize: fontSize == null ? 3 : fontSize!,
+                  home: MyWidget(
+                    fontSize: fontSize == null ? 0 : fontSize!,
                     locale:
                         _locale, // TODO HERE YOU CHANGE THE FONT SIZE, USER IS ABLE TO CHANGE FONTS SIZE FROM THIS PARM
-                  )*/
-                  );
+                  ));
             }));
   }
 

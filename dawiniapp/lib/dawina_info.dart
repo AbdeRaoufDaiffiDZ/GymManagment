@@ -114,7 +114,7 @@ class _DawinaInfoState extends State<DawinaInfo> {
                                             ? EdgeInsets.only(right: 15.0)
                                             : EdgeInsets.only(left: 15.0),
                                         child: Image.asset(
-                                          "assets/images/swicth.png",
+                                          "assets/images/switch.png",
                                           color: const Color(0xff202020)
                                               .withOpacity(0.7),
                                         ),

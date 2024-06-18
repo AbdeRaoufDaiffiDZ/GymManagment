@@ -166,9 +166,8 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                                           color: const Color(0XFF202020))),
                                 ),
                               ),
-                        
                               Container(
-                                // margin:  EdgeInsets.only(left: 5.w),
+                                margin: EdgeInsets.only(left: 5.w),
                                 width: double.infinity,
                                 height: 15.h,
                                 child: FittedBox(
@@ -184,11 +183,10 @@ class _RecommandedDoctorsState extends State<RecommandedDoctors> {
                                           fontFamily: 'Nunito',
                                           fontSize: 15.sp - widget.fontSize.sp,
                                           fontWeight: FontWeight.w600,
-                                          color: const Color(0XFF000000))
-                                          ),
+                                          color: const Color(0XFF000000))),
                                 ),
                               ),
-                            Container(
+                              Container(
                                 margin: EdgeInsets.only(left: 3.w),
                                 width: double.infinity,
                                 height: 15.h,

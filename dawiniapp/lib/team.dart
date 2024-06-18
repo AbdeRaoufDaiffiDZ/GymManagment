@@ -143,7 +143,7 @@ class _TeamState extends State<Team> {
                           Spacer(),
                           IconButton(
                               onPressed: () => _launchLinkedIn(
-                                  'https://www.linkedin.com/in/another-profile-1/'),
+                                  'https://www.linkedin.com/in/abderaouf-daiffi-929493257/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app&fbclid=IwZXh0bgNhZW0CMTAAAR3Su5faiDS3ss7f7IVZkkq7eRzeSPnW1ZQRIw36XctNGzI-xKnEhqJFswA_aem_ZmFrZWR1bW15MTZieXRlcw'),
                               icon: Icon(
                                 color: const Color(0xff202020).withOpacity(0.7),
                                 Icons.arrow_forward_ios,

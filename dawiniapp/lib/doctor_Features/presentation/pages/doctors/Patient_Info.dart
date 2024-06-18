@@ -82,8 +82,6 @@ class _Patient_infoState extends State<Patient_info> {
     _lastNameController.dispose();
     _ageController.dispose();
     _phoneNumberController.dispose();
-    _addressController.dispose();
-    _genderController.dispose();
     super.dispose();
   }
 
@@ -178,10 +176,7 @@ class _Patient_infoState extends State<Patient_info> {
                           controller: _phoneNumberController,
                           hintText: text.phone_number,
                           textInputType: TextInputType.number),
-                      buildInputField(null,
-                          controller: _addressController,
-                          hintText: text.home_adress,
-                          textInputType: TextInputType.streetAddress),
+                   
                     ],
                   ),
                 ),
