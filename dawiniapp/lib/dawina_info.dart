@@ -1,21 +1,28 @@
+import 'package:dawini_full/auth/presentation/welcomePage.dart';
 import 'package:dawini_full/introduction_feature/data/lanugage_constant.dart';
 import 'package:dawini_full/introduction_feature/domain/usecases/set_language_usecase.dart';
 import 'package:dawini_full/main.dart';
+import 'package:dawini_full/patient_features/presentation/pages/weather_pag.dart';
 import 'package:dawini_full/team.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:dawini_full/introduction_feature/domain/usecases/set_type_usecase.dart';
 
 class DawinaInfo extends StatefulWidget {
-  const DawinaInfo({super.key});
+  const DawinaInfo(
+      {super.key, required this.fontSize, required this.fromWhere});
+  final int fontSize;
 
+  final bool fromWhere;
   @override
   State<DawinaInfo> createState() => _DawinaInfoState();
 }
 
 class _DawinaInfoState extends State<DawinaInfo> {
   Locale? newLocale;
+  final SetTypeUseCase setTypeUseCase = SetTypeUseCase();
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +77,7 @@ class _DawinaInfoState extends State<DawinaInfo> {
                             ? EdgeInsets.only(right: 15.0)
                             : EdgeInsets.only(left: 15.0),
                         child: Text(
-                          "General",
+                          text.general,
                           style: TextStyle(
                               fontFamily: "Nunito",
                               color: Color(0xff202020),
@@ -114,7 +121,7 @@ class _DawinaInfoState extends State<DawinaInfo> {
                                             ? EdgeInsets.only(right: 15.0)
                                             : EdgeInsets.only(left: 15.0),
                                         child: Image.asset(
-                                          "assets/images/swicth.png",
+                                          "assets/images/switch.png",
                                           color: const Color(0xff202020)
                                               .withOpacity(0.7),
                                         ),
@@ -122,10 +129,10 @@ class _DawinaInfoState extends State<DawinaInfo> {
                                     ),
                                     Padding(
                                       padding: isArabic
-                                          ? EdgeInsets.only(right: 15.0)
+                                          ? EdgeInsets.only(right: 8.0)
                                           : EdgeInsets.only(left: 8),
                                       child: Text(
-                                        "Switch to patient mode",
+                                      widget.fromWhere ?  text.switch_to_patient_mode:text.switch_to_doctor_mode,
                                         style: TextStyle(
                                           fontFamily: "Nunito",
                                           fontSize: 18,
@@ -134,7 +141,32 @@ class _DawinaInfoState extends State<DawinaInfo> {
                                     ),
                                     const Spacer(),
                                     IconButton(
-                                        onPressed: () {},
+                                        onPressed: () async {
+                                          if (widget.fromWhere) {
+                                            await setTypeUseCase
+                                                .execute("patient");
+
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        Weather(
+                                                          fontSize:
+                                                              widget.fontSize,
+                                                        )));
+                                          } else {
+                                            await setTypeUseCase
+                                                .execute("doctor");
+
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        doctorsideHome(
+                                                            fontSize: widget
+                                                                .fontSize)));
+                                          }
+                                        },
                                         icon: Icon(
                                           color: const Color(0xff202020)
                                               .withOpacity(0.7),
@@ -182,10 +214,10 @@ class _DawinaInfoState extends State<DawinaInfo> {
                                     ),
                                     Padding(
                                       padding: isArabic
-                                          ? EdgeInsets.only(right: 15.0)
+                                          ? EdgeInsets.only(right: 8.0)
                                           : EdgeInsets.only(left: 8),
                                       child: Text(
-                                        "What is Dawina ?",
+                                        text.what_is_dawina,
                                         style: TextStyle(
                                           fontFamily: "Nunito",
                                           fontSize: 18,
@@ -229,7 +261,9 @@ class _DawinaInfoState extends State<DawinaInfo> {
                                     width: 37,
                                     child: Padding(
                                       padding:
-                                          const EdgeInsets.only(left: 15.0),
+                                         isArabic
+                                        ? EdgeInsets.only(right: 15)
+                                        : EdgeInsets.only(left: 15),
                                       child: Image.asset(
                                         "assets/images/team.png",
                                         color: const Color(0xff202020)
@@ -237,10 +271,12 @@ class _DawinaInfoState extends State<DawinaInfo> {
                                       ),
                                     ),
                                   ),
-                                  const Padding(
-                                    padding: EdgeInsets.only(left: 8),
+                                  Padding(
+                                    padding: isArabic
+                                        ? EdgeInsets.only(right: 8)
+                                        : EdgeInsets.only(left: 8),
                                     child: Text(
-                                      "Our Team",
+                                      text.our_team,
                                       style: TextStyle(
                                         fontFamily: "Nunito",
                                         fontSize: 18,
@@ -303,7 +339,7 @@ class _DawinaInfoState extends State<DawinaInfo> {
                                         ? EdgeInsets.only(right: 8)
                                         : EdgeInsets.only(left: 8),
                                     child: Text(
-                                      "Payment",
+                                      text.payment,
                                       style: TextStyle(
                                         fontFamily: "Nunito",
                                         fontSize: 18,
@@ -359,7 +395,7 @@ class _DawinaInfoState extends State<DawinaInfo> {
                                         ? EdgeInsets.only(right: 8)
                                         : EdgeInsets.only(left: 8),
                                     child: Text(
-                                      "Follow us on instagram",
+                                      text.follow_us_on_instgram,
                                       style: TextStyle(
                                         fontFamily: "Nunito",
                                         fontSize: 18,
@@ -389,7 +425,7 @@ class _DawinaInfoState extends State<DawinaInfo> {
                             ? EdgeInsets.only(right: 15, top: 8)
                             : EdgeInsets.only(left: 15, top: 8),
                         child: Text(
-                          "Contact us",
+                          text.contact_us,
                           style: TextStyle(
                               fontFamily: "Nunito",
                               color: Color(0xff202020),
@@ -441,7 +477,7 @@ class _DawinaInfoState extends State<DawinaInfo> {
                                       ? EdgeInsets.only(right: 8)
                                       : EdgeInsets.only(left: 8),
                                   child: Text(
-                                    "Send to us by e-mail",
+                                    text.send_to_us_by_email,
                                     style: TextStyle(
                                       fontFamily: "Nunito",
                                       fontSize: 18,
@@ -498,7 +534,7 @@ class _DawinaInfoState extends State<DawinaInfo> {
                                     ? EdgeInsets.only(right: 8)
                                     : EdgeInsets.only(left: 8),
                                 child: Text(
-                                  "Call us",
+                                  text.call_us,
                                   style: TextStyle(
                                     fontFamily: "Nunito",
                                     fontSize: 18,
@@ -554,7 +590,7 @@ class _DawinaInfoState extends State<DawinaInfo> {
                                     ? EdgeInsets.only(right: 8)
                                     : EdgeInsets.only(left: 8),
                                 child: Text(
-                                  "Send feedback",
+                                  text.send_feedback,
                                   style: TextStyle(
                                     fontFamily: "Nunito",
                                     fontSize: 18,

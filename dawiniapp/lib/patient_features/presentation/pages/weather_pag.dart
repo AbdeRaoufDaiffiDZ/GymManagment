@@ -42,19 +42,9 @@ class _DoctorPageState extends State<Weather> {
     final AppLocalizations text = AppLocalizations.of(context)!;
 
     return Scaffold(
-      drawer: DawinaInfo(),
+      drawer: DawinaInfo(fontSize: widget.fontSize,fromWhere:false ,),
         backgroundColor: Color(0xffFAFAFA),
-        floatingActionButton: MaterialButton(
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => SettingsPage(
-                          fontSize: widget.fontSize,
-                        )));
-          },
-          child: Icon(Icons.settings),
-        ),
+       
         bottomNavigationBar: Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -114,7 +104,6 @@ class _DoctorPageState extends State<Weather> {
           children: [
             myAppbar(
               fontSize: widget.fontSize,
-              fromWhere: false, // navigate to doctor side
             ),
             Container(
               child: Column(children: [

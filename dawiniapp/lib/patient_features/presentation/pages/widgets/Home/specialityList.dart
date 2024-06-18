@@ -15,7 +15,7 @@ class SpecialityList extends StatefulWidget {
 }
 
 class _SpecialityListState extends State<SpecialityList> {
-      String speciality = "";
+  String speciality = "";
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +24,37 @@ class _SpecialityListState extends State<SpecialityList> {
     final List<Map<String, String>> mylist = [
       {"text": text.all, "icon": "assets/images/xxxx.png"},
       {"text": text.generalist, "icon": "assets/images/xxxx.png"},
-      {"text": text.dentist, "icon": "assets/images/dentiste.png"},
-      {"text": text.opthalm, "icon": "assets/images/eyee.png"},
-      {"text": text.endocrino, "icon": "assets/images/Group.png"},
-      {"text": text.cardiology, "icon": "assets/images/Cardioo.png"},
+      {"text": text.anesthesiology, "icon": "assets/images/xxxx.png"},
+      {"text": text.cardiology, "icon": "assets/images/xxxx.png"},
+      {"text": text.dermatology, "icon": "assets/images/xxxx.png"},
+      {"text": text.emergency_medicine, "icon": "assets/images/xxxx.png"},
+      {"text": text.endocrinology, "icon": "assets/images/xxxx.png"},
+      {"text": text.gastroenterology, "icon": "assets/images/xxxx.png"},
+      {"text": text.general_surgery, "icon": "assets/images/xxxx.png"},
+      {"text": text.hematology, "icon": "assets/images/xxxx.png"},
+      {"text": text.infectious_diseases, "icon": "assets/images/xxxx.png"},
+      {"text": text.internal_medicine, "icon": "assets/images/xxxx.png"},
+      {"text": text.nephrology, "icon": "assets/images/xxxx.png"},
+      {"text": text.neurology, "icon": "assets/images/xxxx.png"},
+      {
+        "text": text.obstetrics_and_gynecology,
+        "icon": "assets/images/xxxx.png"
+      },
+      {"text": text.oncology, "icon": "assets/images/xxxx.png"},
+      {"text": text.ophthalmology, "icon": "assets/images/xxxx.png"},
+      {"text": text.orthopedic_surgery, "icon": "assets/images/xxxx.png"},
+      {"text": text.otorhinolaryngology, "icon": "assets/images/xxxx.png"},
+      {"text": text.pediatrics, "icon": "assets/images/xxxx.png"},
+      {
+        "text": text.physical_medicine_and_rehabilitation,
+        "icon": "assets/images/xxxx.png"
+      },
+      {"text": text.plastic_surgery, "icon": "assets/images/xxxx.png"},
+      {"text": text.psychiatry, "icon": "assets/images/xxxx.png"},
+      {"text": text.pulmonology, "icon": "assets/images/xxxx.png"},
+      {"text": text.radiology, "icon": "assets/images/xxxx.png"},
+      {"text": text.rheumatology, "icon": "assets/images/xxxx.png"},
+      {"text": text.urology, "icon": "assets/images/xxxx.png"},
     ];
     return Container(
       height: 85.h,
