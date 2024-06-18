@@ -1,6 +1,7 @@
 // ignore_for_file: camel_case_types
 
 import 'package:dawini_full/core/loading/loading.dart';
+import 'package:dawini_full/dawina_info.dart';
 import 'package:dawini_full/doctor_Features/domain/entities/doctor.dart';
 import 'package:dawini_full/doctor_Features/presentation/bloc/doctor_data_bloc/doctor_data_bloc.dart';
 import 'package:dawini_full/doctor_Features/presentation/pages/doctor_cabinSide.dart/swlhdoctor.dart/firstcontainer.dart';
@@ -48,6 +49,7 @@ class _LanguageScreenState extends State<doctorview> {
               .first;
 
           return Scaffold(
+      drawer: DawinaInfo(fontSize: widget.fontSize,fromWhere:true ,),
             backgroundColor: const Color(0xffFAFAFA),
             body: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -56,7 +58,6 @@ class _LanguageScreenState extends State<doctorview> {
               children: [
                 myAppbar(
                   fontSize: widget.fontSize,
-                  fromWhere: true, // navigate to patinet side
                 ),
                 Row(
                   children: [

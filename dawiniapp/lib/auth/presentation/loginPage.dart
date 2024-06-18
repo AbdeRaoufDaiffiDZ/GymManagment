@@ -5,6 +5,7 @@ import 'package:dawini_full/auth/domain/entity/auth_entity.dart';
 import 'package:dawini_full/auth/presentation/bloc/auth_bloc.dart';
 import 'package:dawini_full/auth/presentation/bloc/auth_event.dart';
 import 'package:dawini_full/auth/presentation/signup.dart';
+import 'package:dawini_full/dawina_info.dart';
 import 'package:dawini_full/patient_features/presentation/pages/widgets/Home/appBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -249,9 +250,12 @@ class _LoginPageState extends State<LoginPage> {
 
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
+        drawer: DawinaInfo(
+          fontSize: widget.fontSize,
+          fromWhere: true,
+        ),
         appBar: myAppbar(
           fontSize: widget.fontSize,
-          fromWhere: true, // navigate to doctor side
         ),
         body: SizedBox(
           height: height,

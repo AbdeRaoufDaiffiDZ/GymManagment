@@ -294,81 +294,81 @@ class _secondConatinerState extends State<secondConatiner> {
             );
           }
         } else {
-          return Center();
+          return Center(
+            child: Column(
+              children: [
+                Container(
+                  height: 209.h,
+                  width: 175.w,
+                  child: Image.asset(
+                    "assets/images/Group 43.png",
+                  ),
+                ),
+                Container(
+                    margin: EdgeInsets.only(top: 20.h),
+                    width: 240,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          width: 200.w,
+                          height: 30.h,
+                          child: FittedBox(
+                            alignment: Alignment.center,
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              "text.noAppointmentsHere",
+                              style: TextStyle(
+                                  color: Color(0Xff202020),
+                                  fontFamily: "Nunito",
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w800),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 250.w,
+                          height: 40.h,
+                          child: FittedBox(
+                            alignment: Alignment.center,
+                            fit: BoxFit.scaleDown,
+                            child: RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: "Find a doctor of choice and take ",
+                                    style: TextStyle(
+                                      color: Color(0Xff202020).withOpacity(0.5),
+                                      fontFamily: "Nunito",
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: "\nan appointment",
+                                    style: TextStyle(
+                                      color: Color(0Xff202020).withOpacity(0.5),
+                                      fontFamily: "Nunito",
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ))
+              ],
+            ),
+          );
         }
       } else if (state is PatientsInfoLoadingError) {
         // patientsInfoBloc.add(onGetPatinets(uid: widget.uid));
 
-        return Center(
-          child: Column(
-            children: [
-              Container(
-                height: 209.h,
-                width: 175.w,
-                child: Image.asset(
-                  "assets/images/Group 43.png",
-                ),
-              ),
-              Container(
-                  margin: EdgeInsets.only(top: 20.h),
-                  width: 240,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        width: 200.w,
-                        height: 30.h,
-                        child: FittedBox(
-                          alignment: Alignment.center,
-                          fit: BoxFit.scaleDown,
-                          child: Text(
-                            "text.noAppointmentsHere",
-                            style: TextStyle(
-                                color: Color(0Xff202020),
-                                fontFamily: "Nunito",
-                                fontSize: 22,
-                                fontWeight: FontWeight.w800),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 250.w,
-                        height: 40.h,
-                        child: FittedBox(
-                          alignment: Alignment.center,
-                          fit: BoxFit.scaleDown,
-                          child: RichText(
-                            textAlign: TextAlign.center,
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: "Find a doctor of choice and take ",
-                                  style: TextStyle(
-                                    color: Color(0Xff202020).withOpacity(0.5),
-                                    fontFamily: "Nunito",
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: "\nan appointment",
-                                  style: TextStyle(
-                                    color: Color(0Xff202020).withOpacity(0.5),
-                                    fontFamily: "Nunito",
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ))
-            ],
-          ),
-        );
+        return Container();
       } else if (state is PatientsInfoLoading) {
         return const Loading();
       } else {

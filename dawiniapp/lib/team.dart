@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Team extends StatefulWidget {
   const Team({super.key});
@@ -12,6 +13,9 @@ class Team extends StatefulWidget {
 class _TeamState extends State<Team> {
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations text = AppLocalizations.of(context)!;
+    final bool isArabic = Localizations.localeOf(context).languageCode == "ar";
+
     return LayoutBuilder(builder: (context, constraints) {
       final widthh = constraints.maxWidth;
       final heightt = constraints.maxHeight;
@@ -22,7 +26,9 @@ class _TeamState extends State<Team> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              margin: EdgeInsets.only(left: widthh * 0.04, top: heightt * 0.03),
+              margin: isArabic
+                  ? EdgeInsets.only(right: widthh * 0.04, top: heightt * 0.03)
+                  : EdgeInsets.only(left: widthh * 0.04, top: heightt * 0.03),
               width: (0.5 * widthh) * 0.23,
               height: (0.5 * heightt) * 0.23,
               decoration: const BoxDecoration(
@@ -43,11 +49,14 @@ class _TeamState extends State<Team> {
               ),
             ),
             Container(
-              margin:
-                  EdgeInsets.only(left: widthh * 0.04, bottom: heightt * 0.027),
+              margin: isArabic
+                  ? EdgeInsets.only(
+                      right: widthh * 0.04, bottom: heightt * 0.027)
+                  : EdgeInsets.only(
+                      left: widthh * 0.04, bottom: heightt * 0.027),
               width: widthh,
               child: Text(
-                "Our Team",
+                text.our_team,
                 style: TextStyle(
                     color: Color(0xff202020),
                     fontFamily: "Nunito",

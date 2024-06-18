@@ -88,7 +88,6 @@ class _todayState extends State<today> with TickerProviderStateMixin {
                               child: Container(
                                 height: 90.h,
                                 decoration: BoxDecoration(
-                                  color: Colors.red,
                                   border: Border.all(
                                       width: 1.5.w,
                                       color: Colors.grey.withOpacity(0.23)),
