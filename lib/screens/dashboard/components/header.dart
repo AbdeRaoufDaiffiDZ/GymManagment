@@ -1,7 +1,4 @@
-import 'package:admin/controllers/MenuAppController.dart';
-import 'package:admin/responsive.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class Header extends StatelessWidget {
   const Header({
@@ -13,29 +10,22 @@ class Header extends StatelessWidget {
     return Container(
       height: 80,
       decoration: BoxDecoration(
-        color: Color(0xffFAFAFA),
+        color: Colors.white,
         border: Border(
           bottom: BorderSide(
-            color: Color(0xffE6E6E6), // Color of the border
+            color: Color(0xffFFA05C).withOpacity(0.5), // Color of the border
             width: 2.5, // Width of the border
           ),
         ),
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            if (!Responsive.isDesktop(context))
-              IconButton(
-                icon: Icon(Icons.menu),
-                onPressed: context.read<MenuAppController>().controlMenu,
-              ),
-            if (!Responsive.isMobile(context))
-              Text(
-                "Dawina’s dashbaord ! ",
-                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 23),
-              ),
-          ],
+        child: Center(
+          child: Text("Gym’s dashbaord ! ",
+              style: TextStyle(
+                  fontWeight: FontWeight.w800,
+                  fontSize: 25,
+                  color: Colors.black)),
         ),
       ),
     );

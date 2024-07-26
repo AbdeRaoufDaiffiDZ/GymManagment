@@ -1,5 +1,5 @@
-import 'package:admin/screens/dashboard/components/manage%20profiles/dashboard2.dart';
 import 'package:admin/screens/dashboard/components/App%20stats/dashboard_screen.dart';
+import 'package:admin/screens/dashboard/components/manage%20profiles/dashboard2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -14,7 +14,6 @@ class _DashboardState extends State<Dashboard> {
   final List<Widget> _pages = [
     DashboardScreen(), // Your actual screens
     DashboardScreen2(),
-    //CreateProfileScreen(),
   ];
 
   @override
@@ -72,14 +71,16 @@ class SideMenu extends StatelessWidget {
         child: ListView(
           children: [
             Container(
-              height: 135,
+              height: 150,
               alignment: Alignment.topCenter,
               decoration: BoxDecoration(
                 color: Color(0xffFAFAFA),
               ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: Image.asset("assets/images/dawina.png"),
+                child: Image.asset(
+                  "assets/images/gymer.png",
+                ),
               ),
             ),
             DrawerListTile(
@@ -130,14 +131,14 @@ class DrawerListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       selected: isSelected,
-      selectedTileColor: Color(0xffEDF4F4),
-      tileColor: isSelected ? Color(0xffEDF4F4) : Color(0xffFAFAFA),
+      selectedTileColor: Color(0xffFFA05D).withOpacity(0.2),
+      tileColor: isSelected ? Color(0xffFFA05D) : Color(0xffFAFAFA),
       onTap: press,
       horizontalTitleGap: 6.0,
       leading: SvgPicture.asset(
         svgSrc,
         colorFilter: ColorFilter.mode(
-            isSelected ? Color(0xff0AA9A9) : Color(0xff202020).withOpacity(0.7),
+            isSelected ? Color(0xffFFA05D) : Color(0xff202020).withOpacity(0.7),
             BlendMode.srcIn),
         height: 20,
       ),
@@ -145,12 +146,10 @@ class DrawerListTile extends StatelessWidget {
         title,
         style: TextStyle(
           color: isSelected
-              ? Color(0xff0AA9A9)
+              ? Color(0xffFFA05D)
               : Color(0xff202020).withOpacity(0.7),
         ),
       ),
     );
   }
 }
-
-

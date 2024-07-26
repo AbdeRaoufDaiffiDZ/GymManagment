@@ -1,5 +1,3 @@
-import 'package:admin/screens/dashboard/components/App%20stats/Appointments.dart';
-import 'package:admin/screens/dashboard/components/App%20stats/Users_per_region.dart';
 import 'package:admin/screens/dashboard/components/App%20stats/users.dart';
 import 'package:flutter/material.dart';
 
@@ -19,8 +17,6 @@ class DashboardScreen extends StatelessWidget {
               Header(),
               SizedBox(height: defaultPadding),
               users(),
-              userPerRegion(),
-              appointments()
             ],
           ),
         ),

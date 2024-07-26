@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class users extends StatelessWidget {
   const users({
@@ -18,32 +17,40 @@ class users extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0),
               child: Text(
-                "Users",
+                "Memberships statistics :",
                 style: TextStyle(
                     fontWeight: FontWeight.w700,
-                    color: Color(0xff2020202).withOpacity(0.65),
+                    color: Color(0xff202020),
                     fontSize: 20),
               ),
             ),
-            Row(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                userss(
-                  svg: "assets/icons/bb.svg",
-                  text1: "100",
-                  text2: "Total user",
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    userss(
+                      pngg: "assets/images/qs.png",
+                      text1: "100",
+                      text2: "Registred",
+                      clr: Color(0xffE544FF),
+                    ),
+                    userss(
+                      pngg: "assets/images/expired.png",
+                      text1: "100",
+                      text2: "Expired",
+                      clr: Color(0xffFF007A),
+                    ),
+                  ],
                 ),
-                SizedBox(width: 30),
+                SizedBox(height: 50),
                 userss(
-                  svg: "assets/icons/ss.svg",
+                  pngg: "assets/images/aa.png",
                   text1: "100",
-                  text2: "Patient",
+                  text2: "Near to Expired",
+                  clr: Color(0xff10BD9E),
                 ),
-                SizedBox(width: 30),
-                userss(
-                  svg: "assets/icons/aa.svg",
-                  text1: "100",
-                  text2: "Doctor",
-                )
               ],
             )
           ],
@@ -54,18 +61,23 @@ class users extends StatelessWidget {
 }
 
 class userss extends StatelessWidget {
-  final String svg;
+  final String pngg;
   final String text1;
   final String text2;
+  final Color clr;
   const userss(
-      {Key? key, required this.svg, required this.text1, required this.text2})
+      {Key? key,
+      required this.pngg,
+      required this.text1,
+      required this.text2,
+      required this.clr})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 90,
-      width: 300,
+      height: 120,
+      width: 500,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(15),
@@ -73,46 +85,33 @@ class userss extends StatelessWidget {
             BoxShadow(
                 color: Color(0xffE6E6E6), spreadRadius: 1.5, blurRadius: 0.5)
           ]),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-            child: Container(
-              height: 53,
-              width: 53,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle, color: Color(0xffE6F5F3)),
-              child: SvgPicture.asset(
-                svg,
-                colorFilter: ColorFilter.mode(
-                    Color(0xff202020).withOpacity(0.7), BlendMode.srcIn),
-                height: 13,
-                fit: BoxFit.scaleDown,
-              ),
+          Text(
+            text1,
+            style: TextStyle(
+              color: clr,
+              fontSize: 28,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  text1,
-                  style: TextStyle(
-                    color: Color(0XFF202020),
-                    fontSize: 28,
-                  ),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  text2,
-                  style: TextStyle(
-                    color: Color(0XFF202020).withOpacity(0.6),
-                    fontSize: 15,
-                  ),
-                )
-              ],
+          Container(
+            height: 57,
+            width: 57,
+            child: Image.asset(
+              pngg,
+              //height: 27,
+              fit: BoxFit.contain,
             ),
+          ),
+          SizedBox(height: 1),
+          Text(
+            text2,
+            style: TextStyle(
+                color: Color(0XFF202020),
+                fontSize: 15,
+                fontWeight: FontWeight.bold),
           )
         ],
       ),
