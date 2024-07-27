@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-                int count = 0;
+int count = 0;
 
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
@@ -18,10 +18,11 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _planController = TextEditingController();
-  final TextEditingController _startingDateController = TextEditingController();
   final TextEditingController _creditController = TextEditingController();
   final MongoDatabase monog = MongoDatabase();
+  final String plan = "Unlimited";
+  final startingDate = DateTime.now();
+
   List<User_Data> _allItems = [];
 
   List<User_Data> _filteredItems = [];
@@ -43,17 +44,13 @@ class _SearchState extends State<Search> {
   }
 
   void _addProfile() {
-    if (_nameController.text.isNotEmpty &&
-        _planController.text.isNotEmpty &&
-        _startingDateController.text.isNotEmpty &&
-        _creditController.text.isNotEmpty) {
-      final startingDate = DateTime.now();
+    if (_nameController.text.isNotEmpty && _creditController.text.isNotEmpty) {
       final Unlimited_PlanBloc _unlimited_bloc =
           BlocProvider.of<Unlimited_PlanBloc>(context);
 
       User_Data newUser = User_Data(
           fullName: _nameController.text,
-          plan: _planController.text,
+          plan: plan,
           startingDate: startingDate,
           endDate: startingDate.add(const Duration(days: 30)),
           credit: _creditController.text,
@@ -62,10 +59,10 @@ class _SearchState extends State<Search> {
       // monog.retriveData();
       setState(() {
         _filteredItems = _allItems;
+        count = 0;
       });
       _nameController.clear();
-      _planController.clear();
-      _startingDateController.clear();
+
       _creditController.clear();
     }
   }
@@ -74,8 +71,7 @@ class _SearchState extends State<Search> {
   void dispose() {
     _searchController.dispose();
     _nameController.dispose();
-    _planController.dispose();
-    _startingDateController.dispose();
+
     _creditController.dispose();
     super.dispose();
   }
@@ -144,9 +140,9 @@ class _SearchState extends State<Search> {
             child: Row(
               children: [
                 Expanded(child: _inputField(_nameController, 'Name', false)),
-                SizedBox(width: 10),
-                Expanded(child: _inputField(_planController, 'Plan', false)), // false for keboard type number or null
-               
+                // SizedBox(width: 10),
+                // Expanded(child: _inputField(_planController, 'Plan', false)), // false for keboard type number or null
+
                 SizedBox(width: 10),
                 Expanded(child: _inputField(_creditController, 'Credit', true)),
                 SizedBox(width: 10),
@@ -190,9 +186,9 @@ class _SearchState extends State<Search> {
                 builder: (context, state) {
               if (state is SuccessState) {
                 _allItems = state.users;
-                if(count == 0){
+                if (count == 0) {
                   _filteredItems = state.users;
-                  count ++ ;
+                  count++;
                 }
                 return SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -237,7 +233,7 @@ class _SearchState extends State<Search> {
                 _unlimited_bloc.add(GetUsersEvent());
                 return Loading();
               } else if (state is ErrorState) {
-                return Placeholder();
+                return Loading();
               } else {
                 return Loading();
               }

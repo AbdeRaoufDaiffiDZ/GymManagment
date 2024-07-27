@@ -1,4 +1,7 @@
+import 'package:admin/const/loading.dart';
+import 'package:admin/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class users extends StatelessWidget {
   const users({
@@ -7,6 +10,8 @@ class users extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Unlimited_PlanBloc _unlimited_bloc =
+        BlocProvider.of<Unlimited_PlanBloc>(context);
     return Container(
       child: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -24,35 +29,56 @@ class users extends StatelessWidget {
                     fontSize: 20),
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+            BlocBuilder<Unlimited_PlanBloc, Unlimited_PlanState>(
+                builder: (context, state) {
+              if (state is SuccessState) {
+                int registred = state.users.length;
+                int expired = state.users
+                    .where((user) =>
+                        user.endDate.difference(user.startingDate).inDays <= 0)
+                    .length;
+                int nearToexpired = state.users
+                    .where((user) =>
+                        user.endDate.difference(user.startingDate).inDays > 0 && user.endDate.difference(user.startingDate).inDays < 5  )
+                    .length;
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    userss(
-                      pngg: "assets/images/qs.png",
-                      text1: "100",
-                      text2: "Registred",
-                      clr: Color(0xffE544FF),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        userss(
+                          pngg: "assets/images/qs.png",
+                          text1: registred.toString(),
+                          text2: "Registred",
+                          clr: Color(0xffE544FF),
+                        ),
+                        userss(
+                          pngg: "assets/images/expired.png",
+                          text1: expired.toString(),
+                          text2: "Expired",
+                          clr: Color(0xffFF007A),
+                        ),
+                      ],
                     ),
+                    SizedBox(height: 50),
                     userss(
-                      pngg: "assets/images/expired.png",
-                      text1: "100",
-                      text2: "Expired",
-                      clr: Color(0xffFF007A),
+                      pngg: "assets/images/aa.png",
+                      text1: nearToexpired.toString(),
+                      text2: "Near to Expired",
+                      clr: Color(0xff10BD9E),
                     ),
                   ],
-                ),
-                SizedBox(height: 50),
-                userss(
-                  pngg: "assets/images/aa.png",
-                  text1: "100",
-                  text2: "Near to Expired",
-                  clr: Color(0xff10BD9E),
-                ),
-              ],
-            )
+                );
+              } else if (state is IinitialState) {
+                _unlimited_bloc.add(GetUsersEvent());
+                return Loading();
+              } else if (state is ErrorState) {
+                return Loading();
+              } else {
+                return Loading();
+              }
+            })
           ],
         ),
       ),

@@ -35,6 +35,9 @@ class MongoDatabase {
 
   Future<Either<Failure, String>> InsertUser({required User_Data user}) async {
     try {
+       if (db == null) {
+        await connect();
+      }
       final collection = db?.collection(collectionName);
       final documentToInsert = {
         '_id': user.id, // Assigning a string value to '_id'

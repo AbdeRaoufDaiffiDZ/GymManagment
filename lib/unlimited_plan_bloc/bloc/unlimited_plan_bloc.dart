@@ -16,32 +16,23 @@ class Unlimited_PlanBloc
   Unlimited_PlanBloc() : super(IinitialState()) {
     on<Unlimited_PlanEvent>((event, emit) async {
       if (event is AddUserEvent) {
-        MongoDatabase.connect();
         emit(LoadingState());
         final result = await dataSource.InsertUser(user: event.user);
         if (result.isLeft) {
           emit(ErrorState(error: result.left.message));
-
         } else {
           final data = await dataSource.RetriveData();
           data.isRight
               ? emit(SuccessState(users: data.right))
               : emit(ErrorState(error: data.left.message));
         }
-                MongoDatabase.close();
-
       } else if (event is GetUsersEvent) {
-        MongoDatabase.connect();
         emit(LoadingState());
         final data = await dataSource.RetriveData();
         data.isRight
             ? emit(SuccessState(users: data.right))
             : emit(ErrorState(error: data.left.message));
-
-                    MongoDatabase.close();
-
       } else if (event is DeleteUserEvent) {
-        MongoDatabase.connect();
         emit(LoadingState());
         final result = await dataSource.DeleteUser(user: event.user);
         if (result.isLeft) {
@@ -52,8 +43,6 @@ class Unlimited_PlanBloc
               ? emit(SuccessState(users: data.right))
               : emit(ErrorState(error: data.left.message));
         }
-                MongoDatabase.close();
-
       }
     });
   }
@@ -61,5 +50,6 @@ class Unlimited_PlanBloc
   @override
   Future<void> close() async {
     await super.close();
+    MongoDatabase.close();
   }
 }
