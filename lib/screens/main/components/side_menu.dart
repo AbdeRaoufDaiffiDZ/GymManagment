@@ -100,12 +100,36 @@ class SideMenu extends StatelessWidget {
               isSelected: selectedIndex == 1,
             ),
             DrawerListTile(
-              title: "Create profile",
+              title: "Unlimited Plan",
               svgSrc: "assets/icons/create.svg",
               press: () {
                 onItemSelected(2);
               },
               isSelected: selectedIndex == 2,
+            ),
+            DrawerListTile(
+              title: "8 session Plan",
+              svgSrc: "assets/icons/create.svg",
+              press: () {
+                onItemSelected(3);
+              },
+              isSelected: selectedIndex == 3,
+            ),
+            DrawerListTile(
+              title: "12 session Plan",
+              svgSrc: "assets/icons/create.svg",
+              press: () {
+                onItemSelected(4);
+              },
+              isSelected: selectedIndex == 4,
+            ),
+            DrawerListTile(
+              title: "16 session Plan",
+              svgSrc: "assets/icons/create.svg",
+              press: () {
+                onItemSelected(5);
+              },
+              isSelected: selectedIndex == 5,
             ),
           ],
         ),

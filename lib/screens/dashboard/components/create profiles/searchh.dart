@@ -1,4 +1,12 @@
+import 'package:admin/const/loading.dart';
+import 'package:admin/data/mongo_db.dart';
+import 'package:admin/entities/user_data_entity.dart';
+import 'package:admin/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:mongo_dart/mongo_dart.dart' as mongo;
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+                int count = 0;
 
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
@@ -11,43 +19,12 @@ class _SearchState extends State<Search> {
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _planController = TextEditingController();
-  final TextEditingController _daysLeftController = TextEditingController();
+  final TextEditingController _startingDateController = TextEditingController();
   final TextEditingController _creditController = TextEditingController();
+  final MongoDatabase monog = MongoDatabase();
+  List<User_Data> _allItems = [];
 
-  List<Item> _allItems = [
-    Item(
-        name: "Hariri Sofian",
-        plan: "Cardio",
-        daysLeft: "20 days",
-        credit: "1000 DA"),
-    Item(
-        name: "Hariri Sofian",
-        plan: "Cardio",
-        daysLeft: "10 days",
-        credit: "1000 DA"),
-    Item(
-        name: "Hariri Sofian",
-        plan: "Cardio",
-        daysLeft: "12 days",
-        credit: "1000 DA"),
-    Item(
-        name: "Hariri Sofian",
-        plan: "Cardio",
-        daysLeft: "1 day",
-        credit: "1000 DA"),
-    Item(
-        name: "Daiffi Raouf",
-        plan: "Cardio",
-        daysLeft: "31 days",
-        credit: "1000 DA"),
-    Item(
-        name: "Hariri Sofian",
-        plan: "Cardio",
-        daysLeft: "6 days",
-        credit: "1000 DA"),
-  ];
-
-  List<Item> _filteredItems = [];
+  List<User_Data> _filteredItems = [];
 
   @override
   void initState() {
@@ -60,7 +37,7 @@ class _SearchState extends State<Search> {
     final query = _searchController.text.toLowerCase();
     setState(() {
       _filteredItems = _allItems.where((item) {
-        return item.name.toLowerCase().contains(query);
+        return item.fullName.toLowerCase().contains(query);
       }).toList();
     });
   }
@@ -68,20 +45,27 @@ class _SearchState extends State<Search> {
   void _addProfile() {
     if (_nameController.text.isNotEmpty &&
         _planController.text.isNotEmpty &&
-        _daysLeftController.text.isNotEmpty &&
+        _startingDateController.text.isNotEmpty &&
         _creditController.text.isNotEmpty) {
-      setState(() {
-        _allItems.add(Item(
-          name: _nameController.text,
+      final startingDate = DateTime.now();
+      final Unlimited_PlanBloc _unlimited_bloc =
+          BlocProvider.of<Unlimited_PlanBloc>(context);
+
+      User_Data newUser = User_Data(
+          fullName: _nameController.text,
           plan: _planController.text,
-          daysLeft: _daysLeftController.text,
+          startingDate: startingDate,
+          endDate: startingDate.add(const Duration(days: 30)),
           credit: _creditController.text,
-        ));
+          id: mongo.ObjectId().toHexString());
+      _unlimited_bloc.add(AddUserEvent(user: newUser));
+      // monog.retriveData();
+      setState(() {
         _filteredItems = _allItems;
       });
       _nameController.clear();
       _planController.clear();
-      _daysLeftController.clear();
+      _startingDateController.clear();
       _creditController.clear();
     }
   }
@@ -91,13 +75,16 @@ class _SearchState extends State<Search> {
     _searchController.dispose();
     _nameController.dispose();
     _planController.dispose();
-    _daysLeftController.dispose();
+    _startingDateController.dispose();
     _creditController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final Unlimited_PlanBloc _unlimited_bloc =
+        BlocProvider.of<Unlimited_PlanBloc>(context);
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,13 +143,12 @@ class _SearchState extends State<Search> {
             ),
             child: Row(
               children: [
-                Expanded(child: _inputField(_nameController, 'Name')),
+                Expanded(child: _inputField(_nameController, 'Name', false)),
                 SizedBox(width: 10),
-                Expanded(child: _inputField(_planController, 'Plan')),
+                Expanded(child: _inputField(_planController, 'Plan', false)), // false for keboard type number or null
+               
                 SizedBox(width: 10),
-                Expanded(child: _inputField(_daysLeftController, 'Days left')),
-                SizedBox(width: 10),
-                Expanded(child: _inputField(_creditController, 'Credit')),
+                Expanded(child: _inputField(_creditController, 'Credit', true)),
                 SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: _addProfile,
@@ -200,51 +186,73 @@ class _SearchState extends State<Search> {
           ),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Table(
-                columnWidths: {
-                  0: FixedColumnWidth(300),
-                  1: FixedColumnWidth(300),
-                  2: FixedColumnWidth(300),
-                  3: FixedColumnWidth(300),
-                },
-                children: [
-                  TableRow(
-                    decoration: BoxDecoration(
-                      color: Color(0xffFFA05D).withOpacity(0.4),
-                    ),
+            child: BlocBuilder<Unlimited_PlanBloc, Unlimited_PlanState>(
+                builder: (context, state) {
+              if (state is SuccessState) {
+                _allItems = state.users;
+                if(count == 0){
+                  _filteredItems = state.users;
+                  count ++ ;
+                }
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Table(
+                    columnWidths: {
+                      0: FixedColumnWidth(300),
+                      1: FixedColumnWidth(300),
+                      2: FixedColumnWidth(300),
+                      3: FixedColumnWidth(300),
+                    },
                     children: [
-                      _tableHeaderCell("Name"),
-                      _tableHeaderCell("Plan"),
-                      _tableHeaderCell("Days left"),
-                      _tableHeaderCell("Credit"),
+                      TableRow(
+                        decoration: BoxDecoration(
+                          color: Color(0xffFFA05D).withOpacity(0.4),
+                        ),
+                        children: [
+                          _tableHeaderCell("Name"),
+                          _tableHeaderCell("Plan"),
+                          _tableHeaderCell("Days left"),
+                          _tableHeaderCell("Credit"),
+                        ],
+                      ),
+                      for (var user in _filteredItems)
+                        TableRow(
+                          decoration: BoxDecoration(
+                            color: Color(0xffFAFAFA),
+                          ),
+                          children: [
+                            _tableCell(user.fullName),
+                            _tableCell(user.plan),
+                            _tableCell(user.endDate
+                                .difference(user.startingDate)
+                                .inDays
+                                .toString()),
+                            _tableCell(user.credit),
+                          ],
+                        ),
                     ],
                   ),
-                  for (var item in _filteredItems)
-                    TableRow(
-                      decoration: BoxDecoration(
-                        color: Color(0xffFAFAFA),
-                      ),
-                      children: [
-                        _tableCell(item.name),
-                        _tableCell(item.plan),
-                        _tableCell(item.daysLeft),
-                        _tableCell(item.credit),
-                      ],
-                    ),
-                ],
-              ),
-            ),
+                );
+              } else if (state is IinitialState) {
+                _unlimited_bloc.add(GetUsersEvent());
+                return Loading();
+              } else if (state is ErrorState) {
+                return Placeholder();
+              } else {
+                return Loading();
+              }
+            }),
           ),
         ],
       ),
     );
   }
 
-  Widget _inputField(TextEditingController controller, String hint) {
+  Widget _inputField(
+      TextEditingController controller, String hint, bool numberOrNot) {
     return TextField(
       controller: controller,
+      keyboardType: numberOrNot ? TextInputType.number : null,
       decoration: InputDecoration(
         border: InputBorder.none,
         hintText: hint,
