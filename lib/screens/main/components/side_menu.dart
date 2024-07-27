@@ -1,5 +1,4 @@
 import 'package:admin/screens/dashboard/components/App%20stats/dashboard_screen.dart';
-import 'package:admin/screens/dashboard/components/manage%20profiles/dashboard2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -13,7 +12,6 @@ class _DashboardState extends State<Dashboard> {
 
   final List<Widget> _pages = [
     DashboardScreen(), // Your actual screens
-    DashboardScreen2(),
   ];
 
   @override
@@ -92,15 +90,15 @@ class SideMenu extends StatelessWidget {
               isSelected: selectedIndex == 0,
             ),
             DrawerListTile(
-              title: "Manage profiles",
-              svgSrc: "assets/icons/manage.svg",
+              title: "Unlimited Plan",
+              svgSrc: "assets/icons/create.svg",
               press: () {
                 onItemSelected(1);
               },
               isSelected: selectedIndex == 1,
             ),
             DrawerListTile(
-              title: "Unlimited Plan",
+              title: "8 session Plan",
               svgSrc: "assets/icons/create.svg",
               press: () {
                 onItemSelected(2);
@@ -108,7 +106,7 @@ class SideMenu extends StatelessWidget {
               isSelected: selectedIndex == 2,
             ),
             DrawerListTile(
-              title: "8 session Plan",
+              title: "12 session Plan",
               svgSrc: "assets/icons/create.svg",
               press: () {
                 onItemSelected(3);
@@ -116,20 +114,12 @@ class SideMenu extends StatelessWidget {
               isSelected: selectedIndex == 3,
             ),
             DrawerListTile(
-              title: "12 session Plan",
+              title: "16 session Plan",
               svgSrc: "assets/icons/create.svg",
               press: () {
                 onItemSelected(4);
               },
               isSelected: selectedIndex == 4,
-            ),
-            DrawerListTile(
-              title: "16 session Plan",
-              svgSrc: "assets/icons/create.svg",
-              press: () {
-                onItemSelected(5);
-              },
-              isSelected: selectedIndex == 5,
             ),
           ],
         ),

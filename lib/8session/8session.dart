@@ -1,4 +1,4 @@
-/*import 'package:admin/const/loading.dart';
+import 'package:admin/const/loading.dart';
 import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/user_data_entity.dart';
 import 'package:admin/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart';
@@ -8,19 +8,19 @@ import 'package:mongo_dart/mongo_dart.dart' as mongo;
 
 int count = 0;
 
-class Search extends StatefulWidget {
-  const Search({Key? key}) : super(key: key);
+class eightSession extends StatefulWidget {
+  const eightSession({Key? key}) : super(key: key);
 
   @override
   _SearchState createState() => _SearchState();
 }
 
-class _SearchState extends State<Search> {
+class _SearchState extends State<eightSession> {
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _creditController = TextEditingController();
   final MongoDatabase monog = MongoDatabase();
-  final String plan = "Unlimited";
+  final String plan = "8 session";
   final startingDate = DateTime.now();
 
   List<User_Data> _allItems = [];
@@ -111,7 +111,7 @@ class _SearchState extends State<Search> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 25.0, horizontal: 22),
             child: Container(
-              height: 220,
+              height: 50,
               decoration: BoxDecoration(
                 color: const Color(0xffFFA05D).withOpacity(0.2),
                 borderRadius: BorderRadius.circular(15),
@@ -335,4 +335,3 @@ class _SearchState extends State<Search> {
     );
   }
 }
-*/

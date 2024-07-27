@@ -1,5 +1,5 @@
 enum AppError {
-  NotFound, SettingDataError, DelettingUserError
+  NotFound, SettingDataError, DelettingUserError, UpdatingUserError
   // some errors codes
 }
 

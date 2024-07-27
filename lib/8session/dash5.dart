@@ -1,9 +1,9 @@
-/*import 'package:admin/constants.dart';
-import 'package:admin/screens/dashboard/components/create%20profiles/searchh.dart';
+import 'package:admin/8session/8session.dart';
+import 'package:admin/constants.dart';
 import 'package:admin/screens/dashboard/components/header.dart';
 import 'package:flutter/material.dart';
 
-class DashboardScreen3 extends StatelessWidget {
+class DashboardScreen5 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,11 +14,10 @@ class DashboardScreen3 extends StatelessWidget {
           child: Column(children: [
             Header(),
             SizedBox(height: defaultPadding),
-             Search()
+             eightSession()
           ]),
         ),
       ),
     );
   }
 }
-*/
