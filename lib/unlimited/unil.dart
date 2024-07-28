@@ -323,6 +323,7 @@ class _SearchState extends State<unlimited> {
           icon: Icon(Icons.delete, color: Colors.red),
           onPressed: () {
             _deleteProfile(user);
+            count = 0;
           },
         ),
         Checkbox(

@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:admin/Errors/Failure.dart';
 import 'package:admin/entities/user_data_entity.dart';
 import 'package:either_dart/either.dart';
-import 'package:mongo_dart/mongo_dart.dart' as mongo;
 import 'package:mongo_dart/mongo_dart.dart';
 
 // final Db db = Db('mongodb+srv://raoufdaifi:amin2004@cluster0.cpsnp8o.mongodb.net/');
@@ -35,7 +34,7 @@ class MongoDatabase {
 
   Future<Either<Failure, String>> InsertUser({required User_Data user}) async {
     try {
-       if (db == null) {
+      if (db == null) {
         await connect();
       }
       final collection = db?.collection(collectionName);
@@ -58,10 +57,10 @@ class MongoDatabase {
 
   Future<Either<Failure, List<User_Data>>> RetriveData() async {
     try {
-        if (db == null) {
+      if (db == null) {
         await connect();
       }
-      
+
       final collection = db?.collection(collectionName);
       final result = await collection?.find().toList();
       return Right(result!.map((doc) => User_Data.fromMap(doc)).toList());
@@ -75,10 +74,17 @@ class MongoDatabase {
       if (db == null) {
         await connect();
       }
+
       final collection = db?.collection(collectionName);
 
-      await collection
-          ?.remove(mongo.where.id(mongo.ObjectId.fromHexString(user.id)));
+      await collection?.deleteOne({
+        '_id': user.id,
+        'fullName': user.fullName,
+        'plan': user.plan,
+        'startingDate': user.startingDate,
+        'endDate': user.endDate,
+        'credit': user.credit,
+      });
 
       return Right("user deletting done");
     } catch (e) {
@@ -96,9 +102,8 @@ class MongoDatabase {
       final data = user.toMap();
       final collection = db?.collection(collectionName);
 
-      await collection?.updateOne(
-          mongo.where.id(mongo.ObjectId.fromHexString(user.id)),
-          mongo.modify.set(fieldName, data[fieldName]));
+      await collection?.updateOne(where.id(ObjectId.fromHexString(user.id)),
+          modify.set(fieldName, data[fieldName]));
 
       return Right("user deletting done");
     } catch (e) {
