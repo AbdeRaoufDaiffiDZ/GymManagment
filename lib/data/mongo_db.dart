@@ -94,16 +94,17 @@ class MongoDatabase {
   }
 
   Future<Either<Failure, String>> UpdateUserData(
-      {required User_Data user, required String fieldName}) async {
+      {required User_Data user}) async {
     try {
       if (db == null) {
         await connect();
       }
       final data = user.toMap();
       final collection = db?.collection(collectionName);
-
-      await collection?.updateOne(where.id(ObjectId.fromHexString(user.id)),
-          modify.set(fieldName, data[fieldName]));
+      data.forEach((key, value) async {
+        await collection?.update(
+            where.eq('_id', user.id), modify.set(key, value));
+      });
 
       return Right("user deletting done");
     } catch (e) {

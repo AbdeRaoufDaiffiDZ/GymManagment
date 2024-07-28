@@ -44,6 +44,18 @@ class Unlimited_PlanBloc
               : emit(ErrorState(error: data.left.message));
         }
       }
+      else if (event is UpdateUserEvent) {
+        emit(LoadingState());
+        final result = await dataSource.UpdateUserData(user: event.user );
+        if (result.isLeft) {
+          emit(ErrorState(error: result.left.message));
+        } else {
+          final data = await dataSource.RetriveData();
+          data.isRight
+              ? emit(SuccessState(users: data.right))
+              : emit(ErrorState(error: data.left.message));
+        }
+      }
     });
   }
 
