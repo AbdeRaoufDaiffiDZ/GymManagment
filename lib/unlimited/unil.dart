@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:admin/const/loading.dart';
 import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/user_data_entity.dart';

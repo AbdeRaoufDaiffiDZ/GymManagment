@@ -56,7 +56,7 @@ class SideMenu extends StatelessWidget {
         color: Color(0xffFAFAFA),
         border: Border(
           right: BorderSide(
-            color: Color(0xffE6E6E6), // Color of the border
+            color: Color(0xffFFA05C).withOpacity(0.3), // Color of the border
             width: 2.5, // Width of the border
           ),
         ),

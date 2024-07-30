@@ -13,7 +13,7 @@ class Header extends StatelessWidget {
         color: Colors.white,
         border: Border(
           bottom: BorderSide(
-            color: Color(0xffFFA05C).withOpacity(0.5), // Color of the border
+            color: Color(0xffFFA05C).withOpacity(0.3), // Color of the border
             width: 2.5, // Width of the border
           ),
         ),

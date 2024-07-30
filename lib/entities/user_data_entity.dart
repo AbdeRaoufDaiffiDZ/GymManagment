@@ -1,3 +1,4 @@
+
 // ignore_for_file: must_be_immutable
 
 import 'package:equatable/equatable.dart';
@@ -61,7 +62,7 @@ class User_Data extends Equatable {
       'startingDate': startingDate,
       'endDate': endDate,
       'credit': credit,
-      'isSessionMarked': isSessionMarked,
+      // 'isSessionMarked': isSessionMarked,
     };
   }
 }

@@ -304,10 +304,17 @@ class _SearchState extends State<eightSession> {
                   child: Table(
                     columnWidths: {
                       0: FixedColumnWidth(300),
+<<<<<<< HEAD
                       1: FixedColumnWidth(200),
                       2: FixedColumnWidth(200),
                       3: FixedColumnWidth(200),
                       4: FixedColumnWidth(200),
+=======
+                      1: FixedColumnWidth(230),
+                      2: FixedColumnWidth(230),
+                      3: FixedColumnWidth(230),
+                      4: FixedColumnWidth(230),
+>>>>>>> 73c3fda208f8c4f6d78762c594f295814100efea
                     },
                     children: [
                       TableRow(
@@ -319,6 +326,7 @@ class _SearchState extends State<eightSession> {
                           _tableHeaderCell("Days left"),
                           _tableHeaderCell("Sessions Left"),
                           _tableHeaderCell("Credit"),
+                          _tableHeaderCell("Sessions left"),
                           _tableHeaderCell(""),
                         ],
                       ),
@@ -334,6 +342,7 @@ class _SearchState extends State<eightSession> {
                                 .inDays
                                 .toString()),
                             _tableCell(user.sessionLeft.toString()),
+                            _tableCell(user.credit),
                             _tableCell(user.credit),
                             _tableCellActions(user),
                           ],
