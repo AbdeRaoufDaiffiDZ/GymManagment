@@ -300,7 +300,7 @@ class _SearchState extends State<eightSession> {
       child: Text(
         text,
         style:
-            TextStyle(fontSize: 19, color: Color(0xff202020).withOpacity(0.55)),
+            TextStyle(fontSize: 19, color: Color(0xff202020).withOpacity(0.8)),
       ),
     );
   }

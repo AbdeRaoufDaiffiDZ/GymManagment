@@ -1,3 +1,4 @@
+
 import 'package:admin/const/loading.dart';
 import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/user_data_entity.dart';
@@ -323,6 +324,7 @@ class _SearchState extends State<unlimited> {
           icon: Icon(Icons.delete, color: Colors.red),
           onPressed: () {
             _deleteProfile(user);
+            count = 0;
           },
         ),
         Checkbox(

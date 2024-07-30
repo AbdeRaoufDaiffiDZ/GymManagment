@@ -72,10 +72,10 @@ class _SearchState extends State<twlvSession> {
   }
 
   void _deleteProfile(User_Data user) {
-    final Unlimited_PlanBloc _unlimited_bloc =
-        BlocProvider.of<Unlimited_PlanBloc>(context);
-    _unlimited_bloc.add(DeleteUserEvent(user: user));
-  }
+  final Unlimited_PlanBloc _unlimited_bloc =
+      BlocProvider.of<Unlimited_PlanBloc>(context);
+  _unlimited_bloc.add(DeleteUserEvent(user: user));
+}
 
   /*void _renewProfile(User_Data user) {
     final Unlimited_PlanBloc _unlimited_bloc =
@@ -300,7 +300,7 @@ class _SearchState extends State<twlvSession> {
       child: Text(
         text,
         style:
-            TextStyle(fontSize: 19, color: Color(0xff202020).withOpacity(0.55)),
+            TextStyle(fontSize: 19, color: Color(0xff202020).withOpacity(0.8)),
       ),
     );
   }

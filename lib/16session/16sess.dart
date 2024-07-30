@@ -215,9 +215,10 @@ class _SearchState extends State<sixSession> {
                   child: Table(
                     columnWidths: {
                       0: FixedColumnWidth(300),
-                      1: FixedColumnWidth(300),
-                      2: FixedColumnWidth(300),
-                      3: FixedColumnWidth(300),
+                      1: FixedColumnWidth(230),
+                      2: FixedColumnWidth(230),
+                      3: FixedColumnWidth(230),
+                      4: FixedColumnWidth(230),
                     },
                     children: [
                       TableRow(
@@ -228,6 +229,7 @@ class _SearchState extends State<sixSession> {
                           _tableHeaderCell("Name"),
                           _tableHeaderCell("Days left"),
                           _tableHeaderCell("Credit"),
+                          _tableHeaderCell("Sessions left"),
                           _tableHeaderCell(""),
                         ],
                       ),
@@ -242,6 +244,7 @@ class _SearchState extends State<sixSession> {
                                 .difference(user.startingDate)
                                 .inDays
                                 .toString()),
+                            _tableCell(user.credit),
                             _tableCell(user.credit),
                             _tableCellActions(user),
                           ],
@@ -300,7 +303,7 @@ class _SearchState extends State<sixSession> {
       child: Text(
         text,
         style:
-            TextStyle(fontSize: 19, color: Color(0xff202020).withOpacity(0.55)),
+            TextStyle(fontSize: 19, color: Color(0xff202020).withOpacity(0.8)),
       ),
     );
   }

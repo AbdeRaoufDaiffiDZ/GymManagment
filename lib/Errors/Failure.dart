@@ -1,14 +1,12 @@
-enum AppError {
-  NotFound, SettingDataError, DelettingUserError, UpdatingUserError
-  // some errors codes
+class Failure {
+  final String message;
+  final String key;
+
+  Failure({required this.message, required this.key});
 }
 
-class Failure {
-  final AppError key;
-  final String message;
-
-  const Failure({
-    required this.key, 
-    required this.message,
-  });
+class AppError {
+  static const String SettingDataError = 'SettingDataError';
+  static const String NotFound = 'NotFound';
+  static const String DelettingUserError = 'DelettingUserError';
 }
