@@ -29,7 +29,8 @@ class _SearchState extends State<eightSession> {
   final MongoDatabase monog = MongoDatabase();
   final String plan = "8 session";
   final startingDate = DateTime.now();
-
+  final int sessionNumber = 8;
+  final int daysNumber = 45;
   List<User_Data> _allItems = [];
   List<User_Data> _filteredItems = [];
 
@@ -96,10 +97,10 @@ class _SearchState extends State<eightSession> {
             fullName: _nameController.text,
             plan: plan,
             startingDate: DateTime.now(),
-            endDate: DateTime.now().add(const Duration(days: 30)),
+            endDate: DateTime.now().add( Duration(days: daysNumber)),
             credit: _creditController.text,
             id: mongo.ObjectId().toHexString(),
-            sessionLeft: 8,
+            sessionLeft: sessionNumber,
             lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()));
         _unlimited_bloc.add(AddUserEvent(user: newUser));
       }
@@ -131,7 +132,7 @@ class _SearchState extends State<eightSession> {
   void _toggleSessionMark(User_Data user, bool value) {
     setState(() {
       user.isSessionMarked = value;
-          count = 0;
+      count = 0;
     });
     User_Data user_data = User_Data(
         isSessionMarked: user.isSessionMarked,
@@ -148,8 +149,7 @@ class _SearchState extends State<eightSession> {
       user_data.isSessionMarked = true;
       user_data.sessionLeft = user_data.sessionLeft - 1;
       user_data.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    }
-    else {
+    } else {
       user_data.isSessionMarked = false;
       user_data.sessionLeft = user_data.sessionLeft + 1;
       user_data.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
@@ -161,7 +161,7 @@ class _SearchState extends State<eightSession> {
 
   void _renewProfile(User_Data user) {
     setState(() {
-          count = 0;
+      count = 0;
     });
     final Session_8_PlanBloc _unlimited_bloc =
         BlocProvider.of<Session_8_PlanBloc>(context);
@@ -170,9 +170,9 @@ class _SearchState extends State<eightSession> {
         fullName: user.fullName,
         plan: user.plan,
         startingDate: DateTime.now(),
-        endDate: DateTime.now().add(const Duration(days: 30)),
+        endDate: DateTime.now().add( Duration(days: daysNumber)),
         credit: user.credit,
-        sessionLeft: 8,
+        sessionLeft: sessionNumber,
         lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()));
     _unlimited_bloc.add(UpdateUserEvent(user: renewUser));
   }
@@ -208,9 +208,8 @@ class _SearchState extends State<eightSession> {
                   border: InputBorder.none,
                   hintText: 'Type a name...',
                   hintStyle: TextStyle(
-                    fontSize: 17,
-                    color: const Color(0xff202020).withOpacity(0.88),
-                  ),
+                      fontSize: 17,
+                      color: const Color(0xff202020).withOpacity(0.88)),
                   icon: Padding(
                     padding: EdgeInsets.only(left: 8.0),
                     child: Icon(Icons.search,
@@ -305,9 +304,10 @@ class _SearchState extends State<eightSession> {
                   child: Table(
                     columnWidths: {
                       0: FixedColumnWidth(300),
-                      1: FixedColumnWidth(300),
-                      2: FixedColumnWidth(300),
-                      3: FixedColumnWidth(300),
+                      1: FixedColumnWidth(200),
+                      2: FixedColumnWidth(200),
+                      3: FixedColumnWidth(200),
+                      4: FixedColumnWidth(200),
                     },
                     children: [
                       TableRow(
@@ -317,6 +317,7 @@ class _SearchState extends State<eightSession> {
                         children: [
                           _tableHeaderCell("Name"),
                           _tableHeaderCell("Days left"),
+                          _tableHeaderCell("Sessions Left"),
                           _tableHeaderCell("Credit"),
                           _tableHeaderCell(""),
                         ],
@@ -332,6 +333,7 @@ class _SearchState extends State<eightSession> {
                                 .difference(user.startingDate)
                                 .inDays
                                 .toString()),
+                            _tableCell(user.sessionLeft.toString()),
                             _tableCell(user.credit),
                             _tableCellActions(user),
                           ],

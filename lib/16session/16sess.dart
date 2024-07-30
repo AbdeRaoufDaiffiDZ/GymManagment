@@ -1,7 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:admin/8session/8session_bloc/bloc/8session_bloc.dart';
-import 'package:admin/8session/8session_bloc/bloc/session_8_event.dart';
+import 'package:admin/16session/16session_bloc/bloc/16session_bloc.dart';
 import 'package:admin/const/loading.dart';
 import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/user_data_entity.dart';
@@ -9,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
+
+import '16session_bloc/bloc/session_16_event.dart';
 
 int count = 0;
 bool edit = false;
@@ -51,8 +52,8 @@ class _SearchState extends State<sixSession> {
 
   void _addProfile(User_Data? user) {
     if (_nameController.text.isNotEmpty && _creditController.text.isNotEmpty) {
-      final Session_8_PlanBloc _unlimited_bloc =
-          BlocProvider.of<Session_8_PlanBloc>(context);
+      final Session_16_PlanBloc _unlimited_bloc =
+          BlocProvider.of<Session_16_PlanBloc>(context);
 
       if (edit) {
         late User_Data userNew;
@@ -78,8 +79,8 @@ class _SearchState extends State<sixSession> {
               lastCheckDate: userr.lastCheckDate);
         }
 
-        final Session_8_PlanBloc _unlimited_bloc =
-            BlocProvider.of<Session_8_PlanBloc>(context);
+        final Session_16_PlanBloc _unlimited_bloc =
+            BlocProvider.of<Session_16_PlanBloc>(context);
         _unlimited_bloc.add(UpdateUserEvent(user: userNew));
         setState(() {
           _filteredItems = _allItems;
@@ -96,10 +97,10 @@ class _SearchState extends State<sixSession> {
             fullName: _nameController.text,
             plan: plan,
             startingDate: DateTime.now(),
-            endDate: DateTime.now().add(const Duration(days: 30)),
+            endDate: DateTime.now().add(const Duration(days: 45)),
             credit: _creditController.text,
             id: mongo.ObjectId().toHexString(),
-            sessionLeft: 8,
+            sessionLeft: 16,
             lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()));
         _unlimited_bloc.add(AddUserEvent(user: newUser));
       }
@@ -116,8 +117,8 @@ class _SearchState extends State<sixSession> {
   }
 
   void _deleteProfile(User_Data user) {
-    final Session_8_PlanBloc _unlimited_bloc =
-        BlocProvider.of<Session_8_PlanBloc>(context);
+    final Session_16_PlanBloc _unlimited_bloc =
+        BlocProvider.of<Session_16_PlanBloc>(context);
     _unlimited_bloc.add(DeleteUserEvent(user: user));
   }
 
@@ -131,7 +132,7 @@ class _SearchState extends State<sixSession> {
   void _toggleSessionMark(User_Data user, bool value) {
     setState(() {
       user.isSessionMarked = value;
-          count = 0;
+      count = 0;
     });
     User_Data user_data = User_Data(
         isSessionMarked: user.isSessionMarked,
@@ -148,33 +149,32 @@ class _SearchState extends State<sixSession> {
       user_data.isSessionMarked = true;
       user_data.sessionLeft = user_data.sessionLeft - 1;
       user_data.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    }
-    else {
+    } else {
       user_data.isSessionMarked = false;
       user_data.sessionLeft = user_data.sessionLeft + 1;
       user_data.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
     }
-    final Session_8_PlanBloc session_8_planBloc =
-        BlocProvider.of<Session_8_PlanBloc>(context);
-    session_8_planBloc.add(UpdateUserEvent(user: user_data));
+    final Session_16_PlanBloc session_16_planBloc =
+        BlocProvider.of<Session_16_PlanBloc>(context);
+    session_16_planBloc.add(UpdateUserEvent(user: user_data));
   }
 
   void _renewProfile(User_Data user) {
     setState(() {
-          count = 0;
+      count = 0;
     });
-    final Session_8_PlanBloc _unlimited_bloc =
-        BlocProvider.of<Session_8_PlanBloc>(context);
+    final Session_16_PlanBloc session_16_planBloc =
+        BlocProvider.of<Session_16_PlanBloc>(context);
     final renewUser = User_Data(
         id: user.id,
         fullName: user.fullName,
         plan: user.plan,
         startingDate: DateTime.now(),
-        endDate: DateTime.now().add(const Duration(days: 30)),
+        endDate: DateTime.now().add(const Duration(days: 45)),
         credit: user.credit,
-        sessionLeft: 8,
+        sessionLeft: 16,
         lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()));
-    _unlimited_bloc.add(UpdateUserEvent(user: renewUser));
+    session_16_planBloc.add(UpdateUserEvent(user: renewUser));
   }
 
   @override
@@ -187,8 +187,8 @@ class _SearchState extends State<sixSession> {
 
   @override
   Widget build(BuildContext context) {
-    final Session_8_PlanBloc _unlimited_bloc =
-        BlocProvider.of<Session_8_PlanBloc>(context);
+    final Session_16_PlanBloc session_16_planBloc =
+        BlocProvider.of<Session_16_PlanBloc>(context);
 
     return SingleChildScrollView(
       child: Column(
@@ -290,7 +290,7 @@ class _SearchState extends State<sixSession> {
           ),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-            child: BlocBuilder<Session_8_PlanBloc, session_8_PlanState>(
+            child: BlocBuilder<Session_16_PlanBloc, session_16_PlanState>(
                 builder: (context, state) {
               if (state is SuccessState) {
                 _allItems = state.users
@@ -305,9 +305,10 @@ class _SearchState extends State<sixSession> {
                   child: Table(
                     columnWidths: {
                       0: FixedColumnWidth(300),
-                      1: FixedColumnWidth(300),
-                      2: FixedColumnWidth(300),
-                      3: FixedColumnWidth(300),
+                      1: FixedColumnWidth(200),
+                      2: FixedColumnWidth(200),
+                      3: FixedColumnWidth(200),
+                      4: FixedColumnWidth(200),
                     },
                     children: [
                       TableRow(
@@ -317,6 +318,7 @@ class _SearchState extends State<sixSession> {
                         children: [
                           _tableHeaderCell("Name"),
                           _tableHeaderCell("Days left"),
+                          _tableHeaderCell("Sessions Left"),
                           _tableHeaderCell("Credit"),
                           _tableHeaderCell(""),
                         ],
@@ -332,6 +334,7 @@ class _SearchState extends State<sixSession> {
                                 .difference(user.startingDate)
                                 .inDays
                                 .toString()),
+                            _tableCell(user.sessionLeft.toString()),
                             _tableCell(user.credit),
                             _tableCellActions(user),
                           ],
@@ -340,7 +343,7 @@ class _SearchState extends State<sixSession> {
                   ),
                 );
               } else if (state is IinitialState) {
-                _unlimited_bloc.add(GetUsersEvent());
+                session_16_planBloc.add(GetUsersEvent());
                 return Loading();
               } else if (state is ErrorState) {
                 return Loading();

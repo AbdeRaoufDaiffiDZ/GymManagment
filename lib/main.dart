@@ -1,3 +1,5 @@
+import 'package:admin/12sess/12session_bloc/bloc/12session_bloc.dart';
+import 'package:admin/16session/16session_bloc/bloc/16session_bloc.dart';
 import 'package:admin/8session/8session_bloc/bloc/8session_bloc.dart';
 import 'package:admin/controllers/MenuAppController.dart';
 import 'package:admin/injection_container.dart';
@@ -21,7 +23,9 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => locator<Unlimited_PlanBloc>()),
-        BlocProvider(create: (_) => locator<Session_8_PlanBloc>())
+        BlocProvider(create: (_) => locator<Session_8_PlanBloc>()),
+        BlocProvider(create: (_) => locator<Session_12_PlanBloc>()),
+        BlocProvider(create: (_) => locator<Session_16_PlanBloc>())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

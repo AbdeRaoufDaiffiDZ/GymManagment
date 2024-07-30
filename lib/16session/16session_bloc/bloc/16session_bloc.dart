@@ -1,19 +1,19 @@
 import 'dart:async';
 
-import 'package:admin/8session/8session_bloc/bloc/session_8_event.dart';
+import 'package:admin/16session/16session_bloc/bloc/session_16_event.dart';
 import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/user_data_entity.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-part '8session_state.dart';
+part '16session_state.dart';
 
 final MongoDatabase dataSource = MongoDatabase();
-final collectionName = "8 session";
+final collectionName = "16 session";
 
-class Session_8_PlanBloc extends Bloc<Session_8Event, session_8_PlanState> {
-  Session_8_PlanBloc() : super(IinitialState()) {
-    on<Session_8Event>((event, emit) async {
+class Session_16_PlanBloc extends Bloc<Session_16Event, session_16_PlanState> {
+  Session_16_PlanBloc() : super(IinitialState()) {
+    on<Session_16Event>((event, emit) async {
       if (event is AddUserEvent) {
         emit(LoadingState());
         final result = await dataSource.InsertUser(

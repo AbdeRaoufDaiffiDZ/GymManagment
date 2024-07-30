@@ -255,7 +255,7 @@ class _SearchState extends State<unlimited> {
                       0: FixedColumnWidth(300),
                       1: FixedColumnWidth(300),
                       2: FixedColumnWidth(300),
-                      3: FixedColumnWidth(300),
+                      3: FixedColumnWidth(200),
                     },
                     children: [
                       TableRow(
@@ -370,12 +370,12 @@ class _SearchState extends State<unlimited> {
             count = 0;
           },
         ),
-        Checkbox(
-          value: user.isSessionMarked,
-          onChanged: (bool? value) {
-            _toggleSessionMark(user, value!);
-          },
-        ),
+        // Checkbox(
+        //   value: user.isSessionMarked,
+        //   onChanged: (bool? value) {
+        //     _toggleSessionMark(user, value!);
+        //   },
+        // ),
       ],
     );
   }

@@ -3,9 +3,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 @immutable
-abstract class Session_8Event extends Equatable {}
+abstract class Session_16Event extends Equatable {}
 
-class AddUserEvent extends Session_8Event {
+class AddUserEvent extends Session_16Event {
   final User_Data user;
 
   AddUserEvent({required this.user});
@@ -14,12 +14,12 @@ class AddUserEvent extends Session_8Event {
   List<Object?> get props => [user];
 }
 
-class GetUsersEvent extends Session_8Event {
+class GetUsersEvent extends Session_16Event {
   @override
   List<Object?> get props => [];
 }
 
-class DeleteUserEvent extends Session_8Event {
+class DeleteUserEvent extends Session_16Event {
   final User_Data user;
 
   DeleteUserEvent({required this.user});
@@ -28,7 +28,7 @@ class DeleteUserEvent extends Session_8Event {
   List<Object?> get props => [user];
 }
 
-class UpdateUserEvent extends Session_8Event {
+class UpdateUserEvent extends Session_16Event {
   final User_Data user;
 
   UpdateUserEvent({

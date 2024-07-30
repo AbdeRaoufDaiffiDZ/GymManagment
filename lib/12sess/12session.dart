@@ -1,7 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:admin/8session/8session_bloc/bloc/8session_bloc.dart';
-import 'package:admin/8session/8session_bloc/bloc/session_8_event.dart';
+import 'package:admin/12sess/12session_bloc/bloc/12session_bloc.dart';
+import 'package:admin/12sess/12session_bloc/bloc/session_12_event.dart';
 import 'package:admin/const/loading.dart';
 import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/user_data_entity.dart';
@@ -14,7 +14,8 @@ int count = 0;
 bool edit = false;
 bool checkDate = false;
 late User_Data userr;
-
+final int sessionNumber = 8;
+  final int daysNumber = 45;
 class twlvSession extends StatefulWidget {
   const twlvSession({Key? key}) : super(key: key);
 
@@ -51,8 +52,8 @@ class _SearchState extends State<twlvSession> {
 
   void _addProfile(User_Data? user) {
     if (_nameController.text.isNotEmpty && _creditController.text.isNotEmpty) {
-      final Session_8_PlanBloc _unlimited_bloc =
-          BlocProvider.of<Session_8_PlanBloc>(context);
+      final Session_12_PlanBloc _unlimited_bloc =
+          BlocProvider.of<Session_12_PlanBloc>(context);
 
       if (edit) {
         late User_Data userNew;
@@ -78,8 +79,8 @@ class _SearchState extends State<twlvSession> {
               lastCheckDate: userr.lastCheckDate);
         }
 
-        final Session_8_PlanBloc _unlimited_bloc =
-            BlocProvider.of<Session_8_PlanBloc>(context);
+        final Session_12_PlanBloc _unlimited_bloc =
+            BlocProvider.of<Session_12_PlanBloc>(context);
         _unlimited_bloc.add(UpdateUserEvent(user: userNew));
         setState(() {
           _filteredItems = _allItems;
@@ -96,10 +97,10 @@ class _SearchState extends State<twlvSession> {
             fullName: _nameController.text,
             plan: plan,
             startingDate: DateTime.now(),
-            endDate: DateTime.now().add(const Duration(days: 30)),
+            endDate: DateTime.now().add( Duration(days:daysNumber)),
             credit: _creditController.text,
             id: mongo.ObjectId().toHexString(),
-            sessionLeft: 8,
+            sessionLeft:sessionNumber,
             lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()));
         _unlimited_bloc.add(AddUserEvent(user: newUser));
       }
@@ -116,22 +117,23 @@ class _SearchState extends State<twlvSession> {
   }
 
   void _deleteProfile(User_Data user) {
-    final Session_8_PlanBloc _unlimited_bloc =
-        BlocProvider.of<Session_8_PlanBloc>(context);
+    final Session_12_PlanBloc _unlimited_bloc =
+        BlocProvider.of<Session_12_PlanBloc>(context);
     _unlimited_bloc.add(DeleteUserEvent(user: user));
   }
 
   /*void _renewProfile(User_Data user) {
     final Unlimited_PlanBloc _unlimited_bloc =
         BlocProvider.of<Unlimited_PlanBloc>(context);
-    user.endDate = DateTime.now().add(const Duration(days: 30));
+    user.endDate = DateTime.now().add(const Duration(days: 45));
+  
     _unlimited_bloc.add(UpdateUserEvent(user: user));
   }
 */
   void _toggleSessionMark(User_Data user, bool value) {
     setState(() {
       user.isSessionMarked = value;
-          count = 0;
+      count = 0;
     });
     User_Data user_data = User_Data(
         isSessionMarked: user.isSessionMarked,
@@ -148,31 +150,30 @@ class _SearchState extends State<twlvSession> {
       user_data.isSessionMarked = true;
       user_data.sessionLeft = user_data.sessionLeft - 1;
       user_data.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    }
-    else {
+    } else {
       user_data.isSessionMarked = false;
       user_data.sessionLeft = user_data.sessionLeft + 1;
       user_data.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
     }
-    final Session_8_PlanBloc session_8_planBloc =
-        BlocProvider.of<Session_8_PlanBloc>(context);
-    session_8_planBloc.add(UpdateUserEvent(user: user_data));
+    final Session_12_PlanBloc session_12_planBloc =
+        BlocProvider.of<Session_12_PlanBloc>(context);
+    session_12_planBloc.add(UpdateUserEvent(user: user_data));
   }
 
   void _renewProfile(User_Data user) {
     setState(() {
-          count = 0;
+      count = 0;
     });
-    final Session_8_PlanBloc _unlimited_bloc =
-        BlocProvider.of<Session_8_PlanBloc>(context);
+    final Session_12_PlanBloc _unlimited_bloc =
+        BlocProvider.of<Session_12_PlanBloc>(context);
     final renewUser = User_Data(
         id: user.id,
         fullName: user.fullName,
         plan: user.plan,
         startingDate: DateTime.now(),
-        endDate: DateTime.now().add(const Duration(days: 30)),
+        endDate: DateTime.now().add( Duration(days: daysNumber)),
         credit: user.credit,
-        sessionLeft: 8,
+        sessionLeft: sessionNumber,
         lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()));
     _unlimited_bloc.add(UpdateUserEvent(user: renewUser));
   }
@@ -187,8 +188,8 @@ class _SearchState extends State<twlvSession> {
 
   @override
   Widget build(BuildContext context) {
-    final Session_8_PlanBloc _unlimited_bloc =
-        BlocProvider.of<Session_8_PlanBloc>(context);
+    final Session_12_PlanBloc _unlimited_bloc =
+        BlocProvider.of<Session_12_PlanBloc>(context);
 
     return SingleChildScrollView(
       child: Column(
@@ -290,7 +291,7 @@ class _SearchState extends State<twlvSession> {
           ),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-            child: BlocBuilder<Session_8_PlanBloc, session_8_PlanState>(
+            child: BlocBuilder<Session_12_PlanBloc, session_12_PlanState>(
                 builder: (context, state) {
               if (state is SuccessState) {
                 _allItems = state.users
@@ -305,9 +306,10 @@ class _SearchState extends State<twlvSession> {
                   child: Table(
                     columnWidths: {
                       0: FixedColumnWidth(300),
-                      1: FixedColumnWidth(300),
-                      2: FixedColumnWidth(300),
-                      3: FixedColumnWidth(300),
+                      1: FixedColumnWidth(200),
+                      2: FixedColumnWidth(200),
+                      3: FixedColumnWidth(200),
+                      4: FixedColumnWidth(200),
                     },
                     children: [
                       TableRow(
@@ -317,6 +319,7 @@ class _SearchState extends State<twlvSession> {
                         children: [
                           _tableHeaderCell("Name"),
                           _tableHeaderCell("Days left"),
+                          _tableHeaderCell("Sessions Left"),
                           _tableHeaderCell("Credit"),
                           _tableHeaderCell(""),
                         ],
@@ -332,6 +335,7 @@ class _SearchState extends State<twlvSession> {
                                 .difference(user.startingDate)
                                 .inDays
                                 .toString()),
+                            _tableCell(user.sessionLeft.toString()),
                             _tableCell(user.credit),
                             _tableCellActions(user),
                           ],
