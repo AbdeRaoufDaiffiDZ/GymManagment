@@ -62,7 +62,7 @@ class User_Data extends Equatable {
       'startingDate': startingDate,
       'endDate': endDate,
       'credit': credit,
-      // 'isSessionMarked': isSessionMarked,
+      'isSessionMarked': isSessionMarked,
     };
   }
 }

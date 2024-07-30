@@ -53,7 +53,7 @@ class users extends StatelessWidget {
                 ),
               ),
             IconButton(
-          icon: Icon(Icons.refresh, color: Colors.green, ),
+          icon: Icon(Icons.refresh, color: Colors.green, size: 2),
           onPressed: () {
                 _unlimited_bloc.add(GetUsersEvent());
                           session_8_planBloc.add(Event8.GetUsersEvent());

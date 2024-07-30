@@ -112,6 +112,7 @@ class _SearchState extends State<eightSession> {
       _nameController.text = user.fullName;
       _creditController.text = user.credit;
       edit = true;
+      
     });
     userr = user;
   }
@@ -120,6 +121,8 @@ class _SearchState extends State<eightSession> {
     final Session_8_PlanBloc _unlimited_bloc =
         BlocProvider.of<Session_8_PlanBloc>(context);
     _unlimited_bloc.add(DeleteUserEvent(user: user));
+              count = 0;
+
   }
 
   /*void _renewProfile(User_Data user) {
@@ -222,7 +225,7 @@ class _SearchState extends State<eightSession> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 22),
             child: Text(
-              "Add a profile :",
+              edit ? "edit a profile :" : "Add a profile :",
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 18,
@@ -320,7 +323,6 @@ class _SearchState extends State<eightSession> {
                           _tableHeaderCell("Days left"),
                           _tableHeaderCell("Sessions Left"),
                           _tableHeaderCell("Credit"),
-                          _tableHeaderCell("Sessions left"),
                           _tableHeaderCell(""),
                         ],
                       ),
@@ -336,7 +338,6 @@ class _SearchState extends State<eightSession> {
                                 .inDays
                                 .toString()),
                             _tableCell(user.sessionLeft.toString()),
-                            _tableCell(user.credit),
                             _tableCell(user.credit),
                             _tableCellActions(user),
                           ],

@@ -49,12 +49,12 @@ class _SearchState extends State<unlimited> {
           BlocProvider.of<Unlimited_PlanBloc>(context);
       if (edit) {
         final userNew = User_Data(
-            id: user!.id,
+            id: userr.id,
             fullName: _nameController.text,
-            plan: user.plan,
-            startingDate: user.startingDate,
-            endDate: user.endDate,
-            credit: _creditController.text, sessionLeft: 0, lastCheckDate: '');
+            plan: userr.plan,
+            startingDate: userr.startingDate,
+            endDate: userr.endDate,
+            credit: _creditController.text, sessionLeft: 0, lastCheckDate: userr.lastCheckDate);
         final Unlimited_PlanBloc _unlimited_bloc =
             BlocProvider.of<Unlimited_PlanBloc>(context);
         _unlimited_bloc.add(UpdateUserEvent(user: userNew));
@@ -202,7 +202,7 @@ class _SearchState extends State<unlimited> {
                 SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    _addProfile(userr);
+                    _addProfile(null);
                   },
                   child: Text(
                     'Save',

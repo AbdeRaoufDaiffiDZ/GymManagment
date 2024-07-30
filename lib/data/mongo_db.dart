@@ -80,17 +80,19 @@ class MongoDatabase {
 
       final collection = db?.collection(collectionName);
 
-      await collection?.deleteOne({
-        '_id': user.id, // Assigning a string value to '_id'
-        'fullName': user.fullName,
-        'startingDate': user.startingDate,
-        'plan': user.plan,
-        'endDate': user.endDate,
-        'credit': user.credit,
-        'lastCheckDate':user.lastCheckDate,
-        'sessionLeft':user.sessionLeft,
-        'isSessionMarked':user.isSessionMarked
-      });
+ await collection?.remove(
+            where.eq('_id', user.id));
+      // await collection?.deleteOne({
+      //   '_id': user.id, // Assigning a string value to '_id'
+      //   'fullName': user.fullName,
+      //   'startingDate': user.startingDate,
+      //   'plan': user.plan,
+      //   'endDate': user.endDate,
+      //   'credit': user.credit,
+      //   'lastCheckDate':user.lastCheckDate,
+      //   'sessionLeft':user.sessionLeft,
+      //   'isSessionMarked':user.isSessionMarked
+      // });
 
       return Right("user deletting done");
     } catch (e) {
