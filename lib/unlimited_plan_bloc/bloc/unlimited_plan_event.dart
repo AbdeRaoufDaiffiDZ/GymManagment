@@ -28,3 +28,12 @@ class DeleteUserEvent extends Unlimited_PlanEvent {
   @override
   List<Object?> get props => [user];
 }
+
+class UpdateUserEvent extends Unlimited_PlanEvent {
+   final User_Data user;
+    
+  UpdateUserEvent({required this.user, });
+
+  @override
+  List<Object?> get props => [user,];
+}

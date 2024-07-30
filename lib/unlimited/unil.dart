@@ -1,4 +1,3 @@
-
 import 'package:admin/const/loading.dart';
 import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/user_data_entity.dart';
@@ -8,6 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
 
 int count = 0;
+bool edit = false;
+late User_Data userr;
 
 class unlimited extends StatefulWidget {
   const unlimited({Key? key}) : super(key: key);
@@ -22,7 +23,6 @@ class _SearchState extends State<unlimited> {
   final TextEditingController _creditController = TextEditingController();
   final MongoDatabase monog = MongoDatabase();
   final String plan = "unlimited";
-  final startingDate = DateTime.now();
 
   List<User_Data> _allItems = [];
   List<User_Data> _filteredItems = [];
@@ -43,23 +43,40 @@ class _SearchState extends State<unlimited> {
     });
   }
 
-  void _addProfile() {
+  void _addProfile(User_Data? user) {
     if (_nameController.text.isNotEmpty && _creditController.text.isNotEmpty) {
       final Unlimited_PlanBloc _unlimited_bloc =
           BlocProvider.of<Unlimited_PlanBloc>(context);
-
-      User_Data newUser = User_Data(
-          fullName: _nameController.text,
-          plan: plan,
-          startingDate: startingDate,
-          endDate: startingDate.add(const Duration(days: 30)),
-          credit: _creditController.text,
-          id: mongo.ObjectId().toHexString());
-      _unlimited_bloc.add(AddUserEvent(user: newUser));
-      setState(() {
-        _filteredItems = _allItems;
-        count = 0;
-      });
+      if (edit) {
+        final userNew = User_Data(
+            id: user!.id,
+            fullName: _nameController.text,
+            plan: user.plan,
+            startingDate: user.startingDate,
+            endDate: user.endDate,
+            credit: _creditController.text, sessionLeft: 0, lastCheckDate: '');
+        final Unlimited_PlanBloc _unlimited_bloc =
+            BlocProvider.of<Unlimited_PlanBloc>(context);
+        _unlimited_bloc.add(UpdateUserEvent(user: userNew));
+        setState(() {
+          _filteredItems = _allItems;
+          count = 0;
+        });
+        edit = false;
+      } else {
+        User_Data newUser = User_Data(
+            fullName: _nameController.text,
+            plan: plan,
+            startingDate: DateTime.now(),
+            endDate: DateTime.now().add(const Duration(days: 30)),
+            credit: _creditController.text,
+            id: mongo.ObjectId().toHexString(), sessionLeft: 30, lastCheckDate: '');
+        _unlimited_bloc.add(AddUserEvent(user: newUser));
+        setState(() {
+          _filteredItems = _allItems;
+          count = 0;
+        });
+      }
       _nameController.clear();
       _creditController.clear();
     }
@@ -69,7 +86,23 @@ class _SearchState extends State<unlimited> {
     setState(() {
       _nameController.text = user.fullName;
       _creditController.text = user.credit;
+      edit = true;
     });
+    userr = user;
+  }
+
+  void _renewProfile(User_Data user) {
+    final Unlimited_PlanBloc _unlimited_bloc =
+        BlocProvider.of<Unlimited_PlanBloc>(context);
+    final renewUser = User_Data(
+        id: user.id,
+        fullName: user.fullName,
+        plan: user.plan,
+        startingDate: DateTime.now(),
+        endDate: DateTime.now().add(const Duration(days: 30)),
+        credit: user.credit, sessionLeft: 0, lastCheckDate: '');
+    _unlimited_bloc.add(UpdateUserEvent(user: renewUser));
+   
   }
 
   void _deleteProfile(User_Data user) {
@@ -138,7 +171,7 @@ class _SearchState extends State<unlimited> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 22),
             child: Text(
-              "Add a profile :",
+              edit ? "edit a profile :" : "Add a profile :",
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 18,
@@ -168,7 +201,9 @@ class _SearchState extends State<unlimited> {
                 Expanded(child: _inputField(_creditController, 'Credit', true)),
                 SizedBox(width: 10),
                 ElevatedButton(
-                  onPressed: _addProfile,
+                  onPressed: () {
+                    _addProfile(userr);
+                  },
                   child: Text(
                     'Save',
                     style: TextStyle(color: Color(0xffFFA05D)),
@@ -240,7 +275,7 @@ class _SearchState extends State<unlimited> {
                           children: [
                             _tableCell(user.fullName),
                             _tableCell(user.endDate
-                                .difference(user.startingDate)
+                                .difference(DateTime.now())
                                 .inDays
                                 .toString()),
                             _tableCell(user.credit),
@@ -314,11 +349,17 @@ class _SearchState extends State<unlimited> {
           icon: Icon(Icons.edit, color: Colors.blue),
           onPressed: () {
             _editProfile(user);
+            count = 0;
           },
         ),
         IconButton(
           icon: Icon(Icons.refresh, color: Colors.green),
-          onPressed: () {},
+          onPressed: () {
+            _renewProfile(user);
+
+                        count = 0;
+
+          },
         ),
         IconButton(
           icon: Icon(Icons.delete, color: Colors.red),
