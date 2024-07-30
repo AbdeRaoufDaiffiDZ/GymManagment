@@ -8,7 +8,6 @@ import 'package:mongo_dart/mongo_dart.dart';
 // final Db db = Db('mongodb+srv://raoufdaifi:amin2004@cluster0.cpsnp8o.mongodb.net/');
 final String mongoUri =
     "mongodb+srv://raoufdaifi:amin2004@cluster0.cpsnp8o.mongodb.net/";
-final String collectionName = 'raouf';
 
 class MongoDatabase {
   static Db? db;
@@ -32,7 +31,7 @@ class MongoDatabase {
     }
   }
 
-  Future<Either<Failure, String>> InsertUser({required User_Data user}) async {
+  Future<Either<Failure, String>> InsertUser({required User_Data user,required String collectionName}) async {
     try {
       if (db == null) {
         await connect();
@@ -44,7 +43,10 @@ class MongoDatabase {
         'startingDate': user.startingDate,
         'plan': user.plan,
         'endDate': user.endDate,
-        'credit': user.credit
+        'credit': user.credit,
+        'lastCheckDate':user.lastCheckDate,
+        'sessionLeft':user.sessionLeft,
+        'isSessionMarked':user.isSessionMarked
       };
 
       await collection?.insert(documentToInsert);
@@ -55,7 +57,7 @@ class MongoDatabase {
     }
   }
 
-  Future<Either<Failure, List<User_Data>>> RetriveData() async {
+  Future<Either<Failure, List<User_Data>>> RetriveData({required String collectionName}) async {
     try {
       if (db == null) {
         await connect();
@@ -69,7 +71,7 @@ class MongoDatabase {
     }
   }
 
-  Future<Either<Failure, String>> DeleteUser({required User_Data user}) async {
+  Future<Either<Failure, String>> DeleteUser({required User_Data user,required String collectionName}) async {
     try {
       if (db == null) {
         await connect();
@@ -78,12 +80,15 @@ class MongoDatabase {
       final collection = db?.collection(collectionName);
 
       await collection?.deleteOne({
-        '_id': user.id,
+        '_id': user.id, // Assigning a string value to '_id'
         'fullName': user.fullName,
-        'plan': user.plan,
         'startingDate': user.startingDate,
+        'plan': user.plan,
         'endDate': user.endDate,
         'credit': user.credit,
+        'lastCheckDate':user.lastCheckDate,
+        'sessionLeft':user.sessionLeft,
+        'isSessionMarked':user.isSessionMarked
       });
 
       return Right("user deletting done");
@@ -94,7 +99,7 @@ class MongoDatabase {
   }
 
   Future<Either<Failure, String>> UpdateUserData(
-      {required User_Data user}) async {
+      {required User_Data user, required String collectionName}) async {
     try {
       if (db == null) {
         await connect();

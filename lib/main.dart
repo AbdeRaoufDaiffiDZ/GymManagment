@@ -1,3 +1,4 @@
+import 'package:admin/8session/8session_bloc/bloc/8session_bloc.dart';
 import 'package:admin/controllers/MenuAppController.dart';
 import 'package:admin/injection_container.dart';
 import 'package:admin/screens/main/main_screen.dart';
@@ -8,7 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-    WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   setupLocator(); // Initialize service locator
   runApp(MyApp());
 }
@@ -18,8 +19,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers:[
-        BlocProvider(create: (_) => locator<Unlimited_PlanBloc>())
+      providers: [
+        BlocProvider(create: (_) => locator<Unlimited_PlanBloc>()),
+        BlocProvider(create: (_) => locator<Session_8_PlanBloc>())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

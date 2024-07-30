@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:admin/const/loading.dart';
 import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/user_data_entity.dart';
@@ -54,7 +56,7 @@ class _SearchState extends State<unlimited> {
             plan: user.plan,
             startingDate: user.startingDate,
             endDate: user.endDate,
-            credit: _creditController.text);
+            credit: _creditController.text, sessionLeft: 0, lastCheckDate: '');
         final Unlimited_PlanBloc _unlimited_bloc =
             BlocProvider.of<Unlimited_PlanBloc>(context);
         _unlimited_bloc.add(UpdateUserEvent(user: userNew));
@@ -70,7 +72,7 @@ class _SearchState extends State<unlimited> {
             startingDate: DateTime.now(),
             endDate: DateTime.now().add(const Duration(days: 30)),
             credit: _creditController.text,
-            id: mongo.ObjectId().toHexString());
+            id: mongo.ObjectId().toHexString(), sessionLeft: 30, lastCheckDate: '');
         _unlimited_bloc.add(AddUserEvent(user: newUser));
         setState(() {
           _filteredItems = _allItems;
@@ -100,7 +102,7 @@ class _SearchState extends State<unlimited> {
         plan: user.plan,
         startingDate: DateTime.now(),
         endDate: DateTime.now().add(const Duration(days: 30)),
-        credit: user.credit);
+        credit: user.credit, sessionLeft: 0, lastCheckDate: '');
     _unlimited_bloc.add(UpdateUserEvent(user: renewUser));
    
   }
