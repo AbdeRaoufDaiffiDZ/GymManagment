@@ -53,7 +53,7 @@ class SideMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Color(0xffFAFAFA),
+        color: Colors.white,
         border: Border(
           right: BorderSide(
             color: Color(0xffFFA05C).withOpacity(0.3), // Color of the border
@@ -65,14 +65,14 @@ class SideMenu extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.horizontal(right: Radius.circular(0)),
         ),
-        backgroundColor: Color(0xffFAFAFA),
+        backgroundColor: Colors.white,
         child: ListView(
           children: [
             Container(
               height: 150,
               alignment: Alignment.topCenter,
               decoration: BoxDecoration(
-                color: Color(0xffFAFAFA),
+                color: Colors.white,
               ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -146,7 +146,7 @@ class DrawerListTile extends StatelessWidget {
     return ListTile(
       selected: isSelected,
       selectedTileColor: Color(0xffFFA05D).withOpacity(0.2),
-      tileColor: isSelected ? Color(0xffFFA05D) : Color(0xffFAFAFA),
+      tileColor: isSelected ? Color(0xffFFA05D) : Colors.white,
       onTap: press,
       horizontalTitleGap: 6.0,
       leading: SvgPicture.asset(

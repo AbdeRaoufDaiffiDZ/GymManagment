@@ -7,6 +7,7 @@ class DashboardScreen5 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           primary: false,
@@ -14,7 +15,7 @@ class DashboardScreen5 extends StatelessWidget {
           child: Column(children: [
             Header(),
             SizedBox(height: defaultPadding),
-             eightSession()
+            eightSession()
           ]),
         ),
       ),

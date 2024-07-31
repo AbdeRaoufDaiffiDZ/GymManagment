@@ -27,6 +27,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.teal,
       key: context.read<MenuAppController>().scaffoldKey,
       drawer: SideMenu(
         selectedIndex: selectedIndex,

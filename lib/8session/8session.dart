@@ -97,7 +97,7 @@ class _SearchState extends State<eightSession> {
             fullName: _nameController.text,
             plan: plan,
             startingDate: DateTime.now(),
-            endDate: DateTime.now().add( Duration(days: daysNumber)),
+            endDate: DateTime.now().add(Duration(days: daysNumber)),
             credit: _creditController.text,
             id: mongo.ObjectId().toHexString(),
             sessionLeft: sessionNumber,
@@ -112,7 +112,6 @@ class _SearchState extends State<eightSession> {
       _nameController.text = user.fullName;
       _creditController.text = user.credit;
       edit = true;
-      
     });
     userr = user;
   }
@@ -121,8 +120,7 @@ class _SearchState extends State<eightSession> {
     final Session_8_PlanBloc _unlimited_bloc =
         BlocProvider.of<Session_8_PlanBloc>(context);
     _unlimited_bloc.add(DeleteUserEvent(user: user));
-              count = 0;
-
+    count = 0;
   }
 
   /*void _renewProfile(User_Data user) {
@@ -173,7 +171,7 @@ class _SearchState extends State<eightSession> {
         fullName: user.fullName,
         plan: user.plan,
         startingDate: DateTime.now(),
-        endDate: DateTime.now().add( Duration(days: daysNumber)),
+        endDate: DateTime.now().add(Duration(days: daysNumber)),
         credit: user.credit,
         sessionLeft: sessionNumber,
         lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()));
@@ -307,7 +305,6 @@ class _SearchState extends State<eightSession> {
                   child: Table(
                     columnWidths: {
                       0: FixedColumnWidth(300),
-
                       1: FixedColumnWidth(230),
                       2: FixedColumnWidth(230),
                       3: FixedColumnWidth(230),
@@ -396,7 +393,7 @@ class _SearchState extends State<eightSession> {
       child: Text(
         text,
         style:
-            TextStyle(fontSize: 19, color: Color(0xff202020).withOpacity(0.55)),
+            TextStyle(fontSize: 19, color: Color(0xff202020).withOpacity(0.8)),
       ),
     );
   }

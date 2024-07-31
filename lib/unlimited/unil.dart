@@ -54,7 +54,9 @@ class _SearchState extends State<unlimited> {
             plan: userr.plan,
             startingDate: userr.startingDate,
             endDate: userr.endDate,
-            credit: _creditController.text, sessionLeft: 0, lastCheckDate: userr.lastCheckDate);
+            credit: _creditController.text,
+            sessionLeft: 0,
+            lastCheckDate: userr.lastCheckDate);
         final Unlimited_PlanBloc _unlimited_bloc =
             BlocProvider.of<Unlimited_PlanBloc>(context);
         _unlimited_bloc.add(UpdateUserEvent(user: userNew));
@@ -70,7 +72,9 @@ class _SearchState extends State<unlimited> {
             startingDate: DateTime.now(),
             endDate: DateTime.now().add(const Duration(days: 30)),
             credit: _creditController.text,
-            id: mongo.ObjectId().toHexString(), sessionLeft: 30, lastCheckDate: '');
+            id: mongo.ObjectId().toHexString(),
+            sessionLeft: 30,
+            lastCheckDate: '');
         _unlimited_bloc.add(AddUserEvent(user: newUser));
         setState(() {
           _filteredItems = _allItems;
@@ -100,9 +104,10 @@ class _SearchState extends State<unlimited> {
         plan: user.plan,
         startingDate: DateTime.now(),
         endDate: DateTime.now().add(const Duration(days: 30)),
-        credit: user.credit, sessionLeft: 0, lastCheckDate: '');
+        credit: user.credit,
+        sessionLeft: 0,
+        lastCheckDate: '');
     _unlimited_bloc.add(UpdateUserEvent(user: renewUser));
-   
   }
 
   void _deleteProfile(User_Data user) {
@@ -253,7 +258,7 @@ class _SearchState extends State<unlimited> {
                       0: FixedColumnWidth(300),
                       1: FixedColumnWidth(300),
                       2: FixedColumnWidth(300),
-                      3: FixedColumnWidth(200),
+                      3: FixedColumnWidth(300),
                     },
                     children: [
                       TableRow(
@@ -336,7 +341,7 @@ class _SearchState extends State<unlimited> {
       child: Text(
         text,
         style:
-            TextStyle(fontSize: 19, color: Color(0xff202020).withOpacity(0.55)),
+            TextStyle(fontSize: 19, color: Color(0xff202020).withOpacity(0.8)),
       ),
     );
   }
@@ -357,8 +362,7 @@ class _SearchState extends State<unlimited> {
           onPressed: () {
             _renewProfile(user);
 
-                        count = 0;
-
+            count = 0;
           },
         ),
         IconButton(

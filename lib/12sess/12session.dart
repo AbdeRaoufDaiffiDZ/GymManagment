@@ -15,7 +15,8 @@ bool edit = false;
 bool checkDate = false;
 late User_Data userr;
 final int sessionNumber = 8;
-  final int daysNumber = 45;
+final int daysNumber = 45;
+
 class twlvSession extends StatefulWidget {
   const twlvSession({Key? key}) : super(key: key);
 
@@ -97,10 +98,10 @@ class _SearchState extends State<twlvSession> {
             fullName: _nameController.text,
             plan: plan,
             startingDate: DateTime.now(),
-            endDate: DateTime.now().add( Duration(days:daysNumber)),
+            endDate: DateTime.now().add(Duration(days: daysNumber)),
             credit: _creditController.text,
             id: mongo.ObjectId().toHexString(),
-            sessionLeft:sessionNumber,
+            sessionLeft: sessionNumber,
             lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()));
         _unlimited_bloc.add(AddUserEvent(user: newUser));
       }
@@ -120,8 +121,7 @@ class _SearchState extends State<twlvSession> {
     final Session_12_PlanBloc _unlimited_bloc =
         BlocProvider.of<Session_12_PlanBloc>(context);
     _unlimited_bloc.add(DeleteUserEvent(user: user));
-              count = 0;
-
+    count = 0;
   }
 
   /*void _renewProfile(User_Data user) {
@@ -173,7 +173,7 @@ class _SearchState extends State<twlvSession> {
         fullName: user.fullName,
         plan: user.plan,
         startingDate: DateTime.now(),
-        endDate: DateTime.now().add( Duration(days: daysNumber)),
+        endDate: DateTime.now().add(Duration(days: daysNumber)),
         credit: user.credit,
         sessionLeft: sessionNumber,
         lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()));
@@ -308,7 +308,6 @@ class _SearchState extends State<twlvSession> {
                   child: Table(
                     columnWidths: {
                       0: FixedColumnWidth(300),
-
                       1: FixedColumnWidth(230),
                       2: FixedColumnWidth(230),
                       3: FixedColumnWidth(230),

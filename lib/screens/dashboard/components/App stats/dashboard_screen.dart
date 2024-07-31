@@ -8,6 +8,7 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffFAFAFA),
       body: SafeArea(
         child: SingleChildScrollView(
           primary: false,
