@@ -120,8 +120,7 @@ class _SearchState extends State<sixSession> {
     final Session_16_PlanBloc _unlimited_bloc =
         BlocProvider.of<Session_16_PlanBloc>(context);
     _unlimited_bloc.add(DeleteUserEvent(user: user));
-              count = 0;
-
+    count = 0;
   }
 
   /*void _renewProfile(User_Data user) {
@@ -307,7 +306,6 @@ class _SearchState extends State<sixSession> {
                   child: Table(
                     columnWidths: {
                       0: FixedColumnWidth(300),
-
                       1: FixedColumnWidth(230),
                       2: FixedColumnWidth(230),
                       3: FixedColumnWidth(230),
@@ -349,6 +347,8 @@ class _SearchState extends State<sixSession> {
                 session_16_planBloc.add(GetUsersEvent());
                 return Loading();
               } else if (state is ErrorState) {
+                                session_16_planBloc.add(GetUsersEvent());
+
                 return Loading();
               } else {
                 return Loading();
@@ -405,7 +405,8 @@ class _SearchState extends State<sixSession> {
     if (user.lastCheckDate != null) {
       DateTime timeCheck = DateFormat('yyyy-MM-dd').parse(
           user.lastCheckDate!); // check this logic here maybe will not work
-      bool isCheckeddd = timeCheck.day.compareTo(DateTime.now().day) > 0;
+      DateTime now = DateTime.now();
+      bool isCheckeddd = timeCheck.day.compareTo(now.day) == -1;
       bool isCheckedyy = timeCheck.year.compareTo(DateTime.now().year) == 0;
       bool isCheckedmm = timeCheck.month.compareTo(DateTime.now().month) == 0;
       bool isChecked = false;

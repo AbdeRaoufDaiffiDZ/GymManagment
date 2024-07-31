@@ -303,6 +303,8 @@ class _SearchState extends State<twlvSession> {
                   _filteredItems = state.users;
                   count++;
                 }
+
+                Color color =Color(0xffFAFAFA);
                 return SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Table(
@@ -327,9 +329,10 @@ class _SearchState extends State<twlvSession> {
                         ],
                       ),
                       for (var user in _filteredItems)
+                      
                         TableRow(
                           decoration: BoxDecoration(
-                            color: Color(0xffFAFAFA),
+                            color:  Color(0xffFAFAFA),
                           ),
                           children: [
                             _tableCell(user.fullName),
@@ -349,6 +352,8 @@ class _SearchState extends State<twlvSession> {
                 _unlimited_bloc.add(GetUsersEvent());
                 return Loading();
               } else if (state is ErrorState) {
+                                _unlimited_bloc.add(GetUsersEvent());
+
                 return Loading();
               } else {
                 return Loading();
@@ -405,7 +410,8 @@ class _SearchState extends State<twlvSession> {
     if (user.lastCheckDate != null) {
       DateTime timeCheck = DateFormat('yyyy-MM-dd').parse(
           user.lastCheckDate!); // check this logic here maybe will not work
-      bool isCheckeddd = timeCheck.day.compareTo(DateTime.now().day) > 0;
+      DateTime now = DateTime.now();
+      bool isCheckeddd = timeCheck.day.compareTo(now.day) == -1;
       bool isCheckedyy = timeCheck.year.compareTo(DateTime.now().year) == 0;
       bool isCheckedmm = timeCheck.month.compareTo(DateTime.now().month) == 0;
       bool isChecked = false;
