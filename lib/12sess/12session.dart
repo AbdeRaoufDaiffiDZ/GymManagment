@@ -304,7 +304,6 @@ class _SearchState extends State<twlvSession> {
                   count++;
                 }
 
-                Color color =Color(0xffFAFAFA);
                 return SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Table(
@@ -329,10 +328,15 @@ class _SearchState extends State<twlvSession> {
                         ],
                       ),
                       for (var user in _filteredItems)
-                      
                         TableRow(
                           decoration: BoxDecoration(
-                            color:  Color(0xffFAFAFA),
+                            color: (user.sessionLeft == 0 ||
+                                    user.endDate
+                                            .difference(DateTime.now())
+                                            .inDays ==
+                                        0)
+                                ? Colors.red.withOpacity(0.3)
+                                : Color(0xffFAFAFA),
                           ),
                           children: [
                             _tableCell(user.fullName),
@@ -352,7 +356,7 @@ class _SearchState extends State<twlvSession> {
                 _unlimited_bloc.add(GetUsersEvent());
                 return Loading();
               } else if (state is ErrorState) {
-                                _unlimited_bloc.add(GetUsersEvent());
+                _unlimited_bloc.add(GetUsersEvent());
 
                 return Loading();
               } else {
@@ -366,21 +370,25 @@ class _SearchState extends State<twlvSession> {
   }
 
   Widget _inputField(
-      TextEditingController controller, String hint, bool numberOrNot) {
-    return TextField(
-      controller: controller,
-      keyboardType: numberOrNot ? TextInputType.number : null,
-      decoration: InputDecoration(
-        border: InputBorder.none,
-        hintText: hint,
-        hintStyle: TextStyle(
-          color: Colors.grey[600],
-          fontSize: 16,
-        ),
-        contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+    TextEditingController controller, String hint, bool numberOrNot) {
+  return TextFormField(
+    controller: controller,
+    keyboardType: numberOrNot ? TextInputType.number : null,
+    decoration: InputDecoration(
+      border: InputBorder.none,
+      hintText: hint,
+      hintStyle: TextStyle(
+        color: Colors.grey[600],
+        fontSize: 16,
       ),
-    );
-  }
+      contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+    ),
+    onFieldSubmitted: (value) {
+      // Call _addProfile() when Enter is pressed.
+      _addProfile(null);
+    },
+  );
+}
 
   Widget _tableHeaderCell(String text) {
     return Padding(
@@ -401,7 +409,7 @@ class _SearchState extends State<twlvSession> {
       child: Text(
         text,
         style:
-            TextStyle(fontSize: 19, color: Color(0xff202020).withOpacity(0.55)),
+            TextStyle(fontSize: 19, color: Color(0xff202020).withOpacity(0.8)),
       ),
     );
   }

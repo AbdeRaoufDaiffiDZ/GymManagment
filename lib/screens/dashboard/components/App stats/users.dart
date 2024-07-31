@@ -1,25 +1,25 @@
-import 'package:admin/12sess/12session_bloc/bloc/12session_bloc.dart';
 import 'package:admin/12sess/12session_bloc/bloc/12session_bloc.dart'
     as Session12;
-import 'package:admin/12sess/12session_bloc/bloc/session_12_event.dart' as Event12;
-import 'package:admin/16session/16session_bloc/bloc/16session_bloc.dart';
+import 'package:admin/12sess/12session_bloc/bloc/12session_bloc.dart';
+import 'package:admin/12sess/12session_bloc/bloc/session_12_event.dart'
+    as Event12;
 import 'package:admin/16session/16session_bloc/bloc/16session_bloc.dart'
     as Session16;
-
-import 'package:admin/8session/8session_bloc/bloc/8session_bloc.dart';
+import 'package:admin/16session/16session_bloc/bloc/16session_bloc.dart';
 import 'package:admin/8session/8session_bloc/bloc/8session_bloc.dart'
     as Session8;
-import 'package:admin/8session/8session_bloc/bloc/session_8_event.dart' as  Event8;
-
+import 'package:admin/8session/8session_bloc/bloc/8session_bloc.dart';
+import 'package:admin/8session/8session_bloc/bloc/session_8_event.dart'
+    as Event8;
 import 'package:admin/const/loading.dart';
-import 'package:admin/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart';
 import 'package:admin/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart'
     as Unlimited;
-
+import 'package:admin/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../16session/16session_bloc/bloc/session_16_event.dart' as Event16;
+import '../../../../16session/16session_bloc/bloc/session_16_event.dart'
+    as Event16;
 
 class users extends StatelessWidget {
   const users({
@@ -30,11 +30,11 @@ class users extends StatelessWidget {
   Widget build(BuildContext context) {
     final Unlimited_PlanBloc _unlimited_bloc =
         BlocProvider.of<Unlimited_PlanBloc>(context);
-        final Session_8_PlanBloc session_8_planBloc =
+    final Session_8_PlanBloc session_8_planBloc =
         BlocProvider.of<Session_8_PlanBloc>(context);
-         final Session_16_PlanBloc session_16_planBloc =
+    final Session_16_PlanBloc session_16_planBloc =
         BlocProvider.of<Session_16_PlanBloc>(context);
-         final Session_12_PlanBloc session_12_planBloc =
+    final Session_12_PlanBloc session_12_planBloc =
         BlocProvider.of<Session_12_PlanBloc>(context);
     return Container(
       child: Padding(
@@ -43,7 +43,8 @@ class users extends StatelessWidget {
           Row(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0),
                 child: Text(
                   "Memberships statistics :",
                   style: TextStyle(
@@ -52,17 +53,18 @@ class users extends StatelessWidget {
                       fontSize: 20),
                 ),
               ),
-            IconButton(
-          icon: Icon(Icons.refresh, color: Colors.green, size: 2),
-          onPressed: () {
-                _unlimited_bloc.add(GetUsersEvent());
-                          session_8_planBloc.add(Event8.GetUsersEvent());
-                session_12_planBloc.add(Event12.GetUsersEvent());
-                session_16_planBloc.add(Event16.GetUsersEvent());
-
-
-          },
-        ),
+              IconButton(
+                icon: Icon(
+                  Icons.refresh,
+                  color: Colors.green,
+                ),
+                onPressed: () {
+                  _unlimited_bloc.add(GetUsersEvent());
+                  session_8_planBloc.add(Event8.GetUsersEvent());
+                  session_12_planBloc.add(Event12.GetUsersEvent());
+                  session_16_planBloc.add(Event16.GetUsersEvent());
+                },
+              ),
             ],
           ),
           Padding(
@@ -148,21 +150,21 @@ class users extends StatelessWidget {
             if (state is Session8.SuccessState) {
               int registred = state.users.length;
               int expired = state.users
-                  .where((user) =>
-                      user.endDate.difference(user.startingDate).inDays <= 0)
-                  .length + state.users
-                  .where((user) =>
-                      user.sessionLeft <= 0)
-                  .length ;
+                      .where((user) =>
+                          user.endDate.difference(user.startingDate).inDays <=
+                          0)
+                      .length +
+                  state.users.where((user) => user.sessionLeft <= 0).length;
               int nearToexpired = state.users
-                  .where((user) =>
-                      user.endDate.difference(user.startingDate).inDays > 0 &&
-                      user.endDate.difference(user.startingDate).inDays < 5)
-                  .length + state.users
-                  .where((user) =>
-                      user.sessionLeft > 0 &&
-                      user.sessionLeft < 4)
-                  .length;
+                      .where((user) =>
+                          user.endDate.difference(user.startingDate).inDays >
+                              0 &&
+                          user.endDate.difference(user.startingDate).inDays < 5)
+                      .length +
+                  state.users
+                      .where((user) =>
+                          user.sessionLeft > 0 && user.sessionLeft < 4)
+                      .length;
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -223,21 +225,21 @@ class users extends StatelessWidget {
             if (state is Session12.SuccessState) {
               int registred = state.users.length;
               int expired = state.users
-                  .where((user) =>
-                      user.endDate.difference(user.startingDate).inDays <= 0)
-                  .length + state.users
-                  .where((user) =>
-                      user.sessionLeft <= 0)
-                  .length ;
+                      .where((user) =>
+                          user.endDate.difference(user.startingDate).inDays <=
+                          0)
+                      .length +
+                  state.users.where((user) => user.sessionLeft <= 0).length;
               int nearToexpired = state.users
-                  .where((user) =>
-                      user.endDate.difference(user.startingDate).inDays > 0 &&
-                      user.endDate.difference(user.startingDate).inDays < 5)
-                  .length + state.users
-                  .where((user) =>
-                      user.sessionLeft > 0 &&
-                      user.sessionLeft < 4)
-                  .length;
+                      .where((user) =>
+                          user.endDate.difference(user.startingDate).inDays >
+                              0 &&
+                          user.endDate.difference(user.startingDate).inDays < 5)
+                      .length +
+                  state.users
+                      .where((user) =>
+                          user.sessionLeft > 0 && user.sessionLeft < 4)
+                      .length;
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -298,21 +300,21 @@ class users extends StatelessWidget {
             if (state is Session16.SuccessState) {
               int registred = state.users.length;
               int expired = state.users
-                  .where((user) =>
-                      user.endDate.difference(user.startingDate).inDays <= 0)
-                  .length + state.users
-                  .where((user) =>
-                      user.sessionLeft <= 0)
-                  .length ;
+                      .where((user) =>
+                          user.endDate.difference(user.startingDate).inDays <=
+                          0)
+                      .length +
+                  state.users.where((user) => user.sessionLeft <= 0).length;
               int nearToexpired = state.users
-                  .where((user) =>
-                      user.endDate.difference(user.startingDate).inDays > 0 &&
-                      user.endDate.difference(user.startingDate).inDays < 5)
-                  .length + state.users
-                  .where((user) =>
-                      user.sessionLeft > 0 &&
-                      user.sessionLeft < 4)
-                  .length;
+                      .where((user) =>
+                          user.endDate.difference(user.startingDate).inDays >
+                              0 &&
+                          user.endDate.difference(user.startingDate).inDays < 5)
+                      .length +
+                  state.users
+                      .where((user) =>
+                          user.sessionLeft > 0 && user.sessionLeft < 4)
+                      .length;
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [

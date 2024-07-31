@@ -65,4 +65,6 @@ class User_Data extends Equatable {
       'isSessionMarked': isSessionMarked,
     };
   }
+
+  copyWith({required DateTime startingDate, required DateTime endDate, required int sessionLeft, required String lastCheckDate}) {}
 }

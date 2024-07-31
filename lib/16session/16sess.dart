@@ -327,8 +327,13 @@ class _SearchState extends State<sixSession> {
                       for (var user in _filteredItems)
                         TableRow(
                           decoration: BoxDecoration(
-                            color: Color(0xffFAFAFA),
-                          ),
+color: (user.sessionLeft == 0 ||
+                                    user.endDate
+                                            .difference(DateTime.now())
+                                            .inDays ==
+                                        0)
+                                ? Colors.red.withOpacity(0.3)
+                                : Color(0xffFAFAFA),                          ),
                           children: [
                             _tableCell(user.fullName),
                             _tableCell(user.endDate
@@ -360,22 +365,26 @@ class _SearchState extends State<sixSession> {
     );
   }
 
-  Widget _inputField(
-      TextEditingController controller, String hint, bool numberOrNot) {
-    return TextField(
-      controller: controller,
-      keyboardType: numberOrNot ? TextInputType.number : null,
-      decoration: InputDecoration(
-        border: InputBorder.none,
-        hintText: hint,
-        hintStyle: TextStyle(
-          color: Colors.grey[600],
-          fontSize: 16,
-        ),
-        contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+   Widget _inputField(
+    TextEditingController controller, String hint, bool numberOrNot) {
+  return TextFormField(
+    controller: controller,
+    keyboardType: numberOrNot ? TextInputType.number : null,
+    decoration: InputDecoration(
+      border: InputBorder.none,
+      hintText: hint,
+      hintStyle: TextStyle(
+        color: Colors.grey[600],
+        fontSize: 16,
       ),
-    );
-  }
+      contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+    ),
+    onFieldSubmitted: (value) {
+      // Call _addProfile() when Enter is pressed.
+      _addProfile(null);
+    },
+  );
+}
 
   Widget _tableHeaderCell(String text) {
     return Padding(

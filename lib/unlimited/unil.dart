@@ -275,7 +275,12 @@ class _SearchState extends State<unlimited> {
                       for (var user in _filteredItems)
                         TableRow(
                           decoration: BoxDecoration(
-                            color: Color(0xffFAFAFA),
+                            color: (user.endDate
+                                        .difference(DateTime.now())
+                                        .inDays ==
+                                    0)
+                                ? Colors.red.withOpacity(0.3)
+                                : Color(0xffFAFAFA),
                           ),
                           children: [
                             _tableCell(user.fullName),
@@ -307,7 +312,7 @@ class _SearchState extends State<unlimited> {
 
   Widget _inputField(
       TextEditingController controller, String hint, bool numberOrNot) {
-    return TextField(
+    return TextFormField(
       controller: controller,
       keyboardType: numberOrNot ? TextInputType.number : null,
       decoration: InputDecoration(
@@ -319,6 +324,10 @@ class _SearchState extends State<unlimited> {
         ),
         contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       ),
+      onFieldSubmitted: (value) {
+        // Call _addProfile() when Enter is pressed.
+        _addProfile(null);
+      },
     );
   }
 

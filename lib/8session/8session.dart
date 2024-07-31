@@ -326,12 +326,18 @@ class _SearchState extends State<eightSession> {
                       for (var user in _filteredItems)
                         TableRow(
                           decoration: BoxDecoration(
-                            color: Color(0xffFAFAFA),
+                            color: (user.sessionLeft == 0 ||
+                                    user.endDate
+                                            .difference(DateTime.now())
+                                            .inDays ==
+                                        0)
+                                ? Colors.red.withOpacity(0.3)
+                                : Color(0xffFAFAFA),
                           ),
                           children: [
                             _tableCell(user.fullName),
                             _tableCell(user.endDate
-                                .difference(user.startingDate)
+                                .difference(DateTime.now())
                                 .inDays
                                 .toString()),
                             _tableCell(user.sessionLeft.toString()),
@@ -346,8 +352,7 @@ class _SearchState extends State<eightSession> {
                 _unlimited_bloc.add(GetUsersEvent());
                 return Loading();
               } else if (state is ErrorState) {
-                                _unlimited_bloc.add(GetUsersEvent());
-
+                _unlimited_bloc.add(GetUsersEvent());
                 return Loading();
               } else {
                 return Loading();
@@ -359,22 +364,26 @@ class _SearchState extends State<eightSession> {
     );
   }
 
-  Widget _inputField(
-      TextEditingController controller, String hint, bool numberOrNot) {
-    return TextField(
-      controller: controller,
-      keyboardType: numberOrNot ? TextInputType.number : null,
-      decoration: InputDecoration(
-        border: InputBorder.none,
-        hintText: hint,
-        hintStyle: TextStyle(
-          color: Colors.grey[600],
-          fontSize: 16,
-        ),
-        contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+ Widget _inputField(
+    TextEditingController controller, String hint, bool numberOrNot) {
+  return TextFormField(
+    controller: controller,
+    keyboardType: numberOrNot ? TextInputType.number : null,
+    decoration: InputDecoration(
+      border: InputBorder.none,
+      hintText: hint,
+      hintStyle: TextStyle(
+        color: Colors.grey[600],
+        fontSize: 16,
       ),
-    );
-  }
+      contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+    ),
+    onFieldSubmitted: (value) {
+      // Call _addProfile() when Enter is pressed.
+      _addProfile(null);
+    },
+  );
+}
 
   Widget _tableHeaderCell(String text) {
     return Padding(
@@ -404,7 +413,7 @@ class _SearchState extends State<eightSession> {
     if (user.lastCheckDate != null) {
       DateTime timeCheck = DateFormat('yyyy-MM-dd').parse(
           user.lastCheckDate!); // check this logic here maybe will not work
-          DateTime now = DateTime.now();
+      DateTime now = DateTime.now();
       bool isCheckeddd = timeCheck.day.compareTo(now.day) == -1;
       bool isCheckedyy = timeCheck.year.compareTo(now.year) == 0;
       bool isCheckedmm = timeCheck.month.compareTo(now.month) == 0;
