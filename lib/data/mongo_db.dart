@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 
 import 'package:admin/Errors/Failure.dart';
@@ -32,7 +31,8 @@ class MongoDatabase {
     }
   }
 
-  Future<Either<Failure, String>> InsertUser({required User_Data user,required String collectionName}) async {
+  Future<Either<Failure, String>> InsertUser(
+      {required User_Data user, required String collectionName}) async {
     try {
       if (db == null) {
         await connect();
@@ -45,12 +45,13 @@ class MongoDatabase {
         'plan': user.plan,
         'endDate': user.endDate,
         'credit': user.credit,
-        'lastCheckDate':user.lastCheckDate,
-        'sessionLeft':user.sessionLeft,
-        'isSessionMarked':user.isSessionMarked
+        'lastCheckDate': user.lastCheckDate,
+        'sessionLeft': user.sessionLeft,
+        'isSessionMarked': user.isSessionMarked
       };
 
       await collection?.insert(documentToInsert);
+
       return Right("data setting to mongo done");
     } catch (e) {
       return Left(
@@ -58,7 +59,8 @@ class MongoDatabase {
     }
   }
 
-  Future<Either<Failure, List<User_Data>>> RetriveData({required String collectionName}) async {
+  Future<Either<Failure, List<User_Data>>> RetriveData(
+      {required String collectionName}) async {
     try {
       if (db == null) {
         await connect();
@@ -72,7 +74,8 @@ class MongoDatabase {
     }
   }
 
-  Future<Either<Failure, String>> DeleteUser({required User_Data user,required String collectionName}) async {
+  Future<Either<Failure, String>> DeleteUser(
+      {required User_Data user, required String collectionName}) async {
     try {
       if (db == null) {
         await connect();
@@ -80,8 +83,7 @@ class MongoDatabase {
 
       final collection = db?.collection(collectionName);
 
- await collection?.remove(
-            where.eq('_id', user.id));
+      await collection?.remove(where.eq('_id', user.id));
       // await collection?.deleteOne({
       //   '_id': user.id, // Assigning a string value to '_id'
       //   'fullName': user.fullName,
