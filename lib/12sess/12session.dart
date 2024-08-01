@@ -14,7 +14,7 @@ int count = 0;
 bool edit = false;
 bool checkDate = false;
 late User_Data userr;
-final int sessionNumber = 8;
+final int sessionNumber = 12;
 final int daysNumber = 45;
 
 class twlvSession extends StatefulWidget {
@@ -52,48 +52,37 @@ class _SearchState extends State<twlvSession> {
   }
 
   void _addProfile(User_Data? user) {
+    late User_Data userNew;
+    if (checkDate) {
+      userNew = User_Data(
+          id: user!.id,
+          fullName: user.fullName,
+          plan: user.plan,
+          startingDate: user.startingDate,
+          endDate: user.endDate,
+          credit: user.credit,
+          sessionLeft: user.sessionLeft,
+          lastCheckDate: user.lastCheckDate);
+    }
     if (_nameController.text.isNotEmpty && _creditController.text.isNotEmpty) {
       final Session_12_PlanBloc _unlimited_bloc =
           BlocProvider.of<Session_12_PlanBloc>(context);
 
       if (edit) {
-        late User_Data userNew;
-        if (checkDate) {
-          userNew = User_Data(
-              id: user!.id,
-              fullName: user.fullName,
-              plan: user.plan,
-              startingDate: user.startingDate,
-              endDate: user.endDate,
-              credit: user.credit,
-              sessionLeft: user.sessionLeft,
-              lastCheckDate: user.lastCheckDate);
-        } else {
-          userNew = User_Data(
-              id: userr.id,
-              fullName: _nameController.text,
-              plan: userr.plan,
-              startingDate: userr.startingDate,
-              endDate: userr.endDate,
-              credit: _creditController.text,
-              sessionLeft: userr.sessionLeft,
-              lastCheckDate: userr.lastCheckDate);
-        }
+        userNew = User_Data(
+            id: userr.id,
+            fullName: _nameController.text,
+            plan: userr.plan,
+            startingDate: userr.startingDate,
+            endDate: userr.endDate,
+            credit: _creditController.text,
+            sessionLeft: userr.sessionLeft,
+            lastCheckDate: userr.lastCheckDate);
 
         final Session_12_PlanBloc _unlimited_bloc =
             BlocProvider.of<Session_12_PlanBloc>(context);
         _unlimited_bloc.add(UpdateUserEvent(user: userNew));
-        setState(() {
-          _filteredItems = _allItems;
-          count = 0;
-        });
-        edit = false;
-        checkDate = false;
       } else {
-        setState(() {
-          _filteredItems = _allItems;
-          count = 0;
-        });
         User_Data newUser = User_Data(
             fullName: _nameController.text,
             plan: plan,
@@ -105,7 +94,13 @@ class _SearchState extends State<twlvSession> {
             lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()));
         _unlimited_bloc.add(AddUserEvent(user: newUser));
       }
+      _nameController.clear();
+      _creditController.clear();
     }
+    _filteredItems = _allItems;
+    count = 0;
+    edit = false;
+    checkDate = false;
   }
 
   void _editProfile(User_Data user) {
@@ -150,7 +145,7 @@ class _SearchState extends State<twlvSession> {
     if (value) {
       // Implement the checkbox functionality if needed
       user_data.isSessionMarked = true;
-      user_data.sessionLeft = user_data.sessionLeft - 1;
+      user_data.sessionLeft = user_data.sessionLeft <= 0 ? 0:user_data.sessionLeft - 1;
       user_data.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
     } else {
       user_data.isSessionMarked = false;
@@ -303,7 +298,8 @@ class _SearchState extends State<twlvSession> {
                   _filteredItems = state.users;
                   count++;
                 }
-
+                _filteredItems
+                    .sort((a, b) => a.sessionLeft.compareTo(b.sessionLeft));
                 return SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Table(
@@ -330,10 +326,10 @@ class _SearchState extends State<twlvSession> {
                       for (var user in _filteredItems)
                         TableRow(
                           decoration: BoxDecoration(
-                            color: (user.sessionLeft == 0 ||
+                            color: (user.sessionLeft <= 0 ||
                                     user.endDate
                                             .difference(DateTime.now())
-                                            .inDays ==
+                                            .inDays <=
                                         0)
                                 ? Colors.red.withOpacity(0.3)
                                 : Color(0xffFAFAFA),
@@ -341,7 +337,7 @@ class _SearchState extends State<twlvSession> {
                           children: [
                             _tableCell(user.fullName),
                             _tableCell(user.endDate
-                                .difference(user.startingDate)
+                                .difference(DateTime.now())
                                 .inDays
                                 .toString()),
                             _tableCell(user.sessionLeft.toString()),
@@ -370,25 +366,25 @@ class _SearchState extends State<twlvSession> {
   }
 
   Widget _inputField(
-    TextEditingController controller, String hint, bool numberOrNot) {
-  return TextFormField(
-    controller: controller,
-    keyboardType: numberOrNot ? TextInputType.number : null,
-    decoration: InputDecoration(
-      border: InputBorder.none,
-      hintText: hint,
-      hintStyle: TextStyle(
-        color: Colors.grey[600],
-        fontSize: 16,
+      TextEditingController controller, String hint, bool numberOrNot) {
+    return TextFormField(
+      controller: controller,
+      keyboardType: numberOrNot ? TextInputType.number : null,
+      decoration: InputDecoration(
+        border: InputBorder.none,
+        hintText: hint,
+        hintStyle: TextStyle(
+          color: Colors.grey[600],
+          fontSize: 16,
+        ),
+        contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       ),
-      contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-    ),
-    onFieldSubmitted: (value) {
-      // Call _addProfile() when Enter is pressed.
-      _addProfile(null);
-    },
-  );
-}
+      onFieldSubmitted: (value) {
+        // Call _addProfile() when Enter is pressed.
+        _addProfile(null);
+      },
+    );
+  }
 
   Widget _tableHeaderCell(String text) {
     return Padding(
@@ -414,18 +410,19 @@ class _SearchState extends State<twlvSession> {
     );
   }
 
+  bool isDate1BeforeDate2(String yyyymmdd1, String yyyymmdd2) {
+    DateTime date1 = DateTime.parse(yyyymmdd1);
+    DateTime date2 = DateTime.parse(yyyymmdd2);
+
+    return date1.isBefore(date2);
+  }
+
   Widget _tableCellActions(User_Data user) {
     if (user.lastCheckDate != null) {
-      DateTime timeCheck = DateFormat('yyyy-MM-dd').parse(
-          user.lastCheckDate!); // check this logic here maybe will not work
-      DateTime now = DateTime.now();
-      bool isCheckeddd = timeCheck.day.compareTo(now.day) == -1;
-      bool isCheckedyy = timeCheck.year.compareTo(DateTime.now().year) == 0;
-      bool isCheckedmm = timeCheck.month.compareTo(DateTime.now().month) == 0;
-      bool isChecked = false;
-      if (isCheckeddd && isCheckedmm && isCheckedyy) {
-        isChecked = true;
-      }
+      String now = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+      bool isChecked = isDate1BeforeDate2(user.lastCheckDate!, now);
+
       if (isChecked) {
         user.isSessionMarked = false;
         checkDate = true;

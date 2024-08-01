@@ -1,3 +1,4 @@
+import 'package:admin/8session/8session.dart';
 import 'package:admin/const/loading.dart';
 import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/user_data_entity.dart';
@@ -9,6 +10,8 @@ import 'package:mongo_dart/mongo_dart.dart' as mongo;
 int count = 0;
 bool edit = false;
 late User_Data userr;
+final int sessionNumber = 0;
+final int daysNumber = 30;
 
 class unlimited extends StatefulWidget {
   const unlimited({Key? key}) : super(key: key);
@@ -55,32 +58,26 @@ class _SearchState extends State<unlimited> {
             startingDate: userr.startingDate,
             endDate: userr.endDate,
             credit: _creditController.text,
-            sessionLeft: 0,
+            sessionLeft: sessionNumber,
             lastCheckDate: userr.lastCheckDate);
         final Unlimited_PlanBloc _unlimited_bloc =
             BlocProvider.of<Unlimited_PlanBloc>(context);
         _unlimited_bloc.add(UpdateUserEvent(user: userNew));
-        setState(() {
-          _filteredItems = _allItems;
-          count = 0;
-        });
-        edit = false;
       } else {
         User_Data newUser = User_Data(
             fullName: _nameController.text,
             plan: plan,
             startingDate: DateTime.now(),
-            endDate: DateTime.now().add(const Duration(days: 30)),
+            endDate: DateTime.now().add(Duration(days: daysNumber)),
             credit: _creditController.text,
             id: mongo.ObjectId().toHexString(),
-            sessionLeft: 30,
+            sessionLeft: sessionNumber,
             lastCheckDate: '');
         _unlimited_bloc.add(AddUserEvent(user: newUser));
-        setState(() {
-          _filteredItems = _allItems;
-          count = 0;
-        });
       }
+      _filteredItems = _allItems;
+      count = 0;
+      edit = false;
       _nameController.clear();
       _creditController.clear();
     }
@@ -277,7 +274,7 @@ class _SearchState extends State<unlimited> {
                           decoration: BoxDecoration(
                             color: (user.endDate
                                         .difference(DateTime.now())
-                                        .inDays ==
+                                        .inDays <=
                                     0)
                                 ? Colors.red.withOpacity(0.3)
                                 : Color(0xffFAFAFA),
