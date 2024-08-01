@@ -45,7 +45,7 @@ class _SearchState extends State<twlvSession> {
   void _filterItems() {
     final query = _searchController.text.toLowerCase();
     setState(() {
-      _filteredItems = _allItems.where((item) {
+      _filteredItems =    _allItems.where((item) {
         return item.fullName.toLowerCase().contains(query);
       }).toList();
     });
@@ -53,6 +53,8 @@ class _SearchState extends State<twlvSession> {
 
   void _addProfile(User_Data? user) {
     late User_Data userNew;
+      final Session_12_PlanBloc _unlimited_bloc =
+          BlocProvider.of<Session_12_PlanBloc>(context);
     if (checkDate) {
       userNew = User_Data(
           id: user!.id,
@@ -63,10 +65,11 @@ class _SearchState extends State<twlvSession> {
           credit: user.credit,
           sessionLeft: user.sessionLeft,
           lastCheckDate: user.lastCheckDate);
+         
+        _unlimited_bloc.add(UpdateUserEvent(user: userNew));
     }
     if (_nameController.text.isNotEmpty && _creditController.text.isNotEmpty) {
-      final Session_12_PlanBloc _unlimited_bloc =
-          BlocProvider.of<Session_12_PlanBloc>(context);
+    
 
       if (edit) {
         userNew = User_Data(
@@ -425,6 +428,7 @@ class _SearchState extends State<twlvSession> {
 
       if (isChecked) {
         user.isSessionMarked = false;
+        user.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
         checkDate = true;
         _addProfile(user);
       }

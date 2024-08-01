@@ -54,6 +54,8 @@ class _SearchState extends State<sixSession> {
 
   void _addProfile(User_Data? user) {
     late User_Data userNew;
+    final Session_16_PlanBloc _unlimited_bloc =
+        BlocProvider.of<Session_16_PlanBloc>(context);
     if (checkDate) {
       userNew = User_Data(
           id: user!.id,
@@ -64,11 +66,9 @@ class _SearchState extends State<sixSession> {
           credit: user.credit,
           sessionLeft: user.sessionLeft,
           lastCheckDate: user.lastCheckDate);
+      _unlimited_bloc.add(UpdateUserEvent(user: userNew));
     }
     if (_nameController.text.isNotEmpty && _creditController.text.isNotEmpty) {
-      final Session_16_PlanBloc _unlimited_bloc =
-          BlocProvider.of<Session_16_PlanBloc>(context);
-
       if (edit) {
         userNew = User_Data(
             id: userr.id,
@@ -80,8 +80,6 @@ class _SearchState extends State<sixSession> {
             sessionLeft: userr.sessionLeft,
             lastCheckDate: userr.lastCheckDate);
 
-        final Session_16_PlanBloc _unlimited_bloc =
-            BlocProvider.of<Session_16_PlanBloc>(context);
         _unlimited_bloc.add(UpdateUserEvent(user: userNew));
       } else {
         User_Data newUser = User_Data(
@@ -145,7 +143,8 @@ class _SearchState extends State<sixSession> {
     if (value) {
       // Implement the checkbox functionality if needed
       user_data.isSessionMarked = true;
-      user_data.sessionLeft = user_data.sessionLeft <= 0 ? 0:user_data.sessionLeft - 1;
+      user_data.sessionLeft =
+          user_data.sessionLeft <= 0 ? 0 : user_data.sessionLeft - 1;
       user_data.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
     } else {
       user_data.isSessionMarked = false;
@@ -410,20 +409,22 @@ class _SearchState extends State<sixSession> {
     );
   }
 
+  bool isDate1BeforeDate2(String yyyymmdd1, String yyyymmdd2) {
+    DateTime date1 = DateTime.parse(yyyymmdd1);
+    DateTime date2 = DateTime.parse(yyyymmdd2);
+
+    return date1.isBefore(date2);
+  }
+
   Widget _tableCellActions(User_Data user) {
     if (user.lastCheckDate != null) {
-      DateTime timeCheck = DateFormat('yyyy-MM-dd').parse(
-          user.lastCheckDate!); // check this logic here maybe will not work
-      DateTime now = DateTime.now();
-      bool isCheckeddd = timeCheck.day.compareTo(now.day) == -1;
-      bool isCheckedyy = timeCheck.year.compareTo(DateTime.now().year) == 0;
-      bool isCheckedmm = timeCheck.month.compareTo(DateTime.now().month) == 0;
-      bool isChecked = false;
-      if (isCheckeddd && isCheckedmm && isCheckedyy) {
-        isChecked = true;
-      }
+      String now = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+      bool isChecked = isDate1BeforeDate2(user.lastCheckDate!, now);
+
       if (isChecked) {
         user.isSessionMarked = false;
+        user.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
         checkDate = true;
         _addProfile(user);
       }
