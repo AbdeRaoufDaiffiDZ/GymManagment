@@ -134,10 +134,10 @@ class MongoDatabase {
       final collection = db?.collection(collectionName);
       final documentToInsert = {
         '_id': product.id, // Assigning a string value to '_id'
-        'fullName': product.productName,
-        'startingDate': product.productPrice,
-        'plan': product.sellingDates,
-        'endDate': product.quantityleft,
+        'productName': product.productName,
+        'productPrice': product.productPrice,
+        'sellingDates': product.sellingDates,
+        'Quantity': product.quantityleft,
       };
 
       await collection?.insert(documentToInsert);

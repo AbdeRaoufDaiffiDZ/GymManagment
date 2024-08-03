@@ -5,8 +5,8 @@ import 'package:mongo_dart/mongo_dart.dart';
 
 class ProductEntity extends Equatable {
   final String id;
-  final String productName;
-  final String productPrice;
+   String productName;
+   String productPrice;
   List<DateTime> sellingDates;
   int quantityleft;
 
@@ -32,7 +32,8 @@ class ProductEntity extends Equatable {
       productName: map['productName'] ?? '',
       productPrice: map['productPrice'] ?? '',
       quantityleft: map['quantityleft'] ?? 0,
-      sellingDates: map['sellingDates'] ?? [DateTime.now()],
+      sellingDates: //map['sellingDates'] ?? 
+      [DateTime.now()],
     );
   }
 
