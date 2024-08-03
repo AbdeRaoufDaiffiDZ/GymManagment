@@ -1,5 +1,5 @@
 import 'package:admin/constants.dart';
-import 'package:admin/product/product.dart';
+import 'package:admin/screens/products_screens/product/product.dart';
 import 'package:admin/screens/dashboard/components/header.dart';
 import 'package:flutter/material.dart';
 

@@ -12,7 +12,7 @@ class IinitialState extends ProductsBlocState {
 }
 
 class SuccessState extends ProductsBlocState {
-  final List<ProductEntity> products;
+  final List<Product> products;
 
   SuccessState({required this.products});
 

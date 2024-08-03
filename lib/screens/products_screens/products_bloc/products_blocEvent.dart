@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 abstract class ProductsBlocEvent extends Equatable {}
 
 class AddProductEvent extends ProductsBlocEvent {
-  final ProductEntity products;
+  final Product products;
 
   AddProductEvent({required this.products});
 
@@ -20,7 +20,7 @@ class GetProductsEvent extends ProductsBlocEvent {
 }
 
 class DeleteProductEvent extends ProductsBlocEvent {
-  final ProductEntity product;
+  final Product product;
 
   DeleteProductEvent({required this.product});
 
@@ -29,7 +29,7 @@ class DeleteProductEvent extends ProductsBlocEvent {
 }
 
 class UpdateProductEvent extends ProductsBlocEvent {
-  final ProductEntity product;
+  final Product product;
 
   UpdateProductEvent({
     required this.product,

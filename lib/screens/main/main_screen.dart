@@ -2,11 +2,10 @@ import 'package:admin/screens/plans/12sess/12sess.dart';
 import 'package:admin/screens/plans/16session/dash4.dart';
 import 'package:admin/screens/plans/8session/dash5.dart';
 import 'package:admin/controllers/MenuAppController.dart';
-import 'package:admin/product/dash.dart';
 import 'package:admin/responsive.dart';
 import 'package:admin/screens/dashboard/components/App%20stats/dashboard_screen.dart';
 import 'package:admin/screens/plans/unlimited/dash.dart';
-import 'package:admin/screens/products_screens/products_screens/dash5.dart';
+import 'package:admin/screens/products_screens/product/dash.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -60,11 +59,7 @@ class _MainScreenState extends State<MainScreen> {
                   DashboardScreen5(),
                   DashboardScreen6(),
                   DashboardScreen4(),
-<<<<<<< HEAD
                   Productdash()
-=======
-                  DashboardScreenProduct(),
->>>>>>> 17f5fefb13a8aab333983c1b8922f4f21c392f51
                 ],
               ),
             ),

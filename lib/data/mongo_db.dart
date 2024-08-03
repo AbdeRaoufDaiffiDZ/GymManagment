@@ -126,7 +126,7 @@ class MongoDatabase {
 
 /////////////////////////////////////////////////////////////////////////////////////////// product data fucntions
   Future<Either<Failure, bool>> InsertProduct(
-      {required ProductEntity product, required String collectionName}) async {
+      {required Product product, required String collectionName}) async {
     try {
       if (db == null) {
         await connect();
@@ -134,10 +134,12 @@ class MongoDatabase {
       final collection = db?.collection(collectionName);
       final documentToInsert = {
         '_id': product.id, // Assigning a string value to '_id'
-        'productName': product.productName,
-        'productPrice': product.productPrice,
-        'sellingDates': product.sellingDates,
-        'Quantity': product.quantityleft,
+        'productName': product.name,
+        'productPrice': product.price,
+        'saleRecords': product.saleRecords,
+        'Quantity': product.quantity,
+        'priceoverview': product.priceoverview,
+        'quantityleft': product.quantity,
       };
 
       await collection?.insert(documentToInsert);
@@ -149,7 +151,7 @@ class MongoDatabase {
     }
   }
 
-  Future<Either<Failure, List<ProductEntity>>> RetriveProducts(
+  Future<Either<Failure, List<Product>>> RetriveProducts(
       {required String collectionName}) async {
     try {
       if (db == null) {
@@ -158,14 +160,14 @@ class MongoDatabase {
 
       final collection = db?.collection(collectionName);
       final result = await collection?.find().toList();
-      return Right(result!.map((doc) => ProductEntity.fromMap(doc)).toList());
+      return Right(result!.map((doc) => Product.fromMap(doc)).toList());
     } catch (e) {
       return Left(Failure(key: AppError.NotFound, message: e.toString()));
     }
   }
 
   Future<Either<Failure, bool>> DeleteProduct(
-      {required ProductEntity product, required String collectionName}) async {
+      {required Product product, required String collectionName}) async {
     try {
       if (db == null) {
         await connect();
@@ -183,7 +185,7 @@ class MongoDatabase {
   }
 
   Future<Either<Failure, bool>> UpdateProductData(
-      {required ProductEntity product, required String collectionName}) async {
+      {required Product product, required String collectionName}) async {
     try {
       if (db == null) {
         await connect();
@@ -191,8 +193,17 @@ class MongoDatabase {
       final data = product.toMap();
       final collection = db?.collection(collectionName);
       data.forEach((key, value) async {
-        await collection?.update(
-            where.eq('_id', product.id), modify.set(key, value));
+        if(key == "saleRecords"){
+           final List<SaleRecord> sale = value;
+ await collection?.update(
+          where.eq('_id', product.id), modify.set(key, convertSaleRecordsToMap(sale)));
+          }
+          else
+            {
+               await collection?.update(
+          where.eq('_id', product.id), modify.set(key, value));
+            }
+       
       });
 
       return Right(true);
@@ -201,4 +212,8 @@ class MongoDatabase {
           Failure(key: AppError.DelettingUserError, message: e.toString()));
     }
   }
+  
+List<Map<String, dynamic>> convertSaleRecordsToMap(List<SaleRecord> sales) {
+  return sales.map((sale) => sale.toMap()).toList();
+}
 }

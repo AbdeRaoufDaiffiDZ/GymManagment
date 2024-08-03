@@ -3,47 +3,72 @@
 import 'package:equatable/equatable.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
-class ProductEntity extends Equatable {
+class Product extends Equatable {
   final String id;
-   String productName;
-   String productPrice;
-  List<DateTime> sellingDates;
-  int quantityleft;
+  String name;
+  double price;
+  int quantity;
+  int sold;
+  double priceoverview;
+  List<SaleRecord> saleRecords;
 
-  ProductEntity(
-      {required this.id,
-      required this.productName,
-      required this.productPrice,
-      required this.sellingDates,
-      required this.quantityleft});
-
+  Product({required this.id,
+    required this.name,
+    required this.price,
+    required this.quantity,
+    this.sold = 0,
+    this.priceoverview = 0.0,
+    List<SaleRecord>? saleRecords,
+  }) : saleRecords = saleRecords ?? [];
+  
   @override
-  List<Object?> get props => [
-        productName,
-        productPrice,
-        quantityleft,
-        sellingDates,
-        id,
-      ];
+  List<Object?> get props => [id,name,price,quantity,sold,priceoverview,saleRecords];
 
-  factory ProductEntity.fromMap(Map<String, dynamic> map) {
-    return ProductEntity(
+  factory Product.fromMap(Map<String, dynamic> map) {
+    return Product(
       id: map['_id'] ?? ObjectId,
-      productName: map['productName'] ?? '',
-      productPrice: map['productPrice'] ?? '',
-      quantityleft: map['quantityleft'] ?? 0,
-      sellingDates: //map['sellingDates'] ?? 
-      [DateTime.now()],
+      name: map['productName'] ?? '',
+      price: map['productPrice'] ?? '',
+      quantity: map['quantityleft'] ?? 0,
+      priceoverview: map['priceoverview'] ?? 0.0,
+      //saleRecords:  map['salerecords'] ?? []
     );
   }
-
-  Map<String, dynamic> toMap() {
+   Map<String, dynamic> toMap() {
     return {
-      'productName': productName,
-      'productPrice': productPrice,
+      'productName': name,
+      'productPrice': price,
       '_id': id,
-      'sellingDates': sellingDates,
-      'quantityleft': quantityleft,
+      'priceoverview': priceoverview,
+      'quantityleft': quantity,
+      'saleRecords':saleRecords
     };
   }
+}
+
+class SaleRecord extends Equatable {
+  final int quantitySold;
+  final DateTime dateTime;
+
+  SaleRecord({
+    required this.quantitySold,
+    required this.dateTime,
+  });
+  Map<String, dynamic> toMap() {
+    return {
+      'quantitySold': quantitySold,
+      'dateTime': dateTime,
+      
+    };
+  }
+   factory SaleRecord.fromMap(Map<String, dynamic> map) {
+    return SaleRecord(
+      quantitySold: map['quantitySold'] ?? 0,
+      dateTime: map['dateTime'] ?? DateTime.now(),
+     
+    );
+  }
+  @override
+  List<Object?> get props => [quantitySold, dateTime];
+
 }
