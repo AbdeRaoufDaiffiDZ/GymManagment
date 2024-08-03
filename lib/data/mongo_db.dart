@@ -124,9 +124,8 @@ class MongoDatabase {
     }
   }
 
-
 /////////////////////////////////////////////////////////////////////////////////////////// product data fucntions
-Future<Either<Failure, bool>> InsertProduct(
+  Future<Either<Failure, bool>> InsertProduct(
       {required ProductEntity product, required String collectionName}) async {
     try {
       if (db == null) {
@@ -139,7 +138,6 @@ Future<Either<Failure, bool>> InsertProduct(
         'startingDate': product.productPrice,
         'plan': product.sellingDates,
         'endDate': product.quantityleft,
-      
       };
 
       await collection?.insert(documentToInsert);
@@ -150,7 +148,7 @@ Future<Either<Failure, bool>> InsertProduct(
           Failure(key: AppError.SettingDataError, message: e.toString()));
     }
   }
-  
+
   Future<Either<Failure, List<ProductEntity>>> RetriveProducts(
       {required String collectionName}) async {
     try {
@@ -166,8 +164,6 @@ Future<Either<Failure, bool>> InsertProduct(
     }
   }
 
-
-
   Future<Either<Failure, bool>> DeleteProduct(
       {required ProductEntity product, required String collectionName}) async {
     try {
@@ -178,7 +174,6 @@ Future<Either<Failure, bool>> InsertProduct(
       final collection = db?.collection(collectionName);
 
       await collection?.remove(where.eq('_id', product.id));
-    
 
       return Right(true);
     } catch (e) {
@@ -186,8 +181,6 @@ Future<Either<Failure, bool>> InsertProduct(
           Failure(key: AppError.DelettingUserError, message: e.toString()));
     }
   }
-
-
 
   Future<Either<Failure, bool>> UpdateProductData(
       {required ProductEntity product, required String collectionName}) async {
@@ -208,6 +201,4 @@ Future<Either<Failure, bool>> InsertProduct(
           Failure(key: AppError.DelettingUserError, message: e.toString()));
     }
   }
-
-
 }

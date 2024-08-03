@@ -1,7 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:admin/8session/8session_bloc/bloc/8session_bloc.dart';
-import 'package:admin/8session/8session_bloc/bloc/session_8_event.dart';
+import 'package:admin/screens/plans/8session/8session_bloc/bloc/8session_bloc.dart';
+import 'package:admin/screens/plans/8session/8session_bloc/bloc/session_8_event.dart';
 import 'package:admin/const/loading.dart';
 import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/user_data_entity.dart';

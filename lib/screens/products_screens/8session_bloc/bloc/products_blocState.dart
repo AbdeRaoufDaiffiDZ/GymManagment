@@ -1,31 +1,31 @@
 
-part of '8session_bloc.dart';
+part of 'products_bloc.dart';
 
-sealed class session_8_PlanState extends Equatable {
+sealed class ProductsBlocState extends Equatable {
   @override
   List<Object?> get props => [];
 }
 
-class IinitialState extends session_8_PlanState {
+class IinitialState extends ProductsBlocState {
   @override
   List<Object?> get props => [];
 }
 
-class SuccessState extends session_8_PlanState {
-  final List<User_Data> users;
+class SuccessState extends ProductsBlocState {
+  final List<ProductEntity> products;
 
-  SuccessState({required this.users});
+  SuccessState({required this.products});
 
   @override
-  List<Object?> get props => [users];
+  List<Object?> get props => [products];
 }
 
-class LoadingState extends session_8_PlanState {
+class LoadingState extends ProductsBlocState {
   @override
   List<Object?> get props => [];
 }
 
-class ErrorState extends session_8_PlanState {
+class ErrorState extends ProductsBlocState {
   final String error;
 
   ErrorState({required this.error});

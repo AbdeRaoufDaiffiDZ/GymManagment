@@ -1,5 +1,4 @@
 import 'package:admin/entities/product_entity.dart';
-import 'package:admin/entities/user_data_entity.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 

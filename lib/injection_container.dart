@@ -1,8 +1,8 @@
-import 'package:admin/12sess/12session_bloc/bloc/12session_bloc.dart';
-import 'package:admin/16session/16session_bloc/bloc/16session_bloc.dart';
-import 'package:admin/8session/8session_bloc/bloc/8session_bloc.dart';
+import 'package:admin/screens/plans/12sess/12session_bloc/bloc/12session_bloc.dart';
+import 'package:admin/screens/plans/16session/16session_bloc/bloc/16session_bloc.dart';
+import 'package:admin/screens/plans/8session/8session_bloc/bloc/8session_bloc.dart';
 import 'package:admin/data/mongo_db.dart';
-import 'package:admin/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart';
+import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 final locator = GetIt.instance;

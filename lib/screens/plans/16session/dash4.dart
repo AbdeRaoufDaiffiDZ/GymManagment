@@ -1,4 +1,4 @@
-import 'package:admin/16session/16sess.dart';
+import 'package:admin/screens/plans/16session/16sess.dart';
 import 'package:admin/constants.dart';
 import 'package:admin/screens/dashboard/components/header.dart';
 import 'package:flutter/material.dart';

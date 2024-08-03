@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:admin/16session/16session_bloc/bloc/session_16_event.dart';
+import 'package:admin/screens/plans/16session/16session_bloc/bloc/session_16_event.dart';
 import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/user_data_entity.dart';
 import 'package:bloc/bloc.dart';
