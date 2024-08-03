@@ -1,13 +1,13 @@
-import 'package:admin/8session/8session.dart';
+import 'package:admin/screens/plans/16session/16sess.dart';
 import 'package:admin/constants.dart';
 import 'package:admin/screens/dashboard/components/header.dart';
+import 'package:admin/screens/products_screens/products_screens/product_screen_test.dart';
 import 'package:flutter/material.dart';
 
-class DashboardScreen5 extends StatelessWidget {
+class DashboardScreenProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           primary: false,
@@ -15,7 +15,7 @@ class DashboardScreen5 extends StatelessWidget {
           child: Column(children: [
             Header(),
             SizedBox(height: defaultPadding),
-            eightSession()
+            ProductsScreen()
           ]),
         ),
       ),

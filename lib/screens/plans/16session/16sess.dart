@@ -1,7 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:admin/12sess/12session_bloc/bloc/12session_bloc.dart';
-import 'package:admin/12sess/12session_bloc/bloc/session_12_event.dart';
+import 'package:admin/screens/plans/16session/16session_bloc/bloc/16session_bloc.dart';
 import 'package:admin/const/loading.dart';
 import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/user_data_entity.dart';
@@ -10,26 +9,28 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
 
+import '16session_bloc/bloc/session_16_event.dart';
+
 int count = 0;
 bool edit = false;
 bool checkDate = false;
 late User_Data userr;
-final int sessionNumber = 8;
+final int sessionNumber = 16;
 final int daysNumber = 45;
 
-class twlvSession extends StatefulWidget {
-  const twlvSession({Key? key}) : super(key: key);
+class sixSession extends StatefulWidget {
+  const sixSession({Key? key}) : super(key: key);
 
   @override
   _SearchState createState() => _SearchState();
 }
 
-class _SearchState extends State<twlvSession> {
+class _SearchState extends State<sixSession> {
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _creditController = TextEditingController();
   final MongoDatabase monog = MongoDatabase();
-  final String plan = "12 session";
+  final String plan = "16 session";
   final startingDate = DateTime.now();
 
   List<User_Data> _allItems = [];
@@ -52,48 +53,35 @@ class _SearchState extends State<twlvSession> {
   }
 
   void _addProfile(User_Data? user) {
+    late User_Data userNew;
+    final Session_16_PlanBloc _unlimited_bloc =
+        BlocProvider.of<Session_16_PlanBloc>(context);
+    if (checkDate) {
+      userNew = User_Data(
+          id: user!.id,
+          fullName: user.fullName,
+          plan: user.plan,
+          startingDate: user.startingDate,
+          endDate: user.endDate,
+          credit: user.credit,
+          sessionLeft: user.sessionLeft,
+          lastCheckDate: user.lastCheckDate);
+      _unlimited_bloc.add(UpdateUserEvent(user: userNew));
+    }
     if (_nameController.text.isNotEmpty && _creditController.text.isNotEmpty) {
-      final Session_12_PlanBloc _unlimited_bloc =
-          BlocProvider.of<Session_12_PlanBloc>(context);
-
       if (edit) {
-        late User_Data userNew;
-        if (checkDate) {
-          userNew = User_Data(
-              id: user!.id,
-              fullName: user.fullName,
-              plan: user.plan,
-              startingDate: user.startingDate,
-              endDate: user.endDate,
-              credit: user.credit,
-              sessionLeft: user.sessionLeft,
-              lastCheckDate: user.lastCheckDate);
-        } else {
-          userNew = User_Data(
-              id: userr.id,
-              fullName: _nameController.text,
-              plan: userr.plan,
-              startingDate: userr.startingDate,
-              endDate: userr.endDate,
-              credit: _creditController.text,
-              sessionLeft: userr.sessionLeft,
-              lastCheckDate: userr.lastCheckDate);
-        }
+        userNew = User_Data(
+            id: userr.id,
+            fullName: _nameController.text,
+            plan: userr.plan,
+            startingDate: userr.startingDate,
+            endDate: userr.endDate,
+            credit: _creditController.text,
+            sessionLeft: userr.sessionLeft,
+            lastCheckDate: userr.lastCheckDate);
 
-        final Session_12_PlanBloc _unlimited_bloc =
-            BlocProvider.of<Session_12_PlanBloc>(context);
         _unlimited_bloc.add(UpdateUserEvent(user: userNew));
-        setState(() {
-          _filteredItems = _allItems;
-          count = 0;
-        });
-        edit = false;
-        checkDate = false;
       } else {
-        setState(() {
-          _filteredItems = _allItems;
-          count = 0;
-        });
         User_Data newUser = User_Data(
             fullName: _nameController.text,
             plan: plan,
@@ -105,7 +93,13 @@ class _SearchState extends State<twlvSession> {
             lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()));
         _unlimited_bloc.add(AddUserEvent(user: newUser));
       }
+      _nameController.clear();
+      _creditController.clear();
     }
+    _filteredItems = _allItems;
+    count = 0;
+    edit = false;
+    checkDate = false;
   }
 
   void _editProfile(User_Data user) {
@@ -118,8 +112,8 @@ class _SearchState extends State<twlvSession> {
   }
 
   void _deleteProfile(User_Data user) {
-    final Session_12_PlanBloc _unlimited_bloc =
-        BlocProvider.of<Session_12_PlanBloc>(context);
+    final Session_16_PlanBloc _unlimited_bloc =
+        BlocProvider.of<Session_16_PlanBloc>(context);
     _unlimited_bloc.add(DeleteUserEvent(user: user));
     count = 0;
   }
@@ -127,8 +121,7 @@ class _SearchState extends State<twlvSession> {
   /*void _renewProfile(User_Data user) {
     final Unlimited_PlanBloc _unlimited_bloc =
         BlocProvider.of<Unlimited_PlanBloc>(context);
-    user.endDate = DateTime.now().add(const Duration(days: 45));
-  
+    user.endDate = DateTime.now().add(const Duration(days: 30));
     _unlimited_bloc.add(UpdateUserEvent(user: user));
   }
 */
@@ -150,34 +143,35 @@ class _SearchState extends State<twlvSession> {
     if (value) {
       // Implement the checkbox functionality if needed
       user_data.isSessionMarked = true;
-      user_data.sessionLeft = user_data.sessionLeft - 1;
+      user_data.sessionLeft =
+          user_data.sessionLeft <= 0 ? 0 : user_data.sessionLeft - 1;
       user_data.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
     } else {
       user_data.isSessionMarked = false;
       user_data.sessionLeft = user_data.sessionLeft + 1;
       user_data.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
     }
-    final Session_12_PlanBloc session_12_planBloc =
-        BlocProvider.of<Session_12_PlanBloc>(context);
-    session_12_planBloc.add(UpdateUserEvent(user: user_data));
+    final Session_16_PlanBloc session_16_planBloc =
+        BlocProvider.of<Session_16_PlanBloc>(context);
+    session_16_planBloc.add(UpdateUserEvent(user: user_data));
   }
 
   void _renewProfile(User_Data user) {
     setState(() {
       count = 0;
     });
-    final Session_12_PlanBloc _unlimited_bloc =
-        BlocProvider.of<Session_12_PlanBloc>(context);
+    final Session_16_PlanBloc session_16_planBloc =
+        BlocProvider.of<Session_16_PlanBloc>(context);
     final renewUser = User_Data(
         id: user.id,
         fullName: user.fullName,
         plan: user.plan,
         startingDate: DateTime.now(),
-        endDate: DateTime.now().add(Duration(days: daysNumber)),
+        endDate: DateTime.now().add(const Duration(days: 45)),
         credit: user.credit,
-        sessionLeft: sessionNumber,
+        sessionLeft: 16,
         lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()));
-    _unlimited_bloc.add(UpdateUserEvent(user: renewUser));
+    session_16_planBloc.add(UpdateUserEvent(user: renewUser));
   }
 
   @override
@@ -190,8 +184,8 @@ class _SearchState extends State<twlvSession> {
 
   @override
   Widget build(BuildContext context) {
-    final Session_12_PlanBloc _unlimited_bloc =
-        BlocProvider.of<Session_12_PlanBloc>(context);
+    final Session_16_PlanBloc session_16_planBloc =
+        BlocProvider.of<Session_16_PlanBloc>(context);
 
     return SingleChildScrollView(
       child: Column(
@@ -293,7 +287,7 @@ class _SearchState extends State<twlvSession> {
           ),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-            child: BlocBuilder<Session_12_PlanBloc, session_12_PlanState>(
+            child: BlocBuilder<Session_16_PlanBloc, session_16_PlanState>(
                 builder: (context, state) {
               if (state is SuccessState) {
                 _allItems = state.users
@@ -303,7 +297,8 @@ class _SearchState extends State<twlvSession> {
                   _filteredItems = state.users;
                   count++;
                 }
-
+                _filteredItems
+                    .sort((a, b) => a.sessionLeft.compareTo(b.sessionLeft));
                 return SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Table(
@@ -330,10 +325,10 @@ class _SearchState extends State<twlvSession> {
                       for (var user in _filteredItems)
                         TableRow(
                           decoration: BoxDecoration(
-                            color: (user.sessionLeft == 0 ||
+                            color: (user.sessionLeft <= 0 ||
                                     user.endDate
                                             .difference(DateTime.now())
-                                            .inDays ==
+                                            .inDays <=
                                         0)
                                 ? Colors.red.withOpacity(0.3)
                                 : Color(0xffFAFAFA),
@@ -341,7 +336,7 @@ class _SearchState extends State<twlvSession> {
                           children: [
                             _tableCell(user.fullName),
                             _tableCell(user.endDate
-                                .difference(user.startingDate)
+                                .difference(DateTime.now())
                                 .inDays
                                 .toString()),
                             _tableCell(user.sessionLeft.toString()),
@@ -353,10 +348,10 @@ class _SearchState extends State<twlvSession> {
                   ),
                 );
               } else if (state is IinitialState) {
-                _unlimited_bloc.add(GetUsersEvent());
+                session_16_planBloc.add(GetUsersEvent());
                 return Loading();
               } else if (state is ErrorState) {
-                _unlimited_bloc.add(GetUsersEvent());
+                session_16_planBloc.add(GetUsersEvent());
 
                 return Loading();
               } else {
@@ -414,20 +409,22 @@ class _SearchState extends State<twlvSession> {
     );
   }
 
+  bool isDate1BeforeDate2(String yyyymmdd1, String yyyymmdd2) {
+    DateTime date1 = DateTime.parse(yyyymmdd1);
+    DateTime date2 = DateTime.parse(yyyymmdd2);
+
+    return date1.isBefore(date2);
+  }
+
   Widget _tableCellActions(User_Data user) {
     if (user.lastCheckDate != null) {
-      DateTime timeCheck = DateFormat('yyyy-MM-dd').parse(
-          user.lastCheckDate!); // check this logic here maybe will not work
-      DateTime now = DateTime.now();
-      bool isCheckeddd = timeCheck.day.compareTo(now.day) == -1;
-      bool isCheckedyy = timeCheck.year.compareTo(DateTime.now().year) == 0;
-      bool isCheckedmm = timeCheck.month.compareTo(DateTime.now().month) == 0;
-      bool isChecked = false;
-      if (isCheckeddd && isCheckedmm && isCheckedyy) {
-        isChecked = true;
-      }
+      String now = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+      bool isChecked = isDate1BeforeDate2(user.lastCheckDate!, now);
+
       if (isChecked) {
         user.isSessionMarked = false;
+        user.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
         checkDate = true;
         _addProfile(user);
       }

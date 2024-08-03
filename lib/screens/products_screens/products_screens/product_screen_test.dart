@@ -1,31 +1,38 @@
+// ignore_for_file: deprecated_member_use
+
+import 'package:admin/entities/product_entity.dart';
 import 'package:admin/const/loading.dart';
 import 'package:admin/data/mongo_db.dart';
-import 'package:admin/entities/user_data_entity.dart';
-import 'package:admin/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart';
+import 'package:admin/screens/products_screens/products_bloc/products_bloc.dart';
+import 'package:admin/screens/products_screens/products_bloc/products_blocEvent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
 
 int count = 0;
 bool edit = false;
-late User_Data userr;
+bool checkDate = false;
+late ProductEntity productEdit;
 
-class unlimited extends StatefulWidget {
-  const unlimited({Key? key}) : super(key: key);
+class ProductsScreen extends StatefulWidget {
+  const ProductsScreen({Key? key}) : super(key: key);
 
   @override
   _SearchState createState() => _SearchState();
 }
 
-class _SearchState extends State<unlimited> {
+class _SearchState extends State<ProductsScreen> {
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _creditController = TextEditingController();
-  final MongoDatabase monog = MongoDatabase();
-  final String plan = "unlimited";
+  final TextEditingController _productPriceController = TextEditingController();
+  final TextEditingController _productQuantityController =
+      TextEditingController();
 
-  List<User_Data> _allItems = [];
-  List<User_Data> _filteredItems = [];
+  final MongoDatabase monog = MongoDatabase();
+  final startingDate = DateTime.now();
+
+  List<ProductEntity> _allItems = [];
+  List<ProductEntity> _filteredItems = [];
 
   @override
   void initState() {
@@ -38,82 +45,77 @@ class _SearchState extends State<unlimited> {
     final query = _searchController.text.toLowerCase();
     setState(() {
       _filteredItems = _allItems.where((item) {
-        return item.fullName.toLowerCase().contains(query);
+        return item.productName.toLowerCase().contains(query);
       }).toList();
     });
   }
 
-  void _addProfile(User_Data? user) {
-    if (_nameController.text.isNotEmpty && _creditController.text.isNotEmpty) {
-      final Unlimited_PlanBloc _unlimited_bloc =
-          BlocProvider.of<Unlimited_PlanBloc>(context);
+  void _addProfile(ProductEntity? product) {
+    final ProductsBloc productsBloc = BlocProvider.of<ProductsBloc>(context);
+
+    if (_nameController.text.isNotEmpty &&
+        _productPriceController.text.isNotEmpty &&
+        _productQuantityController.text.isNotEmpty) {
       if (edit) {
-        final userNew = User_Data(
-            id: userr.id,
-            fullName: _nameController.text,
-            plan: userr.plan,
-            startingDate: userr.startingDate,
-            endDate: userr.endDate,
-            credit: _creditController.text,
-            sessionLeft: 0,
-            lastCheckDate: userr.lastCheckDate);
-        final Unlimited_PlanBloc _unlimited_bloc =
-            BlocProvider.of<Unlimited_PlanBloc>(context);
-        _unlimited_bloc.add(UpdateUserEvent(user: userNew));
+        ProductEntity newProduct = ProductEntity(
+            id: productEdit!.id,
+            productName: _nameController.text,
+            productPrice: _productPriceController.text,
+            sellingDates: productEdit.sellingDates,
+            quantityleft: int.parse(_productQuantityController.text));
+
+        productsBloc.add(UpdateProductEvent(product: newProduct));
+
         setState(() {
-          _filteredItems = _allItems;
-          count = 0;
+          _allItems.forEach((element) {
+            if (element.id == newProduct.id) {
+              element.productName = newProduct.productName;
+              element.productPrice = newProduct.productPrice;
+              element.quantityleft = newProduct.quantityleft;
+            }
+          });
         });
-        edit = false;
       } else {
-        User_Data newUser = User_Data(
-            fullName: _nameController.text,
-            plan: plan,
-            startingDate: DateTime.now(),
-            endDate: DateTime.now().add(const Duration(days: 30)),
-            credit: _creditController.text,
+        ProductEntity newProduct = ProductEntity(
             id: mongo.ObjectId().toHexString(),
-            sessionLeft: 30,
-            lastCheckDate: '');
-        _unlimited_bloc.add(AddUserEvent(user: newUser));
+            productName: _nameController.text,
+            productPrice: _productPriceController.text,
+            sellingDates: [],
+            quantityleft: int.parse(_productQuantityController.text));
+
+        productsBloc.add(AddProductEvent(products: newProduct));
+
         setState(() {
-          _filteredItems = _allItems;
-          count = 0;
+          _allItems.add(newProduct);
         });
       }
       _nameController.clear();
-      _creditController.clear();
+      _productPriceController.clear();
+      _productQuantityController.clear();
     }
+    _filteredItems = _allItems;
+    count = 0;
+    edit = false;
+    checkDate = false;
   }
 
-  void _editProfile(User_Data user) {
+  void _editProfile(ProductEntity product) {
     setState(() {
-      _nameController.text = user.fullName;
-      _creditController.text = user.credit;
+      _nameController.text = product.productName;
+      _productPriceController.text = product.productPrice;
+      _productQuantityController.text = product.quantityleft.toString();
       edit = true;
     });
-    userr = user;
+    productEdit = product;
   }
 
-  void _renewProfile(User_Data user) {
-    final Unlimited_PlanBloc _unlimited_bloc =
-        BlocProvider.of<Unlimited_PlanBloc>(context);
-    final renewUser = User_Data(
-        id: user.id,
-        fullName: user.fullName,
-        plan: user.plan,
-        startingDate: DateTime.now(),
-        endDate: DateTime.now().add(const Duration(days: 30)),
-        credit: user.credit,
-        sessionLeft: 0,
-        lastCheckDate: '');
-    _unlimited_bloc.add(UpdateUserEvent(user: renewUser));
-  }
-
-  void _deleteProfile(User_Data user) {
-    final Unlimited_PlanBloc _unlimited_bloc =
-        BlocProvider.of<Unlimited_PlanBloc>(context);
-    _unlimited_bloc.add(DeleteUserEvent(user: user));
+  void _deleteProfile(ProductEntity product) {
+    final ProductsBloc productsBloc = BlocProvider.of<ProductsBloc>(context);
+    productsBloc.add(DeleteProductEvent(product: product));
+    setState(() {
+      _allItems.removeWhere((element) => element.id == product.id);
+    });
+    count = 0;
   }
 
   /*void _renewProfile(User_Data user) {
@@ -123,25 +125,74 @@ class _SearchState extends State<unlimited> {
     _unlimited_bloc.add(UpdateUserEvent(user: user));
   }
 */
-  void _toggleSessionMark(User_Data user, bool value) {
+  // void _toggleSessionMark(User_Data user, bool value) {
+  //   setState(() {
+  //     user.isSessionMarked = value;
+  //     count = 0;
+  //   });
+  //   User_Data user_data = User_Data(
+  //       isSessionMarked: user.isSessionMarked,
+  //       sessionLeft: user.sessionLeft,
+  //       id: user.id,
+  //       fullName: user.fullName,
+  //       plan: user.plan,
+  //       startingDate: user.startingDate,
+  //       endDate: user.endDate,
+  //       credit: user.credit,
+  //       lastCheckDate: user.lastCheckDate);
+  //   if (value) {
+  //     // Implement the checkbox functionality if needed
+  //     user_data.isSessionMarked = true;
+  //     user_data.sessionLeft =
+  //         user_data.sessionLeft <= 0 ? 0 : user_data.sessionLeft - 1;
+  //     user_data.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  //   } else {
+  //     user_data.isSessionMarked = false;
+  //     user_data.sessionLeft = user_data.sessionLeft + 1;
+  //     user_data.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  //   }
+  //   final Session_16_PlanBloc session_16_planBloc =
+  //       BlocProvider.of<Session_16_PlanBloc>(context);
+  //   session_16_planBloc.add(UpdateUserEvent(user: user_data));
+  // }
+
+  void _renewProfile(ProductEntity productEntity) {
+    final ProductsBloc productsBloc = BlocProvider.of<ProductsBloc>(context);
+    productEntity.sellingDates.add(DateTime.now());
+    final renewProduct = ProductEntity(
+      id: productEntity.id,
+      productName: productEntity.productName,
+      productPrice: productEntity.productPrice,
+      quantityleft: productEntity.quantityleft - 1,
+      sellingDates: productEntity.sellingDates,
+    );
+    productsBloc.add(UpdateProductEvent(product: renewProduct));
     setState(() {
-      user.isSessionMarked = value;
+      _allItems.forEach((element) {
+        if (element.id == renewProduct.id) {
+          element.productName = renewProduct.productName;
+          element.productPrice = renewProduct.productPrice;
+          element.quantityleft = renewProduct.quantityleft;
+          element.sellingDates =renewProduct.sellingDates;
+        }
+        count = 0;
+      });
     });
-    // Implement the checkbox functionality if needed
   }
 
   @override
   void dispose() {
     _searchController.dispose();
     _nameController.dispose();
-    _creditController.dispose();
+    _productPriceController.dispose();
+    _productQuantityController.dispose();
+
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final Unlimited_PlanBloc _unlimited_bloc =
-        BlocProvider.of<Unlimited_PlanBloc>(context);
+    final ProductsBloc productsBloc = BlocProvider.of<ProductsBloc>(context);
 
     return SingleChildScrollView(
       child: Column(
@@ -203,7 +254,12 @@ class _SearchState extends State<unlimited> {
               children: [
                 Expanded(child: _inputField(_nameController, 'Name', false)),
                 SizedBox(width: 10),
-                Expanded(child: _inputField(_creditController, 'Credit', true)),
+                Expanded(
+                    child: _inputField(_productPriceController, 'price', true)),
+                SizedBox(width: 10),
+                Expanded(
+                    child: _inputField(
+                        _productQuantityController, 'quantity', true)),
                 SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
@@ -243,22 +299,25 @@ class _SearchState extends State<unlimited> {
           ),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-            child: BlocBuilder<Unlimited_PlanBloc, Unlimited_PlanState>(
+            child: BlocBuilder<ProductsBloc, ProductsBlocState>(
                 builder: (context, state) {
               if (state is SuccessState) {
-                _allItems = state.users;
+                _allItems = state.products;
                 if (count == 0) {
-                  _filteredItems = state.users;
+                  _filteredItems = state.products;
                   count++;
                 }
+
+                _filteredItems
+                    .sort((a, b) => a.quantityleft.compareTo(b.quantityleft));
                 return SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Table(
                     columnWidths: {
                       0: FixedColumnWidth(300),
-                      1: FixedColumnWidth(300),
-                      2: FixedColumnWidth(300),
-                      3: FixedColumnWidth(300),
+                      1: FixedColumnWidth(230),
+                      2: FixedColumnWidth(230),
+                      3: FixedColumnWidth(230),
                     },
                     children: [
                       TableRow(
@@ -266,39 +325,36 @@ class _SearchState extends State<unlimited> {
                           color: Color(0xffFFA05D).withOpacity(0.4),
                         ),
                         children: [
-                          _tableHeaderCell("Name"),
-                          _tableHeaderCell("Days left"),
-                          _tableHeaderCell("Credit"),
+                          _tableHeaderCell("product Name"),
+                          _tableHeaderCell("product Price"),
+                          _tableHeaderCell("product Quantity"),
                           _tableHeaderCell(""),
                         ],
                       ),
-                      for (var user in _filteredItems)
+                      for (var product in _filteredItems)
                         TableRow(
                           decoration: BoxDecoration(
-                            color: (user.endDate
-                                        .difference(DateTime.now())
-                                        .inDays ==
-                                    0)
+                            color: product.quantityleft <= 0
                                 ? Colors.red.withOpacity(0.3)
                                 : Color(0xffFAFAFA),
                           ),
                           children: [
-                            _tableCell(user.fullName),
-                            _tableCell(user.endDate
-                                .difference(DateTime.now())
-                                .inDays
-                                .toString()),
-                            _tableCell(user.credit),
-                            _tableCellActions(user),
+                            _tableCell(product.productName),
+                            _tableCell(product.productPrice),
+                            _tableCell(product.quantityleft.toString()),
+                            // _tableCell(user.credit),
+                            _tableCellActions(product),
                           ],
                         ),
                     ],
                   ),
                 );
               } else if (state is IinitialState) {
-                _unlimited_bloc.add(GetUsersEvent());
+                productsBloc.add(GetProductsEvent());
                 return Loading();
               } else if (state is ErrorState) {
+                productsBloc.add(GetProductsEvent());
+
                 return Loading();
               } else {
                 return Loading();
@@ -355,7 +411,14 @@ class _SearchState extends State<unlimited> {
     );
   }
 
-  Widget _tableCellActions(User_Data user) {
+  bool isDate1BeforeDate2(String yyyymmdd1, String yyyymmdd2) {
+    DateTime date1 = DateTime.parse(yyyymmdd1);
+    DateTime date2 = DateTime.parse(yyyymmdd2);
+
+    return date1.isBefore(date2);
+  }
+
+  Widget _tableCellActions(ProductEntity user) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -363,22 +426,18 @@ class _SearchState extends State<unlimited> {
           icon: Icon(Icons.edit, color: Colors.blue),
           onPressed: () {
             _editProfile(user);
-            count = 0;
           },
         ),
         IconButton(
           icon: Icon(Icons.refresh, color: Colors.green),
           onPressed: () {
             _renewProfile(user);
-
-            count = 0;
           },
         ),
         IconButton(
           icon: Icon(Icons.delete, color: Colors.red),
           onPressed: () {
             _deleteProfile(user);
-            count = 0;
           },
         ),
         // Checkbox(

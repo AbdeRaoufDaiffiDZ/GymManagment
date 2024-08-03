@@ -1,24 +1,24 @@
-import 'package:admin/12sess/12session_bloc/bloc/12session_bloc.dart'
+import 'package:admin/screens/plans/12sess/12session_bloc/bloc/12session_bloc.dart'
     as Session12;
-import 'package:admin/12sess/12session_bloc/bloc/12session_bloc.dart';
-import 'package:admin/12sess/12session_bloc/bloc/session_12_event.dart'
+import 'package:admin/screens/plans/12sess/12session_bloc/bloc/12session_bloc.dart';
+import 'package:admin/screens/plans/12sess/12session_bloc/bloc/session_12_event.dart'
     as Event12;
-import 'package:admin/16session/16session_bloc/bloc/16session_bloc.dart'
+import 'package:admin/screens/plans/16session/16session_bloc/bloc/16session_bloc.dart'
     as Session16;
-import 'package:admin/16session/16session_bloc/bloc/16session_bloc.dart';
-import 'package:admin/8session/8session_bloc/bloc/8session_bloc.dart'
+import 'package:admin/screens/plans/16session/16session_bloc/bloc/16session_bloc.dart';
+import 'package:admin/screens/plans/8session/8session_bloc/bloc/8session_bloc.dart'
     as Session8;
-import 'package:admin/8session/8session_bloc/bloc/8session_bloc.dart';
-import 'package:admin/8session/8session_bloc/bloc/session_8_event.dart'
+import 'package:admin/screens/plans/8session/8session_bloc/bloc/8session_bloc.dart';
+import 'package:admin/screens/plans/8session/8session_bloc/bloc/session_8_event.dart'
     as Event8;
 import 'package:admin/const/loading.dart';
-import 'package:admin/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart'
+import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart'
     as Unlimited;
-import 'package:admin/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart';
+import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../16session/16session_bloc/bloc/session_16_event.dart'
+import '../../../plans/16session/16session_bloc/bloc/session_16_event.dart'
     as Event16;
 
 class users extends StatelessWidget {

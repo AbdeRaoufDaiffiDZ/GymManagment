@@ -1,8 +1,9 @@
-import 'package:admin/12sess/12session_bloc/bloc/12session_bloc.dart';
-import 'package:admin/16session/16session_bloc/bloc/16session_bloc.dart';
-import 'package:admin/8session/8session_bloc/bloc/8session_bloc.dart';
+import 'package:admin/screens/plans/12sess/12session_bloc/bloc/12session_bloc.dart';
+import 'package:admin/screens/plans/16session/16session_bloc/bloc/16session_bloc.dart';
+import 'package:admin/screens/plans/8session/8session_bloc/bloc/8session_bloc.dart';
 import 'package:admin/data/mongo_db.dart';
-import 'package:admin/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart';
+import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart';
+import 'package:admin/screens/products_screens/products_bloc/products_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 final locator = GetIt.instance;
@@ -12,6 +13,7 @@ Future<void> setupLocator() async {
   locator.registerSingleton<Session_8_PlanBloc>(Session_8_PlanBloc());
   locator.registerSingleton<Session_12_PlanBloc>(Session_12_PlanBloc());
   locator.registerSingleton<Session_16_PlanBloc>(Session_16_PlanBloc());
+  locator.registerSingleton<ProductsBloc>(ProductsBloc());
 
   // locator.registerFactory(() => IntroductionBloc(locator(), locator(),
   //     locator(), locator(), locator(), locator(), locator()));

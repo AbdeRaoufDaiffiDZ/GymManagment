@@ -1,35 +1,30 @@
-// ignore_for_file: deprecated_member_use
-
-import 'package:admin/16session/16session_bloc/bloc/16session_bloc.dart';
 import 'package:admin/const/loading.dart';
 import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/user_data_entity.dart';
+import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
-
-import '16session_bloc/bloc/session_16_event.dart';
 
 int count = 0;
 bool edit = false;
-bool checkDate = false;
 late User_Data userr;
+final int sessionNumber = 0;
+final int daysNumber = 30;
 
-class sixSession extends StatefulWidget {
-  const sixSession({Key? key}) : super(key: key);
+class unlimited extends StatefulWidget {
+  const unlimited({Key? key}) : super(key: key);
 
   @override
   _SearchState createState() => _SearchState();
 }
 
-class _SearchState extends State<sixSession> {
+class _SearchState extends State<unlimited> {
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _creditController = TextEditingController();
   final MongoDatabase monog = MongoDatabase();
-  final String plan = "16 session";
-  final startingDate = DateTime.now();
+  final String plan = "unlimited";
 
   List<User_Data> _allItems = [];
   List<User_Data> _filteredItems = [];
@@ -52,58 +47,38 @@ class _SearchState extends State<sixSession> {
 
   void _addProfile(User_Data? user) {
     if (_nameController.text.isNotEmpty && _creditController.text.isNotEmpty) {
-      final Session_16_PlanBloc _unlimited_bloc =
-          BlocProvider.of<Session_16_PlanBloc>(context);
-
+      final Unlimited_PlanBloc _unlimited_bloc =
+          BlocProvider.of<Unlimited_PlanBloc>(context);
       if (edit) {
-        late User_Data userNew;
-        if (checkDate) {
-          userNew = User_Data(
-              id: user!.id,
-              fullName: user.fullName,
-              plan: user.plan,
-              startingDate: user.startingDate,
-              endDate: user.endDate,
-              credit: user.credit,
-              sessionLeft: user.sessionLeft,
-              lastCheckDate: user.lastCheckDate);
-        } else {
-          userNew = User_Data(
-              id: userr.id,
-              fullName: _nameController.text,
-              plan: userr.plan,
-              startingDate: userr.startingDate,
-              endDate: userr.endDate,
-              credit: _creditController.text,
-              sessionLeft: userr.sessionLeft,
-              lastCheckDate: userr.lastCheckDate);
-        }
-
-        final Session_16_PlanBloc _unlimited_bloc =
-            BlocProvider.of<Session_16_PlanBloc>(context);
+        final userNew = User_Data(
+            id: userr.id,
+            fullName: _nameController.text,
+            plan: userr.plan,
+            startingDate: userr.startingDate,
+            endDate: userr.endDate,
+            credit: _creditController.text,
+            sessionLeft: sessionNumber,
+            lastCheckDate: userr.lastCheckDate);
+        final Unlimited_PlanBloc _unlimited_bloc =
+            BlocProvider.of<Unlimited_PlanBloc>(context);
         _unlimited_bloc.add(UpdateUserEvent(user: userNew));
-        setState(() {
-          _filteredItems = _allItems;
-          count = 0;
-        });
-        edit = false;
-        checkDate = false;
       } else {
-        setState(() {
-          _filteredItems = _allItems;
-          count = 0;
-        });
         User_Data newUser = User_Data(
             fullName: _nameController.text,
             plan: plan,
             startingDate: DateTime.now(),
-            endDate: DateTime.now().add(const Duration(days: 45)),
+            endDate: DateTime.now().add(Duration(days: daysNumber)),
             credit: _creditController.text,
             id: mongo.ObjectId().toHexString(),
-            sessionLeft: 16,
-            lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()));
+            sessionLeft: sessionNumber,
+            lastCheckDate: '');
         _unlimited_bloc.add(AddUserEvent(user: newUser));
       }
+      _filteredItems = _allItems;
+      count = 0;
+      edit = false;
+      _nameController.clear();
+      _creditController.clear();
     }
   }
 
@@ -116,11 +91,25 @@ class _SearchState extends State<sixSession> {
     userr = user;
   }
 
+  void _renewProfile(User_Data user) {
+    final Unlimited_PlanBloc _unlimited_bloc =
+        BlocProvider.of<Unlimited_PlanBloc>(context);
+    final renewUser = User_Data(
+        id: user.id,
+        fullName: user.fullName,
+        plan: user.plan,
+        startingDate: DateTime.now(),
+        endDate: DateTime.now().add(const Duration(days: 30)),
+        credit: user.credit,
+        sessionLeft: 0,
+        lastCheckDate: '');
+    _unlimited_bloc.add(UpdateUserEvent(user: renewUser));
+  }
+
   void _deleteProfile(User_Data user) {
-    final Session_16_PlanBloc _unlimited_bloc =
-        BlocProvider.of<Session_16_PlanBloc>(context);
+    final Unlimited_PlanBloc _unlimited_bloc =
+        BlocProvider.of<Unlimited_PlanBloc>(context);
     _unlimited_bloc.add(DeleteUserEvent(user: user));
-    count = 0;
   }
 
   /*void _renewProfile(User_Data user) {
@@ -133,49 +122,8 @@ class _SearchState extends State<sixSession> {
   void _toggleSessionMark(User_Data user, bool value) {
     setState(() {
       user.isSessionMarked = value;
-      count = 0;
     });
-    User_Data user_data = User_Data(
-        isSessionMarked: user.isSessionMarked,
-        sessionLeft: user.sessionLeft,
-        id: user.id,
-        fullName: user.fullName,
-        plan: user.plan,
-        startingDate: user.startingDate,
-        endDate: user.endDate,
-        credit: user.credit,
-        lastCheckDate: user.lastCheckDate);
-    if (value) {
-      // Implement the checkbox functionality if needed
-      user_data.isSessionMarked = true;
-      user_data.sessionLeft = user_data.sessionLeft - 1;
-      user_data.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    } else {
-      user_data.isSessionMarked = false;
-      user_data.sessionLeft = user_data.sessionLeft + 1;
-      user_data.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    }
-    final Session_16_PlanBloc session_16_planBloc =
-        BlocProvider.of<Session_16_PlanBloc>(context);
-    session_16_planBloc.add(UpdateUserEvent(user: user_data));
-  }
-
-  void _renewProfile(User_Data user) {
-    setState(() {
-      count = 0;
-    });
-    final Session_16_PlanBloc session_16_planBloc =
-        BlocProvider.of<Session_16_PlanBloc>(context);
-    final renewUser = User_Data(
-        id: user.id,
-        fullName: user.fullName,
-        plan: user.plan,
-        startingDate: DateTime.now(),
-        endDate: DateTime.now().add(const Duration(days: 45)),
-        credit: user.credit,
-        sessionLeft: 16,
-        lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()));
-    session_16_planBloc.add(UpdateUserEvent(user: renewUser));
+    // Implement the checkbox functionality if needed
   }
 
   @override
@@ -188,8 +136,8 @@ class _SearchState extends State<sixSession> {
 
   @override
   Widget build(BuildContext context) {
-    final Session_16_PlanBloc session_16_planBloc =
-        BlocProvider.of<Session_16_PlanBloc>(context);
+    final Unlimited_PlanBloc _unlimited_bloc =
+        BlocProvider.of<Unlimited_PlanBloc>(context);
 
     return SingleChildScrollView(
       child: Column(
@@ -291,12 +239,10 @@ class _SearchState extends State<sixSession> {
           ),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-            child: BlocBuilder<Session_16_PlanBloc, session_16_PlanState>(
+            child: BlocBuilder<Unlimited_PlanBloc, Unlimited_PlanState>(
                 builder: (context, state) {
               if (state is SuccessState) {
-                _allItems = state.users
-                    .where((element) => element.plan == plan)
-                    .toList();
+                _allItems = state.users;
                 if (count == 0) {
                   _filteredItems = state.users;
                   count++;
@@ -306,10 +252,9 @@ class _SearchState extends State<sixSession> {
                   child: Table(
                     columnWidths: {
                       0: FixedColumnWidth(300),
-                      1: FixedColumnWidth(230),
-                      2: FixedColumnWidth(230),
-                      3: FixedColumnWidth(230),
-                      4: FixedColumnWidth(230),
+                      1: FixedColumnWidth(300),
+                      2: FixedColumnWidth(300),
+                      3: FixedColumnWidth(300),
                     },
                     children: [
                       TableRow(
@@ -319,7 +264,6 @@ class _SearchState extends State<sixSession> {
                         children: [
                           _tableHeaderCell("Name"),
                           _tableHeaderCell("Days left"),
-                          _tableHeaderCell("Sessions Left"),
                           _tableHeaderCell("Credit"),
                           _tableHeaderCell(""),
                         ],
@@ -327,20 +271,19 @@ class _SearchState extends State<sixSession> {
                       for (var user in _filteredItems)
                         TableRow(
                           decoration: BoxDecoration(
-color: (user.sessionLeft == 0 ||
-                                    user.endDate
-                                            .difference(DateTime.now())
-                                            .inDays ==
-                                        0)
+                            color: (user.endDate
+                                        .difference(DateTime.now())
+                                        .inDays <=
+                                    0)
                                 ? Colors.red.withOpacity(0.3)
-                                : Color(0xffFAFAFA),                          ),
+                                : Color(0xffFAFAFA),
+                          ),
                           children: [
                             _tableCell(user.fullName),
                             _tableCell(user.endDate
-                                .difference(user.startingDate)
+                                .difference(DateTime.now())
                                 .inDays
                                 .toString()),
-                            _tableCell(user.sessionLeft.toString()),
                             _tableCell(user.credit),
                             _tableCellActions(user),
                           ],
@@ -349,11 +292,9 @@ color: (user.sessionLeft == 0 ||
                   ),
                 );
               } else if (state is IinitialState) {
-                session_16_planBloc.add(GetUsersEvent());
+                _unlimited_bloc.add(GetUsersEvent());
                 return Loading();
               } else if (state is ErrorState) {
-                                session_16_planBloc.add(GetUsersEvent());
-
                 return Loading();
               } else {
                 return Loading();
@@ -365,26 +306,26 @@ color: (user.sessionLeft == 0 ||
     );
   }
 
-   Widget _inputField(
-    TextEditingController controller, String hint, bool numberOrNot) {
-  return TextFormField(
-    controller: controller,
-    keyboardType: numberOrNot ? TextInputType.number : null,
-    decoration: InputDecoration(
-      border: InputBorder.none,
-      hintText: hint,
-      hintStyle: TextStyle(
-        color: Colors.grey[600],
-        fontSize: 16,
+  Widget _inputField(
+      TextEditingController controller, String hint, bool numberOrNot) {
+    return TextFormField(
+      controller: controller,
+      keyboardType: numberOrNot ? TextInputType.number : null,
+      decoration: InputDecoration(
+        border: InputBorder.none,
+        hintText: hint,
+        hintStyle: TextStyle(
+          color: Colors.grey[600],
+          fontSize: 16,
+        ),
+        contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       ),
-      contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-    ),
-    onFieldSubmitted: (value) {
-      // Call _addProfile() when Enter is pressed.
-      _addProfile(null);
-    },
-  );
-}
+      onFieldSubmitted: (value) {
+        // Call _addProfile() when Enter is pressed.
+        _addProfile(null);
+      },
+    );
+  }
 
   Widget _tableHeaderCell(String text) {
     return Padding(
@@ -411,24 +352,6 @@ color: (user.sessionLeft == 0 ||
   }
 
   Widget _tableCellActions(User_Data user) {
-    if (user.lastCheckDate != null) {
-      DateTime timeCheck = DateFormat('yyyy-MM-dd').parse(
-          user.lastCheckDate!); // check this logic here maybe will not work
-      DateTime now = DateTime.now();
-      bool isCheckeddd = timeCheck.day.compareTo(now.day) == -1;
-      bool isCheckedyy = timeCheck.year.compareTo(DateTime.now().year) == 0;
-      bool isCheckedmm = timeCheck.month.compareTo(DateTime.now().month) == 0;
-      bool isChecked = false;
-      if (isCheckeddd && isCheckedmm && isCheckedyy) {
-        isChecked = true;
-      }
-      if (isChecked) {
-        user.isSessionMarked = false;
-        checkDate = true;
-        _addProfile(user);
-      }
-    }
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -436,26 +359,30 @@ color: (user.sessionLeft == 0 ||
           icon: Icon(Icons.edit, color: Colors.blue),
           onPressed: () {
             _editProfile(user);
+            count = 0;
           },
         ),
         IconButton(
           icon: Icon(Icons.refresh, color: Colors.green),
           onPressed: () {
             _renewProfile(user);
+
+            count = 0;
           },
         ),
         IconButton(
           icon: Icon(Icons.delete, color: Colors.red),
           onPressed: () {
             _deleteProfile(user);
+            count = 0;
           },
         ),
-        Checkbox(
-          value: user.isSessionMarked,
-          onChanged: (bool? value) {
-            _toggleSessionMark(user, value!);
-          },
-        ),
+        // Checkbox(
+        //   value: user.isSessionMarked,
+        //   onChanged: (bool? value) {
+        //     _toggleSessionMark(user, value!);
+        //   },
+        // ),
       ],
     );
   }

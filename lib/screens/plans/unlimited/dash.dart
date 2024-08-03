@@ -1,9 +1,10 @@
-import 'package:admin/16session/16sess.dart';
+
 import 'package:admin/constants.dart';
 import 'package:admin/screens/dashboard/components/header.dart';
+import 'package:admin/screens/plans/unlimited/unil.dart';
 import 'package:flutter/material.dart';
 
-class DashboardScreen4 extends StatelessWidget {
+class DashboardScreen7 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,7 +15,7 @@ class DashboardScreen4 extends StatelessWidget {
           child: Column(children: [
             Header(),
             SizedBox(height: defaultPadding),
-             sixSession()
+             unlimited()
           ]),
         ),
       ),
