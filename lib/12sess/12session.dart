@@ -370,25 +370,25 @@ class _SearchState extends State<twlvSession> {
   }
 
   Widget _inputField(
-    TextEditingController controller, String hint, bool numberOrNot) {
-  return TextFormField(
-    controller: controller,
-    keyboardType: numberOrNot ? TextInputType.number : null,
-    decoration: InputDecoration(
-      border: InputBorder.none,
-      hintText: hint,
-      hintStyle: TextStyle(
-        color: Colors.grey[600],
-        fontSize: 16,
+      TextEditingController controller, String hint, bool numberOrNot) {
+    return TextFormField(
+      controller: controller,
+      keyboardType: numberOrNot ? TextInputType.number : null,
+      decoration: InputDecoration(
+        border: InputBorder.none,
+        hintText: hint,
+        hintStyle: TextStyle(
+          color: Colors.grey[600],
+          fontSize: 16,
+        ),
+        contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       ),
-      contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-    ),
-    onFieldSubmitted: (value) {
-      // Call _addProfile() when Enter is pressed.
-      _addProfile(null);
-    },
-  );
-}
+      onFieldSubmitted: (value) {
+        // Call _addProfile() when Enter is pressed.
+        _addProfile(null);
+      },
+    );
+  }
 
   Widget _tableHeaderCell(String text) {
     return Padding(

@@ -82,7 +82,7 @@ class SideMenu extends StatelessWidget {
               ),
             ),
             DrawerListTile(
-              title: "App stats",
+              title: "Gym stats",
               svgSrc: "assets/icons/stats.svg",
               press: () {
                 onItemSelected(0);
@@ -120,6 +120,14 @@ class SideMenu extends StatelessWidget {
                 onItemSelected(4);
               },
               isSelected: selectedIndex == 4,
+            ),
+            DrawerListTile(
+              title: "Stock ",
+              svgSrc: "assets/icons/stats.svg",
+              press: () {
+                onItemSelected(5);
+              },
+              isSelected: selectedIndex == 5,
             ),
           ],
         ),
