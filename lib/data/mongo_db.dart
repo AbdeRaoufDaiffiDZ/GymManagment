@@ -139,7 +139,7 @@ class MongoDatabase {
         'saleRecords': product.saleRecords,
         'Quantity': product.quantity,
         'priceoverview': product.priceoverview,
-        'quantityleft': product.quantity,
+        'sold': product.sold,
       };
 
       await collection?.insert(documentToInsert);
