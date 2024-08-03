@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:admin/Errors/Failure.dart';
+import 'package:admin/entities/product_entity.dart';
 import 'package:admin/entities/user_data_entity.dart';
 import 'package:either_dart/either.dart';
 import 'package:mongo_dart/mongo_dart.dart';
@@ -122,4 +123,91 @@ class MongoDatabase {
           Failure(key: AppError.DelettingUserError, message: e.toString()));
     }
   }
+
+
+/////////////////////////////////////////////////////////////////////////////////////////// product data fucntions
+Future<Either<Failure, bool>> InsertProduct(
+      {required ProductEntity product, required String collectionName}) async {
+    try {
+      if (db == null) {
+        await connect();
+      }
+      final collection = db?.collection(collectionName);
+      final documentToInsert = {
+        '_id': product.id, // Assigning a string value to '_id'
+        'fullName': product.productName,
+        'startingDate': product.productPrice,
+        'plan': product.sellingDates,
+        'endDate': product.quantityleft,
+      
+      };
+
+      await collection?.insert(documentToInsert);
+
+      return Right(true);
+    } catch (e) {
+      return Left(
+          Failure(key: AppError.SettingDataError, message: e.toString()));
+    }
+  }
+  
+  Future<Either<Failure, List<ProductEntity>>> RetriveProducts(
+      {required String collectionName}) async {
+    try {
+      if (db == null) {
+        await connect();
+      }
+
+      final collection = db?.collection(collectionName);
+      final result = await collection?.find().toList();
+      return Right(result!.map((doc) => ProductEntity.fromMap(doc)).toList());
+    } catch (e) {
+      return Left(Failure(key: AppError.NotFound, message: e.toString()));
+    }
+  }
+
+
+
+  Future<Either<Failure, bool>> DeleteProduct(
+      {required ProductEntity product, required String collectionName}) async {
+    try {
+      if (db == null) {
+        await connect();
+      }
+
+      final collection = db?.collection(collectionName);
+
+      await collection?.remove(where.eq('_id', product.id));
+    
+
+      return Right(true);
+    } catch (e) {
+      return Left(
+          Failure(key: AppError.DelettingUserError, message: e.toString()));
+    }
+  }
+
+
+
+  Future<Either<Failure, bool>> UpdateProductData(
+      {required ProductEntity product, required String collectionName}) async {
+    try {
+      if (db == null) {
+        await connect();
+      }
+      final data = product.toMap();
+      final collection = db?.collection(collectionName);
+      data.forEach((key, value) async {
+        await collection?.update(
+            where.eq('_id', product.id), modify.set(key, value));
+      });
+
+      return Right(true);
+    } catch (e) {
+      return Left(
+          Failure(key: AppError.DelettingUserError, message: e.toString()));
+    }
+  }
+
+
 }
