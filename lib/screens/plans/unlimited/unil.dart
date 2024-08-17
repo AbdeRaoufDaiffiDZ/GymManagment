@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, unused_element
+
 import 'package:admin/const/loading.dart';
 import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/user_data_entity.dart';
@@ -23,6 +25,8 @@ class _SearchState extends State<unlimited> {
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _creditController = TextEditingController();
+    final TextEditingController _phoneController = TextEditingController();
+
   final MongoDatabase monog = MongoDatabase();
   final String plan = "unlimited";
 
@@ -46,7 +50,7 @@ class _SearchState extends State<unlimited> {
   }
 
   void _addProfile(User_Data? user) {
-    if (_nameController.text.isNotEmpty && _creditController.text.isNotEmpty) {
+    if (_nameController.text.isNotEmpty && _creditController.text.isNotEmpty && _phoneController.text.isNotEmpty) {
       final Unlimited_PlanBloc _unlimited_bloc =
           BlocProvider.of<Unlimited_PlanBloc>(context);
       if (edit) {
@@ -58,7 +62,7 @@ class _SearchState extends State<unlimited> {
             endDate: userr.endDate,
             credit: _creditController.text,
             sessionLeft: sessionNumber,
-            lastCheckDate: userr.lastCheckDate);
+            lastCheckDate: userr.lastCheckDate, phoneNumber: _phoneController.text);
         final Unlimited_PlanBloc _unlimited_bloc =
             BlocProvider.of<Unlimited_PlanBloc>(context);
         _unlimited_bloc.add(UpdateUserEvent(user: userNew));
@@ -71,7 +75,7 @@ class _SearchState extends State<unlimited> {
             credit: _creditController.text,
             id: mongo.ObjectId().toHexString(),
             sessionLeft: sessionNumber,
-            lastCheckDate: '');
+            lastCheckDate: '', phoneNumber: _phoneController.text);
         _unlimited_bloc.add(AddUserEvent(user: newUser));
       }
       _filteredItems = _allItems;
@@ -79,11 +83,13 @@ class _SearchState extends State<unlimited> {
       edit = false;
       _nameController.clear();
       _creditController.clear();
+      _phoneController.clear();
     }
   }
 
   void _editProfile(User_Data user) {
     setState(() {
+      _phoneController.text = user.phoneNumber;
       _nameController.text = user.fullName;
       _creditController.text = user.credit;
       edit = true;
@@ -102,7 +108,7 @@ class _SearchState extends State<unlimited> {
         endDate: DateTime.now().add(const Duration(days: 30)),
         credit: user.credit,
         sessionLeft: 0,
-        lastCheckDate: '');
+        lastCheckDate: '', phoneNumber: user.phoneNumber);
     _unlimited_bloc.add(UpdateUserEvent(user: renewUser));
   }
 
@@ -131,6 +137,7 @@ class _SearchState extends State<unlimited> {
     _searchController.dispose();
     _nameController.dispose();
     _creditController.dispose();
+    _phoneController.dispose();
     super.dispose();
   }
 
@@ -198,6 +205,8 @@ class _SearchState extends State<unlimited> {
             child: Row(
               children: [
                 Expanded(child: _inputField(_nameController, 'Name', false)),
+                SizedBox(width: 10),
+                Expanded(child: _inputField(_phoneController, 'Phone Number', true)),
                 SizedBox(width: 10),
                 Expanded(child: _inputField(_creditController, 'Credit', true)),
                 SizedBox(width: 10),

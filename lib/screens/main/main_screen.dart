@@ -1,3 +1,4 @@
+import 'package:admin/screens/expense_list/expense_screen.dart';
 import 'package:admin/screens/plans/12sess/12sess.dart';
 import 'package:admin/screens/plans/16session/dash4.dart';
 import 'package:admin/screens/plans/8session/dash5.dart';
@@ -27,6 +28,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       backgroundColor: Colors.teal,
       key: context.read<MenuAppController>().scaffoldKey,
@@ -59,7 +61,8 @@ class _MainScreenState extends State<MainScreen> {
                   DashboardScreen5(),
                   DashboardScreen6(),
                   DashboardScreen4(),
-                  Productdash()
+                  Productdash(),
+                  ExpenseScreen()
                 ],
               ),
             ),

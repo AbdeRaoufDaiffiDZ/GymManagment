@@ -26,6 +26,8 @@ class _SearchState extends State<eightSession> {
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _creditController = TextEditingController();
+    final TextEditingController _phoneController = TextEditingController();
+
   final MongoDatabase monog = MongoDatabase();
   final String plan = "8 session";
   final startingDate = DateTime.now();
@@ -63,10 +65,10 @@ class _SearchState extends State<eightSession> {
           endDate: user.endDate,
           credit: user.credit,
           sessionLeft: user.sessionLeft,
-          lastCheckDate: user.lastCheckDate);
+          lastCheckDate: user.lastCheckDate, phoneNumber: _phoneController.text);
       _unlimited_bloc.add(UpdateUserEvent(user: userNew));
     }
-    if (_nameController.text.isNotEmpty && _creditController.text.isNotEmpty) {
+    if (_nameController.text.isNotEmpty && _creditController.text.isNotEmpty && _phoneController.text.isNotEmpty) {
       final Session_8_PlanBloc _unlimited_bloc =
           BlocProvider.of<Session_8_PlanBloc>(context);
 
@@ -79,7 +81,7 @@ class _SearchState extends State<eightSession> {
             endDate: userr.endDate,
             credit: _creditController.text,
             sessionLeft: userr.sessionLeft,
-            lastCheckDate: userr.lastCheckDate);
+            lastCheckDate: userr.lastCheckDate, phoneNumber: _phoneController.text);
 
         _unlimited_bloc.add(UpdateUserEvent(user: userNew));
       } else {
@@ -91,11 +93,12 @@ class _SearchState extends State<eightSession> {
             credit: _creditController.text,
             id: mongo.ObjectId().toHexString(),
             sessionLeft: sessionNumber,
-            lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()));
+            lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()), phoneNumber: _phoneController.text);
         _unlimited_bloc.add(AddUserEvent(user: newUser));
       }
       _nameController.clear();
       _creditController.clear();
+      _phoneController.clear();
     }
     _filteredItems = _allItems;
     count = 0;
@@ -105,6 +108,7 @@ class _SearchState extends State<eightSession> {
 
   void _editProfile(User_Data user) {
     setState(() {
+      _phoneController.text=user.phoneNumber;
       _nameController.text = user.fullName;
       _creditController.text = user.credit;
       edit = true;
@@ -140,7 +144,7 @@ class _SearchState extends State<eightSession> {
         startingDate: user.startingDate,
         endDate: user.endDate,
         credit: user.credit,
-        lastCheckDate: user.lastCheckDate);
+        lastCheckDate: user.lastCheckDate, phoneNumber: user.phoneNumber);
     if (value) {
       // Implement the checkbox functionality if needed
       user_data.isSessionMarked = true;
@@ -171,7 +175,7 @@ class _SearchState extends State<eightSession> {
         endDate: DateTime.now().add(Duration(days: daysNumber)),
         credit: user.credit,
         sessionLeft: sessionNumber,
-        lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()));
+        lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()), phoneNumber: user.phoneNumber);
     _unlimited_bloc.add(UpdateUserEvent(user: renewUser));
   }
 
@@ -180,6 +184,7 @@ class _SearchState extends State<eightSession> {
     _searchController.dispose();
     _nameController.dispose();
     _creditController.dispose();
+    _phoneController.dispose();
     super.dispose();
   }
 
@@ -246,6 +251,8 @@ class _SearchState extends State<eightSession> {
             child: Row(
               children: [
                 Expanded(child: _inputField(_nameController, 'Name', false)),
+                SizedBox(width: 10),
+                Expanded(child: _inputField(_phoneController, 'Phone Number', true)),
                 SizedBox(width: 10),
                 Expanded(child: _inputField(_creditController, 'Credit', true)),
                 SizedBox(width: 10),

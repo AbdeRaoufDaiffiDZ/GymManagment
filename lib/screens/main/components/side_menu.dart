@@ -130,6 +130,15 @@ class SideMenu extends StatelessWidget {
               },
               isSelected: selectedIndex == 5,
             ),
+
+             DrawerListTile(
+              title: "Expense",
+              svgSrc: "assets/icons/create.svg",
+              press: () {
+                onItemSelected(6);
+              },
+              isSelected: selectedIndex == 6,
+            ),
           ],
         ),
       ),

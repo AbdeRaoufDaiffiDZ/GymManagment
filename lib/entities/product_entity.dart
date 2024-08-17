@@ -34,7 +34,7 @@ class Product extends Equatable {
     return Product(
         id: map['_id'] ?? ObjectId,
         name: map['productName'] ?? '',
-        price: map['productPrice'] ?? '',
+        price: map['productPrice'] ?? 0.0,
         quantity: map['quantityleft'] ?? 0,
         priceoverview: map['priceoverview'] ?? 0.0,
         saleRecords: saleRecordsMap.map((e) => SaleRecord.fromMap(e)).toList(),

@@ -20,6 +20,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../plans/16session/16session_bloc/bloc/session_16_event.dart'
     as Event16;
+          List<int> totalCreadit = [];
 
 class users extends StatelessWidget {
   const users({
@@ -36,10 +37,28 @@ class users extends StatelessWidget {
         BlocProvider.of<Session_16_PlanBloc>(context);
     final Session_12_PlanBloc session_12_planBloc =
         BlocProvider.of<Session_12_PlanBloc>(context);
+        int credit =0;
+if(totalCreadit.isNotEmpty){
+ totalCreadit.forEach((element) {
+  
+  credit = credit + element; });
+}
     return Container(
+      
       child: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          SizedBox(height: 50),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0),
+            child: Text(
+              "TOTAL CREADIT $totalCreadit" ,
+              style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xff202020),
+                  fontSize: 14),
+            ),
+          ),
           Row(
             children: [
               Padding(
@@ -80,7 +99,18 @@ class users extends StatelessWidget {
           BlocBuilder<Unlimited_PlanBloc, Unlimited_PlanState>(
               builder: (context, state) {
             if (state is Unlimited.SuccessState) {
+              int planCredit = 0;
               int registred = state.users.length;
+              state.users.forEach((element) {
+                
+                planCredit = planCredit+ int.parse(element.credit); 
+
+              });
+                            if(!totalCreadit.contains(planCredit)){
+                              totalCreadit.add(planCredit);
+                            }
+
+              
               int expired = state.users
                   .where((user) =>
                       user.endDate.difference(user.startingDate).inDays <= 0)
@@ -112,6 +142,12 @@ class users extends StatelessWidget {
                         pngg: "assets/images/aa.png",
                         text1: nearToexpired.toString(),
                         text2: "Near to Expired",
+                        clr: Color(0xff10BD9E),
+                      ),
+                       userss(
+                        pngg: "assets/images/aa.png",
+                        text1: planCredit.toString(),
+                        text2: "plan Credit",
                         clr: Color(0xff10BD9E),
                       ),
                     ],
@@ -149,6 +185,13 @@ class users extends StatelessWidget {
               builder: (context, state) {
             if (state is Session8.SuccessState) {
               int registred = state.users.length;
+              int planCredit = 0;
+              state.users.forEach((element) {
+                planCredit = planCredit+ int.parse(element.credit); 
+              });
+  if(!totalCreadit.contains(planCredit)){
+                              totalCreadit.add(planCredit);
+                            }
               int expired = state.users
                       .where((user) =>
                           user.endDate.difference(user.startingDate).inDays <=
@@ -187,6 +230,12 @@ class users extends StatelessWidget {
                         pngg: "assets/images/aa.png",
                         text1: nearToexpired.toString(),
                         text2: "Near to Expired",
+                        clr: Color(0xff10BD9E),
+                      ),
+                       userss(
+                        pngg: "assets/images/aa.png",
+                        text1: planCredit.toString(),
+                        text2: "plan Credit",
                         clr: Color(0xff10BD9E),
                       ),
                     ],
@@ -224,6 +273,13 @@ class users extends StatelessWidget {
               builder: (context, state) {
             if (state is Session12.SuccessState) {
               int registred = state.users.length;
+              int planCredit =0;
+              state.users.forEach((element) {
+                planCredit = planCredit+ int.parse(element.credit); 
+              });
+  if(!totalCreadit.contains(planCredit)){
+                              totalCreadit.add(planCredit);
+                            }
               int expired = state.users
                       .where((user) =>
                           user.endDate.difference(user.startingDate).inDays <=
@@ -264,6 +320,12 @@ class users extends StatelessWidget {
                         text2: "Near to Expired",
                         clr: Color(0xff10BD9E),
                       ),
+                       userss(
+                        pngg: "assets/images/aa.png",
+                        text1: planCredit.toString(),
+                        text2: "plan Credit",
+                        clr: Color(0xff10BD9E),
+                      ),
                     ],
                   ),
                   // SizedBox(height: 50),
@@ -299,7 +361,13 @@ class users extends StatelessWidget {
               builder: (context, state) {
             if (state is Session16.SuccessState) {
               int registred = state.users.length;
-              int expired = state.users
+              int planCredit = 0;
+              state.users.forEach((element) {
+                planCredit = planCredit+ int.parse(element.credit); 
+              });
+  if(!totalCreadit.contains(planCredit)){
+                              totalCreadit.add(planCredit);
+                            }              int expired = state.users
                       .where((user) =>
                           user.endDate.difference(user.startingDate).inDays <=
                           0)
@@ -337,6 +405,12 @@ class users extends StatelessWidget {
                         pngg: "assets/images/aa.png",
                         text1: nearToexpired.toString(),
                         text2: "Near to Expired",
+                        clr: Color(0xff10BD9E),
+                      ),
+                       userss(
+                        pngg: "assets/images/aa.png",
+                        text1: planCredit.toString(),
+                        text2: "plan Credit",
                         clr: Color(0xff10BD9E),
                       ),
                     ],

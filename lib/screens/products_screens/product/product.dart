@@ -67,10 +67,10 @@ class _ProductDashboardState extends State<ProductDashboard> {
   }
 
   void _editProduct(
-      String id, int index, String name, double price, int quantity) {
+      String id, int index, String name, double price, int quantity, Product product) {
     final ProductsBloc productsBloc = BlocProvider.of<ProductsBloc>(context);
     Product productEdited =
-        Product(name: name, price: price, quantity: quantity, id: id);
+        Product(name: name, price: price, quantity: quantity, id: id, sold:product.sold, priceoverview: product.priceoverview, saleRecords: product.saleRecords);
     productsBloc.add(UpdateProductEvent(product: productEdited));
 
     setState(() {
@@ -528,7 +528,7 @@ class _ProductDashboardState extends State<ProductDashboard> {
                                     index,
                                     _editNameController.text,
                                     double.parse(_editPriceController.text),
-                                    int.parse(_editQuantityController.text),
+                                    int.parse(_editQuantityController.text),product
                                   );
                                   setState(() {
                                     _editingId = null;

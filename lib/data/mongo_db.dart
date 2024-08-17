@@ -9,6 +9,7 @@ import 'package:mongo_dart/mongo_dart.dart';
 // final Db db = Db('mongodb+srv://raoufdaifi:amin2004@cluster0.cpsnp8o.mongodb.net/');
 final String mongoUri =
     "mongodb+srv://raoufdaifi:amin2004@cluster0.cpsnp8o.mongodb.net/";
+final String gymCollection = "gym";
 
 class MongoDatabase {
   static Db? db;
@@ -38,7 +39,9 @@ class MongoDatabase {
       if (db == null) {
         await connect();
       }
-      final collection = db?.collection(collectionName);
+      // final collection = db?.collection(collectionName);
+      final collectiongYM = db?.collection(gymCollection);
+
       final documentToInsert = {
         '_id': user.id, // Assigning a string value to '_id'
         'fullName': user.fullName,
@@ -50,8 +53,12 @@ class MongoDatabase {
         'sessionLeft': user.sessionLeft,
         'isSessionMarked': user.isSessionMarked
       };
+      await collectiongYM?.update(where.eq('plan', user.plan),
+          modify.addToSet("${user.plan}", documentToInsert));
 
-      await collection?.insert(documentToInsert);
+      // where.eq('plan', user.plan).eq("${user.plan}._id", user.id),
+      // modify.set('${user.plan}.\$.$key', value));
+      // await collection?.insert(documentToInsert);
 
       return Right("data setting to mongo done");
     } catch (e) {
@@ -66,10 +73,15 @@ class MongoDatabase {
       if (db == null) {
         await connect();
       }
+      // final collection = db?.collection(collectionName);
+      final collectiongYM = db?.collection(gymCollection);
 
-      final collection = db?.collection(collectionName);
-      final result = await collection?.find().toList();
-      return Right(result!.map((doc) => User_Data.fromMap(doc)).toList());
+      final result = await collectiongYM?.find().toList();
+      final List data = result!
+          .where((element) => element['plan'] == collectionName)
+          .toList();
+      final List users = data[0][collectionName];
+      return Right(users.map((doc) => User_Data.fromMap(doc)).toList());
     } catch (e) {
       return Left(Failure(key: AppError.NotFound, message: e.toString()));
     }
@@ -82,20 +94,34 @@ class MongoDatabase {
         await connect();
       }
 
-      final collection = db?.collection(collectionName);
+      final collectiongYM = db?.collection(gymCollection);
 
-      await collection?.remove(where.eq('_id', user.id));
-      // await collection?.deleteOne({
-      //   '_id': user.id, // Assigning a string value to '_id'
-      //   'fullName': user.fullName,
-      //   'startingDate': user.startingDate,
-      //   'plan': user.plan,
-      //   'endDate': user.endDate,
-      //   'credit': user.credit,
-      //   'lastCheckDate':user.lastCheckDate,
-      //   'sessionLeft':user.sessionLeft,
-      //   'isSessionMarked':user.isSessionMarked
-      // });
+      final documentToInsert = {
+        '_id': user.id, // Assigning a string value to '_id'
+        'fullName': user.fullName,
+        'startingDate': user.startingDate,
+        'plan': user.plan,
+        'endDate': user.endDate,
+        'credit': user.credit,
+        'lastCheckDate': user.lastCheckDate,
+        'sessionLeft': user.sessionLeft,
+        'isSessionMarked': user.isSessionMarked
+      };
+      await collectiongYM?.update(where.eq('plan', user.plan),
+          modify.pull("${user.plan}", documentToInsert));
+
+      // await collection?.remove(where.eq('plan', user.plan).eq("${user.plan}._id", user.id));
+      // // await collection?.deleteOne({
+      // //   '_id': user.id, // Assigning a string value to '_id'
+      // //   'fullName': user.fullName,
+      // //   'startingDate': user.startingDate,
+      // //   'plan': user.plan,
+      // //   'endDate': user.endDate,
+      // //   'credit': user.credit,
+      // //   'lastCheckDate':user.lastCheckDate,
+      // //   'sessionLeft':user.sessionLeft,
+      // //   'isSessionMarked':user.isSessionMarked
+      // // });
 
       return Right("user deletting done");
     } catch (e) {
@@ -111,12 +137,23 @@ class MongoDatabase {
         await connect();
       }
       final data = user.toMap();
-      final collection = db?.collection(collectionName);
-      data.forEach((key, value) async {
-        await collection?.update(
-            where.eq('_id', user.id), modify.set(key, value));
-      });
+      // final collection = db?.collection(collectionName);
+      final collectiongYM = db?.collection(gymCollection);
 
+      // await collection?.update(
+      //     // where.eq('_id', user.id), modify.addToSet("hello", {"raouf":"daFFii","test":1}));
+      //     // where.eq('plan', user.plan).eq("${user.plan}.id", user.id), modify.set('${user.plan}.\$.credit',user.credit));
+
+      //     where.eq('plan', user.plan).eq("hello.raouf", "daFFii"),
+      //     modify.set('hello.\$.test', user.credit));
+
+      data.forEach((key, value) async {
+        await collectiongYM?.update(
+            // where.eq('_id', user.id), modify.addToSet("hello", {"raouf":"daFFii","test":1}));
+
+            where.eq('plan', user.plan).eq("${user.plan}._id", user.id),
+            modify.set('${user.plan}.\$.$key', value));
+      });
       return Right("user deletting done");
     } catch (e) {
       return Left(
@@ -131,18 +168,23 @@ class MongoDatabase {
       if (db == null) {
         await connect();
       }
-      final collection = db?.collection(collectionName);
+      // final collection = db?.collection(collectionName);
       final documentToInsert = {
-        '_id': product.id, // Assigning a string value to '_id'
         'productName': product.name,
         'productPrice': product.price,
-        'saleRecords': product.saleRecords,
-        'Quantity': product.quantity,
+        '_id': product.id,
         'priceoverview': product.priceoverview,
-        'sold': product.sold,
+        'quantityleft': product.quantity,
+        'saleRecords': product.saleRecords,
+        'sold': product.sold
       };
 
-      await collection?.insert(documentToInsert);
+      final collectiongYM = db?.collection(gymCollection);
+
+      await collectiongYM?.update(where.eq('plan', collectionName),
+          modify.addToSet(collectionName, documentToInsert));
+
+      // await collection?.insert(documentToInsert);
 
       return Right(true);
     } catch (e) {
@@ -157,10 +199,16 @@ class MongoDatabase {
       if (db == null) {
         await connect();
       }
+      final collectiongYM = db?.collection(gymCollection);
 
-      final collection = db?.collection(collectionName);
-      final result = await collection?.find().toList();
-      return Right(result!.map((doc) => Product.fromMap(doc)).toList());
+      final result = await collectiongYM?.find().toList();
+      final List data = result!
+          .where((element) => element['plan'] == collectionName)
+          .toList();
+      final List product = data[0][collectionName];
+      // final collection = db?.collection(collectionName);
+      // final result = await collection?.find().toList();
+      return Right(product.map((doc) => Product.fromMap(doc)).toList());
     } catch (e) {
       return Left(Failure(key: AppError.NotFound, message: e.toString()));
     }
@@ -173,9 +221,23 @@ class MongoDatabase {
         await connect();
       }
 
-      final collection = db?.collection(collectionName);
+      final collectiongYM = db?.collection(gymCollection);
 
-      await collection?.remove(where.eq('_id', product.id));
+      final documentToInsert = {
+        'productName': product.name,
+        'productPrice': product.price,
+        '_id': product.id,
+        'priceoverview': product.priceoverview,
+        'quantityleft': product.quantity,
+        'saleRecords': product.saleRecords,
+        'sold': product.sold
+      };
+      await collectiongYM?.update(where.eq('plan', collectionName).eq('$collectionName._id', product.id),
+          modify.pull(collectionName, documentToInsert));
+
+      // final collection = db?.collection(collectionName);
+
+      // await collection?.remove(where.eq('_id', product.id));
 
       return Right(true);
     } catch (e) {
@@ -190,20 +252,27 @@ class MongoDatabase {
       if (db == null) {
         await connect();
       }
+      final collectiongYM = db?.collection(gymCollection);
+
       final data = product.toMap();
-      final collection = db?.collection(collectionName);
       data.forEach((key, value) async {
-        if(key == "saleRecords"){
-           final List<SaleRecord> sale = value;
- await collection?.update(
-          where.eq('_id', product.id), modify.set(key, convertSaleRecordsToMap(sale)));
-          }
-          else
-            {
-               await collection?.update(
-          where.eq('_id', product.id), modify.set(key, value));
-            }
-       
+        if (key == "saleRecords") {
+          final List<SaleRecord> sale = value;
+          // where.eq('plan', user.plan).eq("${user.plan}._id", user.id),
+          // modify.set('${user.plan}.\$.$key', value));
+          await collectiongYM?.update(
+              where
+                  .eq('plan', collectionName)
+                  .eq("$collectionName._id", product.id),
+              modify.set('$collectionName.\$.saleRecords',
+                  convertSaleRecordsToMap(sale)));
+        } else {
+          await collectiongYM?.update(
+              where
+                  .eq('plan', collectionName)
+                  .eq("$collectionName._id", product.id),
+              modify.set('$collectionName.\$.$key', value));
+        }
       });
 
       return Right(true);
@@ -212,8 +281,8 @@ class MongoDatabase {
           Failure(key: AppError.DelettingUserError, message: e.toString()));
     }
   }
-  
-List<Map<String, dynamic>> convertSaleRecordsToMap(List<SaleRecord> sales) {
-  return sales.map((sale) => sale.toMap()).toList();
-}
+
+  List<Map<String, dynamic>> convertSaleRecordsToMap(List<SaleRecord> sales) {
+    return sales.map((sale) => sale.toMap()).toList();
+  }
 }
