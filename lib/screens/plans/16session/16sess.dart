@@ -167,6 +167,7 @@ class _SearchState extends State<sixSession> {
     final Session_16_PlanBloc session_16_planBloc =
         BlocProvider.of<Session_16_PlanBloc>(context);
     final renewUser = User_Data(
+      renew: true,
         id: user.id,
         fullName: user.fullName,
         plan: user.plan,

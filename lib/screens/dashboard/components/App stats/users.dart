@@ -1,3 +1,6 @@
+import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart';
+import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart'
+    as Expense;
 import 'package:admin/screens/plans/12sess/12session_bloc/bloc/12session_bloc.dart'
     as Session12;
 import 'package:admin/screens/plans/12sess/12session_bloc/bloc/12session_bloc.dart';
@@ -17,10 +20,12 @@ import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited
 import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 import '../../../plans/16session/16session_bloc/bloc/session_16_event.dart'
     as Event16;
-          List<int> totalCreadit = [];
+
+List<int> totalCreadit = [];
 
 class users extends StatelessWidget {
   const users({
@@ -37,28 +42,19 @@ class users extends StatelessWidget {
         BlocProvider.of<Session_16_PlanBloc>(context);
     final Session_12_PlanBloc session_12_planBloc =
         BlocProvider.of<Session_12_PlanBloc>(context);
-        int credit =0;
-if(totalCreadit.isNotEmpty){
- totalCreadit.forEach((element) {
-  
-  credit = credit + element; });
-}
+    final Expense_PlanBloc expense_planBloc =
+        BlocProvider.of<Expense_PlanBloc>(context);
+    int credit = 0;
+    if (totalCreadit.isNotEmpty) {
+      totalCreadit.forEach((element) {
+        credit = credit + element;
+      });
+    }
     return Container(
-      
       child: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           SizedBox(height: 50),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0),
-            child: Text(
-              "TOTAL CREADIT $totalCreadit" ,
-              style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xff202020),
-                  fontSize: 14),
-            ),
-          ),
           Row(
             children: [
               Padding(
@@ -82,10 +78,83 @@ if(totalCreadit.isNotEmpty){
                   session_8_planBloc.add(Event8.GetUsersEvent());
                   session_12_planBloc.add(Event12.GetUsersEvent());
                   session_16_planBloc.add(Event16.GetUsersEvent());
+                  expense_planBloc.add(Expense.GetExpensesEvent());
                 },
               ),
             ],
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0),
+            child: Text(
+              "Money Statistics :",
+              style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xff202020),
+                  fontSize: 14),
+            ),
+          ),
+          BlocBuilder<Expense_PlanBloc, Expense_PlanState>(
+              builder: (context, state) {
+            if (state is Expense.SuccessState) {
+              int dayIncome = state.gymParam!.peopleIncome
+                  .where((element) =>
+                      DateFormat('yyyy-MM-dd').format(element.dateTime) ==
+                      DateFormat('yyyy-MM-dd').format(DateTime.now()))
+                  .first
+                  .dayIncome;
+              int expenses = 0;
+              state.gymParam!.expenses
+                  .where((element) =>
+                      DateFormat('yyyy-MM-dd').format(element.dateTime) ==
+                      DateFormat('yyyy-MM-dd').format(DateTime.now()))
+                  .forEach((element) {
+                expenses = element.expensePrice + expenses;
+              });
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      userss(
+                        pngg: "assets/images/qs.png",
+                        text1: dayIncome.toString(),
+                        text2: "Day Income",
+                        clr: Color(0xffE544FF),
+                      ),
+                      userss(
+                        pngg: "assets/images/expired.png",
+                        text1: state.gymParam!.totalCredit.toString(),
+                        text2: "Total Creadit",
+                        clr: Color(0xffFF007A),
+                      ),
+                      userss(
+                        pngg: "assets/images/aa.png",
+                        text1: expenses.toString(),
+                        text2: "total expenses",
+                        clr: Color(0xff10BD9E),
+                      ),
+                    ],
+                  ),
+                  // SizedBox(height: 50),
+                  // userss(
+                  //   pngg: "assets/images/aa.png",
+                  //   text1: nearToexpired.toString(),
+                  //   text2: "Near to Expired",
+                  //   clr: Color(0xff10BD9E),
+                  // ),
+                ],
+              );
+            } else if (state is Unlimited.IinitialState) {
+              _unlimited_bloc.add(GetUsersEvent());
+              return Loading();
+            } else if (state is Unlimited.ErrorState) {
+              return Loading();
+            } else {
+              return Loading();
+            }
+          }),
+          SizedBox(height: 50),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0),
             child: Text(
@@ -96,21 +165,19 @@ if(totalCreadit.isNotEmpty){
                   fontSize: 14),
             ),
           ),
+          ///////////////////////////////////////////////////////////////////////////
           BlocBuilder<Unlimited_PlanBloc, Unlimited_PlanState>(
               builder: (context, state) {
             if (state is Unlimited.SuccessState) {
               int planCredit = 0;
               int registred = state.users.length;
               state.users.forEach((element) {
-                
-                planCredit = planCredit+ int.parse(element.credit); 
-
+                planCredit = planCredit + int.parse(element.credit);
               });
-                            if(!totalCreadit.contains(planCredit)){
-                              totalCreadit.add(planCredit);
-                            }
+              if (!totalCreadit.contains(planCredit)) {
+                totalCreadit.add(planCredit);
+              }
 
-              
               int expired = state.users
                   .where((user) =>
                       user.endDate.difference(user.startingDate).inDays <= 0)
@@ -144,7 +211,7 @@ if(totalCreadit.isNotEmpty){
                         text2: "Near to Expired",
                         clr: Color(0xff10BD9E),
                       ),
-                       userss(
+                      userss(
                         pngg: "assets/images/aa.png",
                         text1: planCredit.toString(),
                         text2: "plan Credit",
@@ -187,11 +254,11 @@ if(totalCreadit.isNotEmpty){
               int registred = state.users.length;
               int planCredit = 0;
               state.users.forEach((element) {
-                planCredit = planCredit+ int.parse(element.credit); 
+                planCredit = planCredit + int.parse(element.credit);
               });
-  if(!totalCreadit.contains(planCredit)){
-                              totalCreadit.add(planCredit);
-                            }
+              if (!totalCreadit.contains(planCredit)) {
+                totalCreadit.add(planCredit);
+              }
               int expired = state.users
                       .where((user) =>
                           user.endDate.difference(user.startingDate).inDays <=
@@ -232,7 +299,7 @@ if(totalCreadit.isNotEmpty){
                         text2: "Near to Expired",
                         clr: Color(0xff10BD9E),
                       ),
-                       userss(
+                      userss(
                         pngg: "assets/images/aa.png",
                         text1: planCredit.toString(),
                         text2: "plan Credit",
@@ -273,13 +340,13 @@ if(totalCreadit.isNotEmpty){
               builder: (context, state) {
             if (state is Session12.SuccessState) {
               int registred = state.users.length;
-              int planCredit =0;
+              int planCredit = 0;
               state.users.forEach((element) {
-                planCredit = planCredit+ int.parse(element.credit); 
+                planCredit = planCredit + int.parse(element.credit);
               });
-  if(!totalCreadit.contains(planCredit)){
-                              totalCreadit.add(planCredit);
-                            }
+              if (!totalCreadit.contains(planCredit)) {
+                totalCreadit.add(planCredit);
+              }
               int expired = state.users
                       .where((user) =>
                           user.endDate.difference(user.startingDate).inDays <=
@@ -320,7 +387,7 @@ if(totalCreadit.isNotEmpty){
                         text2: "Near to Expired",
                         clr: Color(0xff10BD9E),
                       ),
-                       userss(
+                      userss(
                         pngg: "assets/images/aa.png",
                         text1: planCredit.toString(),
                         text2: "plan Credit",
@@ -363,11 +430,12 @@ if(totalCreadit.isNotEmpty){
               int registred = state.users.length;
               int planCredit = 0;
               state.users.forEach((element) {
-                planCredit = planCredit+ int.parse(element.credit); 
+                planCredit = planCredit + int.parse(element.credit);
               });
-  if(!totalCreadit.contains(planCredit)){
-                              totalCreadit.add(planCredit);
-                            }              int expired = state.users
+              if (!totalCreadit.contains(planCredit)) {
+                totalCreadit.add(planCredit);
+              }
+              int expired = state.users
                       .where((user) =>
                           user.endDate.difference(user.startingDate).inDays <=
                           0)
@@ -407,7 +475,7 @@ if(totalCreadit.isNotEmpty){
                         text2: "Near to Expired",
                         clr: Color(0xff10BD9E),
                       ),
-                       userss(
+                      userss(
                         pngg: "assets/images/aa.png",
                         text1: planCredit.toString(),
                         text2: "plan Credit",

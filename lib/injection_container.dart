@@ -1,3 +1,4 @@
+import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart';
 import 'package:admin/screens/plans/12sess/12session_bloc/bloc/12session_bloc.dart';
 import 'package:admin/screens/plans/16session/16session_bloc/bloc/16session_bloc.dart';
 import 'package:admin/screens/plans/8session/8session_bloc/bloc/8session_bloc.dart';
@@ -14,6 +15,7 @@ Future<void> setupLocator() async {
   locator.registerSingleton<Session_12_PlanBloc>(Session_12_PlanBloc());
   locator.registerSingleton<Session_16_PlanBloc>(Session_16_PlanBloc());
   locator.registerSingleton<ProductsBloc>(ProductsBloc());
+  locator.registerSingleton<Expense_PlanBloc>(Expense_PlanBloc());
 
   // locator.registerFactory(() => IntroductionBloc(locator(), locator(),
   //     locator(), locator(), locator(), locator(), locator()));

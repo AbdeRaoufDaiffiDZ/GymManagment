@@ -7,16 +7,17 @@ import 'package:mongo_dart/mongo_dart.dart';
 class User_Data extends Equatable {
   final String phoneNumber;
   final String id;
+  final bool renew;
   final String fullName;
   final String plan;
   String? lastCheckDate;
   DateTime startingDate;
   DateTime endDate;
-  final String credit;
+   String credit;
    int sessionLeft;
   bool isSessionMarked;
 
-  User_Data( {required this.phoneNumber,required this.lastCheckDate,required this.sessionLeft,
+  User_Data( {this.renew = false,required this.phoneNumber,required this.lastCheckDate,required this.sessionLeft,
     required this.id,
     required this.fullName,
     required this.plan,
@@ -27,7 +28,7 @@ class User_Data extends Equatable {
   });
 
   @override
-  List<Object?> get props => [phoneNumber,
+  List<Object?> get props => [phoneNumber,renew,
     lastCheckDate,
     sessionLeft,
         fullName,
@@ -41,6 +42,7 @@ class User_Data extends Equatable {
 
   factory User_Data.fromMap(Map<String, dynamic> map) {
     return User_Data(
+      renew: map['renew'] ?? false,
       phoneNumber: map['phoneNumber'] ?? '',
       lastCheckDate:map['lastCheckDate'] ?? null,
       sessionLeft: map['sessionLeft'] ?? 0,
@@ -56,6 +58,7 @@ class User_Data extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {
+      'renew':renew,
       'phoneNumber':phoneNumber,
       'lastCheckDate':lastCheckDate,
       'sessionLeft':sessionLeft,
@@ -69,5 +72,4 @@ class User_Data extends Equatable {
     };
   }
 
-  copyWith({required String phoneNumber,required DateTime startingDate, required DateTime endDate, required int sessionLeft, required String lastCheckDate}) {}
 }

@@ -101,6 +101,7 @@ class _SearchState extends State<unlimited> {
     final Unlimited_PlanBloc _unlimited_bloc =
         BlocProvider.of<Unlimited_PlanBloc>(context);
     final renewUser = User_Data(
+      renew: true,
         id: user.id,
         fullName: user.fullName,
         plan: user.plan,
@@ -131,9 +132,12 @@ class _SearchState extends State<unlimited> {
     });
     // Implement the checkbox functionality if needed
   }
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void dispose() {
+        _scrollController.dispose();
+
     _searchController.dispose();
     _nameController.dispose();
     _creditController.dispose();
@@ -256,48 +260,55 @@ class _SearchState extends State<unlimited> {
                   _filteredItems = state.users;
                   count++;
                 }
-                return SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Table(
-                    columnWidths: {
-                      0: FixedColumnWidth(300),
-                      1: FixedColumnWidth(300),
-                      2: FixedColumnWidth(300),
-                      3: FixedColumnWidth(300),
-                    },
-                    children: [
-                      TableRow(
-                        decoration: BoxDecoration(
-                          color: Color(0xffFFA05D).withOpacity(0.4),
-                        ),
-                        children: [
-                          _tableHeaderCell("Name"),
-                          _tableHeaderCell("Days left"),
-                          _tableHeaderCell("Credit"),
-                          _tableHeaderCell(""),
-                        ],
-                      ),
-                      for (var user in _filteredItems)
+                return Scrollbar(
+                        thumbVisibility: true, // Always show the scrollbar thumb
+        controller: _scrollController, // Attach the controller to the Scrollbar
+
+                  child: SingleChildScrollView(
+                              controller: _scrollController, // Attach the controller to the SingleChildScrollView
+
+                    scrollDirection: Axis.horizontal,
+                    child: Table(
+                      columnWidths: {
+                        0: FixedColumnWidth(300),
+                        1: FixedColumnWidth(300),
+                        2: FixedColumnWidth(300),
+                        3: FixedColumnWidth(300),
+                      },
+                      children: [
                         TableRow(
                           decoration: BoxDecoration(
-                            color: (user.endDate
-                                        .difference(DateTime.now())
-                                        .inDays <=
-                                    0)
-                                ? Colors.red.withOpacity(0.3)
-                                : Color(0xffFAFAFA),
+                            color: Color(0xffFFA05D).withOpacity(0.4),
                           ),
                           children: [
-                            _tableCell(user.fullName),
-                            _tableCell(user.endDate
-                                .difference(DateTime.now())
-                                .inDays
-                                .toString()),
-                            _tableCell(user.credit),
-                            _tableCellActions(user),
+                            _tableHeaderCell("Name"),
+                            _tableHeaderCell("Days left"),
+                            _tableHeaderCell("Credit"),
+                            _tableHeaderCell(""),
                           ],
                         ),
-                    ],
+                        for (var user in _filteredItems)
+                          TableRow(
+                            decoration: BoxDecoration(
+                              color: (user.endDate
+                                          .difference(DateTime.now())
+                                          .inDays <=
+                                      0)
+                                  ? Colors.red.withOpacity(0.3)
+                                  : Color(0xffFAFAFA),
+                            ),
+                            children: [
+                              _tableCell(user.fullName),
+                              _tableCell(user.endDate
+                                  .difference(DateTime.now())
+                                  .inDays
+                                  .toString()),
+                              _tableCell(user.credit),
+                              _tableCellActions(user),
+                            ],
+                          ),
+                      ],
+                    ),
                   ),
                 );
               } else if (state is IinitialState) {

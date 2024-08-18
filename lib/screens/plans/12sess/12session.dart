@@ -171,6 +171,7 @@ class _SearchState extends State<twlvSession> {
     final Session_12_PlanBloc _unlimited_bloc =
         BlocProvider.of<Session_12_PlanBloc>(context);
     final renewUser = User_Data(
+      renew:  true,
         id: user.id,
         fullName: user.fullName,
         plan: user.plan,

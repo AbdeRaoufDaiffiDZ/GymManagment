@@ -7,6 +7,8 @@ class Failure {
 
 class AppError {
   static const String SettingDataError = 'SettingDataError';
+    static const String GettingDataError = 'Problem Getting Data';
+
   static const String NotFound = 'NotFound';
   static const String DelettingUserError = 'DelettingUserError';
 }
