@@ -96,12 +96,15 @@ class users extends StatelessWidget {
           BlocBuilder<Expense_PlanBloc, Expense_PlanState>(
               builder: (context, state) {
             if (state is Expense.SuccessState) {
-              int dayIncome = state.gymParam!.peopleIncome
-                  .where((element) =>
-                      DateFormat('yyyy-MM-dd').format(element.dateTime) ==
-                      DateFormat('yyyy-MM-dd').format(DateTime.now()))
-                  .first
-                  .dayIncome;
+              int dayIncome = 0;
+              final data = state.gymParam!.peopleIncome.where((element) =>
+                  DateFormat('yyyy-MM-dd').format(element.dateTime) ==
+                  DateFormat('yyyy-MM-dd').format(DateTime.now()));
+              if (data.isNotEmpty) {
+                dayIncome = data.first.dayIncome;
+              } else {
+                dayIncome = 0;
+              }
               int expenses = 0;
               state.gymParam!.expenses
                   .where((element) =>

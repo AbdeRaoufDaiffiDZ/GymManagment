@@ -26,6 +26,7 @@ class _SearchState extends State<unlimited> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _creditController = TextEditingController();
     final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _sexController = TextEditingController();
 
   final MongoDatabase monog = MongoDatabase();
   final String plan = "unlimited";
@@ -33,6 +34,33 @@ class _SearchState extends State<unlimited> {
   List<User_Data> _allItems = [];
   List<User_Data> _filteredItems = [];
 
+  String? _selectedSex;
+  final List<String> _sexOptions = ['Male', 'Female', 'Other'];
+
+void _onSexChanged(String? newValue) {
+    setState(() {
+      _selectedSex = newValue;
+      _sexController.text = newValue!;
+    });
+  }
+
+Widget DropDown(){
+  return  DropdownButtonFormField<String>(
+    dropdownColor: Colors.grey,
+              decoration: InputDecoration(
+                labelText: 'Sex',
+                border: OutlineInputBorder(),
+              ),
+              value: _selectedSex,
+              items: _sexOptions.map((String sex) {
+                return DropdownMenuItem<String>(
+                  value: sex,
+                  child: Text(sex),
+                );
+              }).toList(),
+              onChanged: _onSexChanged,
+            );
+}
   @override
   void initState() {
     super.initState();
@@ -50,11 +78,12 @@ class _SearchState extends State<unlimited> {
   }
 
   void _addProfile(User_Data? user) {
-    if (_nameController.text.isNotEmpty && _creditController.text.isNotEmpty && _phoneController.text.isNotEmpty) {
+    if (_nameController.text.isNotEmpty && _sexController.text.isNotEmpty &&_creditController.text.isNotEmpty && _phoneController.text.isNotEmpty) {
       final Unlimited_PlanBloc _unlimited_bloc =
           BlocProvider.of<Unlimited_PlanBloc>(context);
       if (edit) {
         final userNew = User_Data(
+          sex:userr.sex,
             id: userr.id,
             fullName: _nameController.text,
             plan: userr.plan,
@@ -68,6 +97,7 @@ class _SearchState extends State<unlimited> {
         _unlimited_bloc.add(UpdateUserEvent(user: userNew));
       } else {
         User_Data newUser = User_Data(
+          sex:_sexController.text,
             fullName: _nameController.text,
             plan: plan,
             startingDate: DateTime.now(),
@@ -81,9 +111,12 @@ class _SearchState extends State<unlimited> {
       _filteredItems = _allItems;
       count = 0;
       edit = false;
+      
       _nameController.clear();
       _creditController.clear();
       _phoneController.clear();
+      _sexController.clear();
+      _selectedSex =null;
     }
   }
 
@@ -92,6 +125,7 @@ class _SearchState extends State<unlimited> {
       _phoneController.text = user.phoneNumber;
       _nameController.text = user.fullName;
       _creditController.text = user.credit;
+      _sexController.text =user.sex;
       edit = true;
     });
     userr = user;
@@ -102,6 +136,7 @@ class _SearchState extends State<unlimited> {
         BlocProvider.of<Unlimited_PlanBloc>(context);
     final renewUser = User_Data(
       renew: true,
+      sex:user.sex,
         id: user.id,
         fullName: user.fullName,
         plan: user.plan,
@@ -212,6 +247,9 @@ class _SearchState extends State<unlimited> {
                 SizedBox(width: 10),
                 Expanded(child: _inputField(_phoneController, 'Phone Number', true)),
                 SizedBox(width: 10),
+                 SizedBox(width: 10),
+                Expanded(
+                    child: DropDown()),
                 Expanded(child: _inputField(_creditController, 'Credit', true)),
                 SizedBox(width: 10),
                 ElevatedButton(

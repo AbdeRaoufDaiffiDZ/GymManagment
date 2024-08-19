@@ -1,14 +1,31 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:admin/screens/plans/8session/8session_bloc/bloc/8session_bloc.dart';
-import 'package:admin/screens/plans/8session/8session_bloc/bloc/session_8_event.dart';
+import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart';
+import 'package:admin/screens/plans/12sess/12session_bloc/bloc/12session_bloc.dart';
+import 'package:admin/screens/plans/16session/16session_bloc/bloc/16session_bloc.dart';
+import 'package:admin/screens/plans/8session/8session_bloc/bloc/8session_bloc.dart'
+    as Session8bloc;
 import 'package:admin/const/loading.dart';
 import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/user_data_entity.dart';
+import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
+
+import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart'
+    as Expense;
+
+import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart'
+    as Unlimited;
+import 'package:admin/screens/plans/8session/8session_bloc/bloc/session_8_event.dart'
+    as Event8;
+
+import 'package:admin/screens/plans/12sess/12session_bloc/bloc/session_12_event.dart'
+    as Event12;
+import 'package:admin/screens/plans/16session/16session_bloc/bloc/session_16_event.dart'
+    as Event16;
 
 int count = 0;
 bool edit = false;
@@ -26,7 +43,8 @@ class _SearchState extends State<eightSession> {
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _creditController = TextEditingController();
-    final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _sexController = TextEditingController();
 
   final MongoDatabase monog = MongoDatabase();
   final String plan = "8 session";
@@ -35,6 +53,34 @@ class _SearchState extends State<eightSession> {
   final int daysNumber = 45;
   List<User_Data> _allItems = [];
   List<User_Data> _filteredItems = [];
+
+  String? _selectedSex;
+  final List<String> _sexOptions = ['Male', 'Female', 'Other'];
+
+  void _onSexChanged(String? newValue) {
+    setState(() {
+      _selectedSex = newValue;
+      _sexController.text = newValue!;
+    });
+  }
+
+  Widget DropDown() {
+    return DropdownButtonFormField<String>(
+      dropdownColor: Colors.grey,
+      decoration: InputDecoration(
+        labelText: 'Sex',
+        border: OutlineInputBorder(),
+      ),
+      value: _selectedSex,
+      items: _sexOptions.map((String sex) {
+        return DropdownMenuItem<String>(
+          value: sex,
+          child: Text(sex),
+        );
+      }).toList(),
+      onChanged: _onSexChanged,
+    );
+  }
 
   @override
   void initState() {
@@ -54,26 +100,29 @@ class _SearchState extends State<eightSession> {
 
   void _addProfile(User_Data? user) {
     late User_Data userNew;
-    final Session_8_PlanBloc _unlimited_bloc =
-        BlocProvider.of<Session_8_PlanBloc>(context);
+    final Session8bloc.Session_8_PlanBloc session_8_planBloc =
+        BlocProvider.of<Session8bloc.Session_8_PlanBloc>(context);
     if (checkDate) {
       userNew = User_Data(
-          id: user!.id,
+          sex: user!.sex,
+          id: user.id,
           fullName: user.fullName,
           plan: user.plan,
           startingDate: user.startingDate,
           endDate: user.endDate,
           credit: user.credit,
           sessionLeft: user.sessionLeft,
-          lastCheckDate: user.lastCheckDate, phoneNumber: _phoneController.text);
-      _unlimited_bloc.add(UpdateUserEvent(user: userNew));
+          lastCheckDate: user.lastCheckDate,
+          phoneNumber: _phoneController.text);
+      session_8_planBloc.add(Event8.UpdateUserEvent(user: userNew));
     }
-    if (_nameController.text.isNotEmpty && _creditController.text.isNotEmpty && _phoneController.text.isNotEmpty) {
-      final Session_8_PlanBloc _unlimited_bloc =
-          BlocProvider.of<Session_8_PlanBloc>(context);
-
+    if (_nameController.text.isNotEmpty &&
+        _creditController.text.isNotEmpty &&
+        _sexController.text.isNotEmpty &&
+        _phoneController.text.isNotEmpty) {
       if (edit) {
         userNew = User_Data(
+            sex: userr.sex,
             id: userr.id,
             fullName: _nameController.text,
             plan: userr.plan,
@@ -81,11 +130,13 @@ class _SearchState extends State<eightSession> {
             endDate: userr.endDate,
             credit: _creditController.text,
             sessionLeft: userr.sessionLeft,
-            lastCheckDate: userr.lastCheckDate, phoneNumber: _phoneController.text);
+            lastCheckDate: userr.lastCheckDate,
+            phoneNumber: _phoneController.text);
 
-        _unlimited_bloc.add(UpdateUserEvent(user: userNew));
+        session_8_planBloc.add(Event8.UpdateUserEvent(user: userNew));
       } else {
         User_Data newUser = User_Data(
+            sex: _sexController.text,
             fullName: _nameController.text,
             plan: plan,
             startingDate: DateTime.now(),
@@ -93,12 +144,15 @@ class _SearchState extends State<eightSession> {
             credit: _creditController.text,
             id: mongo.ObjectId().toHexString(),
             sessionLeft: sessionNumber,
-            lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()), phoneNumber: _phoneController.text);
-        _unlimited_bloc.add(AddUserEvent(user: newUser));
+            lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+            phoneNumber: _phoneController.text);
+        session_8_planBloc.add(Event8.AddUserEvent(user: newUser));
       }
       _nameController.clear();
       _creditController.clear();
+      _selectedSex = null;
       _phoneController.clear();
+      _sexController.clear();
     }
     _filteredItems = _allItems;
     count = 0;
@@ -108,18 +162,20 @@ class _SearchState extends State<eightSession> {
 
   void _editProfile(User_Data user) {
     setState(() {
-      _phoneController.text=user.phoneNumber;
+      _phoneController.text = user.phoneNumber;
       _nameController.text = user.fullName;
       _creditController.text = user.credit;
+      _sexController.text = user.sex;
       edit = true;
+      _selectedSex = user.sex;
     });
     userr = user;
   }
 
   void _deleteProfile(User_Data user) {
-    final Session_8_PlanBloc _unlimited_bloc =
-        BlocProvider.of<Session_8_PlanBloc>(context);
-    _unlimited_bloc.add(DeleteUserEvent(user: user));
+    final Session8bloc.Session_8_PlanBloc session_8_planBloc =
+        BlocProvider.of<Session8bloc.Session_8_PlanBloc>(context);
+    session_8_planBloc.add(Event8.DeleteUserEvent(user: user));
     count = 0;
   }
 
@@ -136,6 +192,7 @@ class _SearchState extends State<eightSession> {
       count = 0;
     });
     User_Data user_data = User_Data(
+        sex: user.sex,
         isSessionMarked: user.isSessionMarked,
         sessionLeft: user.sessionLeft,
         id: user.id,
@@ -144,7 +201,8 @@ class _SearchState extends State<eightSession> {
         startingDate: user.startingDate,
         endDate: user.endDate,
         credit: user.credit,
-        lastCheckDate: user.lastCheckDate, phoneNumber: user.phoneNumber);
+        lastCheckDate: user.lastCheckDate,
+        phoneNumber: user.phoneNumber);
     if (value) {
       // Implement the checkbox functionality if needed
       user_data.isSessionMarked = true;
@@ -156,19 +214,20 @@ class _SearchState extends State<eightSession> {
       user_data.sessionLeft = user_data.sessionLeft + 1;
       user_data.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
     }
-    final Session_8_PlanBloc session_8_planBloc =
-        BlocProvider.of<Session_8_PlanBloc>(context);
-    session_8_planBloc.add(UpdateUserEvent(user: user_data));
+    final Session8bloc.Session_8_PlanBloc session_8_planBloc =
+        BlocProvider.of<Session8bloc.Session_8_PlanBloc>(context);
+    session_8_planBloc.add(Event8.UpdateUserEvent(user: user_data));
   }
 
   void _renewProfile(User_Data user) {
     setState(() {
       count = 0;
     });
-    final Session_8_PlanBloc _unlimited_bloc =
-        BlocProvider.of<Session_8_PlanBloc>(context);
+    final Session8bloc.Session_8_PlanBloc session_8_planBloc =
+        BlocProvider.of<Session8bloc.Session_8_PlanBloc>(context);
     final renewUser = User_Data(
-      renew: true,
+        sex: user.sex,
+        renew: true,
         id: user.id,
         fullName: user.fullName,
         plan: user.plan,
@@ -176,8 +235,9 @@ class _SearchState extends State<eightSession> {
         endDate: DateTime.now().add(Duration(days: daysNumber)),
         credit: user.credit,
         sessionLeft: sessionNumber,
-        lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()), phoneNumber: user.phoneNumber);
-    _unlimited_bloc.add(UpdateUserEvent(user: renewUser));
+        lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+        phoneNumber: user.phoneNumber);
+    session_8_planBloc.add(Event8.UpdateUserEvent(user: renewUser));
   }
 
   @override
@@ -186,14 +246,23 @@ class _SearchState extends State<eightSession> {
     _nameController.dispose();
     _creditController.dispose();
     _phoneController.dispose();
+    _sexController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final Session_8_PlanBloc _unlimited_bloc =
-        BlocProvider.of<Session_8_PlanBloc>(context);
+    final Session8bloc.Session_8_PlanBloc session_8_planBloc =
+        BlocProvider.of<Session8bloc.Session_8_PlanBloc>(context);
+    final Unlimited_PlanBloc _unlimited_bloc =
+        BlocProvider.of<Unlimited_PlanBloc>(context);
 
+    final Session_16_PlanBloc session_16_planBloc =
+        BlocProvider.of<Session_16_PlanBloc>(context);
+    final Session_12_PlanBloc session_12_planBloc =
+        BlocProvider.of<Session_12_PlanBloc>(context);
+    final Expense_PlanBloc expense_planBloc =
+        BlocProvider.of<Expense_PlanBloc>(context);
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -253,7 +322,10 @@ class _SearchState extends State<eightSession> {
               children: [
                 Expanded(child: _inputField(_nameController, 'Name', false)),
                 SizedBox(width: 10),
-                Expanded(child: _inputField(_phoneController, 'Phone Number', true)),
+                Expanded(
+                    child: _inputField(_phoneController, 'Phone Number', true)),
+                SizedBox(width: 10),
+                Expanded(child: DropDown()),
                 SizedBox(width: 10),
                 Expanded(child: _inputField(_creditController, 'Credit', true)),
                 SizedBox(width: 10),
@@ -276,15 +348,33 @@ class _SearchState extends State<eightSession> {
             ),
           ),
           SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 22.0),
-            child: Text(
-              "Recently added",
-              style: TextStyle(
-                fontWeight: FontWeight.w900,
-                fontSize: 17,
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 22.0),
+                child: Text(
+                  "Recently added",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 17,
+                  ),
+                ),
               ),
-            ),
+              IconButton(
+                icon: Icon(
+                  Icons.refresh,
+                  color: Colors.green,
+                ),
+                onPressed: () {
+                  _unlimited_bloc.add(Unlimited.GetUsersEvent());
+                  session_8_planBloc.add(Event8.GetUsersEvent());
+                  session_12_planBloc.add(Event12.GetUsersEvent());
+                  session_16_planBloc.add(Event16.GetUsersEvent());
+                  expense_planBloc.add(Expense.GetExpensesEvent());
+                  count = 0;
+                },
+              ),
+            ],
           ),
           Divider(
             indent: 25,
@@ -295,9 +385,9 @@ class _SearchState extends State<eightSession> {
           ),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-            child: BlocBuilder<Session_8_PlanBloc, session_8_PlanState>(
-                builder: (context, state) {
-              if (state is SuccessState) {
+            child: BlocBuilder<Session8bloc.Session_8_PlanBloc,
+                Session8bloc.session_8_PlanState>(builder: (context, state) {
+              if (state is Session8bloc.SuccessState) {
                 _allItems = state.users
                     .where((element) => element.plan == plan)
                     .toList();
@@ -355,11 +445,11 @@ class _SearchState extends State<eightSession> {
                     ],
                   ),
                 );
-              } else if (state is IinitialState) {
-                _unlimited_bloc.add(GetUsersEvent());
+              } else if (state is Session8bloc.IinitialState) {
+                session_8_planBloc.add(Event8.GetUsersEvent());
                 return Loading();
-              } else if (state is ErrorState) {
-                _unlimited_bloc.add(GetUsersEvent());
+              } else if (state is Session8bloc.ErrorState) {
+                session_8_planBloc.add(Event8.GetUsersEvent());
                 return Loading();
               } else {
                 return Loading();

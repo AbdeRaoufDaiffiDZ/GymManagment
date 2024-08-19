@@ -1,3 +1,4 @@
+import 'package:admin/screens/dashboard/components/rfid_bloc/rfid_plan_bloc.dart';
 import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart';
 import 'package:admin/screens/plans/12sess/12session_bloc/bloc/12session_bloc.dart';
 import 'package:admin/screens/plans/16session/16session_bloc/bloc/16session_bloc.dart';
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => locator<Session_16_PlanBloc>()),
         BlocProvider(create: (_) => locator<ProductsBloc>()),
         BlocProvider(create: (_) => locator<Expense_PlanBloc>()),
+        BlocProvider(create: (_) => locator<Rfid_PlanBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -30,7 +30,7 @@ class GymParam extends Equatable {
     }
     return GymParam(
       totalCredit: map['totalCredit'] ?? 0,
-      plan: map['plan'] ?? '',
+      plan: map['plann'] ?? '',
       expenses: expensesMap.map((e) => Expense.fromMap(e)).toList(),
       peopleIncome:
           peopleIncomesMap.map((e) => PeopleIncome.fromMap(e)).toList(),

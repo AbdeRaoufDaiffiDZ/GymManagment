@@ -12,7 +12,6 @@ import 'package:mongo_dart/mongo_dart.dart';
 final String mongoUri =
     "mongodb+srv://raoufdaifi:amin2004@cluster0.cpsnp8o.mongodb.net/";
 final String gymCollection = "gym";
-List<Map<String, dynamic>> dataFDB = [];
 
 Map<String, int> PlanPrices = {
   '8 session': 1500,
@@ -91,7 +90,7 @@ class MongoDatabase {
   Future<Either<Failure, GymParam>> GymParamRetrive(
       {required String collectionName}) async {
     try {
-      dataFDB = (await RetriveDataFDTB())!;
+      final dataFDB = (await RetriveDataFDTB())!;
       final result = dataFDB
           .where((element) => element['plan'] == collectionName)
           .toList();
@@ -120,7 +119,7 @@ class MongoDatabase {
       // final collectiongYM = db?.collection(gymCollection);
 
       // final result = await collectiongYM?.find().toList();
-      dataFDB = (await RetriveDataFDTB())!;
+      final dataFDB = (await RetriveDataFDTB())!;
 
       final result = dataFDB;
 
@@ -435,7 +434,7 @@ class MongoDatabase {
       }
       var gymParam = await GymParamRetrive(collectionName: collectionName);
       if (gymParam.isRight) {
-        // final expenses = gymParam.right.expenses;
+        // final expenses = gymParam.right.expenses;s
         return Right(gymParam.right);
       } else {
         return Left(Failure(
@@ -489,16 +488,20 @@ class MongoDatabase {
       gymParam.right.totalCredit = !credittype
           ? gymParam.right.totalCredit - oldCredit + int.parse(user.credit)
           : gymParam.right.totalCredit + int.parse(user.credit);
-      if (gymParam.right.peopleIncome
+      bool cond = gymParam.right.peopleIncome
           .where((element) =>
               DateFormat('yyyy-MM-dd').format(element.dateTime) ==
               DateFormat('yyyy-MM-dd').format(DateTime.now()))
-          .isNotEmpty) {
+          .isNotEmpty;
+      if (cond) {
         gymParam.right.peopleIncome.forEach((element) {
-          element.dayIncome = element.dayIncome +
-              PlanPrices[collectionName]! -
-              int.parse(user.credit);
-          element.dateTime = DateTime.now();
+          if (DateFormat('yyyy-MM-dd').format(element.dateTime) ==
+              DateFormat('yyyy-MM-dd').format(DateTime.now())) {
+            element.dayIncome = element.dayIncome +
+                PlanPrices[collectionName]! -
+                int.parse(user.credit);
+            element.dateTime = DateTime.now();
+          }
         });
       } else {
         gymParam.right.peopleIncome.add(PeopleIncome(
@@ -509,6 +512,85 @@ class MongoDatabase {
       final gymData = gymParam.right.toMap();
       await collectiongYM?.update(
           where.eq('plan', "Expense"), modify.set("GymParam", gymData));
+    }
+  }
+
+//////////////////////////////////////////////////////////   Rfid card settings
+  ///
+
+  Future<Either<Failure, String>> UpdateUserUsingRFID(
+      {required String id}) async {
+    try {
+      if (db == null) {
+        await connect();
+      }
+      String dataBase_Condition = ''; // String to rerutn the databse condition
+      final collectiongYM = db?.collection(gymCollection);
+      final result = await RetriveDataFDTB();
+                bool idFound = false; //
+
+      result!.forEach((element) {
+        if (element.keys.toList()[1] == 'plan') {
+          /////////  here we eliminate some unwanted data
+        } else {
+          String planName = element.keys.toList()[
+              1]; // this varaible will hold th eplan names automatically
+          List users =
+              element[planName]; // here we get the list of users of the plan
+          users.forEach((user) {
+             if (user['_id'] == id) {
+                idFound = true;
+                //  we check if the user id is the same as the RFID card UID
+                if (element.keys.toList()[1] == 'unlimited') {
+                  // for unlimited plan has to check to eneding date only
+                  DateFormat('yyyy-MM-dd').format(user['endDate']) ==
+                          DateFormat('yyyy-MM-dd').format(DateTime.now())
+                      ? dataBase_Condition = 'Abonnment ended'
+                      : dataBase_Condition = 'session marked';
+                } else {
+                  if (user['lastCheckDate'] !=
+                      DateFormat('yyyy-MM-dd').format(DateTime.now())) {
+                    user['isSessionMarked'] = true;
+                    user['lastCheckDate'] =
+                        DateFormat('yyyy-MM-dd').format(DateTime.now());
+                    ;
+
+                    user['sessionLeft'] =
+                        user['sessionLeft'] <= 0 ? 0 : user['sessionLeft'] - 1;
+
+                    user.forEach((key, value) async {
+                      await collectiongYM?.update(
+                          // where.eq('_id', user.id), modify.addToSet("hello", {"raouf":"daFFii","test":1}));
+
+                          where
+                              .eq('plan', user['plan'])
+                              .eq("${user['plan']}._id", user['_id']),
+                          modify.set('${user['plan']}.\$.$key', value));
+                    });
+
+                    dataBase_Condition = "session marked";
+
+                    ///
+                  } else {
+                    dataBase_Condition = "user passed before";
+
+                    ///
+                  }
+                }
+              } else {}
+            if (idFound) {
+             
+            } else {
+              dataBase_Condition = "try again";
+            }
+          });
+        }
+      });
+
+      return Right(dataBase_Condition);
+    } catch (e) {
+      return Left(
+          Failure(key: AppError.DelettingUserError, message: e.toString()));
     }
   }
 }

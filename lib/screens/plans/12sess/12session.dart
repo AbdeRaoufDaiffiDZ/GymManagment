@@ -1,14 +1,30 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:admin/screens/plans/12sess/12session_bloc/bloc/12session_bloc.dart';
-import 'package:admin/screens/plans/12sess/12session_bloc/bloc/session_12_event.dart';
+import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart';
+import 'package:admin/screens/plans/12sess/12session_bloc/bloc/12session_bloc.dart' as Session12bloc;
 import 'package:admin/const/loading.dart';
 import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/user_data_entity.dart';
+import 'package:admin/screens/plans/16session/16session_bloc/bloc/16session_bloc.dart';
+import 'package:admin/screens/plans/8session/8session_bloc/bloc/8session_bloc.dart';
+import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
+
+import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart'
+    as Expense;
+
+import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart'
+    as Unlimited;
+import 'package:admin/screens/plans/8session/8session_bloc/bloc/session_8_event.dart'
+    as Event8;
+
+import 'package:admin/screens/plans/12sess/12session_bloc/bloc/session_12_event.dart'
+    as Event12;
+import 'package:admin/screens/plans/16session/16session_bloc/bloc/session_16_event.dart'
+    as Event16;
 
 int count = 0;
 bool edit = false;
@@ -29,6 +45,7 @@ class _SearchState extends State<twlvSession> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _creditController = TextEditingController();
     final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _sexController = TextEditingController();
 
   final MongoDatabase monog = MongoDatabase();
   final String plan = "12 session";
@@ -37,6 +54,33 @@ class _SearchState extends State<twlvSession> {
   List<User_Data> _allItems = [];
   List<User_Data> _filteredItems = [];
 
+  String? _selectedSex;
+  final List<String> _sexOptions = ['Male', 'Female', 'Other'];
+
+void _onSexChanged(String? newValue) {
+    setState(() {
+      _selectedSex = newValue;
+      _sexController.text = newValue!;
+    });
+  }
+
+Widget DropDown(){
+  return  DropdownButtonFormField<String>(
+    dropdownColor: Colors.grey,
+              decoration: InputDecoration(
+                labelText: 'Sex',
+                border: OutlineInputBorder(),
+              ),
+              value: _selectedSex,
+              items: _sexOptions.map((String sex) {
+                return DropdownMenuItem<String>(
+                  value: sex,
+                  child: Text(sex),
+                );
+              }).toList(),
+              onChanged: _onSexChanged,
+            );
+}
   @override
   void initState() {
     super.initState();
@@ -55,11 +99,12 @@ class _SearchState extends State<twlvSession> {
 
   void _addProfile(User_Data? user) {
     late User_Data userNew;
-      final Session_12_PlanBloc _unlimited_bloc =
-          BlocProvider.of<Session_12_PlanBloc>(context);
+      final Session12bloc.Session_12_PlanBloc _unlimited_bloc =
+          BlocProvider.of<Session12bloc.Session_12_PlanBloc>(context);
     if (checkDate) {
       userNew = User_Data(
           id: user!.id,
+          sex:user.sex,
           fullName: user.fullName,
           plan: user.plan,
           startingDate: user.startingDate,
@@ -68,13 +113,14 @@ class _SearchState extends State<twlvSession> {
           sessionLeft: user.sessionLeft,
           lastCheckDate: user.lastCheckDate, phoneNumber: user.phoneNumber);
          
-        _unlimited_bloc.add(UpdateUserEvent(user: userNew));
+        _unlimited_bloc.add(Event12.UpdateUserEvent(user: userNew));
     }
-    if (_nameController.text.isNotEmpty && _creditController.text.isNotEmpty &&_phoneController.text.isNotEmpty) {
+    if (_nameController.text.isNotEmpty && _sexController.text.isNotEmpty &&_creditController.text.isNotEmpty &&_phoneController.text.isNotEmpty) {
     
 
       if (edit) {
         userNew = User_Data(
+          sex:userr.sex,
             id: userr.id,
             fullName: _nameController.text,
             plan: userr.plan,
@@ -84,11 +130,12 @@ class _SearchState extends State<twlvSession> {
             sessionLeft: userr.sessionLeft,
             lastCheckDate: userr.lastCheckDate, phoneNumber: _phoneController.text);
 
-        final Session_12_PlanBloc _unlimited_bloc =
-            BlocProvider.of<Session_12_PlanBloc>(context);
-        _unlimited_bloc.add(UpdateUserEvent(user: userNew));
+        final Session12bloc.Session_12_PlanBloc _unlimited_bloc =
+            BlocProvider.of<Session12bloc.Session_12_PlanBloc>(context);
+        _unlimited_bloc.add(Event12.UpdateUserEvent(user: userNew));
       } else {
         User_Data newUser = User_Data(
+          sex:_sexController.text,
             fullName: _nameController.text,
             plan: plan,
             startingDate: DateTime.now(),
@@ -97,9 +144,11 @@ class _SearchState extends State<twlvSession> {
             id: mongo.ObjectId().toHexString(),
             sessionLeft: sessionNumber,
             lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()), phoneNumber: _phoneController.text);
-        _unlimited_bloc.add(AddUserEvent(user: newUser));
+        _unlimited_bloc.add(Event12.AddUserEvent(user: newUser));
       }
       _nameController.clear();
+      _selectedSex =null;
+      _sexController.clear();
       _creditController.clear();
       _phoneController.clear();
     }
@@ -114,15 +163,16 @@ class _SearchState extends State<twlvSession> {
       _phoneController.text = user.phoneNumber;
       _nameController.text = user.fullName;
       _creditController.text = user.credit;
+      _sexController.text = user.sex;
       edit = true;
     });
     userr = user;
   }
 
   void _deleteProfile(User_Data user) {
-    final Session_12_PlanBloc _unlimited_bloc =
-        BlocProvider.of<Session_12_PlanBloc>(context);
-    _unlimited_bloc.add(DeleteUserEvent(user: user));
+    final Session12bloc.Session_12_PlanBloc session_12_planBloc =
+        BlocProvider.of<Session12bloc.Session_12_PlanBloc>(context);
+    session_12_planBloc.add(Event12.DeleteUserEvent(user: user));
     count = 0;
   }
 
@@ -140,6 +190,7 @@ class _SearchState extends State<twlvSession> {
       count = 0;
     });
     User_Data user_data = User_Data(
+      sex:user.sex,
         isSessionMarked: user.isSessionMarked,
         sessionLeft: user.sessionLeft,
         id: user.id,
@@ -159,18 +210,19 @@ class _SearchState extends State<twlvSession> {
       user_data.sessionLeft = user_data.sessionLeft + 1;
       user_data.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
     }
-    final Session_12_PlanBloc session_12_planBloc =
-        BlocProvider.of<Session_12_PlanBloc>(context);
-    session_12_planBloc.add(UpdateUserEvent(user: user_data));
+    final Session12bloc.Session_12_PlanBloc session_12_planBloc =
+        BlocProvider.of<Session12bloc.Session_12_PlanBloc>(context);
+    session_12_planBloc.add(Event12.UpdateUserEvent(user: user_data));
   }
 
   void _renewProfile(User_Data user) {
     setState(() {
       count = 0;
     });
-    final Session_12_PlanBloc _unlimited_bloc =
-        BlocProvider.of<Session_12_PlanBloc>(context);
+    final Session12bloc.Session_12_PlanBloc _unlimited_bloc =
+        BlocProvider.of<Session12bloc.Session_12_PlanBloc>(context);
     final renewUser = User_Data(
+      sex:user.sex,
       renew:  true,
         id: user.id,
         fullName: user.fullName,
@@ -180,7 +232,7 @@ class _SearchState extends State<twlvSession> {
         credit: user.credit,
         sessionLeft: sessionNumber,
         lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()), phoneNumber: user.phoneNumber);
-    _unlimited_bloc.add(UpdateUserEvent(user: renewUser));
+    _unlimited_bloc.add(Event12.UpdateUserEvent(user: renewUser));
   }
 
   @override
@@ -189,14 +241,24 @@ class _SearchState extends State<twlvSession> {
     _nameController.dispose();
     _phoneController.dispose();
     _creditController.dispose();
+    _sexController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final Session_12_PlanBloc _unlimited_bloc =
-        BlocProvider.of<Session_12_PlanBloc>(context);
+    
+final Session_8_PlanBloc session_8_planBloc =
+        BlocProvider.of<Session_8_PlanBloc>(context);
+    final Unlimited_PlanBloc _unlimited_bloc =
+        BlocProvider.of<Unlimited_PlanBloc>(context);
 
+    final Session_16_PlanBloc session_16_planBloc =
+        BlocProvider.of<Session_16_PlanBloc>(context);
+    final Session12bloc.Session_12_PlanBloc session_12_planBloc =
+        BlocProvider.of<Session12bloc.Session_12_PlanBloc>(context);
+    final Expense_PlanBloc expense_planBloc =
+        BlocProvider.of<Expense_PlanBloc>(context);
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -257,8 +319,11 @@ class _SearchState extends State<twlvSession> {
               children: [
                 Expanded(child: _inputField(_nameController, 'Name', false)),
                 SizedBox(width: 10),
-                 Expanded(child: _inputField(_phoneController, 'Phone number', true)),
+                 Expanded(child: _inputField(_phoneController, 'Phone Number', true)),
                 SizedBox(width: 10),
+                  SizedBox(width: 10),
+                Expanded(
+                    child: DropDown()),
                 Expanded(child: _inputField(_creditController, 'Credit', true)),
                 SizedBox(width: 10),
                 ElevatedButton(
@@ -280,15 +345,35 @@ class _SearchState extends State<twlvSession> {
             ),
           ),
           SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 22.0),
-            child: Text(
-              "Recently added",
-              style: TextStyle(
-                fontWeight: FontWeight.w900,
-                fontSize: 17,
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 22.0),
+                child: Text(
+                  "Recently added",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 17,
+                  ),
+                ),
               ),
-            ),
+            
+            IconButton(
+                icon: Icon(
+                  Icons.refresh,
+                  color: Colors.green,
+                ),
+                onPressed: () {
+                  _unlimited_bloc.add(Unlimited.GetUsersEvent());
+                  session_8_planBloc.add(Event8.GetUsersEvent());
+                  session_12_planBloc.add(Event12.GetUsersEvent());
+                  session_16_planBloc.add(Event16.GetUsersEvent());
+                  expense_planBloc.add(Expense.GetExpensesEvent());
+                  count = 0;
+                },
+              ),
+            
+            ],
           ),
           Divider(
             indent: 25,
@@ -299,9 +384,9 @@ class _SearchState extends State<twlvSession> {
           ),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-            child: BlocBuilder<Session_12_PlanBloc, session_12_PlanState>(
+            child: BlocBuilder<Session12bloc.Session_12_PlanBloc, Session12bloc.session_12_PlanState>(
                 builder: (context, state) {
-              if (state is SuccessState) {
+              if (state is Session12bloc.SuccessState) {
                 _allItems = state.users
                     .where((element) => element.plan == plan)
                     .toList();
@@ -359,11 +444,11 @@ class _SearchState extends State<twlvSession> {
                     ],
                   ),
                 );
-              } else if (state is IinitialState) {
-                _unlimited_bloc.add(GetUsersEvent());
+              } else if (state is Session12bloc.IinitialState) {
+                session_12_planBloc.add(Event12.GetUsersEvent());
                 return Loading();
-              } else if (state is ErrorState) {
-                _unlimited_bloc.add(GetUsersEvent());
+              } else if (state is Session12bloc.ErrorState) {
+                session_12_planBloc.add(Event12.GetUsersEvent());
 
                 return Loading();
               } else {
