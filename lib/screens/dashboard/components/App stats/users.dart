@@ -55,35 +55,7 @@ class users extends StatelessWidget {
         padding: const EdgeInsets.all(15.0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           SizedBox(height: 50),
-          Row(
-            children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0),
-                child: Text(
-                  "Memberships statistics :",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xff202020),
-                      fontSize: 20),
-                ),
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.refresh,
-                  color: Colors.green,
-                ),
-                onPressed: () {
-                  _unlimited_bloc.add(GetUsersEvent());
-                  session_8_planBloc.add(Event8.GetUsersEvent());
-                  session_12_planBloc.add(Event12.GetUsersEvent());
-                  session_16_planBloc.add(Event16.GetUsersEvent());
-                  expense_planBloc.add(Expense.GetExpensesEvent());
-                },
-              ),
-            ],
-          ),
-          Padding(
+           Padding(
             padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0),
             child: Text(
               "Money Statistics :",
@@ -93,6 +65,8 @@ class users extends StatelessWidget {
                   fontSize: 14),
             ),
           ),
+          
+         
           BlocBuilder<Expense_PlanBloc, Expense_PlanState>(
               builder: (context, state) {
             if (state is Expense.SuccessState) {
@@ -120,19 +94,19 @@ class users extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       userss(
-                        pngg: "assets/images/qs.png",
+                        pngg: "assets/images/moeny.png",
                         text1: dayIncome.toString(),
                         text2: "Day Income",
                         clr: Color(0xffE544FF),
                       ),
                       userss(
-                        pngg: "assets/images/expired.png",
+                        pngg: "assets/images/credit.png",
                         text1: state.gymParam!.totalCredit.toString(),
                         text2: "Total Creadit",
                         clr: Color(0xffFF007A),
                       ),
                       userss(
-                        pngg: "assets/images/aa.png",
+                        pngg: "assets/images/expense.png",
                         text1: expenses.toString(),
                         text2: "total expenses",
                         clr: Color(0xff10BD9E),
@@ -157,7 +131,35 @@ class users extends StatelessWidget {
               return Loading();
             }
           }),
-          SizedBox(height: 50),
+        
+        Row(
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0),
+                child: Text(
+                  "Memberships statistics :",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xff202020),
+                      fontSize: 20),
+                ),
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.refresh,
+                  color: Colors.green,
+                ),
+                onPressed: () {
+                  _unlimited_bloc.add(GetUsersEvent());
+                  session_8_planBloc.add(Event8.GetUsersEvent());
+                  session_12_planBloc.add(Event12.GetUsersEvent());
+                  session_16_planBloc.add(Event16.GetUsersEvent());
+                  expense_planBloc.add(Expense.GetExpensesEvent());
+                },
+              ),
+            ],
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0),
             child: Text(
@@ -215,7 +217,7 @@ class users extends StatelessWidget {
                         clr: Color(0xff10BD9E),
                       ),
                       userss(
-                        pngg: "assets/images/aa.png",
+                        pngg: "assets/images/credit.png",
                         text1: planCredit.toString(),
                         text2: "plan Credit",
                         clr: Color(0xff10BD9E),
@@ -303,7 +305,7 @@ class users extends StatelessWidget {
                         clr: Color(0xff10BD9E),
                       ),
                       userss(
-                        pngg: "assets/images/aa.png",
+                        pngg: "assets/images/credit.png",
                         text1: planCredit.toString(),
                         text2: "plan Credit",
                         clr: Color(0xff10BD9E),
@@ -391,7 +393,7 @@ class users extends StatelessWidget {
                         clr: Color(0xff10BD9E),
                       ),
                       userss(
-                        pngg: "assets/images/aa.png",
+                        pngg: "assets/images/credit.png",
                         text1: planCredit.toString(),
                         text2: "plan Credit",
                         clr: Color(0xff10BD9E),
@@ -479,7 +481,7 @@ class users extends StatelessWidget {
                         clr: Color(0xff10BD9E),
                       ),
                       userss(
-                        pngg: "assets/images/aa.png",
+                        pngg: "assets/images/credit.png",
                         text1: planCredit.toString(),
                         text2: "plan Credit",
                         clr: Color(0xff10BD9E),

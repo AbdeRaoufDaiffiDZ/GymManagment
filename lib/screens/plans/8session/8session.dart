@@ -45,6 +45,7 @@ class _SearchState extends State<eightSession> {
   final TextEditingController _creditController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _sexController = TextEditingController();
+  final TextEditingController _idController = TextEditingController();
 
   final MongoDatabase monog = MongoDatabase();
   final String plan = "8 session";
@@ -117,13 +118,13 @@ class _SearchState extends State<eightSession> {
       session_8_planBloc.add(Event8.UpdateUserEvent(user: userNew));
     }
     if (_nameController.text.isNotEmpty &&
-        _creditController.text.isNotEmpty &&
+        _creditController.text.isNotEmpty && _idController.text.isNotEmpty &&
         _sexController.text.isNotEmpty &&
         _phoneController.text.isNotEmpty) {
       if (edit) {
         userNew = User_Data(
             sex: userr.sex,
-            id: userr.id,
+            id: _idController.text,
             fullName: _nameController.text,
             plan: userr.plan,
             startingDate: userr.startingDate,
@@ -142,13 +143,14 @@ class _SearchState extends State<eightSession> {
             startingDate: DateTime.now(),
             endDate: DateTime.now().add(Duration(days: daysNumber)),
             credit: _creditController.text,
-            id: mongo.ObjectId().toHexString(),
+            id: _idController.text,
             sessionLeft: sessionNumber,
             lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
             phoneNumber: _phoneController.text);
         session_8_planBloc.add(Event8.AddUserEvent(user: newUser));
       }
       _nameController.clear();
+      _idController.clear();
       _creditController.clear();
       _selectedSex = null;
       _phoneController.clear();
@@ -164,6 +166,7 @@ class _SearchState extends State<eightSession> {
     setState(() {
       _phoneController.text = user.phoneNumber;
       _nameController.text = user.fullName;
+      _idController.text =user.id;
       _creditController.text = user.credit;
       _sexController.text = user.sex;
       edit = true;
@@ -244,6 +247,7 @@ class _SearchState extends State<eightSession> {
   void dispose() {
     _searchController.dispose();
     _nameController.dispose();
+    _idController.dispose();
     _creditController.dispose();
     _phoneController.dispose();
     _sexController.dispose();
@@ -320,6 +324,8 @@ class _SearchState extends State<eightSession> {
             ),
             child: Row(
               children: [
+                Expanded(child: _inputField(_idController, 'ID', false)),
+                SizedBox(width: 10),
                 Expanded(child: _inputField(_nameController, 'Name', false)),
                 SizedBox(width: 10),
                 Expanded(

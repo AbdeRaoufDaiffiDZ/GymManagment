@@ -11,9 +11,6 @@ import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:mongo_dart/mongo_dart.dart' as mongo;
-
-import '16session_bloc/bloc/session_16_event.dart';
 
 import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart'
     as Expense;
@@ -47,6 +44,7 @@ class _SearchState extends State<sixSession> {
   final TextEditingController _creditController = TextEditingController();
     final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _sexController = TextEditingController();
+  final TextEditingController _idController = TextEditingController();
 
   final MongoDatabase monog = MongoDatabase();
   final String plan = "16 session";
@@ -115,11 +113,11 @@ Widget DropDown(){
           lastCheckDate: user.lastCheckDate, phoneNumber: user.phoneNumber);
       session_16_planBloc.add(Event16.UpdateUserEvent(user: userNew));
     }
-    if (_nameController.text.isNotEmpty && _sexController.text.isNotEmpty&&_creditController.text.isNotEmpty && _phoneController.text.isNotEmpty) {
+    if (_nameController.text.isNotEmpty && _sexController.text.isNotEmpty&&_creditController.text.isNotEmpty && _idController.text.isNotEmpty&&_phoneController.text.isNotEmpty) {
       if (edit) {
         userNew = User_Data(
           sex:userr.sex,
-            id: userr.id,
+            id: _idController.text,
             fullName: _nameController.text,
             plan: userr.plan,
             startingDate: userr.startingDate,
@@ -137,13 +135,14 @@ Widget DropDown(){
             startingDate: DateTime.now(),
             endDate: DateTime.now().add(Duration(days: daysNumber)),
             credit: _creditController.text,
-            id: mongo.ObjectId().toHexString(),
+            id: _idController.text,
             sessionLeft: sessionNumber,
             lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()), phoneNumber: _phoneController.text);
         session_16_planBloc.add(Event16.AddUserEvent(user: newUser));
       }
       _nameController.clear();
       _selectedSex =null;
+      _idController.clear();
       _creditController.clear();
       _phoneController.clear();
       _sexController.clear();
@@ -160,6 +159,9 @@ Widget DropDown(){
       _nameController.text = user.fullName;
       _creditController.text = user.credit;
       _phoneController.text = user.phoneNumber;
+      _idController.text = user.id;
+            _selectedSex = user.sex;
+
       edit = true;
     });
     userr = user;
@@ -237,6 +239,7 @@ Widget DropDown(){
     _nameController.dispose();
     _creditController.dispose();
     _phoneController.dispose();
+    _idController.dispose();
     super.dispose();
   }
 
@@ -312,7 +315,9 @@ final Session_8_PlanBloc session_8_planBloc =
               ],
             ),
             child: Row(
-              children: [
+              children: [Expanded(child: _inputField(_idController, 'ID', false)),
+                SizedBox(width: 10),
+                
                 Expanded(child: _inputField(_nameController, 'Name', false)),
                 SizedBox(width: 10),
                 Expanded(child: _inputField(_phoneController, 'Phone Number', true)),

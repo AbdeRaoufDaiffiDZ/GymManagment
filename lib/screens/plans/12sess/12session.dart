@@ -46,6 +46,7 @@ class _SearchState extends State<twlvSession> {
   final TextEditingController _creditController = TextEditingController();
     final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _sexController = TextEditingController();
+  final TextEditingController _idController = TextEditingController();
 
   final MongoDatabase monog = MongoDatabase();
   final String plan = "12 session";
@@ -115,13 +116,13 @@ Widget DropDown(){
          
         _unlimited_bloc.add(Event12.UpdateUserEvent(user: userNew));
     }
-    if (_nameController.text.isNotEmpty && _sexController.text.isNotEmpty &&_creditController.text.isNotEmpty &&_phoneController.text.isNotEmpty) {
+    if (_nameController.text.isNotEmpty && _idController.text.isNotEmpty&&_sexController.text.isNotEmpty &&_creditController.text.isNotEmpty &&_phoneController.text.isNotEmpty) {
     
 
       if (edit) {
         userNew = User_Data(
           sex:userr.sex,
-            id: userr.id,
+            id: _idController.text,
             fullName: _nameController.text,
             plan: userr.plan,
             startingDate: userr.startingDate,
@@ -141,7 +142,7 @@ Widget DropDown(){
             startingDate: DateTime.now(),
             endDate: DateTime.now().add(Duration(days: daysNumber)),
             credit: _creditController.text,
-            id: mongo.ObjectId().toHexString(),
+            id: _idController.text,
             sessionLeft: sessionNumber,
             lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()), phoneNumber: _phoneController.text);
         _unlimited_bloc.add(Event12.AddUserEvent(user: newUser));
@@ -150,6 +151,7 @@ Widget DropDown(){
       _selectedSex =null;
       _sexController.clear();
       _creditController.clear();
+      _idController.clear();
       _phoneController.clear();
     }
     _filteredItems = _allItems;
@@ -163,7 +165,10 @@ Widget DropDown(){
       _phoneController.text = user.phoneNumber;
       _nameController.text = user.fullName;
       _creditController.text = user.credit;
+      _idController.text = user.id;
       _sexController.text = user.sex;
+            _selectedSex = user.sex;
+
       edit = true;
     });
     userr = user;
@@ -241,6 +246,7 @@ Widget DropDown(){
     _nameController.dispose();
     _phoneController.dispose();
     _creditController.dispose();
+    _idController.dispose();
     _sexController.dispose();
     super.dispose();
   }
@@ -316,7 +322,8 @@ final Session_8_PlanBloc session_8_planBloc =
               ],
             ),
             child: Row(
-              children: [
+              children: [Expanded(child: _inputField(_idController, 'ID', false)),
+                SizedBox(width: 10),
                 Expanded(child: _inputField(_nameController, 'Name', false)),
                 SizedBox(width: 10),
                  Expanded(child: _inputField(_phoneController, 'Phone Number', true)),

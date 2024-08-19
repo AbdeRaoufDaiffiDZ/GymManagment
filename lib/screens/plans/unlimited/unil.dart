@@ -6,7 +6,6 @@ import 'package:admin/entities/user_data_entity.dart';
 import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mongo_dart/mongo_dart.dart' as mongo;
 
 int count = 0;
 bool edit = false;
@@ -25,8 +24,9 @@ class _SearchState extends State<unlimited> {
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _creditController = TextEditingController();
-    final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _sexController = TextEditingController();
+  final TextEditingController _idController = TextEditingController();
 
   final MongoDatabase monog = MongoDatabase();
   final String plan = "unlimited";
@@ -37,30 +37,31 @@ class _SearchState extends State<unlimited> {
   String? _selectedSex;
   final List<String> _sexOptions = ['Male', 'Female', 'Other'];
 
-void _onSexChanged(String? newValue) {
+  void _onSexChanged(String? newValue) {
     setState(() {
       _selectedSex = newValue;
       _sexController.text = newValue!;
     });
   }
 
-Widget DropDown(){
-  return  DropdownButtonFormField<String>(
-    dropdownColor: Colors.grey,
-              decoration: InputDecoration(
-                labelText: 'Sex',
-                border: OutlineInputBorder(),
-              ),
-              value: _selectedSex,
-              items: _sexOptions.map((String sex) {
-                return DropdownMenuItem<String>(
-                  value: sex,
-                  child: Text(sex),
-                );
-              }).toList(),
-              onChanged: _onSexChanged,
-            );
-}
+  Widget DropDown() {
+    return DropdownButtonFormField<String>(
+      dropdownColor: Colors.grey,
+      decoration: InputDecoration(
+        labelText: 'Sex',
+        border: OutlineInputBorder(),
+      ),
+      value: _selectedSex,
+      items: _sexOptions.map((String sex) {
+        return DropdownMenuItem<String>(
+          value: sex,
+          child: Text(sex),
+        );
+      }).toList(),
+      onChanged: _onSexChanged,
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -78,45 +79,52 @@ Widget DropDown(){
   }
 
   void _addProfile(User_Data? user) {
-    if (_nameController.text.isNotEmpty && _sexController.text.isNotEmpty &&_creditController.text.isNotEmpty && _phoneController.text.isNotEmpty) {
+    if (_nameController.text.isNotEmpty &&
+        _idController.text.isNotEmpty &&
+        _sexController.text.isNotEmpty &&
+        _creditController.text.isNotEmpty &&
+        _phoneController.text.isNotEmpty) {
       final Unlimited_PlanBloc _unlimited_bloc =
           BlocProvider.of<Unlimited_PlanBloc>(context);
       if (edit) {
         final userNew = User_Data(
-          sex:userr.sex,
-            id: userr.id,
+            sex: userr.sex,
+            id: _idController.text,
             fullName: _nameController.text,
             plan: userr.plan,
             startingDate: userr.startingDate,
             endDate: userr.endDate,
             credit: _creditController.text,
             sessionLeft: sessionNumber,
-            lastCheckDate: userr.lastCheckDate, phoneNumber: _phoneController.text);
+            lastCheckDate: userr.lastCheckDate,
+            phoneNumber: _phoneController.text);
         final Unlimited_PlanBloc _unlimited_bloc =
             BlocProvider.of<Unlimited_PlanBloc>(context);
         _unlimited_bloc.add(UpdateUserEvent(user: userNew));
       } else {
         User_Data newUser = User_Data(
-          sex:_sexController.text,
+            sex: _sexController.text,
             fullName: _nameController.text,
             plan: plan,
             startingDate: DateTime.now(),
             endDate: DateTime.now().add(Duration(days: daysNumber)),
             credit: _creditController.text,
-            id: mongo.ObjectId().toHexString(),
+            id: _idController.text,
             sessionLeft: sessionNumber,
-            lastCheckDate: '', phoneNumber: _phoneController.text);
+            lastCheckDate: '',
+            phoneNumber: _phoneController.text);
         _unlimited_bloc.add(AddUserEvent(user: newUser));
       }
       _filteredItems = _allItems;
       count = 0;
       edit = false;
-      
+
       _nameController.clear();
+      _idController.clear();
       _creditController.clear();
       _phoneController.clear();
       _sexController.clear();
-      _selectedSex =null;
+      _selectedSex = null;
     }
   }
 
@@ -124,8 +132,9 @@ Widget DropDown(){
     setState(() {
       _phoneController.text = user.phoneNumber;
       _nameController.text = user.fullName;
+      _idController.text = user.id;
       _creditController.text = user.credit;
-      _sexController.text =user.sex;
+      _sexController.text = user.sex;
       edit = true;
     });
     userr = user;
@@ -135,8 +144,8 @@ Widget DropDown(){
     final Unlimited_PlanBloc _unlimited_bloc =
         BlocProvider.of<Unlimited_PlanBloc>(context);
     final renewUser = User_Data(
-      renew: true,
-      sex:user.sex,
+        renew: true,
+        sex: user.sex,
         id: user.id,
         fullName: user.fullName,
         plan: user.plan,
@@ -144,7 +153,8 @@ Widget DropDown(){
         endDate: DateTime.now().add(const Duration(days: 30)),
         credit: user.credit,
         sessionLeft: 0,
-        lastCheckDate: '', phoneNumber: user.phoneNumber);
+        lastCheckDate: '',
+        phoneNumber: user.phoneNumber);
     _unlimited_bloc.add(UpdateUserEvent(user: renewUser));
   }
 
@@ -167,14 +177,16 @@ Widget DropDown(){
     });
     // Implement the checkbox functionality if needed
   }
+
   final ScrollController _scrollController = ScrollController();
 
   @override
   void dispose() {
-        _scrollController.dispose();
+    _scrollController.dispose();
 
     _searchController.dispose();
     _nameController.dispose();
+    _idController.dispose();
     _creditController.dispose();
     _phoneController.dispose();
     super.dispose();
@@ -243,13 +255,15 @@ Widget DropDown(){
             ),
             child: Row(
               children: [
+                Expanded(child: _inputField(_idController, 'ID', false)),
+                SizedBox(width: 10),
                 Expanded(child: _inputField(_nameController, 'Name', false)),
                 SizedBox(width: 10),
-                Expanded(child: _inputField(_phoneController, 'Phone Number', true)),
-                SizedBox(width: 10),
-                 SizedBox(width: 10),
                 Expanded(
-                    child: DropDown()),
+                    child: _inputField(_phoneController, 'Phone Number', true)),
+                SizedBox(width: 10),
+                SizedBox(width: 10),
+                Expanded(child: DropDown()),
                 Expanded(child: _inputField(_creditController, 'Credit', true)),
                 SizedBox(width: 10),
                 ElevatedButton(
@@ -299,11 +313,13 @@ Widget DropDown(){
                   count++;
                 }
                 return Scrollbar(
-                        thumbVisibility: true, // Always show the scrollbar thumb
-        controller: _scrollController, // Attach the controller to the Scrollbar
+                  thumbVisibility: true, // Always show the scrollbar thumb
+                  controller:
+                      _scrollController, // Attach the controller to the Scrollbar
 
                   child: SingleChildScrollView(
-                              controller: _scrollController, // Attach the controller to the SingleChildScrollView
+                    controller:
+                        _scrollController, // Attach the controller to the SingleChildScrollView
 
                     scrollDirection: Axis.horizontal,
                     child: Table(
