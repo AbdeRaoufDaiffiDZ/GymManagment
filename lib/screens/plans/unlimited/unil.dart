@@ -135,6 +135,8 @@ class _SearchState extends State<unlimited> {
       _idController.text = user.id;
       _creditController.text = user.credit;
       _sexController.text = user.sex;
+            _selectedSex = user.sex;
+
       edit = true;
     });
     userr = user;

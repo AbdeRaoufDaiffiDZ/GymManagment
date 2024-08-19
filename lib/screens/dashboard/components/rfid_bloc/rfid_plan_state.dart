@@ -13,10 +13,11 @@ class IinitialState extends Rfid_PlanState {
 
 class SuccessState extends Rfid_PlanState {
   final String? done;
-  SuccessState({required this.done});
+  final User_Data user;
+  SuccessState({required this.done, required this.user});
 
   @override
-  List<Object?> get props => [done];
+  List<Object?> get props => [done,user];
 }
 
 class LoadingState extends Rfid_PlanState {

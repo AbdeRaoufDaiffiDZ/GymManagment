@@ -60,11 +60,15 @@ class _HeaderState extends State<Header> {
                   BlocBuilder<Rfid_PlanBloc, Rfid_PlanState>(
                       builder: (context, state) {
                     if (state is SuccessState) {
-                      return Text(state.done.toString(),
-                          style: TextStyle(
-                              fontWeight: FontWeight.w800,
-                              fontSize: 14,
-                              color: Color.fromARGB(255, 0, 153, 0)));
+                      return Column(
+                        children: [
+                          Text(state.done.toString(),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 14,
+                                  color: Color.fromARGB(255, 0, 153, 0))),
+                        ],
+                      );
                     } else if (state is ErrorState) {
                       return Text(state.error.toString(),
                           style: TextStyle(

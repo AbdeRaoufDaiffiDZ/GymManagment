@@ -518,7 +518,7 @@ class MongoDatabase {
 //////////////////////////////////////////////////////////   Rfid card settings
   ///
 
-  Future<Either<Failure, String>> UpdateUserUsingRFID(
+  Future<Either<Failure, List<dynamic>>> UpdateUserUsingRFID(
       {required String id}) async {
     try {
       if (db == null) {
@@ -527,8 +527,8 @@ class MongoDatabase {
       String dataBase_Condition = ''; // String to rerutn the databse condition
       final collectiongYM = db?.collection(gymCollection);
       final result = await RetriveDataFDTB();
-                bool idFound = false; //
-
+      bool idFound = false; //
+      User_Data? userDataToGet;
       result!.forEach((element) {
         if (element.keys.toList()[1] == 'plan') {
           /////////  here we eliminate some unwanted data
@@ -538,56 +538,56 @@ class MongoDatabase {
           List users =
               element[planName]; // here we get the list of users of the plan
           users.forEach((user) {
-             if (user['_id'] == id) {
-                idFound = true;
-                //  we check if the user id is the same as the RFID card UID
-                if (element.keys.toList()[1] == 'unlimited') {
-                  // for unlimited plan has to check to eneding date only
-                  DateFormat('yyyy-MM-dd').format(user['endDate']) ==
-                          DateFormat('yyyy-MM-dd').format(DateTime.now())
-                      ? dataBase_Condition = 'Abonnment ended'
-                      : dataBase_Condition = 'session marked';
+            if (user['_id'] == id) {
+              idFound = true;
+              //  we check if the user id is the same as the RFID card UID
+              if (element.keys.toList()[1] == 'unlimited') {
+                // for unlimited plan has to check to eneding date only
+                DateFormat('yyyy-MM-dd').format(user['endDate']) ==
+                        DateFormat('yyyy-MM-dd').format(DateTime.now())
+                    ? dataBase_Condition = 'Abonnment ended'
+                    : dataBase_Condition = 'Unlimited Abonnment';
+              } else {
+                if (user['lastCheckDate'] !=
+                    DateFormat('yyyy-MM-dd').format(DateTime.now())) {
+                  user['isSessionMarked'] = true;
+                  user['lastCheckDate'] =
+                      DateFormat('yyyy-MM-dd').format(DateTime.now());
+                  ;
+
+                  user['sessionLeft'] =
+                      user['sessionLeft'] <= 0 ? 0 : user['sessionLeft'] - 1;
+
+                  user.forEach((key, value) async {
+                    await collectiongYM?.update(
+                        // where.eq('_id', user.id), modify.addToSet("hello", {"raouf":"daFFii","test":1}));
+
+                        where
+                            .eq('plan', user['plan'])
+                            .eq("${user['plan']}._id", user['_id']),
+                        modify.set('${user['plan']}.\$.$key', value));
+                  });
+
+                  dataBase_Condition = "session marked";
+
+                  ///
                 } else {
-                  if (user['lastCheckDate'] !=
-                      DateFormat('yyyy-MM-dd').format(DateTime.now())) {
-                    user['isSessionMarked'] = true;
-                    user['lastCheckDate'] =
-                        DateFormat('yyyy-MM-dd').format(DateTime.now());
-                    ;
+                  dataBase_Condition = "user passed before";
 
-                    user['sessionLeft'] =
-                        user['sessionLeft'] <= 0 ? 0 : user['sessionLeft'] - 1;
-
-                    user.forEach((key, value) async {
-                      await collectiongYM?.update(
-                          // where.eq('_id', user.id), modify.addToSet("hello", {"raouf":"daFFii","test":1}));
-
-                          where
-                              .eq('plan', user['plan'])
-                              .eq("${user['plan']}._id", user['_id']),
-                          modify.set('${user['plan']}.\$.$key', value));
-                    });
-
-                    dataBase_Condition = "session marked";
-
-                    ///
-                  } else {
-                    dataBase_Condition = "user passed before";
-
-                    ///
-                  }
+                  ///
                 }
-              } else {}
+              }
+              userDataToGet = User_Data.fromMap(user);
+            } else {}
             if (idFound) {
-             
             } else {
               dataBase_Condition = "try again";
             }
           });
         }
       });
-
-      return Right(dataBase_Condition);
+List dataReturn = [dataBase_Condition,userDataToGet];
+      return Right(dataReturn);
     } catch (e) {
       return Left(
           Failure(key: AppError.DelettingUserError, message: e.toString()));
