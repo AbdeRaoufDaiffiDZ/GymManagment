@@ -192,7 +192,7 @@ class _SearchState extends State<unlimited> {
     userr = user;
   }
 
-  void _renewProfile(User_Data user) {
+  void _renewProfile(User_Data user , String credit) {
     final Unlimited_PlanBloc _unlimited_bloc =
         BlocProvider.of<Unlimited_PlanBloc>(context);
     final renewUser = User_Data(
@@ -203,7 +203,7 @@ class _SearchState extends State<unlimited> {
         plan: user.plan,
         startingDate: DateTime.now(),
         endDate: DateTime.now().add(const Duration(days: 30)),
-        credit: user.credit,
+        credit: credit,
         sessionLeft: 0,
         lastCheckDate: '',
         phoneNumber: user.phoneNumber);
@@ -489,7 +489,8 @@ class _SearchState extends State<unlimited> {
   }
 
   Widget _inputField(
-      TextEditingController controller, String hint, bool numberOrNot) {
+      TextEditingController controller, String hint, bool numberOrNot,
+      {bool isRenew = false, User_Data? user = null}) {
     return TextFormField(
       controller: controller,
       keyboardType: numberOrNot ? TextInputType.number : null,
@@ -504,7 +505,14 @@ class _SearchState extends State<unlimited> {
       ),
       onFieldSubmitted: (value) {
         // Call _addProfile() when Enter is pressed.
-        _addProfile(null);
+        if (isRenew) {
+          _renewProfile(user!, value);
+          _creditController.clear();
+
+          Navigator.pop(context);
+        } else {
+          _addProfile(null);
+        }
       },
     );
   }
@@ -547,7 +555,15 @@ class _SearchState extends State<unlimited> {
         IconButton(
           icon: Icon(Icons.refresh, color: Colors.green),
           onPressed: () {
-            _renewProfile(user);
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                      backgroundColor: Colors.white,
+                      content: _inputField(_creditController, 'Credit', true,
+                          isRenew: true, user: user));
+                  // Return the Dialog widget here
+                });
 
             count = 0;
           },

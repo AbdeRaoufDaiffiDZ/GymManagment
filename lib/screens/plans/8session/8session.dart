@@ -249,7 +249,7 @@ class _SearchState extends State<eightSession> {
     session_8_planBloc.add(Event8.UpdateUserEvent(user: user_data));
   }
 
-  void _renewProfile(User_Data user) {
+  void _renewProfile(User_Data user, String credit) {
     setState(() {
       count = 0;
     });
@@ -264,7 +264,7 @@ class _SearchState extends State<eightSession> {
         plan: user.plan,
         startingDate: DateTime.now(),
         endDate: DateTime.now().add(Duration(days: daysNumber)),
-        credit: user.credit,
+        credit: credit,
         sessionLeft: sessionNumber,
         lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
         phoneNumber: user.phoneNumber);
@@ -518,7 +518,8 @@ class _SearchState extends State<eightSession> {
   }
 
   Widget _inputField(
-      TextEditingController controller, String hint, bool numberOrNot) {
+      TextEditingController controller, String hint, bool numberOrNot,
+      {bool isRenew = false, User_Data? user = null}) {
     return TextFormField(
       controller: controller,
       keyboardType: numberOrNot ? TextInputType.number : null,
@@ -533,7 +534,14 @@ class _SearchState extends State<eightSession> {
       ),
       onFieldSubmitted: (value) {
         // Call _addProfile() when Enter is pressed.
-        _addProfile(null);
+        if (isRenew) {
+          _renewProfile(user!, value);
+          _creditController.clear();
+          Navigator.pop(context);
+          
+        } else {
+          _addProfile(null);
+        }
       },
     );
   }
@@ -598,7 +606,15 @@ class _SearchState extends State<eightSession> {
         IconButton(
           icon: Icon(Icons.refresh, color: Colors.green),
           onPressed: () {
-            _renewProfile(user);
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                      backgroundColor: Colors.white,
+                      content: _inputField(_creditController, 'Credit', true,
+                          isRenew: true, user: user));
+                  // Return the Dialog widget here
+                });
           },
         ),
         IconButton(
