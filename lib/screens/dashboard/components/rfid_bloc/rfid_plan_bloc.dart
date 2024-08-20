@@ -122,7 +122,9 @@ class Rfid_PlanBloc extends Bloc<Rfid_PlanEvent, Rfid_PlanState> {
 
     // Automatically dismiss after 5 seconds
     Future.delayed(Duration(seconds: 5), () {
-      Navigator.of(context).pop(); // Close the dialog
+      if (Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
     });
   }
 

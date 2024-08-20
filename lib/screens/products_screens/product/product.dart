@@ -325,7 +325,12 @@ class _ProductDashboardState extends State<ProductDashboard> {
                               color: Color(0xffFFA05D).withOpacity(0.5),
                               borderRadius: BorderRadius.circular(12)),
                           child: TextButton(
-                            onPressed: () => Navigator.of(context).pop(),
+                            onPressed: () {
+                              if (Navigator.canPop(context)) {
+                                Navigator.pop(context);
+                              }
+                              ;
+                            },
                             child: Text('Close',
                                 style: TextStyle(color: Colors.black)),
                           ),
