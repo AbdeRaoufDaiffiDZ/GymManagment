@@ -7,6 +7,22 @@ import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart'
+    as Expense;
+import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart';
+import 'package:admin/screens/plans/12sess/12session_bloc/bloc/12session_bloc.dart';
+import 'package:admin/screens/plans/12sess/12session_bloc/bloc/session_12_event.dart'
+    as Event12;
+import 'package:admin/screens/plans/16session/16session_bloc/bloc/16session_bloc.dart'
+    as Session16Bloc;
+import 'package:admin/screens/plans/16session/16session_bloc/bloc/session_16_event.dart'
+    as Event16;
+import 'package:admin/screens/plans/8session/8session_bloc/bloc/8session_bloc.dart';
+import 'package:admin/screens/plans/8session/8session_bloc/bloc/session_8_event.dart'
+    as Event8;
+import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart'
+    as Unlimited;
+
 int count = 0;
 bool edit = false;
 late User_Data userr;
@@ -55,7 +71,7 @@ class _SearchState extends State<unlimited> {
             borderSide: BorderSide.none,
           ),
           contentPadding:
-              EdgeInsets.symmetric(vertical: 10.0, horizontal: 50.0),
+              EdgeInsets.symmetric(vertical: 10.0, horizontal: 40.0),
           fillColor: Colors.transparent,
           filled: true,
         ),
@@ -123,7 +139,7 @@ class _SearchState extends State<unlimited> {
             sessionLeft: sessionNumber,
             lastCheckDate: userr.lastCheckDate,
             phoneNumber: _phoneController.text);
-        _unlimited_bloc.add(UpdateUserEvent(user: userNew));
+        _unlimited_bloc.add(Unlimited.UpdateUserEvent(user: userNew));
       } else {
         User_Data newUser = User_Data(
             sex: _sexController.text,
@@ -191,7 +207,7 @@ class _SearchState extends State<unlimited> {
         sessionLeft: 0,
         lastCheckDate: '',
         phoneNumber: user.phoneNumber);
-    _unlimited_bloc.add(UpdateUserEvent(user: renewUser));
+    _unlimited_bloc.add(Unlimited.UpdateUserEvent(user: renewUser));
   }
 
   void _deleteProfile(User_Data user) {
@@ -233,7 +249,15 @@ class _SearchState extends State<unlimited> {
   Widget build(BuildContext context) {
     final Unlimited_PlanBloc _unlimited_bloc =
         BlocProvider.of<Unlimited_PlanBloc>(context);
+    final Session16Bloc.Session_16_PlanBloc session_16_planBloc =
+        BlocProvider.of<Session16Bloc.Session_16_PlanBloc>(context);
+    final Session_8_PlanBloc session_8_planBloc =
+        BlocProvider.of<Session_8_PlanBloc>(context);
 
+    final Session_12_PlanBloc session_12_planBloc =
+        BlocProvider.of<Session_12_PlanBloc>(context);
+    final Expense_PlanBloc expense_planBloc =
+        BlocProvider.of<Expense_PlanBloc>(context);
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -357,6 +381,20 @@ class _SearchState extends State<unlimited> {
                   ),
                 ),
               ),
+              IconButton(
+                icon: Icon(
+                  Icons.refresh,
+                  color: Colors.green,
+                ),
+                onPressed: () {
+                  _unlimited_bloc.add(Unlimited.GetUsersEvent());
+                  session_8_planBloc.add(Event8.GetUsersEvent());
+                  session_12_planBloc.add(Event12.GetUsersEvent());
+                  session_16_planBloc.add(Event16.GetUsersEvent());
+                  expense_planBloc.add(Expense.GetExpensesEvent());
+                  count = 0;
+                },
+              ),
             ],
           ),
           Divider(
@@ -370,7 +408,7 @@ class _SearchState extends State<unlimited> {
             margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
             child: BlocBuilder<Unlimited_PlanBloc, Unlimited_PlanState>(
                 builder: (context, state) {
-              if (state is SuccessState) {
+              if (state is Unlimited.SuccessState) {
                 _allItems = state.users;
                 if (count == 0) {
                   _filteredItems = state.users;
@@ -435,10 +473,10 @@ class _SearchState extends State<unlimited> {
                     ),
                   ),
                 );
-              } else if (state is IinitialState) {
+              } else if (state is Unlimited.IinitialState) {
                 _unlimited_bloc.add(GetUsersEvent());
                 return Loading();
-              } else if (state is ErrorState) {
+              } else if (state is Unlimited.ErrorState) {
                 return Loading();
               } else {
                 return Loading();

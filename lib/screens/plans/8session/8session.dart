@@ -71,7 +71,7 @@ class _SearchState extends State<eightSession> {
             borderSide: BorderSide.none,
           ),
           contentPadding:
-              EdgeInsets.symmetric(vertical: 10.0, horizontal: 50.0),
+              EdgeInsets.symmetric(vertical: 10.0, horizontal: 40.0),
           fillColor: Colors.transparent,
           filled: true,
         ),
