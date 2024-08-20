@@ -19,7 +19,7 @@ class Rfid_PlanBloc extends Bloc<Rfid_PlanEvent, Rfid_PlanState> {
         emit(LoadingState());
         final result = await dataSource.UpdateUserUsingRFID(id: event.id);
         if (result.isRight) {
-          if (result.right == 'try again') {
+          if (result.right[0] == 'try again') {
             emit(ErrorState(error: result.right[0]));
           } else {
             _showDialog(event.context, result.right[1]);

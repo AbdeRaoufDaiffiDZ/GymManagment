@@ -17,7 +17,7 @@ class MongoDatabase {
   static Future<void> connect() async {
     try {
       db = await Db.create(mongoUri);
-      await db!.open();
+      await db!.open(secure: true);
       print(db!.isConnected);
       inspect(db);
     } catch (e) {

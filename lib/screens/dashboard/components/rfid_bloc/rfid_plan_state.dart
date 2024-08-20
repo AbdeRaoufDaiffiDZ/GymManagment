@@ -13,7 +13,7 @@ class IinitialState extends Rfid_PlanState {
 
 class SuccessState extends Rfid_PlanState {
   final String? done;
-  final User_Data user;
+  final User_Data? user;
   SuccessState({required this.done, required this.user});
 
   @override
