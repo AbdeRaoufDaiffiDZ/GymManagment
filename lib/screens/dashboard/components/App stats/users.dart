@@ -44,6 +44,9 @@ class users extends StatelessWidget {
         BlocProvider.of<Session_12_PlanBloc>(context);
     final Expense_PlanBloc expense_planBloc =
         BlocProvider.of<Expense_PlanBloc>(context);
+    ScrollController scrollController = ScrollController();
+    ScrollController scrollController2 = ScrollController();
+
     int credit = 0;
     if (totalCreadit.isNotEmpty) {
       totalCreadit.forEach((element) {
@@ -91,18 +94,27 @@ class users extends StatelessWidget {
               final data = state.gymParam!.peopleIncome.where((element) =>
                   DateFormat('yyyy-MM-dd').format(element.dateTime) ==
                   DateFormat('yyyy-MM-dd').format(DateTime.now()));
+              int total_income = 0;
+              state.gymParam!.peopleIncome.forEach((element) {
+                total_income = total_income + element.dayIncome;
+              });
               if (data.isNotEmpty) {
                 dayIncome = data.first.dayIncome;
               } else {
                 dayIncome = 0;
               }
-              int expenses = 0;
+              int expenses_of_the_day = 0;
+              int expenses_Total = 0;
+              state.gymParam!.expenses.forEach((element) {
+                expenses_Total = expenses_Total + element.expensePrice;
+              });
               state.gymParam!.expenses
                   .where((element) =>
                       DateFormat('yyyy-MM-dd').format(element.dateTime) ==
                       DateFormat('yyyy-MM-dd').format(DateTime.now()))
                   .forEach((element) {
-                expenses = element.expensePrice + expenses;
+                expenses_of_the_day =
+                    element.expensePrice + expenses_of_the_day;
               });
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -110,23 +122,222 @@ class users extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      userss(
-                        pngg: "assets/images/moeny.png",
-                        text1: dayIncome.toString(),
-                        text2: "Day Income",
-                        clr: Color(0xffE544FF),
+                      InkWell(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              backgroundColor: Color(0xffFAFAFA),
+                              title: Center(
+                                child: Text(
+                                  'Total Income: $total_income DA ',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18),
+                                ),
+                              ),
+                              content: Container(
+                                width: MediaQuery.of(context).size.width *
+                                    0.4, // Adjust the width as needed ,
+                                height: MediaQuery.of(context).size.height *
+                                    0.4, // Adjust the width as needed
+                                child: Scrollbar(
+                                  controller:
+                                      scrollController, // Attach the ScrollController
+
+                                  thumbVisibility: true,
+                                  thickness: 8.0,
+                                  radius: Radius.circular(8),
+                                  trackVisibility: true,
+                                  child: SingleChildScrollView(
+                                    controller:
+                                        scrollController, // Attach the ScrollController
+
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: state
+                                              .gymParam!.peopleIncome.isEmpty
+                                          ? [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 8.0),
+                                                child: Text('No Income',
+                                                    style: TextStyle(
+                                                        color: Colors.black)),
+                                              )
+                                            ]
+                                          : state.gymParam!.peopleIncome
+                                              .map((dayIncome) {
+                                              return Column(
+                                                children: [
+                                                  ListTile(
+                                                    title: Text(
+                                                      (dayIncome.dayIncome
+                                                              .toString() +
+                                                          " DA"),
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 16),
+                                                    ),
+                                                    trailing: Text(
+                                                      formatDateTime(
+                                                          dayIncome.dateTime),
+                                                      style: TextStyle(
+                                                          color:
+                                                              Color(0xffFFA05D),
+                                                          fontSize: 16),
+                                                    ),
+                                                  ),
+                                                  Divider(
+                                                    color: Colors.grey.shade300,
+                                                    thickness: 1,
+                                                  ),
+                                                ],
+                                              );
+                                            }).toList(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              actions: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: Color(0xffFFA05D).withOpacity(0.8),
+                                      borderRadius: BorderRadius.circular(12)),
+                                  child: TextButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
+                                    child: Text('Close',
+                                        style: TextStyle(color: Colors.black)),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        child: userss(
+                          pngg: "assets/images/cash.png",
+                          text1: dayIncome.toString(),
+                          text2: "Day Income",
+                          clr: Color(0xffE544FF),
+                        ),
                       ),
                       userss(
-                        pngg: "assets/images/credit.png",
+                        pngg: "assets/images/drhm.png",
                         text1: state.gymParam!.totalCredit.toString(),
                         text2: "Total Creadit",
                         clr: Color(0xffFF007A),
                       ),
-                      userss(
-                        pngg: "assets/images/expense.png",
-                        text1: expenses.toString(),
-                        text2: "total expenses",
-                        clr: Color(0xff10BD9E),
+                      InkWell(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              backgroundColor: Color(0xffFAFAFA),
+                              title: Center(
+                                child: Text(
+                                  'total Expenses: $expenses_Total DA ',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18),
+                                ),
+                              ),
+                              content: Container(
+                                width: MediaQuery.of(context).size.width *
+                                    0.4, // Adjust the width as needed ,
+                                height: MediaQuery.of(context).size.height *
+                                    0.4, // Adjust the width as needed
+                                child: Scrollbar(
+                                  controller:
+                                      scrollController2, // Attach the ScrollController
+
+                                  thumbVisibility: true,
+                                  thickness: 8.0,
+                                  radius: Radius.circular(8),
+                                  trackVisibility: true,
+                                  child: SingleChildScrollView(
+                                    controller:
+                                        scrollController2, // Attach the ScrollController
+
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: state.gymParam!.expenses.isEmpty
+                                          ? [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 8.0),
+                                                child: Text(
+                                                  'No Income',
+                                                  style: TextStyle(
+                                                      color: Colors.black),
+                                                ),
+                                              )
+                                            ]
+                                          : state.gymParam!.expenses
+                                              .map((masrof) {
+                                              return Column(
+                                                children: [
+                                                  ListTile(
+                                                    title: Text(
+                                                      masrof.expenseName,
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 16),
+                                                    ),
+                                                    subtitle: Text(
+                                                      formatDateTime(
+                                                          masrof.dateTime),
+                                                      style: TextStyle(
+                                                          color: Color(
+                                                                  0xff202020)
+                                                              .withOpacity(0.6),
+                                                          fontSize: 16),
+                                                    ),
+                                                    trailing: Text(
+                                                      masrof.expensePrice
+                                                              .toString() +
+                                                          " DA",
+                                                      style: TextStyle(
+                                                          fontSize: 16,
+                                                          color: Color(
+                                                              0xffFFA05D)),
+                                                    ),
+                                                  ),
+                                                  Divider(
+                                                    color: Colors.grey.shade300,
+                                                    thickness: 1,
+                                                  ),
+                                                ],
+                                              );
+                                            }).toList(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              actions: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: Color(0xffFFA05D).withOpacity(0.5),
+                                      borderRadius: BorderRadius.circular(12)),
+                                  child: TextButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
+                                    child: Text('Close',
+                                        style: TextStyle(color: Colors.black)),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        child: userss(
+                          pngg: "assets/images/expense.png",
+                          text1: expenses_of_the_day.toString(),
+                          text2: "Expenses of the day",
+                          clr: Color(0xff10BD9E),
+                        ),
                       ),
                     ],
                   ),
@@ -509,6 +720,10 @@ class users extends StatelessWidget {
         ]),
       ),
     );
+  }
+
+  String formatDateTime(DateTime dateTime) {
+    return "${dateTime.day}-${dateTime.month}-${dateTime.year}";
   }
 }
 

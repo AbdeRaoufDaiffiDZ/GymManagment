@@ -1,6 +1,5 @@
 import 'package:admin/const/loading.dart';
 import 'package:admin/screens/dashboard/components/rfid_bloc/rfid_plan_bloc.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -35,17 +34,21 @@ class _HeaderState extends State<Header> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Gym’s dashbaord ! ",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 23,
-                      color: Colors.black)),
+              Padding(
+                padding: const EdgeInsets.only(left: 16.0),
+                child: Text("Gym’s dashbaord ! ",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 23,
+                        color: Colors.black)),
+              ),
+              Spacer(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Colors.grey.shade100,
                       border: Border(
                         bottom: BorderSide(
                           color: Color.fromARGB(255, 0, 0, 0)
@@ -112,7 +115,8 @@ class _HeaderState extends State<Header> {
       ),
       onEditingComplete: () {
         _rfidCardUserCheck(rfid_planBloc, context);
-        print(controller.text); //////////////////////////////////////////////////////////////////////
+        print(controller
+            .text); //////////////////////////////////////////////////////////////////////
       },
       // onChanged: (value) {
       //   // Call _addProfile() when Enter is pressed.

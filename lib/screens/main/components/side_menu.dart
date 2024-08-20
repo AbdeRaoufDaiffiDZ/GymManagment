@@ -121,19 +121,17 @@ class SideMenu extends StatelessWidget {
               },
               isSelected: selectedIndex == 4,
             ),
-            
             DrawerListTile(
               title: "Product",
-              svgSrc: "assets/icons/create.svg",
+              svgSrc: "assets/icons/k.svg",
               press: () {
                 onItemSelected(5);
               },
               isSelected: selectedIndex == 5,
             ),
-
-             DrawerListTile(
+            DrawerListTile(
               title: "Expense",
-              svgSrc: "assets/icons/create.svg",
+              svgSrc: "assets/icons/d.svg",
               press: () {
                 onItemSelected(6);
               },
@@ -170,7 +168,7 @@ class DrawerListTile extends StatelessWidget {
       leading: SvgPicture.asset(
         svgSrc,
         colorFilter: ColorFilter.mode(
-            isSelected ? Color(0xffFFA05D) : Color(0xff202020).withOpacity(0.7),
+            isSelected ? Color(0xffFFA05D) : Color(0xff202020).withOpacity(0.5),
             BlendMode.srcIn),
         height: 20,
       ),

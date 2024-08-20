@@ -109,6 +109,7 @@ class _SearchState extends State<unlimited> {
         _phoneController.text.isNotEmpty) {
       final Unlimited_PlanBloc _unlimited_bloc =
           BlocProvider.of<Unlimited_PlanBloc>(context);
+
       if (edit) {
         final userNew = User_Data(
             tapis: _tapisController.text.toLowerCase() == 'true',
@@ -122,8 +123,6 @@ class _SearchState extends State<unlimited> {
             sessionLeft: sessionNumber,
             lastCheckDate: userr.lastCheckDate,
             phoneNumber: _phoneController.text);
-        final Unlimited_PlanBloc _unlimited_bloc =
-            BlocProvider.of<Unlimited_PlanBloc>(context);
         _unlimited_bloc.add(UpdateUserEvent(user: userNew));
       } else {
         User_Data newUser = User_Data(
@@ -140,17 +139,23 @@ class _SearchState extends State<unlimited> {
             phoneNumber: _phoneController.text);
         _unlimited_bloc.add(AddUserEvent(user: newUser));
       }
-      _filteredItems = _allItems;
-      count = 0;
-      edit = false;
 
+      // Reset the input fields
       _nameController.clear();
       _idController.clear();
       _creditController.clear();
       _phoneController.clear();
       _sexController.clear();
       _tapisController.text = 'false';
-      _selectedSex = null;
+
+      // Reset the dropdown selection
+      setState(() {
+        _selectedSex = null;
+      });
+
+      _filteredItems = _allItems;
+      count = 0;
+      edit = false;
     }
   }
 
@@ -235,28 +240,42 @@ class _SearchState extends State<unlimited> {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 25.0, horizontal: 22),
-            child: Container(
-              height: 50,
-              decoration: BoxDecoration(
-                color: const Color(0xffFFA05D).withOpacity(0.2),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Type a name...',
-                  hintStyle: TextStyle(
-                    fontSize: 17,
-                    color: const Color(0xff202020).withOpacity(0.88),
-                  ),
-                  icon: Padding(
-                    padding: EdgeInsets.only(left: 8.0),
-                    child: Icon(Icons.search,
-                        color: Color(0xff202020).withOpacity(0.5)),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: const Color(0xffFFA05D).withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: TextField(
+                      controller: _searchController,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Type a name...',
+                        hintStyle: TextStyle(
+                          fontSize: 17,
+                          color: const Color(0xff202020).withOpacity(0.88),
+                        ),
+                        icon: Padding(
+                          padding: EdgeInsets.only(left: 8.0),
+                          child: Icon(Icons.search,
+                              color: Color(0xff202020).withOpacity(0.5)),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                SizedBox(
+                    width:
+                        10), // Add some space between the search bar and dropdown
+                Container(
+                  width:
+                      200, // Set a fixed width for the dropdown to avoid overflow
+                  child: DropDown(),
+                ),
+              ],
             ),
           ),
           Padding(
@@ -271,7 +290,7 @@ class _SearchState extends State<unlimited> {
             ),
           ),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 22.0),
+            margin: EdgeInsets.symmetric(horizontal: 18.0),
             padding: const EdgeInsets.all(10.0),
             decoration: BoxDecoration(
               color: Color(0xffF9F9F9),
@@ -288,16 +307,16 @@ class _SearchState extends State<unlimited> {
             child: Row(
               children: [
                 Expanded(child: _inputField(_idController, 'ID', false)),
-                SizedBox(width: 10), // Add spacing between fields
+                SizedBox(width: 20),
                 Expanded(child: _inputField(_nameController, 'Name', false)),
                 SizedBox(width: 10),
                 Expanded(
                     child: _inputField(_phoneController, 'Phone Number', true)),
-                SizedBox(width: 10),
+                SizedBox(width: 30),
                 Expanded(child: _inputField(_creditController, 'Credit', true)),
                 SizedBox(width: 10),
                 Expanded(child: DropDown()),
-                SizedBox(width: 10),
+                SizedBox(width: 40),
                 Checkbox(
                   value: _tapisController.text.toLowerCase() == 'true',
                   onChanged: (bool? value) {
@@ -306,7 +325,7 @@ class _SearchState extends State<unlimited> {
                     });
                   },
                 ),
-                SizedBox(width: 10),
+                SizedBox(width: 30),
                 ElevatedButton(
                   onPressed: () {
                     _addProfile(null);
@@ -326,15 +345,19 @@ class _SearchState extends State<unlimited> {
             ),
           ),
           SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 22.0),
-            child: Text(
-              "Recently added",
-              style: TextStyle(
-                fontWeight: FontWeight.w900,
-                fontSize: 17,
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 22.0),
+                child: Text(
+                  "Recently added",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 17,
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
           Divider(
             indent: 25,

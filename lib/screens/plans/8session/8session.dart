@@ -1,30 +1,27 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart';
-import 'package:admin/screens/plans/12sess/12session_bloc/bloc/12session_bloc.dart';
-import 'package:admin/screens/plans/16session/16session_bloc/bloc/16session_bloc.dart';
-import 'package:admin/screens/plans/8session/8session_bloc/bloc/8session_bloc.dart'
-    as Session8bloc;
 import 'package:admin/const/loading.dart';
 import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/user_data_entity.dart';
+import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart'
+    as Expense;
+import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart';
+import 'package:admin/screens/plans/12sess/12session_bloc/bloc/12session_bloc.dart';
+import 'package:admin/screens/plans/12sess/12session_bloc/bloc/session_12_event.dart'
+    as Event12;
+import 'package:admin/screens/plans/16session/16session_bloc/bloc/16session_bloc.dart';
+import 'package:admin/screens/plans/16session/16session_bloc/bloc/session_16_event.dart'
+    as Event16;
+import 'package:admin/screens/plans/8session/8session_bloc/bloc/8session_bloc.dart'
+    as Session8bloc;
+import 'package:admin/screens/plans/8session/8session_bloc/bloc/session_8_event.dart'
+    as Event8;
+import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart'
+    as Unlimited;
 import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-
-import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart'
-    as Expense;
-
-import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart'
-    as Unlimited;
-import 'package:admin/screens/plans/8session/8session_bloc/bloc/session_8_event.dart'
-    as Event8;
-
-import 'package:admin/screens/plans/12sess/12session_bloc/bloc/session_12_event.dart'
-    as Event12;
-import 'package:admin/screens/plans/16session/16session_bloc/bloc/session_16_event.dart'
-    as Event16;
 
 int count = 0;
 bool edit = false;
@@ -66,20 +63,40 @@ class _SearchState extends State<eightSession> {
 
   Widget DropDown() {
     return DropdownButtonFormField<String>(
-      dropdownColor: Colors.grey,
-      decoration: InputDecoration(
-        labelText: 'Sex',
-        border: OutlineInputBorder(),
-      ),
-      value: _selectedSex,
-      items: _sexOptions.map((String sex) {
-        return DropdownMenuItem<String>(
-          value: sex,
-          child: Text(sex),
-        );
-      }).toList(),
-      onChanged: _onSexChanged,
-    );
+        dropdownColor: Colors.white,
+        decoration: InputDecoration(
+          enabledBorder: InputBorder.none,
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.0),
+            borderSide: BorderSide.none,
+          ),
+          contentPadding:
+              EdgeInsets.symmetric(vertical: 10.0, horizontal: 50.0),
+          fillColor: Colors.transparent,
+          filled: true,
+        ),
+        hint: Text(
+          'Sex',
+          style: TextStyle(color: Colors.black.withOpacity(0.8)),
+        ),
+        icon: Icon(
+          Icons.arrow_drop_down,
+          color: Colors.orange,
+        ),
+        value: _selectedSex,
+        items: _sexOptions.map((String sex) {
+          return DropdownMenuItem<String>(
+            value: sex,
+            child: Text(
+              sex,
+              style: TextStyle(
+                color: Colors.black.withOpacity(0.8),
+                fontSize: 16.0,
+              ),
+            ),
+          );
+        }).toList(),
+        onChanged: _onSexChanged);
   }
 
   @override
@@ -337,16 +354,16 @@ class _SearchState extends State<eightSession> {
             child: Row(
               children: [
                 Expanded(child: _inputField(_idController, 'ID', false)),
-                SizedBox(width: 10),
+                SizedBox(width: 20),
                 Expanded(child: _inputField(_nameController, 'Name', false)),
                 SizedBox(width: 10),
                 Expanded(
                     child: _inputField(_phoneController, 'Phone Number', true)),
-                SizedBox(width: 10),
-                Expanded(child: DropDown()),
-                SizedBox(width: 10),
+                SizedBox(width: 30),
                 Expanded(child: _inputField(_creditController, 'Credit', true)),
                 SizedBox(width: 10),
+                Expanded(child: DropDown()),
+                SizedBox(width: 40),
                 Checkbox(
                   value: _tapisController.text.toLowerCase() == 'true',
                   onChanged: (bool? value) {
@@ -355,7 +372,7 @@ class _SearchState extends State<eightSession> {
                     });
                   },
                 ),
-                SizedBox(width: 10),
+                SizedBox(width: 30),
                 ElevatedButton(
                   onPressed: () {
                     _addProfile(null);
@@ -453,7 +470,7 @@ class _SearchState extends State<eightSession> {
                       ),
                       for (var user in _filteredItems)
                         TableRow(
-                           decoration: BoxDecoration(
+                          decoration: BoxDecoration(
                             color: (user.sessionLeft <= 0 ||
                                     user.endDate
                                             .difference(DateTime.now())

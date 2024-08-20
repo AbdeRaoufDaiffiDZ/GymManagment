@@ -77,5 +77,8 @@ class User_Data extends Equatable {
       'isSessionMarked': isSessionMarked,
     };
   }
+   int get daysLeft {
+    return endDate.difference(DateTime.now()).inDays;
+  }
 
 }

@@ -1,10 +1,9 @@
 import 'package:admin/const/loading.dart';
-import 'package:admin/screens/products_screens/product/KK.dart';
 import 'package:admin/entities/product_entity.dart';
-import 'package:flutter/material.dart';
-
+import 'package:admin/screens/products_screens/product/KK.dart';
 import 'package:admin/screens/products_screens/products_bloc/products_bloc.dart';
 import 'package:admin/screens/products_screens/products_bloc/products_blocEvent.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
 
@@ -66,11 +65,17 @@ class _ProductDashboardState extends State<ProductDashboard> {
     }
   }
 
-  void _editProduct(
-      String id, int index, String name, double price, int quantity, Product product) {
+  void _editProduct(String id, int index, String name, double price,
+      int quantity, Product product) {
     final ProductsBloc productsBloc = BlocProvider.of<ProductsBloc>(context);
-    Product productEdited =
-        Product(name: name, price: price, quantity: quantity, id: id, sold:product.sold, priceoverview: product.priceoverview, saleRecords: product.saleRecords);
+    Product productEdited = Product(
+        name: name,
+        price: price,
+        quantity: quantity,
+        id: id,
+        sold: product.sold,
+        priceoverview: product.priceoverview,
+        saleRecords: product.saleRecords);
     productsBloc.add(UpdateProductEvent(product: productEdited));
 
     setState(() {
@@ -304,7 +309,7 @@ class _ProductDashboardState extends State<ProductDashboard> {
                                             ),
                                           ),
                                           Divider(
-                                            color: Colors.grey.shade300,
+                                            color: Colors.grey.shade400,
                                             thickness: 1,
                                           ),
                                         ],
@@ -524,12 +529,12 @@ class _ProductDashboardState extends State<ProductDashboard> {
                                 if (_editFormKey.currentState?.validate() ??
                                     false) {
                                   _editProduct(
-                                    product.id,
-                                    index,
-                                    _editNameController.text,
-                                    double.parse(_editPriceController.text),
-                                    int.parse(_editQuantityController.text),product
-                                  );
+                                      product.id,
+                                      index,
+                                      _editNameController.text,
+                                      double.parse(_editPriceController.text),
+                                      int.parse(_editQuantityController.text),
+                                      product);
                                   setState(() {
                                     _editingId = null;
                                   });

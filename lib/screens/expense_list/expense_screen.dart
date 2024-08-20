@@ -1,13 +1,13 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:admin/const/loading.dart';
+import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/gym_parm_entity.dart';
 import 'package:admin/screens/dashboard/components/header.dart';
 import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart';
 import 'package:flutter/material.dart';
-
-import 'package:admin/const/loading.dart';
-import 'package:admin/data/mongo_db.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../constants.dart';
 
 class ExpenseScreen extends StatelessWidget {
@@ -76,9 +76,7 @@ class _SearchState extends State<expense> {
   void _addProfile(Expense? user) {
     BlocProvider.of<Expense_PlanBloc>(context);
 
-    if (_nameController.text.isNotEmpty &&
-       
-        _priceController.text.isNotEmpty) {
+    if (_nameController.text.isNotEmpty && _priceController.text.isNotEmpty) {
       final Expense_PlanBloc expense_planBloc =
           BlocProvider.of<Expense_PlanBloc>(context);
 
@@ -131,7 +129,7 @@ class _SearchState extends State<expense> {
 
   @override
   Widget build(BuildContext context) {
-final Expense_PlanBloc _expense_bloc =
+    final Expense_PlanBloc _expense_bloc =
         BlocProvider.of<Expense_PlanBloc>(context);
     return SingleChildScrollView(
       child: Column(
@@ -247,9 +245,9 @@ final Expense_PlanBloc _expense_bloc =
                   scrollDirection: Axis.horizontal,
                   child: Table(
                     columnWidths: {
-                      0: FixedColumnWidth(300),
-                      1: FixedColumnWidth(230),
-                      2: FixedColumnWidth(230),
+                      0: FixedColumnWidth(400),
+                      1: FixedColumnWidth(300),
+                      2: FixedColumnWidth(300),
                     },
                     children: [
                       TableRow(
@@ -277,10 +275,10 @@ final Expense_PlanBloc _expense_bloc =
                   ),
                 );
               } else if (state is IinitialState) {
-               _expense_bloc .add(GetExpensesEvent());
+                _expense_bloc.add(GetExpensesEvent());
                 return Loading();
               } else if (state is ErrorState) {
-               _expense_bloc .add(GetExpensesEvent());
+                _expense_bloc.add(GetExpensesEvent());
                 return Loading();
               } else {
                 return Loading();
