@@ -1,30 +1,27 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart';
-import 'package:admin/screens/plans/12sess/12session_bloc/bloc/12session_bloc.dart';
-import 'package:admin/screens/plans/16session/16session_bloc/bloc/16session_bloc.dart'
-    as Session16Bloc;
 import 'package:admin/const/loading.dart';
 import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/user_data_entity.dart';
+import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart'
+    as Expense;
+import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart';
+import 'package:admin/screens/plans/12sess/12session_bloc/bloc/12session_bloc.dart';
+import 'package:admin/screens/plans/12sess/12session_bloc/bloc/session_12_event.dart'
+    as Event12;
+import 'package:admin/screens/plans/16session/16session_bloc/bloc/16session_bloc.dart'
+    as Session16Bloc;
+import 'package:admin/screens/plans/16session/16session_bloc/bloc/session_16_event.dart'
+    as Event16;
 import 'package:admin/screens/plans/8session/8session_bloc/bloc/8session_bloc.dart';
+import 'package:admin/screens/plans/8session/8session_bloc/bloc/session_8_event.dart'
+    as Event8;
+import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart'
+    as Unlimited;
 import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-
-import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart'
-    as Expense;
-
-import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart'
-    as Unlimited;
-import 'package:admin/screens/plans/8session/8session_bloc/bloc/session_8_event.dart'
-    as Event8;
-
-import 'package:admin/screens/plans/12sess/12session_bloc/bloc/session_12_event.dart'
-    as Event12;
-import 'package:admin/screens/plans/16session/16session_bloc/bloc/session_16_event.dart'
-    as Event16;
 
 int count = 0;
 bool edit = false;
@@ -107,7 +104,7 @@ class _SearchState extends State<sixSession> {
         BlocProvider.of<Session16Bloc.Session_16_PlanBloc>(context);
     if (checkDate) {
       userNew = User_Data(
-        tapis:user!.tapis,
+          tapis: user!.tapis,
           id: user.id,
           sex: user.sex,
           fullName: user.fullName,
@@ -163,7 +160,7 @@ class _SearchState extends State<sixSession> {
         _creditController.clear();
         _phoneController.clear();
         _sexController.clear();
-        _tapisController.text ='false';
+        _tapisController.text = 'false';
       });
     }
     _filteredItems = _allItems;
@@ -206,7 +203,7 @@ class _SearchState extends State<sixSession> {
       count = 0;
     });
     User_Data user_data = User_Data(
-      tapis:user.tapis,
+        tapis: user.tapis,
         sex: user.sex,
         isSessionMarked: user.isSessionMarked,
         sessionLeft: user.sessionLeft,
@@ -241,7 +238,7 @@ class _SearchState extends State<sixSession> {
     final Session16Bloc.Session_16_PlanBloc session_16_planBloc =
         BlocProvider.of<Session16Bloc.Session_16_PlanBloc>(context);
     final renewUser = User_Data(
-      tapis: user.tapis,
+        tapis: user.tapis,
         sex: user.sex,
         renew: true,
         id: user.id,
@@ -462,7 +459,13 @@ class _SearchState extends State<sixSession> {
                                             .inDays <=
                                         0)
                                 ? Colors.red.withOpacity(0.3)
-                                : Color(0xffFAFAFA),
+                                : (user.sessionLeft <= 3 ||
+                                        user.endDate
+                                                .difference(DateTime.now())
+                                                .inDays <=
+                                            3)
+                                    ? Colors.orange.withOpacity(0.2)
+                                    : Color(0xffFAFAFA),
                           ),
                           children: [
                             _tableCell(user.fullName),

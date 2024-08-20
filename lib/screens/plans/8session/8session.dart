@@ -453,14 +453,20 @@ class _SearchState extends State<eightSession> {
                       ),
                       for (var user in _filteredItems)
                         TableRow(
-                          decoration: BoxDecoration(
+                           decoration: BoxDecoration(
                             color: (user.sessionLeft <= 0 ||
                                     user.endDate
                                             .difference(DateTime.now())
                                             .inDays <=
                                         0)
                                 ? Colors.red.withOpacity(0.3)
-                                : Color(0xffFAFAFA),
+                                : (user.sessionLeft <= 3 ||
+                                        user.endDate
+                                                .difference(DateTime.now())
+                                                .inDays <=
+                                            3)
+                                    ? Colors.orange.withOpacity(0.2)
+                                    : Color(0xffFAFAFA),
                           ),
                           children: [
                             _tableCell(user.fullName),
