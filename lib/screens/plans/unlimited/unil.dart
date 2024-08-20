@@ -3,6 +3,7 @@
 import 'package:admin/const/loading.dart';
 import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/user_data_entity.dart';
+import 'package:admin/screens/dashboard/components/App%20stats/users.dart';
 import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -203,6 +204,7 @@ class _SearchState extends State<unlimited> {
     _tapisController.dispose();
     super.dispose();
   }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -306,15 +308,20 @@ class _SearchState extends State<unlimited> {
             ),
           ),
           SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 22.0),
-            child: Text(
-              "Recently added",
-              style: TextStyle(
-                fontWeight: FontWeight.w900,
-                fontSize: 17,
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 22.0),
+                child: Text(
+                  "Recently added",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 17,
+                  ),
+                ),
               ),
-            ),
+              
+            ],
           ),
           Divider(
             indent: 25,
