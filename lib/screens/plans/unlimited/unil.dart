@@ -27,6 +27,7 @@ class _SearchState extends State<unlimited> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _sexController = TextEditingController();
   final TextEditingController _idController = TextEditingController();
+  final TextEditingController _tapisController = TextEditingController();
 
   final MongoDatabase monog = MongoDatabase();
   final String plan = "unlimited";
@@ -67,6 +68,7 @@ class _SearchState extends State<unlimited> {
     super.initState();
     _filteredItems = _allItems;
     _searchController.addListener(_filterItems);
+    _tapisController.text = 'false';
   }
 
   void _filterItems() {
@@ -82,12 +84,14 @@ class _SearchState extends State<unlimited> {
     if (_nameController.text.isNotEmpty &&
         _idController.text.isNotEmpty &&
         _sexController.text.isNotEmpty &&
+        _tapisController.text.isNotEmpty &&
         _creditController.text.isNotEmpty &&
         _phoneController.text.isNotEmpty) {
       final Unlimited_PlanBloc _unlimited_bloc =
           BlocProvider.of<Unlimited_PlanBloc>(context);
       if (edit) {
         final userNew = User_Data(
+            tapis: _tapisController.text.toLowerCase() == 'true',
             sex: userr.sex,
             id: _idController.text,
             fullName: _nameController.text,
@@ -104,6 +108,7 @@ class _SearchState extends State<unlimited> {
       } else {
         User_Data newUser = User_Data(
             sex: _sexController.text,
+            tapis: _tapisController.text.toLowerCase() == 'true',
             fullName: _nameController.text,
             plan: plan,
             startingDate: DateTime.now(),
@@ -124,6 +129,7 @@ class _SearchState extends State<unlimited> {
       _creditController.clear();
       _phoneController.clear();
       _sexController.clear();
+      _tapisController.text = 'false';
       _selectedSex = null;
     }
   }
@@ -132,10 +138,13 @@ class _SearchState extends State<unlimited> {
     setState(() {
       _phoneController.text = user.phoneNumber;
       _nameController.text = user.fullName;
+
       _idController.text = user.id;
       _creditController.text = user.credit;
       _sexController.text = user.sex;
-            _selectedSex = user.sex;
+      _tapisController.text = user.tapis.toString();
+
+      _selectedSex = user.sex;
 
       edit = true;
     });
@@ -191,6 +200,7 @@ class _SearchState extends State<unlimited> {
     _idController.dispose();
     _creditController.dispose();
     _phoneController.dispose();
+    _tapisController.dispose();
     super.dispose();
   }
 
@@ -264,9 +274,18 @@ class _SearchState extends State<unlimited> {
                 Expanded(
                     child: _inputField(_phoneController, 'Phone Number', true)),
                 SizedBox(width: 10),
-                SizedBox(width: 10),
                 Expanded(child: DropDown()),
+                SizedBox(width: 10),
                 Expanded(child: _inputField(_creditController, 'Credit', true)),
+                SizedBox(width: 10),
+                Checkbox(
+                  value: _tapisController.text.toLowerCase() == 'true',
+                  onChanged: (bool? value) {
+                    setState(() {
+                      _tapisController.text = value.toString();
+                    });
+                  },
+                ),
                 SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
@@ -326,10 +345,12 @@ class _SearchState extends State<unlimited> {
                     scrollDirection: Axis.horizontal,
                     child: Table(
                       columnWidths: {
-                        0: FixedColumnWidth(300),
-                        1: FixedColumnWidth(300),
-                        2: FixedColumnWidth(300),
-                        3: FixedColumnWidth(300),
+                        0: FixedColumnWidth(230),
+                        1: FixedColumnWidth(230),
+                        2: FixedColumnWidth(150),
+                        3: FixedColumnWidth(150),
+                        4: FixedColumnWidth(150),
+                        5: FixedColumnWidth(200),
                       },
                       children: [
                         TableRow(
@@ -338,6 +359,8 @@ class _SearchState extends State<unlimited> {
                           ),
                           children: [
                             _tableHeaderCell("Name"),
+                            _tableHeaderCell("Phone Number"),
+                            _tableHeaderCell("Sex"),
                             _tableHeaderCell("Days left"),
                             _tableHeaderCell("Credit"),
                             _tableHeaderCell(""),
@@ -355,6 +378,8 @@ class _SearchState extends State<unlimited> {
                             ),
                             children: [
                               _tableCell(user.fullName),
+                              _tableCell(user.phoneNumber),
+                              _tableCell(user.sex),
                               _tableCell(user.endDate
                                   .difference(DateTime.now())
                                   .inDays

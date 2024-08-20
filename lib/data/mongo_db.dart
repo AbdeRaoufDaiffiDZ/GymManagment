@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:admin/Errors/Failure.dart';
+import 'package:admin/const/const.dart';
 import 'package:admin/entities/gym_parm_entity.dart';
 import 'package:admin/entities/product_entity.dart';
 import 'package:admin/entities/user_data_entity.dart';
@@ -9,16 +10,6 @@ import 'package:intl/intl.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
 // final Db db = Db('mongodb+srv://raoufdaifi:amin2004@cluster0.cpsnp8o.mongodb.net/');
-final String mongoUri =
-    "mongodb+srv://raoufdaifi:amin2004@cluster0.cpsnp8o.mongodb.net/";
-final String gymCollection = "gym";
-
-Map<String, int> PlanPrices = {
-  '8 session': 1500,
-  '12 session': 1500,
-  '16 session': 2000,
-  'unlimited': 1500,
-};
 
 class MongoDatabase {
   static Db? db;
@@ -51,17 +42,18 @@ class MongoDatabase {
       // final collection = db?.collection(collectionName);
       final collectiongYM = db?.collection(gymCollection);
 
-      final documentToInsert = {
-        '_id': user.id, // Assigning a string value to '_id'
-        'fullName': user.fullName,
-        'startingDate': user.startingDate,
-        'plan': user.plan,
-        'endDate': user.endDate,
-        'credit': user.credit,
-        'lastCheckDate': user.lastCheckDate,
-        'sessionLeft': user.sessionLeft,
-        'isSessionMarked': user.isSessionMarked
-      };
+      // final documentToInsert = {
+      //   '_id': user.id, // Assigning a string value to '_id'
+      //   'fullName': user.fullName,
+      //   'startingDate': user.startingDate,
+      //   'plan': user.plan,
+      //   'endDate': user.endDate,
+      //   'credit': user.credit,
+      //   'lastCheckDate': user.lastCheckDate,
+      //   'sessionLeft': user.sessionLeft,
+      //   'isSessionMarked': user.isSessionMarked
+      // };
+      final documentToInsert = user.toMap();
       await collectiongYM?.update(where.eq('plan', user.plan),
           modify.addToSet("${user.plan}", documentToInsert));
 
@@ -481,13 +473,16 @@ class MongoDatabase {
 
   ////////////////////////////////////////////////////// help functions
 
-  Future GymData(user, collectionName, collectiongYM, bool credittype,
+  Future GymData(User_Data user, collectionName, collectiongYM, bool credittype,
       int oldCredit) async {
-    var gymParam = await GymParamRetrive(collectionName: "Expense");
+    var gymParam = await GymParamRetrive(
+        collectionName: "Expense"); // here we get the Expenses from our databse
     if (gymParam.isRight) {
-      gymParam.right.totalCredit = !credittype
-          ? gymParam.right.totalCredit - oldCredit + int.parse(user.credit)
-          : gymParam.right.totalCredit + int.parse(user.credit);
+      gymParam.right.totalCredit =
+          !credittype // this logic modifies the total creadit eihter by increment or decrement
+              // if credit is beleow the old one we substract else we  add
+              ? gymParam.right.totalCredit - oldCredit + int.parse(user.credit)
+              : gymParam.right.totalCredit + int.parse(user.credit);
       bool cond = gymParam.right.peopleIncome
           .where((element) =>
               DateFormat('yyyy-MM-dd').format(element.dateTime) ==
@@ -499,14 +494,18 @@ class MongoDatabase {
               DateFormat('yyyy-MM-dd').format(DateTime.now())) {
             element.dayIncome = element.dayIncome +
                 PlanPrices[collectionName]! -
-                int.parse(user.credit);
+                int.parse(user.credit) +
+                (user.tapis ? PlanPrices['tapis']! : 0);
+
             element.dateTime = DateTime.now();
           }
         });
       } else {
         gymParam.right.peopleIncome.add(PeopleIncome(
             dateTime: DateTime.now(),
-            dayIncome: PlanPrices[collectionName]! - int.parse(user.credit)));
+            dayIncome: PlanPrices[collectionName]! -
+                int.parse(user.credit) +
+                (user.tapis ? PlanPrices['tapis']! : 0)));
       }
 
       final gymData = gymParam.right.toMap();
@@ -586,7 +585,7 @@ class MongoDatabase {
           });
         }
       });
-List dataReturn = [dataBase_Condition,userDataToGet];
+      List dataReturn = [dataBase_Condition, userDataToGet];
       return Right(dataReturn);
     } catch (e) {
       return Left(

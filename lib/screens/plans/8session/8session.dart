@@ -12,7 +12,6 @@ import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:mongo_dart/mongo_dart.dart' as mongo;
 
 import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart'
     as Expense;
@@ -46,7 +45,7 @@ class _SearchState extends State<eightSession> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _sexController = TextEditingController();
   final TextEditingController _idController = TextEditingController();
-
+  final TextEditingController _tapisController = TextEditingController();
   final MongoDatabase monog = MongoDatabase();
   final String plan = "8 session";
   final startingDate = DateTime.now();
@@ -88,6 +87,7 @@ class _SearchState extends State<eightSession> {
     super.initState();
     _filteredItems = _allItems;
     _searchController.addListener(_filterItems);
+    _tapisController.text = 'false';
   }
 
   void _filterItems() {
@@ -105,7 +105,8 @@ class _SearchState extends State<eightSession> {
         BlocProvider.of<Session8bloc.Session_8_PlanBloc>(context);
     if (checkDate) {
       userNew = User_Data(
-          sex: user!.sex,
+          tapis: user!.tapis,
+          sex: user.sex,
           id: user.id,
           fullName: user.fullName,
           plan: user.plan,
@@ -118,11 +119,14 @@ class _SearchState extends State<eightSession> {
       session_8_planBloc.add(Event8.UpdateUserEvent(user: userNew));
     }
     if (_nameController.text.isNotEmpty &&
-        _creditController.text.isNotEmpty && _idController.text.isNotEmpty &&
+        _tapisController.text.isNotEmpty &&
+        _creditController.text.isNotEmpty &&
+        _idController.text.isNotEmpty &&
         _sexController.text.isNotEmpty &&
         _phoneController.text.isNotEmpty) {
       if (edit) {
         userNew = User_Data(
+            tapis: _tapisController.text.toLowerCase() == 'true',
             sex: userr.sex,
             id: _idController.text,
             fullName: _nameController.text,
@@ -137,6 +141,7 @@ class _SearchState extends State<eightSession> {
         session_8_planBloc.add(Event8.UpdateUserEvent(user: userNew));
       } else {
         User_Data newUser = User_Data(
+            tapis: _tapisController.text.toLowerCase() == 'true',
             sex: _sexController.text,
             fullName: _nameController.text,
             plan: plan,
@@ -149,12 +154,15 @@ class _SearchState extends State<eightSession> {
             phoneNumber: _phoneController.text);
         session_8_planBloc.add(Event8.AddUserEvent(user: newUser));
       }
-      _nameController.clear();
-      _idController.clear();
-      _creditController.clear();
-      _selectedSex = null;
-      _phoneController.clear();
-      _sexController.clear();
+      setState(() {
+        _nameController.clear();
+        _idController.clear();
+        _creditController.clear();
+        _selectedSex = null;
+        _phoneController.clear();
+        _sexController.clear();
+        _tapisController.text = 'false';
+      });
     }
     _filteredItems = _allItems;
     count = 0;
@@ -166,11 +174,12 @@ class _SearchState extends State<eightSession> {
     setState(() {
       _phoneController.text = user.phoneNumber;
       _nameController.text = user.fullName;
-      _idController.text =user.id;
+      _idController.text = user.id;
       _creditController.text = user.credit;
       _sexController.text = user.sex;
       edit = true;
       _selectedSex = user.sex;
+      _tapisController.text = user.tapis.toString();
     });
     userr = user;
   }
@@ -195,6 +204,7 @@ class _SearchState extends State<eightSession> {
       count = 0;
     });
     User_Data user_data = User_Data(
+        tapis: user.tapis,
         sex: user.sex,
         isSessionMarked: user.isSessionMarked,
         sessionLeft: user.sessionLeft,
@@ -229,6 +239,7 @@ class _SearchState extends State<eightSession> {
     final Session8bloc.Session_8_PlanBloc session_8_planBloc =
         BlocProvider.of<Session8bloc.Session_8_PlanBloc>(context);
     final renewUser = User_Data(
+        tapis: user.tapis,
         sex: user.sex,
         renew: true,
         id: user.id,
@@ -251,6 +262,7 @@ class _SearchState extends State<eightSession> {
     _creditController.dispose();
     _phoneController.dispose();
     _sexController.dispose();
+    _tapisController.dispose();
     super.dispose();
   }
 
@@ -335,6 +347,15 @@ class _SearchState extends State<eightSession> {
                 SizedBox(width: 10),
                 Expanded(child: _inputField(_creditController, 'Credit', true)),
                 SizedBox(width: 10),
+                Checkbox(
+                  value: _tapisController.text.toLowerCase() == 'true',
+                  onChanged: (bool? value) {
+                    setState(() {
+                      _tapisController.text = value.toString();
+                    });
+                  },
+                ),
+                SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
                     _addProfile(null);
@@ -407,11 +428,13 @@ class _SearchState extends State<eightSession> {
                   scrollDirection: Axis.horizontal,
                   child: Table(
                     columnWidths: {
-                      0: FixedColumnWidth(300),
+                      0: FixedColumnWidth(230),
                       1: FixedColumnWidth(230),
-                      2: FixedColumnWidth(230),
-                      3: FixedColumnWidth(230),
-                      4: FixedColumnWidth(230),
+                      2: FixedColumnWidth(150),
+                      3: FixedColumnWidth(150),
+                      4: FixedColumnWidth(200),
+                      5: FixedColumnWidth(100),
+                      6: FixedColumnWidth(200),
                     },
                     children: [
                       TableRow(
@@ -420,6 +443,8 @@ class _SearchState extends State<eightSession> {
                         ),
                         children: [
                           _tableHeaderCell("Name"),
+                          _tableHeaderCell("Phone Number"),
+                          _tableHeaderCell("Sex"),
                           _tableHeaderCell("Days left"),
                           _tableHeaderCell("Sessions Left"),
                           _tableHeaderCell("Credit"),
@@ -439,6 +464,8 @@ class _SearchState extends State<eightSession> {
                           ),
                           children: [
                             _tableCell(user.fullName),
+                            _tableCell(user.phoneNumber),
+                            _tableCell(user.sex),
                             _tableCell(user.endDate
                                 .difference(DateTime.now())
                                 .inDays
@@ -521,16 +548,18 @@ class _SearchState extends State<eightSession> {
 
   Widget _tableCellActions(User_Data user) {
     if (user.lastCheckDate != null) {
-      String now = DateFormat('yyyy-MM-dd').format(DateTime.now());
+      if (user.isSessionMarked) {
+        String now = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
-      bool isChecked = isDate1BeforeDate2(user.lastCheckDate!, now);
+        bool isChecked = isDate1BeforeDate2(user.lastCheckDate!, now);
 
-      if (isChecked) {
-        user.isSessionMarked = false;
-        user.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+        if (isChecked) {
+          user.isSessionMarked = false;
+          user.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
-        checkDate = true;
-        _addProfile(user);
+          checkDate = true;
+          _addProfile(user);
+        }
       }
     }
 

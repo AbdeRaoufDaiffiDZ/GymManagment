@@ -8,6 +8,7 @@ class User_Data extends Equatable {
   final String phoneNumber;
   final String id;
   final bool renew;
+  final bool tapis;
   final String fullName;
   final String plan;
   final String sex;
@@ -18,7 +19,7 @@ class User_Data extends Equatable {
    int sessionLeft;
   bool isSessionMarked;
 
-  User_Data( {this.renew = false,required this.phoneNumber,required this.lastCheckDate,required this.sessionLeft,
+  User_Data( { this.tapis =false ,this.renew = false,required this.phoneNumber,required this.lastCheckDate,required this.sessionLeft,
     required this.id,required this.sex,
     required this.fullName,
     required this.plan,
@@ -29,7 +30,7 @@ class User_Data extends Equatable {
   });
 
   @override
-  List<Object?> get props => [phoneNumber,renew,sex,
+  List<Object?> get props => [phoneNumber,renew,sex,tapis,
     lastCheckDate,
     sessionLeft,
         fullName,
@@ -43,6 +44,7 @@ class User_Data extends Equatable {
 
   factory User_Data.fromMap(Map<String, dynamic> map) {
     return User_Data(
+      tapis:map['tapis'] ?? false,
       sex:map['sex'] ?? 'Male',
       renew: map['renew'] ?? false,
       phoneNumber: map['phoneNumber'] ?? '',
@@ -60,6 +62,7 @@ class User_Data extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {
+      'tapis':tapis,
       'sex':sex,
       'renew':renew,
       'phoneNumber':phoneNumber,

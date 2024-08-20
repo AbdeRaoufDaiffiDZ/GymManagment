@@ -1,7 +1,8 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart';
-import 'package:admin/screens/plans/12sess/12session_bloc/bloc/12session_bloc.dart' as Session12bloc;
+import 'package:admin/screens/plans/12sess/12session_bloc/bloc/12session_bloc.dart'
+    as Session12bloc;
 import 'package:admin/const/loading.dart';
 import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/user_data_entity.dart';
@@ -44,9 +45,10 @@ class _SearchState extends State<twlvSession> {
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _creditController = TextEditingController();
-    final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _sexController = TextEditingController();
   final TextEditingController _idController = TextEditingController();
+  final TextEditingController _tapisController = TextEditingController();
 
   final MongoDatabase monog = MongoDatabase();
   final String plan = "12 session";
@@ -58,41 +60,43 @@ class _SearchState extends State<twlvSession> {
   String? _selectedSex;
   final List<String> _sexOptions = ['Male', 'Female', 'Other'];
 
-void _onSexChanged(String? newValue) {
+  void _onSexChanged(String? newValue) {
     setState(() {
       _selectedSex = newValue;
       _sexController.text = newValue!;
     });
   }
 
-Widget DropDown(){
-  return  DropdownButtonFormField<String>(
-    dropdownColor: Colors.grey,
-              decoration: InputDecoration(
-                labelText: 'Sex',
-                border: OutlineInputBorder(),
-              ),
-              value: _selectedSex,
-              items: _sexOptions.map((String sex) {
-                return DropdownMenuItem<String>(
-                  value: sex,
-                  child: Text(sex),
-                );
-              }).toList(),
-              onChanged: _onSexChanged,
-            );
-}
+  Widget DropDown() {
+    return DropdownButtonFormField<String>(
+      dropdownColor: Colors.grey,
+      decoration: InputDecoration(
+        labelText: 'Sex',
+        border: OutlineInputBorder(),
+      ),
+      value: _selectedSex,
+      items: _sexOptions.map((String sex) {
+        return DropdownMenuItem<String>(
+          value: sex,
+          child: Text(sex),
+        );
+      }).toList(),
+      onChanged: _onSexChanged,
+    );
+  }
+
   @override
   void initState() {
     super.initState();
     _filteredItems = _allItems;
     _searchController.addListener(_filterItems);
+     _tapisController.text = 'false';
   }
 
   void _filterItems() {
     final query = _searchController.text.toLowerCase();
     setState(() {
-      _filteredItems =    _allItems.where((item) {
+      _filteredItems = _allItems.where((item) {
         return item.fullName.toLowerCase().contains(query);
       }).toList();
     });
@@ -100,28 +104,33 @@ Widget DropDown(){
 
   void _addProfile(User_Data? user) {
     late User_Data userNew;
-      final Session12bloc.Session_12_PlanBloc _unlimited_bloc =
-          BlocProvider.of<Session12bloc.Session_12_PlanBloc>(context);
+    final Session12bloc.Session_12_PlanBloc _unlimited_bloc =
+        BlocProvider.of<Session12bloc.Session_12_PlanBloc>(context);
     if (checkDate) {
       userNew = User_Data(
-          id: user!.id,
-          sex:user.sex,
+        tapis:user!.tapis,
+          id: user.id,
+          sex: user.sex,
           fullName: user.fullName,
           plan: user.plan,
           startingDate: user.startingDate,
           endDate: user.endDate,
           credit: user.credit,
           sessionLeft: user.sessionLeft,
-          lastCheckDate: user.lastCheckDate, phoneNumber: user.phoneNumber);
-         
-        _unlimited_bloc.add(Event12.UpdateUserEvent(user: userNew));
-    }
-    if (_nameController.text.isNotEmpty && _idController.text.isNotEmpty&&_sexController.text.isNotEmpty &&_creditController.text.isNotEmpty &&_phoneController.text.isNotEmpty) {
-    
+          lastCheckDate: user.lastCheckDate,
+          phoneNumber: user.phoneNumber);
 
+      _unlimited_bloc.add(Event12.UpdateUserEvent(user: userNew));
+    }
+    if (_nameController.text.isNotEmpty && _tapisController.text.isNotEmpty &&
+        _idController.text.isNotEmpty &&
+        _sexController.text.isNotEmpty &&
+        _creditController.text.isNotEmpty &&
+        _phoneController.text.isNotEmpty) {
       if (edit) {
         userNew = User_Data(
-          sex:userr.sex,
+             tapis: _tapisController.text.toLowerCase() == 'true',
+            sex: userr.sex,
             id: _idController.text,
             fullName: _nameController.text,
             plan: userr.plan,
@@ -129,14 +138,16 @@ Widget DropDown(){
             endDate: userr.endDate,
             credit: _creditController.text,
             sessionLeft: userr.sessionLeft,
-            lastCheckDate: userr.lastCheckDate, phoneNumber: _phoneController.text);
+            lastCheckDate: userr.lastCheckDate,
+            phoneNumber: _phoneController.text);
 
         final Session12bloc.Session_12_PlanBloc _unlimited_bloc =
             BlocProvider.of<Session12bloc.Session_12_PlanBloc>(context);
         _unlimited_bloc.add(Event12.UpdateUserEvent(user: userNew));
       } else {
         User_Data newUser = User_Data(
-          sex:_sexController.text,
+             tapis: _tapisController.text.toLowerCase() == 'true',
+            sex: _sexController.text,
             fullName: _nameController.text,
             plan: plan,
             startingDate: DateTime.now(),
@@ -144,15 +155,20 @@ Widget DropDown(){
             credit: _creditController.text,
             id: _idController.text,
             sessionLeft: sessionNumber,
-            lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()), phoneNumber: _phoneController.text);
+            lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+            phoneNumber: _phoneController.text);
         _unlimited_bloc.add(Event12.AddUserEvent(user: newUser));
       }
-      _nameController.clear();
-      _selectedSex =null;
-      _sexController.clear();
-      _creditController.clear();
+    
+      setState(() {
+        _nameController.clear();
+      _selectedSex = null;
       _idController.clear();
+      _creditController.clear();
       _phoneController.clear();
+      _sexController.clear();
+      _tapisController.text='false';
+      });
     }
     _filteredItems = _allItems;
     count = 0;
@@ -167,7 +183,7 @@ Widget DropDown(){
       _creditController.text = user.credit;
       _idController.text = user.id;
       _sexController.text = user.sex;
-            _selectedSex = user.sex;
+      _selectedSex = user.sex;
 
       edit = true;
     });
@@ -195,7 +211,8 @@ Widget DropDown(){
       count = 0;
     });
     User_Data user_data = User_Data(
-      sex:user.sex,
+      tapis:user.tapis,
+        sex: user.sex,
         isSessionMarked: user.isSessionMarked,
         sessionLeft: user.sessionLeft,
         id: user.id,
@@ -204,11 +221,13 @@ Widget DropDown(){
         startingDate: user.startingDate,
         endDate: user.endDate,
         credit: user.credit,
-        lastCheckDate: user.lastCheckDate, phoneNumber: user.phoneNumber);
+        lastCheckDate: user.lastCheckDate,
+        phoneNumber: user.phoneNumber);
     if (value) {
       // Implement the checkbox functionality if needed
       user_data.isSessionMarked = true;
-      user_data.sessionLeft = user_data.sessionLeft <= 0 ? 0:user_data.sessionLeft - 1;
+      user_data.sessionLeft =
+          user_data.sessionLeft <= 0 ? 0 : user_data.sessionLeft - 1;
       user_data.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
     } else {
       user_data.isSessionMarked = false;
@@ -227,8 +246,9 @@ Widget DropDown(){
     final Session12bloc.Session_12_PlanBloc _unlimited_bloc =
         BlocProvider.of<Session12bloc.Session_12_PlanBloc>(context);
     final renewUser = User_Data(
-      sex:user.sex,
-      renew:  true,
+      tapis:user.tapis,
+        sex: user.sex,
+        renew: true,
         id: user.id,
         fullName: user.fullName,
         plan: user.plan,
@@ -236,7 +256,8 @@ Widget DropDown(){
         endDate: DateTime.now().add(Duration(days: daysNumber)),
         credit: user.credit,
         sessionLeft: sessionNumber,
-        lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()), phoneNumber: user.phoneNumber);
+        lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+        phoneNumber: user.phoneNumber);
     _unlimited_bloc.add(Event12.UpdateUserEvent(user: renewUser));
   }
 
@@ -253,8 +274,7 @@ Widget DropDown(){
 
   @override
   Widget build(BuildContext context) {
-    
-final Session_8_PlanBloc session_8_planBloc =
+    final Session_8_PlanBloc session_8_planBloc =
         BlocProvider.of<Session_8_PlanBloc>(context);
     final Unlimited_PlanBloc _unlimited_bloc =
         BlocProvider.of<Unlimited_PlanBloc>(context);
@@ -322,16 +342,26 @@ final Session_8_PlanBloc session_8_planBloc =
               ],
             ),
             child: Row(
-              children: [Expanded(child: _inputField(_idController, 'ID', false)),
+              children: [
+                Expanded(child: _inputField(_idController, 'ID', false)),
                 SizedBox(width: 10),
                 Expanded(child: _inputField(_nameController, 'Name', false)),
                 SizedBox(width: 10),
-                 Expanded(child: _inputField(_phoneController, 'Phone Number', true)),
-                SizedBox(width: 10),
-                  SizedBox(width: 10),
                 Expanded(
-                    child: DropDown()),
+                    child: _inputField(_phoneController, 'Phone Number', true)),
+                SizedBox(width: 10),
+                Expanded(child: DropDown()),
+                SizedBox(width: 10),
                 Expanded(child: _inputField(_creditController, 'Credit', true)),
+                SizedBox(width: 10),
+                Checkbox(
+                  value: _tapisController.text.toLowerCase() == 'true',
+                  onChanged: (bool? value) {
+                    setState(() {
+                      _tapisController.text = value.toString();
+                    });
+                  },
+                ),
                 SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
@@ -364,8 +394,7 @@ final Session_8_PlanBloc session_8_planBloc =
                   ),
                 ),
               ),
-            
-            IconButton(
+              IconButton(
                 icon: Icon(
                   Icons.refresh,
                   color: Colors.green,
@@ -379,7 +408,6 @@ final Session_8_PlanBloc session_8_planBloc =
                   count = 0;
                 },
               ),
-            
             ],
           ),
           Divider(
@@ -391,8 +419,8 @@ final Session_8_PlanBloc session_8_planBloc =
           ),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-            child: BlocBuilder<Session12bloc.Session_12_PlanBloc, Session12bloc.session_12_PlanState>(
-                builder: (context, state) {
+            child: BlocBuilder<Session12bloc.Session_12_PlanBloc,
+                Session12bloc.session_12_PlanState>(builder: (context, state) {
               if (state is Session12bloc.SuccessState) {
                 _allItems = state.users
                     .where((element) => element.plan == plan)
@@ -407,11 +435,13 @@ final Session_8_PlanBloc session_8_planBloc =
                   scrollDirection: Axis.horizontal,
                   child: Table(
                     columnWidths: {
-                      0: FixedColumnWidth(300),
+                      0: FixedColumnWidth(230),
                       1: FixedColumnWidth(230),
-                      2: FixedColumnWidth(230),
-                      3: FixedColumnWidth(230),
-                      4: FixedColumnWidth(230),
+                      2: FixedColumnWidth(150),
+                      3: FixedColumnWidth(150),
+                      4: FixedColumnWidth(200),
+                      5: FixedColumnWidth(100),
+                      6: FixedColumnWidth(200),
                     },
                     children: [
                       TableRow(
@@ -420,6 +450,8 @@ final Session_8_PlanBloc session_8_planBloc =
                         ),
                         children: [
                           _tableHeaderCell("Name"),
+                          _tableHeaderCell("Phone Number"),
+                          _tableHeaderCell("Sex"),
                           _tableHeaderCell("Days left"),
                           _tableHeaderCell("Sessions Left"),
                           _tableHeaderCell("Credit"),
@@ -439,6 +471,8 @@ final Session_8_PlanBloc session_8_planBloc =
                           ),
                           children: [
                             _tableCell(user.fullName),
+                            _tableCell(user.phoneNumber),
+                            _tableCell(user.sex),
                             _tableCell(user.endDate
                                 .difference(DateTime.now())
                                 .inDays
@@ -522,15 +556,17 @@ final Session_8_PlanBloc session_8_planBloc =
 
   Widget _tableCellActions(User_Data user) {
     if (user.lastCheckDate != null) {
-      String now = DateFormat('yyyy-MM-dd').format(DateTime.now());
+      if (user.isSessionMarked) {
+        String now = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
-      bool isChecked = isDate1BeforeDate2(user.lastCheckDate!, now);
+        bool isChecked = isDate1BeforeDate2(user.lastCheckDate!, now);
 
-      if (isChecked) {
-        user.isSessionMarked = false;
-        user.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-        checkDate = true;
-        _addProfile(user);
+        if (isChecked) {
+          user.isSessionMarked = false;
+          user.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+          checkDate = true;
+          _addProfile(user);
+        }
       }
     }
 

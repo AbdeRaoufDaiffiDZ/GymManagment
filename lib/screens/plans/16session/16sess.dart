@@ -2,7 +2,8 @@
 
 import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart';
 import 'package:admin/screens/plans/12sess/12session_bloc/bloc/12session_bloc.dart';
-import 'package:admin/screens/plans/16session/16session_bloc/bloc/16session_bloc.dart' as Session16Bloc;
+import 'package:admin/screens/plans/16session/16session_bloc/bloc/16session_bloc.dart'
+    as Session16Bloc;
 import 'package:admin/const/loading.dart';
 import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/user_data_entity.dart';
@@ -24,6 +25,7 @@ import 'package:admin/screens/plans/12sess/12session_bloc/bloc/session_12_event.
     as Event12;
 import 'package:admin/screens/plans/16session/16session_bloc/bloc/session_16_event.dart'
     as Event16;
+
 int count = 0;
 bool edit = false;
 bool checkDate = false;
@@ -42,9 +44,10 @@ class _SearchState extends State<sixSession> {
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _creditController = TextEditingController();
-    final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _sexController = TextEditingController();
   final TextEditingController _idController = TextEditingController();
+  final TextEditingController _tapisController = TextEditingController();
 
   final MongoDatabase monog = MongoDatabase();
   final String plan = "16 session";
@@ -56,35 +59,37 @@ class _SearchState extends State<sixSession> {
   String? _selectedSex;
   final List<String> _sexOptions = ['Male', 'Female', 'Other'];
 
-void _onSexChanged(String? newValue) {
+  void _onSexChanged(String? newValue) {
     setState(() {
       _selectedSex = newValue;
       _sexController.text = newValue!;
     });
   }
 
-Widget DropDown(){
-  return  DropdownButtonFormField<String>(
-    dropdownColor: Colors.grey,
-              decoration: InputDecoration(
-                labelText: 'Sex',
-                border: OutlineInputBorder(),
-              ),
-              value: _selectedSex,
-              items: _sexOptions.map((String sex) {
-                return DropdownMenuItem<String>(
-                  value: sex,
-                  child: Text(sex),
-                );
-              }).toList(),
-              onChanged: _onSexChanged,
-            );
-}
+  Widget DropDown() {
+    return DropdownButtonFormField<String>(
+      dropdownColor: Colors.grey,
+      decoration: InputDecoration(
+        labelText: 'Sex',
+        border: OutlineInputBorder(),
+      ),
+      value: _selectedSex,
+      items: _sexOptions.map((String sex) {
+        return DropdownMenuItem<String>(
+          value: sex,
+          child: Text(sex),
+        );
+      }).toList(),
+      onChanged: _onSexChanged,
+    );
+  }
+
   @override
   void initState() {
     super.initState();
     _filteredItems = _allItems;
     _searchController.addListener(_filterItems);
+    _tapisController.text = 'false';
   }
 
   void _filterItems() {
@@ -102,21 +107,29 @@ Widget DropDown(){
         BlocProvider.of<Session16Bloc.Session_16_PlanBloc>(context);
     if (checkDate) {
       userNew = User_Data(
-        
-          id: user!.id,
-        sex:user.sex,  fullName: user.fullName,
+        tapis:user!.tapis,
+          id: user.id,
+          sex: user.sex,
+          fullName: user.fullName,
           plan: user.plan,
           startingDate: user.startingDate,
           endDate: user.endDate,
           credit: user.credit,
           sessionLeft: user.sessionLeft,
-          lastCheckDate: user.lastCheckDate, phoneNumber: user.phoneNumber);
+          lastCheckDate: user.lastCheckDate,
+          phoneNumber: user.phoneNumber);
       session_16_planBloc.add(Event16.UpdateUserEvent(user: userNew));
     }
-    if (_nameController.text.isNotEmpty && _sexController.text.isNotEmpty&&_creditController.text.isNotEmpty && _idController.text.isNotEmpty&&_phoneController.text.isNotEmpty) {
+    if (_nameController.text.isNotEmpty &&
+        _tapisController.text.isNotEmpty &&
+        _sexController.text.isNotEmpty &&
+        _creditController.text.isNotEmpty &&
+        _idController.text.isNotEmpty &&
+        _phoneController.text.isNotEmpty) {
       if (edit) {
         userNew = User_Data(
-          sex:userr.sex,
+            tapis: _tapisController.text.toLowerCase() == 'true',
+            sex: userr.sex,
             id: _idController.text,
             fullName: _nameController.text,
             plan: userr.plan,
@@ -124,12 +137,14 @@ Widget DropDown(){
             endDate: userr.endDate,
             credit: _creditController.text,
             sessionLeft: userr.sessionLeft,
-            lastCheckDate: userr.lastCheckDate, phoneNumber: _phoneController.text);
+            lastCheckDate: userr.lastCheckDate,
+            phoneNumber: _phoneController.text);
 
         session_16_planBloc.add(Event16.UpdateUserEvent(user: userNew));
       } else {
         User_Data newUser = User_Data(
-          sex:_sexController.text,
+            tapis: _tapisController.text.toLowerCase() == 'true',
+            sex: _sexController.text,
             fullName: _nameController.text,
             plan: plan,
             startingDate: DateTime.now(),
@@ -137,15 +152,19 @@ Widget DropDown(){
             credit: _creditController.text,
             id: _idController.text,
             sessionLeft: sessionNumber,
-            lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()), phoneNumber: _phoneController.text);
+            lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+            phoneNumber: _phoneController.text);
         session_16_planBloc.add(Event16.AddUserEvent(user: newUser));
       }
-      _nameController.clear();
-      _selectedSex =null;
-      _idController.clear();
-      _creditController.clear();
-      _phoneController.clear();
-      _sexController.clear();
+      setState(() {
+        _nameController.clear();
+        _selectedSex = null;
+        _idController.clear();
+        _creditController.clear();
+        _phoneController.clear();
+        _sexController.clear();
+        _tapisController.text ='false';
+      });
     }
     _filteredItems = _allItems;
     count = 0;
@@ -160,7 +179,7 @@ Widget DropDown(){
       _creditController.text = user.credit;
       _phoneController.text = user.phoneNumber;
       _idController.text = user.id;
-            _selectedSex = user.sex;
+      _selectedSex = user.sex;
 
       edit = true;
     });
@@ -187,7 +206,8 @@ Widget DropDown(){
       count = 0;
     });
     User_Data user_data = User_Data(
-      sex:user.sex,
+      tapis:user.tapis,
+        sex: user.sex,
         isSessionMarked: user.isSessionMarked,
         sessionLeft: user.sessionLeft,
         id: user.id,
@@ -196,7 +216,8 @@ Widget DropDown(){
         startingDate: user.startingDate,
         endDate: user.endDate,
         credit: user.credit,
-        lastCheckDate: user.lastCheckDate, phoneNumber: user.phoneNumber);
+        lastCheckDate: user.lastCheckDate,
+        phoneNumber: user.phoneNumber);
     if (value) {
       // Implement the checkbox functionality if needed
       user_data.isSessionMarked = true;
@@ -220,8 +241,9 @@ Widget DropDown(){
     final Session16Bloc.Session_16_PlanBloc session_16_planBloc =
         BlocProvider.of<Session16Bloc.Session_16_PlanBloc>(context);
     final renewUser = User_Data(
-      sex:user.sex,
-      renew: true,
+      tapis: user.tapis,
+        sex: user.sex,
+        renew: true,
         id: user.id,
         fullName: user.fullName,
         plan: user.plan,
@@ -229,7 +251,8 @@ Widget DropDown(){
         endDate: DateTime.now().add(const Duration(days: 45)),
         credit: user.credit,
         sessionLeft: 16,
-        lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()), phoneNumber: user.phoneNumber);
+        lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+        phoneNumber: user.phoneNumber);
     session_16_planBloc.add(Event16.UpdateUserEvent(user: renewUser));
   }
 
@@ -247,12 +270,11 @@ Widget DropDown(){
   Widget build(BuildContext context) {
     final Session16Bloc.Session_16_PlanBloc session_16_planBloc =
         BlocProvider.of<Session16Bloc.Session_16_PlanBloc>(context);
-final Session_8_PlanBloc session_8_planBloc =
+    final Session_8_PlanBloc session_8_planBloc =
         BlocProvider.of<Session_8_PlanBloc>(context);
     final Unlimited_PlanBloc _unlimited_bloc =
         BlocProvider.of<Unlimited_PlanBloc>(context);
 
-  
     final Session_12_PlanBloc session_12_planBloc =
         BlocProvider.of<Session_12_PlanBloc>(context);
     final Expense_PlanBloc expense_planBloc =
@@ -315,17 +337,26 @@ final Session_8_PlanBloc session_8_planBloc =
               ],
             ),
             child: Row(
-              children: [Expanded(child: _inputField(_idController, 'ID', false)),
+              children: [
+                Expanded(child: _inputField(_idController, 'ID', false)),
                 SizedBox(width: 10),
-                
                 Expanded(child: _inputField(_nameController, 'Name', false)),
                 SizedBox(width: 10),
-                Expanded(child: _inputField(_phoneController, 'Phone Number', true)),
-                SizedBox(width: 10),
-                 SizedBox(width: 10),
                 Expanded(
-                    child: DropDown()),
+                    child: _inputField(_phoneController, 'Phone Number', true)),
+                SizedBox(width: 10),
+                Expanded(child: DropDown()),
+                SizedBox(width: 10),
                 Expanded(child: _inputField(_creditController, 'Credit', true)),
+                SizedBox(width: 10),
+                Checkbox(
+                  value: _tapisController.text.toLowerCase() == 'true',
+                  onChanged: (bool? value) {
+                    setState(() {
+                      _tapisController.text = value.toString();
+                    });
+                  },
+                ),
                 SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
@@ -358,7 +389,7 @@ final Session_8_PlanBloc session_8_planBloc =
                   ),
                 ),
               ),
-IconButton(
+              IconButton(
                 icon: Icon(
                   Icons.refresh,
                   color: Colors.green,
@@ -372,7 +403,6 @@ IconButton(
                   count = 0;
                 },
               ),
-
             ],
           ),
           Divider(
@@ -384,8 +414,8 @@ IconButton(
           ),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-            child: BlocBuilder<Session16Bloc.Session_16_PlanBloc, Session16Bloc.session_16_PlanState>(
-                builder: (context, state) {
+            child: BlocBuilder<Session16Bloc.Session_16_PlanBloc,
+                Session16Bloc.session_16_PlanState>(builder: (context, state) {
               if (state is Session16Bloc.SuccessState) {
                 _allItems = state.users
                     .where((element) => element.plan == plan)
@@ -400,11 +430,13 @@ IconButton(
                   scrollDirection: Axis.horizontal,
                   child: Table(
                     columnWidths: {
-                      0: FixedColumnWidth(300),
+                      0: FixedColumnWidth(230),
                       1: FixedColumnWidth(230),
-                      2: FixedColumnWidth(230),
-                      3: FixedColumnWidth(230),
-                      4: FixedColumnWidth(230),
+                      2: FixedColumnWidth(150),
+                      3: FixedColumnWidth(150),
+                      4: FixedColumnWidth(200),
+                      5: FixedColumnWidth(100),
+                      6: FixedColumnWidth(200),
                     },
                     children: [
                       TableRow(
@@ -413,6 +445,8 @@ IconButton(
                         ),
                         children: [
                           _tableHeaderCell("Name"),
+                          _tableHeaderCell("Phone Number"),
+                          _tableHeaderCell("Sex"),
                           _tableHeaderCell("Days left"),
                           _tableHeaderCell("Sessions Left"),
                           _tableHeaderCell("Credit"),
@@ -432,6 +466,8 @@ IconButton(
                           ),
                           children: [
                             _tableCell(user.fullName),
+                            _tableCell(user.phoneNumber),
+                            _tableCell(user.sex),
                             _tableCell(user.endDate
                                 .difference(DateTime.now())
                                 .inDays
@@ -515,15 +551,17 @@ IconButton(
 
   Widget _tableCellActions(User_Data user) {
     if (user.lastCheckDate != null) {
-      String now = DateFormat('yyyy-MM-dd').format(DateTime.now());
+      if (user.isSessionMarked) {
+        String now = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
-      bool isChecked = isDate1BeforeDate2(user.lastCheckDate!, now);
+        bool isChecked = isDate1BeforeDate2(user.lastCheckDate!, now);
 
-      if (isChecked) {
-        user.isSessionMarked = false;
-        user.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-        checkDate = true;
-        _addProfile(user);
+        if (isChecked) {
+          user.isSessionMarked = false;
+          user.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+          checkDate = true;
+          _addProfile(user);
+        }
       }
     }
 
