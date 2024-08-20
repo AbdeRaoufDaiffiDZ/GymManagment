@@ -1,4 +1,3 @@
-import 'package:admin/const/loading.dart';
 import 'package:admin/screens/dashboard/components/rfid_bloc/rfid_plan_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,48 +45,65 @@ class _HeaderState extends State<Header> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade100,
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Color.fromARGB(255, 0, 0, 0)
-                              .withOpacity(0.3), // Color of the border
-                          width: 2.5, // Width of the border
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.withOpacity(0.2),
+                            border: Border(
+                              bottom: BorderSide(
+                                color: Color.fromARGB(255, 0, 0, 0)
+                                    .withOpacity(0.3), // Color of the border
+                                width: 2.5, // Width of the border
+                              ),
+                            ),
+                          ),
+                          child: _inputField(_idController, 'User id', true),
+                          width: 250,
                         ),
                       ),
-                    ),
-                    child: _inputField(_idController, 'user id', true),
-                    width: 200,
-                  ),
-                  BlocBuilder<Rfid_PlanBloc, Rfid_PlanState>(
-                      builder: (context, state) {
-                    if (state is SuccessState) {
-                      return Column(
-                        children: [
-                          Text(state.done.toString(),
-                              style: TextStyle(
+                      BlocBuilder<Rfid_PlanBloc, Rfid_PlanState>(
+                        builder: (context, state) {
+                          if (state is SuccessState) {
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                  top:
+                                      4.0), // Add some spacing between the input and the text
+                              child: Text(
+                                state.done.toString(),
+                                style: TextStyle(
                                   fontWeight: FontWeight.w800,
                                   fontSize: 14,
-                                  color: Color.fromARGB(255, 0, 153, 0))),
-                        ],
-                      );
-                    } else if (state is ErrorState) {
-                      return Text(state.error.toString(),
-                          style: TextStyle(
-                              fontWeight: FontWeight.w800,
-                              fontSize: 14,
-                              color: Color.fromARGB(255, 153, 0, 0)));
-                    } else if (state is LoadingState) {
-                      return Loading();
-                    } else {
-                      return Text("watting for Card",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w800,
-                              fontSize: 14,
-                              color: Color.fromARGB(255, 0, 0, 0)));
-                    }
-                  })
+                                  color: Color.fromARGB(255, 0, 153, 0),
+                                ),
+                              ),
+                            );
+                          } else if (state is ErrorState) {
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                  top:
+                                      4.0), // Add some spacing between the input and the text
+                              child: Text(
+                                state.error.toString(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 14,
+                                  color: Color.fromARGB(255, 153, 0, 0),
+                                ),
+                              ),
+                            );
+                          } else if (state is LoadingState) {
+                            return Container();
+                          } else {
+                            return Container();
+                          }
+                        },
+                      ),
+                    ],
+                  ),
                 ],
               )
             ],

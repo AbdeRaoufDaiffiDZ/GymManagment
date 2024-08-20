@@ -3,10 +3,6 @@
 import 'package:admin/const/loading.dart';
 import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/user_data_entity.dart';
-import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart'
     as Expense;
 import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart';
@@ -22,11 +18,17 @@ import 'package:admin/screens/plans/8session/8session_bloc/bloc/session_8_event.
     as Event8;
 import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart'
     as Unlimited;
+import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 int count = 0;
 bool edit = false;
 late User_Data userr;
 final int sessionNumber = 0;
+
+String? _selectedSexForDataEntry;
+String? _selectedSexForFiltering;
 final int daysNumber = 30;
 
 class unlimited extends StatefulWidget {
@@ -58,45 +60,8 @@ class _SearchState extends State<unlimited> {
     setState(() {
       _selectedSex = newValue;
       _sexController.text = newValue!;
+      _filterItems();
     });
-  }
-
-  Widget DropDown() {
-    return DropdownButtonFormField<String>(
-        dropdownColor: Colors.white,
-        decoration: InputDecoration(
-          enabledBorder: InputBorder.none,
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: BorderSide.none,
-          ),
-          contentPadding:
-              EdgeInsets.symmetric(vertical: 10.0, horizontal: 40.0),
-          fillColor: Colors.transparent,
-          filled: true,
-        ),
-        hint: Text(
-          'Sex',
-          style: TextStyle(color: Colors.black.withOpacity(0.8)),
-        ),
-        icon: Icon(
-          Icons.arrow_drop_down,
-          color: Colors.orange,
-        ),
-        value: _selectedSex,
-        items: _sexOptions.map((String sex) {
-          return DropdownMenuItem<String>(
-            value: sex,
-            child: Text(
-              sex,
-              style: TextStyle(
-                color: Colors.black.withOpacity(0.8),
-                fontSize: 16.0,
-              ),
-            ),
-          );
-        }).toList(),
-        onChanged: _onSexChanged);
   }
 
   @override
@@ -109,11 +74,107 @@ class _SearchState extends State<unlimited> {
 
   void _filterItems() {
     final query = _searchController.text.toLowerCase();
+
     setState(() {
       _filteredItems = _allItems.where((item) {
-        return item.fullName.toLowerCase().contains(query);
+        final matchesName = item.fullName.toLowerCase().contains(query);
+        final matchesSex = _selectedSexForFiltering == null ||
+            _selectedSexForFiltering!.isEmpty ||
+            item.sex == _selectedSexForFiltering;
+
+        return matchesName && matchesSex;
       }).toList();
     });
+  }
+
+  void _onSexChangedForFiltering(String? newValue) {
+    setState(() {
+      _selectedSexForFiltering = newValue;
+    });
+    _filterItems(); // Call the filtering method here
+  }
+
+  void _onSexChangedForDataEntry(String? newValue) {
+    setState(() {
+      _selectedSexForDataEntry = newValue;
+      _sexController.text = newValue!;
+    });
+  }
+
+  Widget DropDownForDataEntry() {
+    return DropdownButtonFormField<String>(
+      dropdownColor: Colors.white,
+      decoration: InputDecoration(
+        enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 40.0),
+        fillColor: Colors.transparent,
+        filled: true,
+      ),
+      hint: Text(
+        'Sex',
+        style: TextStyle(color: Colors.black.withOpacity(0.8)),
+      ),
+      icon: Icon(
+        Icons.arrow_drop_down,
+        color: Colors.orange,
+      ),
+      value: _selectedSexForDataEntry,
+      items: _sexOptions.map((String sex) {
+        return DropdownMenuItem<String>(
+          value: sex,
+          child: Text(
+            sex,
+            style: TextStyle(
+              color: Colors.black.withOpacity(0.8),
+              fontSize: 16.0,
+            ),
+          ),
+        );
+      }).toList(),
+      onChanged: _onSexChangedForDataEntry,
+    );
+  }
+
+  Widget DropDownForFiltering() {
+    return DropdownButtonFormField<String>(
+      dropdownColor: Colors.white,
+      decoration: InputDecoration(
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide(color: Colors.grey.shade400),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide(color: Colors.orange),
+        ),
+        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+        fillColor: Colors.transparent,
+        filled: true,
+      ),
+      hint: Text(
+        'Sex',
+        style: TextStyle(color: Colors.black.withOpacity(0.8)),
+      ),
+      icon: Icon(
+        Icons.arrow_drop_down,
+        color: Colors.orange,
+      ),
+      value: _selectedSexForFiltering,
+      items: _sexOptions.map((String sex) {
+        return DropdownMenuItem<String>(
+          value: sex,
+          child: Text(
+            sex,
+            style: TextStyle(
+              color: Colors.black.withOpacity(0.8),
+              fontSize: 16.0,
+            ),
+          ),
+        );
+      }).toList(),
+      onChanged: _onSexChangedForFiltering,
+    );
   }
 
   void _addProfile(User_Data? user) {
@@ -156,7 +217,6 @@ class _SearchState extends State<unlimited> {
         _unlimited_bloc.add(AddUserEvent(user: newUser));
       }
 
-      // Reset the input fields
       _nameController.clear();
       _idController.clear();
       _creditController.clear();
@@ -164,7 +224,6 @@ class _SearchState extends State<unlimited> {
       _sexController.clear();
       _tapisController.text = 'false';
 
-      // Reset the dropdown selection
       setState(() {
         _selectedSex = null;
       });
@@ -216,13 +275,6 @@ class _SearchState extends State<unlimited> {
     _unlimited_bloc.add(DeleteUserEvent(user: user));
   }
 
-  /*void _renewProfile(User_Data user) {
-    final Unlimited_PlanBloc _unlimited_bloc =
-        BlocProvider.of<Unlimited_PlanBloc>(context);
-    user.endDate = DateTime.now().add(const Duration(days: 30));
-    _unlimited_bloc.add(UpdateUserEvent(user: user));
-  }
-*/
   void _toggleSessionMark(User_Data user, bool value) {
     setState(() {
       user.isSessionMarked = value;
@@ -259,232 +311,228 @@ class _SearchState extends State<unlimited> {
     final Expense_PlanBloc expense_planBloc =
         BlocProvider.of<Expense_PlanBloc>(context);
     return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 25.0, horizontal: 22),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: const Color(0xffFFA05D).withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: TextField(
-                      controller: _searchController,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Type a name...',
-                        hintStyle: TextStyle(
-                          fontSize: 17,
-                          color: const Color(0xff202020).withOpacity(0.88),
-                        ),
-                        icon: Padding(
-                          padding: EdgeInsets.only(left: 8.0),
-                          child: Icon(Icons.search,
-                              color: Color(0xff202020).withOpacity(0.5)),
-                        ),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 25.0, horizontal: 22),
+          child: Row(
+            children: [
+              Expanded(
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: const Color(0xffFFA05D).withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Type a name...',
+                      hintStyle: TextStyle(
+                        fontSize: 17,
+                        color: const Color(0xff202020).withOpacity(0.88),
+                      ),
+                      icon: Padding(
+                        padding: EdgeInsets.only(left: 8.0),
+                        child: Icon(Icons.search,
+                            color: Color(0xff202020).withOpacity(0.5)),
                       ),
                     ),
                   ),
                 ),
-                SizedBox(
-                    width:
-                        10), // Add some space between the search bar and dropdown
-                Container(
-                  width:
-                      200, // Set a fixed width for the dropdown to avoid overflow
-                  child: DropDown(),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 22),
-            child: Text(
-              edit ? "edit a profile :" : "Add a profile :",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.w900,
               ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 18.0),
-            padding: const EdgeInsets.all(10.0),
-            decoration: BoxDecoration(
-              color: Color(0xffF9F9F9),
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 3,
-                  blurRadius: 5,
-                  offset: Offset(0, 3),
-                ),
-              ],
-            ),
-            child: Row(
-              children: [
-                Expanded(child: _inputField(_idController, 'ID', false)),
-                SizedBox(width: 20),
-                Expanded(child: _inputField(_nameController, 'Name', false)),
-                SizedBox(width: 10),
-                Expanded(
-                    child: _inputField(_phoneController, 'Phone Number', true)),
-                SizedBox(width: 30),
-                Expanded(child: _inputField(_creditController, 'Credit', true)),
-                SizedBox(width: 10),
-                Expanded(child: DropDown()),
-                SizedBox(width: 40),
-                Checkbox(
-                  value: _tapisController.text.toLowerCase() == 'true',
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _tapisController.text = value.toString();
-                    });
-                  },
-                ),
-                SizedBox(width: 30),
-                ElevatedButton(
-                  onPressed: () {
-                    _addProfile(null);
-                  },
-                  child: Text(
-                    'Save',
-                    style: TextStyle(color: Color(0xffFFA05D)),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 20),
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 22.0),
-                child: Text(
-                  "Recently added",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 17,
-                  ),
-                ),
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.refresh,
-                  color: Colors.green,
-                ),
-                onPressed: () {
-                  _unlimited_bloc.add(Unlimited.GetUsersEvent());
-                  session_8_planBloc.add(Event8.GetUsersEvent());
-                  session_12_planBloc.add(Event12.GetUsersEvent());
-                  session_16_planBloc.add(Event16.GetUsersEvent());
-                  expense_planBloc.add(Expense.GetExpensesEvent());
-                  count = 0;
-                },
+              SizedBox(width: 10),
+              Container(
+                width: 110,
+                child: DropDownForFiltering(),
               ),
             ],
           ),
-          Divider(
-            indent: 25,
-            endIndent: 30,
-            height: 25,
-            thickness: 2,
-            color: Color(0xffE6E6E6),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 22),
+          child: Text(
+            edit ? "Edit a profile:" : "Add a profile:",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 18,
+              fontWeight: FontWeight.w900,
+            ),
           ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-            child: BlocBuilder<Unlimited_PlanBloc, Unlimited_PlanState>(
-                builder: (context, state) {
-              if (state is Unlimited.SuccessState) {
-                _allItems = state.users;
-                if (count == 0) {
-                  _filteredItems = state.users;
-                  count++;
-                }
-                return Scrollbar(
-                  thumbVisibility: true, // Always show the scrollbar thumb
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 18.0),
+          padding: const EdgeInsets.all(10.0),
+          decoration: BoxDecoration(
+            color: Color(0xffF9F9F9),
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 3,
+                blurRadius: 5,
+                offset: Offset(0, 3),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Expanded(child: _inputField(_idController, 'ID', false)),
+              SizedBox(width: 20),
+              Expanded(child: _inputField(_nameController, 'Name', false)),
+              SizedBox(width: 10),
+              Expanded(
+                  child: _inputField(_phoneController, 'Phone Number', true)),
+              SizedBox(width: 30),
+              Expanded(child: _inputField(_creditController, 'Credit', true)),
+              SizedBox(width: 10),
+              Expanded(
+                  child:
+                      DropDownForDataEntry()), // Use the dropdown for data entry
+              SizedBox(width: 40),
+              Checkbox(
+                value: _tapisController.text.toLowerCase() == 'true',
+                onChanged: (bool? value) {
+                  setState(() {
+                    _tapisController.text = value.toString();
+                  });
+                },
+              ),
+              SizedBox(width: 30),
+              ElevatedButton(
+                onPressed: () {
+                  _addProfile(null);
+                },
+                child: Text(
+                  'Save',
+                  style: TextStyle(color: Color(0xffFFA05D)),
+                ),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 20),
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 22.0),
+              child: Text(
+                "Recently added",
+                style: TextStyle(
+                  fontWeight: FontWeight.w900,
+                  fontSize: 17,
+                ),
+              ),
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.refresh,
+                color: Colors.green,
+              ),
+              onPressed: () {
+                _unlimited_bloc.add(Unlimited.GetUsersEvent());
+                session_8_planBloc.add(Event8.GetUsersEvent());
+                session_12_planBloc.add(Event12.GetUsersEvent());
+                session_16_planBloc.add(Event16.GetUsersEvent());
+                expense_planBloc.add(Expense.GetExpensesEvent());
+                count = 0;
+              },
+            ),
+          ],
+        ),
+        Divider(
+          indent: 25,
+          endIndent: 30,
+          height: 25,
+          thickness: 2,
+          color: Color(0xffE6E6E6),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+          child: BlocBuilder<Unlimited_PlanBloc, Unlimited_PlanState>(
+              builder: (context, state) {
+            if (state is Unlimited.SuccessState) {
+              _allItems = state.users;
+              if (count == 0) {
+                _filteredItems = state.users;
+                count++;
+              }
+              return Scrollbar(
+                thumbVisibility: true, // Always show the scrollbar thumb
+                controller:
+                    _scrollController, // Attach the controller to the Scrollbar
+
+                child: SingleChildScrollView(
                   controller:
-                      _scrollController, // Attach the controller to the Scrollbar
+                      _scrollController, // Attach the controller to the SingleChildScrollView
 
-                  child: SingleChildScrollView(
-                    controller:
-                        _scrollController, // Attach the controller to the SingleChildScrollView
-
-                    scrollDirection: Axis.horizontal,
-                    child: Table(
-                      columnWidths: {
-                        0: FixedColumnWidth(250),
-                        1: FixedColumnWidth(250),
-                        2: FixedColumnWidth(170),
-                        3: FixedColumnWidth(170),
-                        4: FixedColumnWidth(170),
-                        5: FixedColumnWidth(220),
-                      },
-                      children: [
+                  scrollDirection: Axis.horizontal,
+                  child: Table(
+                    columnWidths: {
+                      0: FixedColumnWidth(250),
+                      1: FixedColumnWidth(250),
+                      2: FixedColumnWidth(170),
+                      3: FixedColumnWidth(170),
+                      4: FixedColumnWidth(170),
+                      5: FixedColumnWidth(220),
+                    },
+                    children: [
+                      TableRow(
+                        decoration: BoxDecoration(
+                          color: Color(0xffFFA05D).withOpacity(0.4),
+                        ),
+                        children: [
+                          _tableHeaderCell("Name"),
+                          _tableHeaderCell("Phone Number"),
+                          _tableHeaderCell("Sex"),
+                          _tableHeaderCell("Days left"),
+                          _tableHeaderCell("Credit"),
+                          _tableHeaderCell(""),
+                        ],
+                      ),
+                      for (var user in _filteredItems)
                         TableRow(
                           decoration: BoxDecoration(
-                            color: Color(0xffFFA05D).withOpacity(0.4),
+                            color: (user.endDate
+                                        .difference(DateTime.now())
+                                        .inDays <=
+                                    0)
+                                ? Colors.red.withOpacity(0.3)
+                                : Color(0xffFAFAFA),
                           ),
                           children: [
-                            _tableHeaderCell("Name"),
-                            _tableHeaderCell("Phone Number"),
-                            _tableHeaderCell("Sex"),
-                            _tableHeaderCell("Days left"),
-                            _tableHeaderCell("Credit"),
-                            _tableHeaderCell(""),
+                            _tableCell(user.fullName),
+                            _tableCell(user.phoneNumber),
+                            _tableCell(user.sex),
+                            _tableCell(user.endDate
+                                .difference(DateTime.now())
+                                .inDays
+                                .toString()),
+                            _tableCell(user.credit),
+                            _tableCellActions(user),
                           ],
                         ),
-                        for (var user in _filteredItems)
-                          TableRow(
-                            decoration: BoxDecoration(
-                              color: (user.endDate
-                                          .difference(DateTime.now())
-                                          .inDays <=
-                                      0)
-                                  ? Colors.red.withOpacity(0.3)
-                                  : Color(0xffFAFAFA),
-                            ),
-                            children: [
-                              _tableCell(user.fullName),
-                              _tableCell(user.phoneNumber),
-                              _tableCell(user.sex),
-                              _tableCell(user.endDate
-                                  .difference(DateTime.now())
-                                  .inDays
-                                  .toString()),
-                              _tableCell(user.credit),
-                              _tableCellActions(user),
-                            ],
-                          ),
-                      ],
-                    ),
+                    ],
                   ),
-                );
-              } else if (state is Unlimited.IinitialState) {
-                _unlimited_bloc.add(GetUsersEvent());
-                return Loading();
-              } else if (state is Unlimited.ErrorState) {
-                return Loading();
-              } else {
-                return Loading();
-              }
-            }),
-          ),
-        ],
-      ),
+                ),
+              );
+            } else if (state is Unlimited.IinitialState) {
+              _unlimited_bloc.add(GetUsersEvent());
+              return Loading();
+            } else if (state is Unlimited.ErrorState) {
+              return Loading();
+            } else {
+              return Loading();
+            }
+          }),
+        ),
+      ]),
     );
   }
 

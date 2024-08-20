@@ -9,11 +9,13 @@ import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_b
 import 'package:admin/screens/plans/12sess/12session_bloc/bloc/12session_bloc.dart';
 import 'package:admin/screens/plans/12sess/12session_bloc/bloc/session_12_event.dart'
     as Event12;
-import 'package:admin/screens/plans/16session/16session_bloc/bloc/16session_bloc.dart';
+import 'package:admin/screens/plans/16session/16session_bloc/bloc/16session_bloc.dart'
+    as Session16Bloc;
 import 'package:admin/screens/plans/16session/16session_bloc/bloc/session_16_event.dart'
     as Event16;
 import 'package:admin/screens/plans/8session/8session_bloc/bloc/8session_bloc.dart'
     as Session8bloc;
+import 'package:admin/screens/plans/8session/8session_bloc/bloc/8session_bloc.dart';
 import 'package:admin/screens/plans/8session/8session_bloc/bloc/session_8_event.dart'
     as Event8;
 import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart'
@@ -26,7 +28,12 @@ import 'package:intl/intl.dart';
 int count = 0;
 bool edit = false;
 bool checkDate = false;
+
 late User_Data userr;
+final int sessionNumber = 0;
+
+String? _selectedSexForDataEntry;
+String? _selectedSexForFiltering;
 
 class eightSession extends StatefulWidget {
   const eightSession({Key? key}) : super(key: key);
@@ -52,51 +59,14 @@ class _SearchState extends State<eightSession> {
   List<User_Data> _filteredItems = [];
 
   String? _selectedSex;
-  final List<String> _sexOptions = ['Male', 'Female', 'Other'];
+  final List<String> _sexOptions = ['Male', 'Female'];
 
   void _onSexChanged(String? newValue) {
     setState(() {
       _selectedSex = newValue;
       _sexController.text = newValue!;
+      _filterItems();
     });
-  }
-
-  Widget DropDown() {
-    return DropdownButtonFormField<String>(
-        dropdownColor: Colors.white,
-        decoration: InputDecoration(
-          enabledBorder: InputBorder.none,
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: BorderSide.none,
-          ),
-          contentPadding:
-              EdgeInsets.symmetric(vertical: 10.0, horizontal: 40.0),
-          fillColor: Colors.transparent,
-          filled: true,
-        ),
-        hint: Text(
-          'Sex',
-          style: TextStyle(color: Colors.black.withOpacity(0.8)),
-        ),
-        icon: Icon(
-          Icons.arrow_drop_down,
-          color: Colors.orange,
-        ),
-        value: _selectedSex,
-        items: _sexOptions.map((String sex) {
-          return DropdownMenuItem<String>(
-            value: sex,
-            child: Text(
-              sex,
-              style: TextStyle(
-                color: Colors.black.withOpacity(0.8),
-                fontSize: 16.0,
-              ),
-            ),
-          );
-        }).toList(),
-        onChanged: _onSexChanged);
   }
 
   @override
@@ -109,40 +79,121 @@ class _SearchState extends State<eightSession> {
 
   void _filterItems() {
     final query = _searchController.text.toLowerCase();
+
     setState(() {
       _filteredItems = _allItems.where((item) {
-        return item.fullName.toLowerCase().contains(query);
+        final matchesName = item.fullName.toLowerCase().contains(query);
+        final matchesSex = _selectedSexForFiltering == null ||
+            _selectedSexForFiltering!.isEmpty ||
+            item.sex == _selectedSexForFiltering;
+
+        return matchesName && matchesSex;
       }).toList();
     });
   }
 
+  void _onSexChangedForFiltering(String? newValue) {
+    setState(() {
+      _selectedSexForFiltering = newValue;
+    });
+    _filterItems(); // Call the filtering method here
+  }
+
+  void _onSexChangedForDataEntry(String? newValue) {
+    setState(() {
+      _selectedSexForDataEntry = newValue;
+      _sexController.text = newValue!;
+    });
+  }
+
+  Widget DropDownForDataEntry() {
+    return DropdownButtonFormField<String>(
+      dropdownColor: Colors.white,
+      decoration: InputDecoration(
+        enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 40.0),
+        fillColor: Colors.transparent,
+        filled: true,
+      ),
+      hint: Text(
+        'Sex',
+        style: TextStyle(color: Colors.black.withOpacity(0.8)),
+      ),
+      icon: Icon(
+        Icons.arrow_drop_down,
+        color: Colors.orange,
+      ),
+      value: _selectedSexForDataEntry,
+      items: _sexOptions.map((String sex) {
+        return DropdownMenuItem<String>(
+          value: sex,
+          child: Text(
+            sex,
+            style: TextStyle(
+              color: Colors.black.withOpacity(0.8),
+              fontSize: 16.0,
+            ),
+          ),
+        );
+      }).toList(),
+      onChanged: _onSexChangedForDataEntry,
+    );
+  }
+
+  Widget DropDownForFiltering() {
+    return DropdownButtonFormField<String>(
+      dropdownColor: Colors.white,
+      decoration: InputDecoration(
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide(color: Colors.grey.shade400),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide(color: Colors.orange),
+        ),
+        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+        fillColor: Colors.transparent,
+        filled: true,
+      ),
+      hint: Text(
+        'Sex',
+        style: TextStyle(color: Colors.black.withOpacity(0.8)),
+      ),
+      icon: Icon(
+        Icons.arrow_drop_down,
+        color: Colors.orange,
+      ),
+      value: _selectedSexForFiltering,
+      items: _sexOptions.map((String sex) {
+        return DropdownMenuItem<String>(
+          value: sex,
+          child: Text(
+            sex,
+            style: TextStyle(
+              color: Colors.black.withOpacity(0.8),
+              fontSize: 16.0,
+            ),
+          ),
+        );
+      }).toList(),
+      onChanged: _onSexChangedForFiltering,
+    );
+  }
+
   void _addProfile(User_Data? user) {
-    late User_Data userNew;
-    final Session8bloc.Session_8_PlanBloc session_8_planBloc =
-        BlocProvider.of<Session8bloc.Session_8_PlanBloc>(context);
-    if (checkDate) {
-      userNew = User_Data(
-          tapis: user!.tapis,
-          sex: user.sex,
-          id: user.id,
-          fullName: user.fullName,
-          plan: user.plan,
-          startingDate: user.startingDate,
-          endDate: user.endDate,
-          credit: user.credit,
-          sessionLeft: user.sessionLeft,
-          lastCheckDate: user.lastCheckDate,
-          phoneNumber: _phoneController.text);
-      session_8_planBloc.add(Event8.UpdateUserEvent(user: userNew));
-    }
     if (_nameController.text.isNotEmpty &&
-        _tapisController.text.isNotEmpty &&
-        _creditController.text.isNotEmpty &&
         _idController.text.isNotEmpty &&
         _sexController.text.isNotEmpty &&
+        _tapisController.text.isNotEmpty &&
+        _creditController.text.isNotEmpty &&
         _phoneController.text.isNotEmpty) {
+      final Unlimited_PlanBloc _unlimited_bloc =
+          BlocProvider.of<Unlimited_PlanBloc>(context);
+
       if (edit) {
-        userNew = User_Data(
+        final userNew = User_Data(
             tapis: _tapisController.text.toLowerCase() == 'true',
             sex: userr.sex,
             id: _idController.text,
@@ -151,15 +202,14 @@ class _SearchState extends State<eightSession> {
             startingDate: userr.startingDate,
             endDate: userr.endDate,
             credit: _creditController.text,
-            sessionLeft: userr.sessionLeft,
+            sessionLeft: sessionNumber,
             lastCheckDate: userr.lastCheckDate,
             phoneNumber: _phoneController.text);
-
-        session_8_planBloc.add(Event8.UpdateUserEvent(user: userNew));
+        _unlimited_bloc.add(Unlimited.UpdateUserEvent(user: userNew));
       } else {
         User_Data newUser = User_Data(
-            tapis: _tapisController.text.toLowerCase() == 'true',
             sex: _sexController.text,
+            tapis: _tapisController.text.toLowerCase() == 'true',
             fullName: _nameController.text,
             plan: plan,
             startingDate: DateTime.now(),
@@ -167,131 +217,100 @@ class _SearchState extends State<eightSession> {
             credit: _creditController.text,
             id: _idController.text,
             sessionLeft: sessionNumber,
-            lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+            lastCheckDate: '',
             phoneNumber: _phoneController.text);
-        session_8_planBloc.add(Event8.AddUserEvent(user: newUser));
+        _unlimited_bloc.add(AddUserEvent(user: newUser));
       }
+
+      _nameController.clear();
+      _idController.clear();
+      _creditController.clear();
+      _phoneController.clear();
+      _sexController.clear();
+      _tapisController.text = 'false';
+
       setState(() {
-        _nameController.clear();
-        _idController.clear();
-        _creditController.clear();
         _selectedSex = null;
-        _phoneController.clear();
-        _sexController.clear();
-        _tapisController.text = 'false';
       });
+
+      _filteredItems = _allItems;
+      count = 0;
+      edit = false;
     }
-    _filteredItems = _allItems;
-    count = 0;
-    edit = false;
-    checkDate = false;
   }
 
   void _editProfile(User_Data user) {
     setState(() {
       _phoneController.text = user.phoneNumber;
       _nameController.text = user.fullName;
+
       _idController.text = user.id;
       _creditController.text = user.credit;
       _sexController.text = user.sex;
-      edit = true;
-      _selectedSex = user.sex;
       _tapisController.text = user.tapis.toString();
+
+      _selectedSex = user.sex;
+
+      edit = true;
     });
     userr = user;
   }
 
-  void _deleteProfile(User_Data user) {
-    final Session8bloc.Session_8_PlanBloc session_8_planBloc =
-        BlocProvider.of<Session8bloc.Session_8_PlanBloc>(context);
-    session_8_planBloc.add(Event8.DeleteUserEvent(user: user));
-    count = 0;
-  }
-
-  /*void _renewProfile(User_Data user) {
+  void _renewProfile(User_Data user) {
     final Unlimited_PlanBloc _unlimited_bloc =
         BlocProvider.of<Unlimited_PlanBloc>(context);
-    user.endDate = DateTime.now().add(const Duration(days: 30));
-    _unlimited_bloc.add(UpdateUserEvent(user: user));
-  }
-*/
-  void _toggleSessionMark(User_Data user, bool value) {
-    setState(() {
-      user.isSessionMarked = value;
-      count = 0;
-    });
-    User_Data user_data = User_Data(
-        tapis: user.tapis,
-        sex: user.sex,
-        isSessionMarked: user.isSessionMarked,
-        sessionLeft: user.sessionLeft,
-        id: user.id,
-        fullName: user.fullName,
-        plan: user.plan,
-        startingDate: user.startingDate,
-        endDate: user.endDate,
-        credit: user.credit,
-        lastCheckDate: user.lastCheckDate,
-        phoneNumber: user.phoneNumber);
-    if (value) {
-      // Implement the checkbox functionality if needed
-      user_data.isSessionMarked = true;
-      user_data.sessionLeft =
-          user_data.sessionLeft <= 0 ? 0 : user_data.sessionLeft - 1;
-      user_data.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    } else {
-      user_data.isSessionMarked = false;
-      user_data.sessionLeft = user_data.sessionLeft + 1;
-      user_data.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    }
-    final Session8bloc.Session_8_PlanBloc session_8_planBloc =
-        BlocProvider.of<Session8bloc.Session_8_PlanBloc>(context);
-    session_8_planBloc.add(Event8.UpdateUserEvent(user: user_data));
-  }
-
-  void _renewProfile(User_Data user) {
-    setState(() {
-      count = 0;
-    });
-    final Session8bloc.Session_8_PlanBloc session_8_planBloc =
-        BlocProvider.of<Session8bloc.Session_8_PlanBloc>(context);
     final renewUser = User_Data(
-        tapis: user.tapis,
-        sex: user.sex,
         renew: true,
+        sex: user.sex,
         id: user.id,
         fullName: user.fullName,
         plan: user.plan,
         startingDate: DateTime.now(),
-        endDate: DateTime.now().add(Duration(days: daysNumber)),
+        endDate: DateTime.now().add(const Duration(days: 30)),
         credit: user.credit,
-        sessionLeft: sessionNumber,
-        lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+        sessionLeft: 0,
+        lastCheckDate: '',
         phoneNumber: user.phoneNumber);
-    session_8_planBloc.add(Event8.UpdateUserEvent(user: renewUser));
+    _unlimited_bloc.add(Unlimited.UpdateUserEvent(user: renewUser));
   }
+
+  void _deleteProfile(User_Data user) {
+    final Unlimited_PlanBloc _unlimited_bloc =
+        BlocProvider.of<Unlimited_PlanBloc>(context);
+    _unlimited_bloc.add(DeleteUserEvent(user: user));
+  }
+
+  void _toggleSessionMark(User_Data user, bool value) {
+    setState(() {
+      user.isSessionMarked = value;
+    });
+    // Implement the checkbox functionality if needed
+  }
+
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void dispose() {
+    _scrollController.dispose();
+
     _searchController.dispose();
     _nameController.dispose();
     _idController.dispose();
     _creditController.dispose();
     _phoneController.dispose();
-    _sexController.dispose();
     _tapisController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final Session8bloc.Session_8_PlanBloc session_8_planBloc =
-        BlocProvider.of<Session8bloc.Session_8_PlanBloc>(context);
     final Unlimited_PlanBloc _unlimited_bloc =
         BlocProvider.of<Unlimited_PlanBloc>(context);
+    final Session16Bloc.Session_16_PlanBloc session_16_planBloc =
+        BlocProvider.of<Session16Bloc.Session_16_PlanBloc>(context);
+    final Session_8_PlanBloc session_8_planBloc =
+        BlocProvider.of<Session_8_PlanBloc>(context);
 
-    final Session_16_PlanBloc session_16_planBloc =
-        BlocProvider.of<Session_16_PlanBloc>(context);
     final Session_12_PlanBloc session_12_planBloc =
         BlocProvider.of<Session_12_PlanBloc>(context);
     final Expense_PlanBloc expense_planBloc =
@@ -302,33 +321,45 @@ class _SearchState extends State<eightSession> {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 25.0, horizontal: 22),
-            child: Container(
-              height: 50,
-              decoration: BoxDecoration(
-                color: const Color(0xffFFA05D).withOpacity(0.2),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Type a name...',
-                  hintStyle: TextStyle(
-                      fontSize: 17,
-                      color: const Color(0xff202020).withOpacity(0.88)),
-                  icon: Padding(
-                    padding: EdgeInsets.only(left: 8.0),
-                    child: Icon(Icons.search,
-                        color: Color(0xff202020).withOpacity(0.5)),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: const Color(0xffFFA05D).withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: TextField(
+                      controller: _searchController,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Type a name...',
+                        hintStyle: TextStyle(
+                          fontSize: 17,
+                          color: const Color(0xff202020).withOpacity(0.88),
+                        ),
+                        icon: Padding(
+                          padding: EdgeInsets.only(left: 8.0),
+                          child: Icon(Icons.search,
+                              color: Color(0xff202020).withOpacity(0.5)),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                SizedBox(width: 10),
+                Container(
+                  width: 110,
+                  child: DropDownForFiltering(),
+                ),
+              ],
             ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 22),
             child: Text(
-              edit ? "edit a profile :" : "Add a profile :",
+              edit ? "Edit a profile:" : "Add a profile:",
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 18,
@@ -337,7 +368,7 @@ class _SearchState extends State<eightSession> {
             ),
           ),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 22.0),
+            margin: EdgeInsets.symmetric(horizontal: 18.0),
             padding: const EdgeInsets.all(10.0),
             decoration: BoxDecoration(
               color: Color(0xffF9F9F9),
@@ -362,7 +393,9 @@ class _SearchState extends State<eightSession> {
                 SizedBox(width: 30),
                 Expanded(child: _inputField(_creditController, 'Credit', true)),
                 SizedBox(width: 10),
-                Expanded(child: DropDown()),
+                Expanded(
+                    child:
+                        DropDownForDataEntry()), // Use the dropdown for data entry
                 SizedBox(width: 40),
                 Checkbox(
                   value: _tapisController.text.toLowerCase() == 'true',
