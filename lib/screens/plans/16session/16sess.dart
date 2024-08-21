@@ -58,14 +58,7 @@ class _SearchState extends State<sixSession> {
 
   String? _selectedSex;
   final List<String> _sexOptions = ['All', 'Male', 'Female'];
-
-  void _onSexChanged(String? newValue) {
-    setState(() {
-      _selectedSex = newValue;
-      _sexController.text = newValue!;
-      _filterItems();
-    });
-  }
+  final List<String> _sexOption = ['Male', 'Female'];
 
   @override
   void initState() {
@@ -90,12 +83,14 @@ class _SearchState extends State<sixSession> {
       }).toList();
     });
   }
-void _onSexChangedForFiltering(String? newValue) {
-  setState(() {
-    _selectedSexForFiltering = newValue;
-  });
-  _filterItems(); // Call the filtering method here
-}
+
+  void _onSexChangedForFiltering(String? newValue) {
+    setState(() {
+      _selectedSexForFiltering = newValue;
+    });
+    _filterItems(); // Call the filtering method here
+  }
+
   void _onSexChangedForDataEntry(String? newValue) {
     setState(() {
       _selectedSexForDataEntry = newValue;
@@ -122,7 +117,7 @@ void _onSexChangedForFiltering(String? newValue) {
         color: Colors.orange,
       ),
       value: _selectedSexForDataEntry,
-      items: _sexOptions.map((String sex) {
+      items: _sexOption.map((String sex) {
         return DropdownMenuItem<String>(
           value: sex,
           child: Text(
@@ -180,19 +175,46 @@ void _onSexChangedForFiltering(String? newValue) {
   }
 
   void _addProfile(User_Data? user) {
+    late User_Data userNew;
+    final Session16Bloc.Session_16_PlanBloc session_16_planBloc =
+        BlocProvider.of<Session16Bloc.Session_16_PlanBloc>(context);
+    if (checkDate) {
+      userNew = User_Data(
+          tapis: user!.tapis,
+          sex: user.sex,
+          id: user.id,
+          fullName: user.fullName,
+          plan: user.plan,
+          startingDate: user.startingDate,
+          endDate: user.endDate,
+          credit: user.credit,
+          sessionLeft: user.sessionLeft,
+          lastCheckDate: user.lastCheckDate,
+          phoneNumber: _phoneController.text);
+      session_16_planBloc.add(Event16.UpdateUserEvent(user: userNew));
+    }
+
     if (_nameController.text.isNotEmpty &&
         _idController.text.isNotEmpty &&
         _sexController.text.isNotEmpty &&
         _tapisController.text.isNotEmpty &&
         _creditController.text.isNotEmpty &&
         _phoneController.text.isNotEmpty) {
-      final Unlimited_PlanBloc _unlimited_bloc =
-          BlocProvider.of<Unlimited_PlanBloc>(context);
-      final Session16Bloc.Session_16_PlanBloc session_16_planBloc =
-          BlocProvider.of<Session16Bloc.Session_16_PlanBloc>(context);
-
       if (edit) {
-        // Update existing user logic
+        userNew = User_Data(
+            tapis: _tapisController.text.toLowerCase() == 'true',
+            sex: _sexController.text,
+            id: _idController.text,
+            fullName: _nameController.text,
+            plan: userr.plan,
+            startingDate: userr.startingDate,
+            endDate: userr.endDate,
+            credit: _creditController.text,
+            sessionLeft: userr.sessionLeft,
+            lastCheckDate: userr.lastCheckDate,
+            phoneNumber: _phoneController.text);
+
+        session_16_planBloc.add(Event16.UpdateUserEvent(user: userNew));
       } else {
         User_Data newUser = User_Data(
             sex: _sexController.text,
@@ -204,23 +226,23 @@ void _onSexChangedForFiltering(String? newValue) {
             credit: _creditController.text,
             id: _idController.text,
             sessionLeft: sessionNumber,
-            lastCheckDate: '',
+            lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
             phoneNumber: _phoneController.text);
-        _unlimited_bloc.add(AddUserEvent(user: newUser));
+        session_16_planBloc.add(Event16.AddUserEvent(user: newUser));
       }
 
       // Refresh the user list
       session_16_planBloc.add(Event16.GetUsersEvent());
 
       // Clear input fields and reset state
-      _nameController.clear();
-      _idController.clear();
-      _creditController.clear();
-      _phoneController.clear();
-      _sexController.clear();
-      _tapisController.text = 'false';
       setState(() {
-        _selectedSex = null;
+        _nameController.clear();
+        _idController.clear();
+        _creditController.clear();
+        _phoneController.clear();
+        _sexController.clear();
+        _tapisController.text = 'false';
+        _selectedSexForDataEntry = null;
       });
       _filteredItems = _allItems;
       count = 0;
@@ -239,8 +261,6 @@ void _onSexChangedForFiltering(String? newValue) {
       _selectedSexForDataEntry = user.sex;
 
       _tapisController.text = user.tapis.toString();
-
-      _selectedSex = user.sex;
 
       edit = true;
     });
@@ -305,9 +325,9 @@ void _onSexChangedForFiltering(String? newValue) {
   }
 
   void _deleteProfile(User_Data user) {
-    final Unlimited_PlanBloc _unlimited_bloc =
-        BlocProvider.of<Unlimited_PlanBloc>(context);
-    _unlimited_bloc.add(DeleteUserEvent(user: user));
+    final Session16Bloc.Session_16_PlanBloc session_16_planBloc =
+        BlocProvider.of<Session16Bloc.Session_16_PlanBloc>(context);
+    session_16_planBloc.add(Event16.DeleteUserEvent(user: user));
   }
 
   final ScrollController _scrollController = ScrollController();
@@ -322,6 +342,8 @@ void _onSexChangedForFiltering(String? newValue) {
     _creditController.dispose();
     _phoneController.dispose();
     _tapisController.dispose();
+    _selectedSexForDataEntry = null;
+
     super.dispose();
   }
 
@@ -714,7 +736,6 @@ void _onSexChangedForFiltering(String? newValue) {
             count = 0;
           },
         ),
-
         IconButton(
           icon: Icon(Icons.delete, color: Colors.red),
           onPressed: () {
@@ -722,12 +743,12 @@ void _onSexChangedForFiltering(String? newValue) {
             count = 0;
           },
         ),
-        // Checkbox(
-        //   value: user.isSessionMarked,
-        //   onChanged: (bool? value) {
-        //     _toggleSessionMark(user, value!);
-        //   },
-        // ),
+        Checkbox(
+          value: user.isSessionMarked,
+          onChanged: (bool? value) {
+            _toggleSessionMark(user, value!);
+          },
+        ),
       ],
     );
   }

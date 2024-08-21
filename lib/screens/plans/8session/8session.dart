@@ -62,14 +62,7 @@ class _SearchState extends State<eightSession> {
 
   String? _selectedSex;
   final List<String> _sexOptions = ['All', 'Male', 'Female'];
-
-  void _onSexChanged(String? newValue) {
-    setState(() {
-      _selectedSex = newValue;
-      _sexController.text = newValue!;
-      _filterItems();
-    });
-  }
+  final List<String> _sexOption = ['Male', 'Female'];
 
   @override
   void initState() {
@@ -128,7 +121,7 @@ class _SearchState extends State<eightSession> {
         color: Colors.orange,
       ),
       value: _selectedSexForDataEntry,
-      items: _sexOptions.map((String sex) {
+      items: _sexOption.map((String sex) {
         return DropdownMenuItem<String>(
           value: sex,
           child: Text(
@@ -244,10 +237,10 @@ class _SearchState extends State<eightSession> {
         _nameController.clear();
         _idController.clear();
         _creditController.clear();
-        _selectedSex = null;
         _phoneController.clear();
         _sexController.clear();
         _tapisController.text = 'false';
+        _selectedSexForDataEntry = null;
       });
     }
     _filteredItems = _allItems;
@@ -267,8 +260,6 @@ class _SearchState extends State<eightSession> {
       _selectedSexForDataEntry = user.sex;
 
       _tapisController.text = user.tapis.toString();
-
-      _selectedSex = user.sex;
 
       edit = true;
     });
@@ -350,6 +341,8 @@ class _SearchState extends State<eightSession> {
     _creditController.dispose();
     _phoneController.dispose();
     _tapisController.dispose();
+    _selectedSexForDataEntry = null;
+
     super.dispose();
   }
 

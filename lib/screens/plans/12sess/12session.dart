@@ -62,6 +62,7 @@ class _SearchState extends State<twlvSession> {
   DateTime? selectedDate;
 
   final List<String> _sexOptions = ['All', 'Male', 'Female'];
+  final List<String> _sexOption = ['Male', 'Female'];
 
   void _onSexChanged(String? newValue) {
     setState(() {
@@ -128,7 +129,7 @@ class _SearchState extends State<twlvSession> {
         color: Colors.orange,
       ),
       value: _selectedSexForDataEntry,
-      items: _sexOptions.map((String sex) {
+      items: _sexOption.map((String sex) {
         return DropdownMenuItem<String>(
           value: sex,
           child: Text(
