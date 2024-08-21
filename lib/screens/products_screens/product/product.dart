@@ -17,6 +17,8 @@ class _ProductDashboardState extends State<ProductDashboard> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
+  final TextEditingController _buyingController = TextEditingController();
+
   ScrollController scrollController = ScrollController();
 
   List<Product> _products = [];
@@ -76,7 +78,7 @@ class _ProductDashboardState extends State<ProductDashboard> {
         sold: product.sold,
         priceoverview: product.priceoverview,
         saleRecords: product.saleRecords);
-    productsBloc.add(UpdateProductEvent(product: productEdited));
+    productsBloc.add(UpdateProductEvent(product: productEdited,buyer: _buyingController.text));
 
     setState(() {
       _products[index] = productEdited;
@@ -84,7 +86,7 @@ class _ProductDashboardState extends State<ProductDashboard> {
     });
   }
 
-  void _updateQuantity(Product product, int change) {
+  void _updateQuantity(Product product, int change,  String? buyerController) {
     final ProductsBloc productsBloc = BlocProvider.of<ProductsBloc>(context);
     int index = _products.indexOf(product);
     if (_products[index].quantity + change >= 0) {
@@ -102,10 +104,11 @@ class _ProductDashboardState extends State<ProductDashboard> {
         _products[index].sold += saleQuantity;
         _products[index].priceoverview += _products[index].price;
       }
-      productsBloc.add(UpdateProductEvent(product: _products[index]));
+      productsBloc.add(UpdateProductEvent(product: _products[index], buyer: buyerController ));
     }
     setState(() {
       _filteredProducts = _products;
+      _buyingController.clear();
     });
   }
 
@@ -207,7 +210,8 @@ class _ProductDashboardState extends State<ProductDashboard> {
   }
 
   Widget _inputField(
-      TextEditingController controller, String hint, bool numberOrNot) {
+      TextEditingController controller, String hint, bool numberOrNot,
+      {Product? product = null}) {
     return TextFormField(
       controller: controller,
       keyboardType: numberOrNot ? TextInputType.number : TextInputType.text,
@@ -220,6 +224,11 @@ class _ProductDashboardState extends State<ProductDashboard> {
         ),
         contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       ),
+      onEditingComplete: () {
+        if (product != null) {
+          _updateQuantity(product, -1, _buyingController.text);
+        }
+      },
     );
   }
 
@@ -349,222 +358,236 @@ class _ProductDashboardState extends State<ProductDashboard> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: ListTile(
-                      contentPadding: EdgeInsets.all(12),
-                      title: Center(
-                        child: isEditing
-                            ? Form(
-                                key: _editFormKey,
-                                child: Column(
+                    child: Column(
+                      children: [
+                        ListTile(
+                          contentPadding: EdgeInsets.all(12),
+                          title: Center(
+                            child: isEditing
+                                ? Form(
+                                    key: _editFormKey,
+                                    child: Column(
+                                      children: [
+                                        TextFormField(
+                                          controller: _editNameController,
+                                          decoration: InputDecoration(
+                                              hintText: 'Name',
+                                              hintStyle: TextStyle(
+                                                  color: Colors.black)),
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return 'Please enter a name';
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                        TextFormField(
+                                          controller: _editPriceController,
+                                          decoration: InputDecoration(
+                                              hintText: 'Product Price',
+                                              hintStyle: TextStyle(
+                                                  color: Colors.black)),
+                                          keyboardType: TextInputType.number,
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return 'Please enter a price';
+                                            }
+                                            if (double.tryParse(value) ==
+                                                null) {
+                                              return 'Invalid price';
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                        TextFormField(
+                                          controller: _editQuantityController,
+                                          decoration: InputDecoration(
+                                            hintStyle:
+                                                TextStyle(color: Colors.black),
+                                            hintText: 'Quantity',
+                                          ),
+                                          keyboardType: TextInputType.number,
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return 'Please enter a quantity';
+                                            }
+                                            if (int.tryParse(value) == null) {
+                                              return 'Invalid quantity';
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: product.name,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                          ),
+                          subtitle: isEditing
+                              ? SizedBox.shrink()
+                              : Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    TextFormField(
-                                      controller: _editNameController,
-                                      decoration: InputDecoration(
-                                          hintText: 'Name',
-                                          hintStyle:
-                                              TextStyle(color: Colors.black)),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please enter a name';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                    TextFormField(
-                                      controller: _editPriceController,
-                                      decoration: InputDecoration(
-                                          hintText: 'Product Price',
-                                          hintStyle:
-                                              TextStyle(color: Colors.black)),
-                                      keyboardType: TextInputType.number,
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please enter a price';
-                                        }
-                                        if (double.tryParse(value) == null) {
-                                          return 'Invalid price';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                    TextFormField(
-                                      controller: _editQuantityController,
-                                      decoration: InputDecoration(
-                                        hintStyle:
-                                            TextStyle(color: Colors.black),
-                                        hintText: 'Quantity',
+                                    SizedBox(height: 5),
+                                    RichText(
+                                      text: TextSpan(
+                                        children: [
+                                          TextSpan(
+                                            text: 'Product Price : ',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              color: Color(0xff202020)
+                                                  .withOpacity(0.8),
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text:
+                                                '${product.price.toStringAsFixed(2)} DA',
+                                            style: TextStyle(
+                                              color: Colors.green,
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      keyboardType: TextInputType.number,
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please enter a quantity';
-                                        }
-                                        if (int.tryParse(value) == null) {
-                                          return 'Invalid quantity';
-                                        }
-                                        return null;
-                                      },
                                     ),
+                                    SizedBox(height: 5),
+                                    RichText(
+                                      text: TextSpan(
+                                        children: [
+                                          TextSpan(
+                                            text: 'Quantity : ',
+                                            style: TextStyle(
+                                              color: Color(0xff202020)
+                                                  .withOpacity(0.8),
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: '${product.quantity}',
+                                            style: TextStyle(
+                                              color: Colors.green,
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(height: 5),
+                                    RichText(
+                                      text: TextSpan(
+                                        children: [
+                                          TextSpan(
+                                            text: 'Sold : ',
+                                            style: TextStyle(
+                                              color: Color(0xff202020)
+                                                  .withOpacity(0.8),
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: '${product.sold}',
+                                            style: TextStyle(
+                                              color: Colors.green,
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(height: 5),
+                                    RichText(
+                                      text: TextSpan(
+                                        children: [
+                                          TextSpan(
+                                            text: 'Sale price : ',
+                                            style: TextStyle(
+                                              color: Color(0xff202020)
+                                                  .withOpacity(0.8),
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: '${product.priceoverview} DA',
+                                            style: TextStyle(
+                                              color: Colors.green,
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    _inputField(
+                                        _buyingController, 'user id', true,
+                                        product: product)
                                   ],
                                 ),
-                              )
-                            : RichText(
-                                text: TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: product.name,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: Icon(isEditing ? Icons.check : Icons.edit,
+                                    color:
+                                        isEditing ? Colors.green : Colors.blue),
+                                onPressed: () {
+                                  if (isEditing) {
+                                    if (_editFormKey.currentState?.validate() ??
+                                        false) {
+                                      _editProduct(
+                                          product.id,
+                                          index,
+                                          _editNameController.text,
+                                          double.parse(
+                                              _editPriceController.text),
+                                          int.parse(
+                                              _editQuantityController.text),
+                                          product);
+                                      setState(() {
+                                        _editingId = null;
+                                      });
+                                    }
+                                  } else {
+                                    setState(() {
+                                      _editingId = product.id;
+                                    });
+                                  }
+                                },
                               ),
-                      ),
-                      subtitle: isEditing
-                          ? SizedBox.shrink()
-                          : Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(height: 5),
-                                RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: 'Product Price : ',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          color: Color(0xff202020)
-                                              .withOpacity(0.8),
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text:
-                                            '${product.price.toStringAsFixed(2)} DA',
-                                        style: TextStyle(
-                                          color: Colors.green,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(height: 5),
-                                RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: 'Quantity : ',
-                                        style: TextStyle(
-                                          color: Color(0xff202020)
-                                              .withOpacity(0.8),
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: '${product.quantity}',
-                                        style: TextStyle(
-                                          color: Colors.green,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(height: 5),
-                                RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: 'Sold : ',
-                                        style: TextStyle(
-                                          color: Color(0xff202020)
-                                              .withOpacity(0.8),
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: '${product.sold}',
-                                        style: TextStyle(
-                                          color: Colors.green,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(height: 5),
-                                RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: 'Sale price : ',
-                                        style: TextStyle(
-                                          color: Color(0xff202020)
-                                              .withOpacity(0.8),
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: '${product.priceoverview} DA',
-                                        style: TextStyle(
-                                          color: Colors.green,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            icon: Icon(isEditing ? Icons.check : Icons.edit,
-                                color: isEditing ? Colors.green : Colors.blue),
-                            onPressed: () {
-                              if (isEditing) {
-                                if (_editFormKey.currentState?.validate() ??
-                                    false) {
-                                  _editProduct(
-                                      product.id,
-                                      index,
-                                      _editNameController.text,
-                                      double.parse(_editPriceController.text),
-                                      int.parse(_editQuantityController.text),
-                                      product);
-                                  setState(() {
-                                    _editingId = null;
-                                  });
-                                }
-                              } else {
-                                setState(() {
-                                  _editingId = product.id;
-                                });
-                              }
-                            },
+                              IconButton(
+                                icon: Icon(Icons.add, color: Colors.green),
+                                onPressed: () => _updateQuantity(product, 1,_buyingController.text),
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.remove, color: Colors.red),
+                                onPressed: () => _updateQuantity(product, -1, _buyingController.text),
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.delete, color: Colors.red),
+                                onPressed: () => _removeProduct(product),
+                              ),
+                            ],
                           ),
-                          IconButton(
-                            icon: Icon(Icons.add, color: Colors.green),
-                            onPressed: () => _updateQuantity(product, 1),
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.remove, color: Colors.red),
-                            onPressed: () => _updateQuantity(product, -1),
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.delete, color: Colors.red),
-                            onPressed: () => _removeProduct(product),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

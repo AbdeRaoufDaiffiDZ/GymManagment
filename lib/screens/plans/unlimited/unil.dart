@@ -185,6 +185,7 @@ class _SearchState extends State<unlimited> {
 
       if (edit) {
         final userNew = User_Data(
+            isEdit: true,
             tapis: _tapisController.text.toLowerCase() == 'true',
             sex: _sexController.text,
             id: _idController.text,
@@ -483,7 +484,7 @@ class _SearchState extends State<unlimited> {
                       3: FixedColumnWidth(170),
                       4: FixedColumnWidth(170),
                       5: FixedColumnWidth(170),
-                     6: FixedColumnWidth(220),
+                      6: FixedColumnWidth(220),
                     },
                     children: [
                       TableRow(

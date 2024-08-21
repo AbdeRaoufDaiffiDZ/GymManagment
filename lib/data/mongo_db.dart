@@ -57,7 +57,7 @@ class MongoDatabase {
       await collectiongYM?.update(where.eq('plan', user.plan),
           modify.addToSet("${user.plan}", documentToInsert));
 
-          GymData(user, collectionName, collectiongYM, false, 0);
+      GymData(user, collectionName, collectiongYM, 0);
 
       // where.eq('plan', user.plan).eq("${user.plan}._id", user.id),
       // modify.set('${user.plan}.\$.$key', value));
@@ -169,7 +169,6 @@ class MongoDatabase {
       final dataUser = await RetriveData(collectionName: collectionName);
       if (dataUser.isRight) {
         bool isNotSameCredit = false;
-        bool creditType = false;
 
         /// false for Positive, true for negative
         int credit = int.parse((dataUser.right
@@ -178,17 +177,9 @@ class MongoDatabase {
             .credit));
         if (credit != int.parse(user.credit)) {
           isNotSameCredit = true;
-          if (credit < int.parse(user.credit)) {
-            creditType = true;
-          } else {
-            creditType = false;
-          }
         }
-        if (DateFormat('yyyy-MM-dd').format(user.startingDate) ==
-                    DateFormat('yyyy-MM-dd').format(DateTime.now()) &&
-                user.renew ||
-            isNotSameCredit) {
-          GymData(user, collectionName, collectiongYM, creditType, credit);
+        if (user.renew || isNotSameCredit) {
+          GymData(user, collectionName, collectiongYM, credit);
         }
       }
 
@@ -305,7 +296,9 @@ class MongoDatabase {
   }
 
   Future<Either<Failure, bool>> UpdateProductData(
-      {required Product product, required String collectionName}) async {
+      {required Product product,
+      required String collectionName,
+      required String? id}) async {
     try {
       if (db == null) {
         await connect();
@@ -350,6 +343,10 @@ class MongoDatabase {
                   where.eq('plan', "Expense"), modify.set("GymParam", gymData));
             }
           }
+        }
+        if (id != null) {
+          UpdateUserUsingRFID(
+              id: id, ISbuyer: true, buyingPrice: product.price);
         }
       });
 
@@ -465,16 +462,30 @@ class MongoDatabase {
 
   ////////////////////////////////////////////////////// help functions
 
-  Future GymData(User_Data user, collectionName, collectiongYM, bool credittype,
-      int oldCredit) async {
+  Future GymData(
+      User_Data user, collectionName, collectiongYM, int oldCredit) async {
     var gymParam = await GymParamRetrive(
         collectionName: "Expense"); // here we get the Expenses from our databse
     if (gymParam.isRight) {
-      gymParam.right.totalCredit =
-          !credittype // this logic modifies the total creadit eihter by increment or decrement
-              // if credit is beleow the old one we substract else we  add
-              ? gymParam.right.totalCredit - oldCredit + int.parse(user.credit)
-              : gymParam.right.totalCredit + int.parse(user.credit);
+      int money = oldCredit - int.parse(user.credit);
+      if (money == oldCredit) {
+// if the old - the new is the same as the old means the new is 0, means the credit has been payed
+        gymParam.right.totalCredit = gymParam.right.totalCredit - oldCredit;
+      } else if (money < 0) {
+        /// if the old - the new is < 0 means there is new credit which is | money|
+        gymParam.right.totalCredit = gymParam.right.totalCredit - money;
+      } else if (money == 0) {
+        /// means the old credit and the new are the same
+        gymParam.right.totalCredit = gymParam.right.totalCredit;
+      } else if (money < oldCredit && money > 0) {
+        /// means the user payed some money
+        gymParam.right.totalCredit = gymParam.right.totalCredit - money;
+      }
+      // gymParam.right.totalCredit =
+      //     !credittype // this logic modifies the total creadit eihter by increment or decrement
+      //         // if credit is beleow the old one we substract else we  add
+      //         ? gymParam.right.totalCredit - oldCredit + int.parse(user.credit)
+      //         : gymParam.right.totalCredit + int.parse(user.credit);
       bool cond = gymParam.right.peopleIncome
           .where((element) =>
               DateFormat('yyyy-MM-dd').format(element.dateTime) ==
@@ -484,12 +495,30 @@ class MongoDatabase {
         gymParam.right.peopleIncome.forEach((element) {
           if (DateFormat('yyyy-MM-dd').format(element.dateTime) ==
               DateFormat('yyyy-MM-dd').format(DateTime.now())) {
-            element.dayIncome = element.dayIncome +
-                PlanPrices[collectionName]! -
-                int.parse(user.credit) +
-                (user.tapis ? PlanPrices['tapis']! : 0);
+// we check if the user has edited his credit or not since the credit is the only editable thing
+            /// if yes we increment the income by the credit
+            if (user.isEdit) {
+              if (money <= oldCredit && money >= 0) {
+                element.dayIncome = element.dayIncome + money;
+                element.dateTime = DateTime.now();
+              }
+            } else {
+              if (user.renew) {
+                oldCredit = oldCredit + PlanPrices[user.plan]!;
+                money = oldCredit - int.parse(user.credit);
 
-            element.dateTime = DateTime.now();
+                if (money <= oldCredit && money > 0) {
+                  // here we check if the old credit has been payed or not old - new = old
+                  element.dayIncome = element.dayIncome +
+                      money + // here we renew and we add the plan price - what remains from the creadite payment
+                      (user.tapis ? PlanPrices['tapis']! : 0);
+                } else {
+                  element.dayIncome = element.dayIncome;
+                }
+              }
+
+              element.dateTime = DateTime.now();
+            }
           }
         });
       } else {
@@ -510,7 +539,9 @@ class MongoDatabase {
   ///
 
   Future<Either<Failure, List<dynamic>>> UpdateUserUsingRFID(
-      {required String id}) async {
+      {required String id,
+      bool ISbuyer = false,
+      double buyingPrice = 0}) async {
     try {
       if (db == null) {
         await connect();
@@ -532,43 +563,61 @@ class MongoDatabase {
             if (user['_id'] == id) {
               idFound = true;
               //  we check if the user id is the same as the RFID card UID
-              if (element.keys.toList()[1] == 'unlimited') {
-                // for unlimited plan has to check to eneding date only
-                DateFormat('yyyy-MM-dd').format(user['endDate']) ==
-                        DateFormat('yyyy-MM-dd').format(DateTime.now())
-                    ? dataBase_Condition = 'Abonnment ended'
-                    : dataBase_Condition = 'Unlimited Abonnment';
+              if (ISbuyer) {
+                int oldCredit = int.parse(user['credit']);
+                user['credit'] =
+                    (int.parse(user['credit']) + buyingPrice.toInt())
+                        .toString();
+                GymData(User_Data.fromMap(user), user['plan'], collectiongYM, oldCredit);
+
+                user.forEach((key, value) async {
+                  await collectiongYM?.update(
+                      // where.eq('_id', user.id), modify.addToSet("hello", {"raouf":"daFFii","test":1}));
+
+                      where
+                          .eq('plan', user['plan'])
+                          .eq("${user['plan']}._id", user['_id']),
+                      modify.set('${user['plan']}.\$.$key', value));
+                });
               } else {
-                if (user['lastCheckDate'] !=
-                    DateFormat('yyyy-MM-dd').format(DateTime.now())) {
-                  user['isSessionMarked'] = true;
-                  user['lastCheckDate'] =
-                      DateFormat('yyyy-MM-dd').format(DateTime.now());
-                  ;
-
-                  user['sessionLeft'] =
-                      user['sessionLeft'] <= 0 ? 0 : user['sessionLeft'] - 1;
-
-                  user.forEach((key, value) async {
-                    await collectiongYM?.update(
-                        // where.eq('_id', user.id), modify.addToSet("hello", {"raouf":"daFFii","test":1}));
-
-                        where
-                            .eq('plan', user['plan'])
-                            .eq("${user['plan']}._id", user['_id']),
-                        modify.set('${user['plan']}.\$.$key', value));
-                  });
-
-                  dataBase_Condition = "session marked";
-
-                  ///
+                if (element.keys.toList()[1] == 'unlimited') {
+                  // for unlimited plan has to check to eneding date only
+                  DateFormat('yyyy-MM-dd').format(user['endDate']) ==
+                          DateFormat('yyyy-MM-dd').format(DateTime.now())
+                      ? dataBase_Condition = 'Abonnment ended'
+                      : dataBase_Condition = 'Unlimited Abonnment';
                 } else {
-                  dataBase_Condition = "user passed before";
+                  if (user['lastCheckDate'] !=
+                      DateFormat('yyyy-MM-dd').format(DateTime.now())) {
+                    user['isSessionMarked'] = true;
+                    user['lastCheckDate'] =
+                        DateFormat('yyyy-MM-dd').format(DateTime.now());
+                    ;
 
-                  ///
+                    user['sessionLeft'] =
+                        user['sessionLeft'] <= 0 ? 0 : user['sessionLeft'] - 1;
+
+                    user.forEach((key, value) async {
+                      await collectiongYM?.update(
+                          // where.eq('_id', user.id), modify.addToSet("hello", {"raouf":"daFFii","test":1}));
+
+                          where
+                              .eq('plan', user['plan'])
+                              .eq("${user['plan']}._id", user['_id']),
+                          modify.set('${user['plan']}.\$.$key', value));
+                    });
+
+                    dataBase_Condition = "session marked";
+
+                    ///
+                  } else {
+                    dataBase_Condition = "user passed before";
+
+                    ///
+                  }
                 }
+                userDataToGet = User_Data.fromMap(user);
               }
-              userDataToGet = User_Data.fromMap(user);
             } else {}
             if (idFound) {
             } else {

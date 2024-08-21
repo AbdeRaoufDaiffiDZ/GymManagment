@@ -30,8 +30,8 @@ class DeleteProductEvent extends ProductsBlocEvent {
 
 class UpdateProductEvent extends ProductsBlocEvent {
   final Product product;
-
-  UpdateProductEvent({
+  final String? buyer;
+  UpdateProductEvent({required this.buyer,
     required this.product,
   });
 

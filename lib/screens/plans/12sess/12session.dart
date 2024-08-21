@@ -206,6 +206,7 @@ class _SearchState extends State<twlvSession> {
         _phoneController.text.isNotEmpty) {
       if (edit) {
         userNew = User_Data(
+          isEdit: true,
             tapis: _tapisController.text.toLowerCase() == 'true',
             sex: _sexController.text,
             id: _idController.text,

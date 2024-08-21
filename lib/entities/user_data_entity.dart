@@ -1,11 +1,10 @@
-
 // ignore_for_file: must_be_immutable
 
 import 'package:equatable/equatable.dart';
-import 'package:mongo_dart/mongo_dart.dart';
 
 class User_Data extends Equatable {
   final String phoneNumber;
+  final int buyingCredit;
   final String id;
   final bool renew;
   final bool tapis;
@@ -15,12 +14,19 @@ class User_Data extends Equatable {
   String? lastCheckDate;
   DateTime startingDate;
   DateTime endDate;
-   String credit;
-   int sessionLeft;
+  String credit;
+  int sessionLeft;
   bool isSessionMarked;
-
-  User_Data( { this.tapis =false ,this.renew = false,required this.phoneNumber,required this.lastCheckDate,required this.sessionLeft,
-    required this.id,required this.sex,
+  bool isEdit;
+  User_Data({  this.isEdit =false,
+    this.buyingCredit = 0,
+    this.tapis = false,
+    this.renew = false,
+    required this.phoneNumber,
+    required this.lastCheckDate,
+    required this.sessionLeft,
+    required this.id,
+    required this.sex,
     required this.fullName,
     required this.plan,
     required this.startingDate,
@@ -30,9 +36,14 @@ class User_Data extends Equatable {
   });
 
   @override
-  List<Object?> get props => [phoneNumber,renew,sex,tapis,
-    lastCheckDate,
-    sessionLeft,
+  List<Object?> get props => [ isEdit,
+        phoneNumber,
+        renew,
+        sex,
+        tapis,
+        buyingCredit,
+        lastCheckDate,
+        sessionLeft,
         fullName,
         plan,
         startingDate,
@@ -44,13 +55,14 @@ class User_Data extends Equatable {
 
   factory User_Data.fromMap(Map<String, dynamic> map) {
     return User_Data(
-      tapis:map['tapis'] ?? false,
-      sex:map['sex'] ?? 'Male',
+      buyingCredit: map['buyingCredit'] ?? 0,
+      tapis: map['tapis'] ?? false,
+      sex: map['sex'] ?? 'Male',
       renew: map['renew'] ?? false,
       phoneNumber: map['phoneNumber'] ?? '',
-      lastCheckDate:map['lastCheckDate'] ?? null,
+      lastCheckDate: map['lastCheckDate'] ?? null,
       sessionLeft: map['sessionLeft'] ?? 0,
-      id: map['_id'] ?? ObjectId,
+      id: map['_id'] ?? '',
       fullName: map['fullName'] ?? '',
       plan: map['plan'] ?? '',
       startingDate: map['startingDate'] ?? DateTime.now(),
@@ -62,12 +74,13 @@ class User_Data extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'tapis':tapis,
-      'sex':sex,
-      'renew':renew,
-      'phoneNumber':phoneNumber,
-      'lastCheckDate':lastCheckDate,
-      'sessionLeft':sessionLeft,
+      'buyingCredit': buyingCredit,
+      'tapis': tapis,
+      'sex': sex,
+      'renew': renew,
+      'phoneNumber': phoneNumber,
+      'lastCheckDate': lastCheckDate,
+      'sessionLeft': sessionLeft,
       '_id': id,
       'fullName': fullName,
       'plan': plan,
@@ -77,8 +90,8 @@ class User_Data extends Equatable {
       'isSessionMarked': isSessionMarked,
     };
   }
-   int get daysLeft {
+
+  int get daysLeft {
     return endDate.difference(DateTime.now()).inDays;
   }
-
 }
