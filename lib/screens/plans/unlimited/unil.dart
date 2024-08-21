@@ -192,7 +192,7 @@ class _SearchState extends State<unlimited> {
       if (edit) {
         final userNew = User_Data(
             tapis: _tapisController.text.toLowerCase() == 'true',
-            sex: userr.sex,
+            sex: _sexController.text,
             id: _idController.text,
             fullName: _nameController.text,
             plan: userr.plan,
@@ -244,6 +244,7 @@ class _SearchState extends State<unlimited> {
       _idController.text = user.id;
       _creditController.text = user.credit;
       _sexController.text = user.sex;
+      _selectedSexForDataEntry = user.sex;
       _tapisController.text = user.tapis.toString();
 
       _selectedSex = user.sex;

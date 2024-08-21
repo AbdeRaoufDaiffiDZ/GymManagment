@@ -237,6 +237,8 @@ class _SearchState extends State<sixSession> {
       _idController.text = user.id;
       _creditController.text = user.credit;
       _sexController.text = user.sex;
+            _selectedSexForDataEntry = user.sex;
+
       _tapisController.text = user.tapis.toString();
 
       _selectedSex = user.sex;

@@ -186,7 +186,7 @@ class _SearchState extends State<twlvSession> {
 
   void _addProfile(User_Data? user) {
     late User_Data userNew;
-    final Session12bloc.Session_12_PlanBloc _unlimited_bloc =
+    final Session12bloc.Session_12_PlanBloc session_12_planBloc =
         BlocProvider.of<Session12bloc.Session_12_PlanBloc>(context);
     if (checkDate) {
       userNew = User_Data(
@@ -202,7 +202,7 @@ class _SearchState extends State<twlvSession> {
           lastCheckDate: user.lastCheckDate,
           phoneNumber: user.phoneNumber);
 
-      _unlimited_bloc.add(Event12.UpdateUserEvent(user: userNew));
+      session_12_planBloc.add(Event12.UpdateUserEvent(user: userNew));
     }
     if (_nameController.text.isNotEmpty &&
         _tapisController.text.isNotEmpty &&
@@ -213,7 +213,7 @@ class _SearchState extends State<twlvSession> {
       if (edit) {
         userNew = User_Data(
             tapis: _tapisController.text.toLowerCase() == 'true',
-            sex: userr.sex,
+            sex: _sexController.text,
             id: _idController.text,
             fullName: _nameController.text,
             plan: userr.plan,
@@ -224,9 +224,8 @@ class _SearchState extends State<twlvSession> {
             lastCheckDate: userr.lastCheckDate,
             phoneNumber: _phoneController.text);
 
-        final Session12bloc.Session_12_PlanBloc _unlimited_bloc =
-            BlocProvider.of<Session12bloc.Session_12_PlanBloc>(context);
-        _unlimited_bloc.add(Event12.UpdateUserEvent(user: userNew));
+      
+        session_12_planBloc.add(Event12.UpdateUserEvent(user: userNew));
       } else {
         User_Data newUser = User_Data(
             tapis: _tapisController.text.toLowerCase() == 'true',
@@ -240,7 +239,7 @@ class _SearchState extends State<twlvSession> {
             sessionLeft: sessionNumber,
             lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
             phoneNumber: _phoneController.text);
-        _unlimited_bloc.add(Event12.AddUserEvent(user: newUser));
+        session_12_planBloc.add(Event12.AddUserEvent(user: newUser));
       }
 
       setState(() {
@@ -267,6 +266,8 @@ class _SearchState extends State<twlvSession> {
       _idController.text = user.id;
       _creditController.text = user.credit;
       _sexController.text = user.sex;
+            _selectedSexForDataEntry = user.sex;
+
       _tapisController.text = user.tapis.toString();
 
       _selectedSex = user.sex;
@@ -280,7 +281,7 @@ class _SearchState extends State<twlvSession> {
     setState(() {
       count = 0;
     });
-    final Session12bloc.Session_12_PlanBloc _unlimited_bloc =
+    final Session12bloc.Session_12_PlanBloc session_12_planBloc =
         BlocProvider.of<Session12bloc.Session_12_PlanBloc>(context);
     final renewUser = User_Data(
         tapis: user.tapis,
@@ -295,13 +296,13 @@ class _SearchState extends State<twlvSession> {
         sessionLeft: sessionNumber,
         lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
         phoneNumber: user.phoneNumber);
-    _unlimited_bloc.add(Event12.UpdateUserEvent(user: renewUser));
+    session_12_planBloc.add(Event12.UpdateUserEvent(user: renewUser));
   }
 
   void _deleteProfile(User_Data user) {
-    final Unlimited_PlanBloc _unlimited_bloc =
-        BlocProvider.of<Unlimited_PlanBloc>(context);
-    _unlimited_bloc.add(DeleteUserEvent(user: user));
+    final Session12bloc.Session_12_PlanBloc session_12_planBloc =
+        BlocProvider.of<Session12bloc.Session_12_PlanBloc>(context);
+    session_12_planBloc.add(Event12.DeleteUserEvent(user: user));
   }
 
   void _toggleSessionMark(User_Data user, bool value) {
@@ -752,12 +753,12 @@ class _SearchState extends State<twlvSession> {
             count = 0;
           },
         ),
-        // Checkbox(
-        //   value: user.isSessionMarked,
-        //   onChanged: (bool? value) {
-        //     _toggleSessionMark(user, value!);
-        //   },
-        // ),
+        Checkbox(
+          value: user.isSessionMarked,
+          onChanged: (bool? value) {
+            _toggleSessionMark(user, value!);
+          },
+        ),
       ],
     );
   }

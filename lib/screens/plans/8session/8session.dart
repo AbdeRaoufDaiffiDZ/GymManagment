@@ -212,7 +212,7 @@ class _SearchState extends State<eightSession> {
       if (edit) {
         userNew = User_Data(
             tapis: _tapisController.text.toLowerCase() == 'true',
-            sex: userr.sex,
+            sex: _sexController.text,
             id: _idController.text,
             fullName: _nameController.text,
             plan: userr.plan,
@@ -263,6 +263,8 @@ class _SearchState extends State<eightSession> {
       _idController.text = user.id;
       _creditController.text = user.credit;
       _sexController.text = user.sex;
+      _selectedSexForDataEntry = user.sex;
+
       _tapisController.text = user.tapis.toString();
 
       _selectedSex = user.sex;
@@ -330,9 +332,9 @@ class _SearchState extends State<eightSession> {
   }
 
   void _deleteProfile(User_Data user) {
-    final Unlimited_PlanBloc _unlimited_bloc =
-        BlocProvider.of<Unlimited_PlanBloc>(context);
-    _unlimited_bloc.add(DeleteUserEvent(user: user));
+    final Session8bloc.Session_8_PlanBloc session_8_planBloc =
+        BlocProvider.of<Session8bloc.Session_8_PlanBloc>(context);
+    session_8_planBloc.add(Event8.DeleteUserEvent(user: user));
   }
 
   final ScrollController _scrollController = ScrollController();
@@ -747,12 +749,12 @@ class _SearchState extends State<eightSession> {
             count = 0;
           },
         ),
-        // Checkbox(
-        //   value: user.isSessionMarked,
-        //   onChanged: (bool? value) {
-        //     _toggleSessionMark(user, value!);
-        //   },
-        // ),
+        Checkbox(
+          value: user.isSessionMarked,
+          onChanged: (bool? value) {
+            _toggleSessionMark(user, value!);
+          },
+        ),
       ],
     );
   }
