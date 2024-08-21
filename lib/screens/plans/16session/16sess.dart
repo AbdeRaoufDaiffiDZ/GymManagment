@@ -56,7 +56,9 @@ class _SearchState extends State<sixSession> {
   List<User_Data> _filteredItems = [];
   DateTime? selectedDate;
 
-  final List<String> _sexOptions = ['Male', 'Female'];
+  String? _selectedSex;
+  final List<String> _sexOptions = ['All', 'Male', 'Female'];
+  final List<String> _sexOption = ['Male', 'Female'];
 
   @override
   void initState() {
@@ -72,7 +74,8 @@ class _SearchState extends State<sixSession> {
     setState(() {
       _filteredItems = _allItems.where((item) {
         final matchesName = item.fullName.toLowerCase().contains(query);
-        final matchesSex = _selectedSexForFiltering == null ||
+        final matchesSex = _selectedSexForFiltering == 'All' ||
+            _selectedSexForFiltering == null ||
             _selectedSexForFiltering!.isEmpty ||
             item.sex == _selectedSexForFiltering;
 
@@ -114,7 +117,7 @@ class _SearchState extends State<sixSession> {
         color: Colors.orange,
       ),
       value: _selectedSexForDataEntry,
-      items: _sexOptions.map((String sex) {
+      items: _sexOption.map((String sex) {
         return DropdownMenuItem<String>(
           value: sex,
           child: Text(

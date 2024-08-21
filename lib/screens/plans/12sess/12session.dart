@@ -58,9 +58,19 @@ class _SearchState extends State<twlvSession> {
   List<User_Data> _allItems = [];
   List<User_Data> _filteredItems = [];
 
+  String? _selectedSex;
   DateTime? selectedDate;
 
-  final List<String> _sexOptions = ['Male', 'Female'];
+  final List<String> _sexOptions = ['All', 'Male', 'Female'];
+  final List<String> _sexOption = ['Male', 'Female'];
+
+  void _onSexChanged(String? newValue) {
+    setState(() {
+      _selectedSex = newValue;
+      _sexController.text = newValue!;
+      _filterItems();
+    });
+  }
 
   @override
   void initState() {
@@ -76,7 +86,8 @@ class _SearchState extends State<twlvSession> {
     setState(() {
       _filteredItems = _allItems.where((item) {
         final matchesName = item.fullName.toLowerCase().contains(query);
-        final matchesSex = _selectedSexForFiltering == null ||
+        final matchesSex = _selectedSexForFiltering == 'All' ||
+            _selectedSexForFiltering == null ||
             _selectedSexForFiltering!.isEmpty ||
             item.sex == _selectedSexForFiltering;
 
@@ -86,11 +97,11 @@ class _SearchState extends State<twlvSession> {
   }
 
   void _onSexChangedForFiltering(String? newValue) {
-    setState(() {
-      _selectedSexForFiltering = newValue;
-    });
-    _filterItems(); // Call the filtering method here
-  }
+  setState(() {
+    _selectedSexForFiltering = newValue;
+  });
+  _filterItems(); // Call the filtering method here
+}
 
   void _onSexChangedForDataEntry(String? newValue) {
     setState(() {
@@ -118,7 +129,7 @@ class _SearchState extends State<twlvSession> {
         color: Colors.orange,
       ),
       value: _selectedSexForDataEntry,
-      items: _sexOptions.map((String sex) {
+      items: _sexOption.map((String sex) {
         return DropdownMenuItem<String>(
           value: sex,
           child: Text(
@@ -234,7 +245,7 @@ class _SearchState extends State<twlvSession> {
 
       setState(() {
         _nameController.clear();
-        _selectedSexForDataEntry = null;
+        _selectedSex = null;
         _idController.clear();
         _creditController.clear();
         _phoneController.clear();
@@ -259,6 +270,8 @@ class _SearchState extends State<twlvSession> {
       _selectedSexForDataEntry = user.sex;
 
       _tapisController.text = user.tapis.toString();
+
+      _selectedSex = user.sex;
 
       edit = true;
     });

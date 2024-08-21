@@ -55,7 +55,8 @@ class _SearchState extends State<unlimited> {
   List<User_Data> _filteredItems = [];
   DateTime? selectedDate;
 
-  final List<String> _sexOptions = ['Male', 'Female'];
+  final List<String> _sexOptions = ['All', 'Male', 'Female'];
+  final List<String> _sexOption = ['All', 'Male', 'Female'];
 
   @override
   void initState() {
@@ -71,7 +72,8 @@ class _SearchState extends State<unlimited> {
     setState(() {
       _filteredItems = _allItems.where((item) {
         final matchesName = item.fullName.toLowerCase().contains(query);
-        final matchesSex = _selectedSexForFiltering == null ||
+        final matchesSex = _selectedSexForFiltering == 'All' ||
+            _selectedSexForFiltering == null ||
             _selectedSexForFiltering!.isEmpty ||
             item.sex == _selectedSexForFiltering;
 
