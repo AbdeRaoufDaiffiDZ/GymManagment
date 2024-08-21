@@ -306,6 +306,10 @@ class MongoDatabase {
       final collectiongYM = db?.collection(gymCollection);
 
       final data = product.toMap();
+       if (id != null) {
+          UpdateUserUsingRFID(
+              id: id, ISbuyer: true, buyingPrice: product.price);
+        }
       data.forEach((key, value) async {
         if (key == "saleRecords") {
           final List<SaleRecord> sale = value;
@@ -325,7 +329,7 @@ class MongoDatabase {
               modify.set('$collectionName.\$.$key', value));
           if (key == 'productPrice') {
             var gymParam = await GymParamRetrive(collectionName: "Expense");
-            if (gymParam.isRight) {
+            if (gymParam.isRight && id == null) {
               /////////////////////  check if the data is right
 
               gymParam.right.peopleIncome.forEach((element) {
@@ -344,10 +348,7 @@ class MongoDatabase {
             }
           }
         }
-        if (id != null) {
-          UpdateUserUsingRFID(
-              id: id, ISbuyer: true, buyingPrice: product.price);
-        }
+       
       });
 
       return Right(true);
