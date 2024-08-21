@@ -74,7 +74,7 @@ class Rfid_PlanBloc extends Bloc<Rfid_PlanEvent, Rfid_PlanState> {
               5: FixedColumnWidth(100),
               6: FixedColumnWidth(100),
               7: FixedColumnWidth(200),
-              if (!isUnlimited) 5: FixedColumnWidth(100),
+              if (!isUnlimited) 8: FixedColumnWidth(100),
             },
             children: [
               TableRow(
