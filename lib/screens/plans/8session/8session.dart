@@ -520,64 +520,72 @@ class _SearchState extends State<eightSession> {
                 }
                 _filteredItems
                     .sort((a, b) => a.sessionLeft.compareTo(b.sessionLeft));
-                return SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Table(
-                    columnWidths: {
-                      0: FixedColumnWidth(230),
-                      1: FixedColumnWidth(230),
-                      2: FixedColumnWidth(150),
-                      3: FixedColumnWidth(150),
-                      4: FixedColumnWidth(200),
-                      5: FixedColumnWidth(100),
-                      6: FixedColumnWidth(200),
-                    },
-                    children: [
-                      TableRow(
-                        decoration: BoxDecoration(
-                          color: Color(0xffFFA05D).withOpacity(0.4),
-                        ),
-                        children: [
-                          _tableHeaderCell("Name"),
-                          _tableHeaderCell("Phone Number"),
-                          _tableHeaderCell("Sex"),
-                          _tableHeaderCell("Days left"),
-                          _tableHeaderCell("Sessions Left"),
-                          _tableHeaderCell("Credit"),
-                          _tableHeaderCell(""),
-                        ],
-                      ),
-                      for (var user in _filteredItems)
+                return Scrollbar(
+                thumbVisibility: true, // Always show the scrollbar thumb
+                controller:
+                    _scrollController, // Attach the controller to the Scrollbar
+
+                child: SingleChildScrollView(
+                  controller:
+                      _scrollController,
+                    scrollDirection: Axis.horizontal,
+                    child: Table(
+                      columnWidths: {
+                        0: FixedColumnWidth(230),
+                        1: FixedColumnWidth(230),
+                        2: FixedColumnWidth(150),
+                        3: FixedColumnWidth(150),
+                        4: FixedColumnWidth(200),
+                        5: FixedColumnWidth(100),
+                        6: FixedColumnWidth(200),
+                      },
+                      children: [
                         TableRow(
                           decoration: BoxDecoration(
-                            color: (user.sessionLeft <= 0 ||
-                                    user.endDate
-                                            .difference(DateTime.now())
-                                            .inDays <=
-                                        0)
-                                ? Colors.red.withOpacity(0.3)
-                                : (user.sessionLeft <= 3 ||
-                                        user.endDate
-                                                .difference(DateTime.now())
-                                                .inDays <=
-                                            3)
-                                    ? Colors.orange.withOpacity(0.2)
-                                    : Color(0xffFAFAFA),
+                            color: Color(0xffFFA05D).withOpacity(0.4),
                           ),
                           children: [
-                            _tableCell(user.fullName),
-                            _tableCell(user.phoneNumber),
-                            _tableCell(user.sex),
-                            _tableCell(user.endDate
-                                .difference(DateTime.now())
-                                .inDays
-                                .toString()),
-                            _tableCell(user.sessionLeft.toString()),
-                            _tableCell(user.credit),
-                            _tableCellActions(user),
+                            _tableHeaderCell("Name"),
+                            _tableHeaderCell("Phone Number"),
+                            _tableHeaderCell("Sex"),
+                            _tableHeaderCell("Days left"),
+                            _tableHeaderCell("Sessions Left"),
+                            _tableHeaderCell("Credit"),
+                            _tableHeaderCell(""),
                           ],
                         ),
-                    ],
+                        for (var user in _filteredItems)
+                          TableRow(
+                            decoration: BoxDecoration(
+                              color: (user.sessionLeft <= 0 ||
+                                      user.endDate
+                                              .difference(DateTime.now())
+                                              .inDays <=
+                                          0)
+                                  ? Colors.red.withOpacity(0.3)
+                                  : (user.sessionLeft <= 3 ||
+                                          user.endDate
+                                                  .difference(DateTime.now())
+                                                  .inDays <=
+                                              3)
+                                      ? Colors.orange.withOpacity(0.2)
+                                      : Color(0xffFAFAFA),
+                            ),
+                            children: [
+                              _tableCell(user.fullName),
+                              _tableCell(user.phoneNumber),
+                              _tableCell(user.sex),
+                              _tableCell(user.endDate
+                                  .difference(DateTime.now())
+                                  .inDays
+                                  .toString()),
+                              _tableCell(user.sessionLeft.toString()),
+                              _tableCell(user.credit),
+                              _tableCellActions(user),
+                            ],
+                          ),
+                      ],
+                    ),
                   ),
                 );
               } else if (state is Session8bloc.IinitialState) {
