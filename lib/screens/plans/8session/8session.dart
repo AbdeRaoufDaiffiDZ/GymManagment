@@ -61,7 +61,7 @@ class _SearchState extends State<eightSession> {
   List<User_Data> _filteredItems = [];
 
   String? _selectedSex;
-  final List<String> _sexOptions = ['Male', 'Female'];
+  final List<String> _sexOptions = ['All', 'Male', 'Female'];
 
   void _onSexChanged(String? newValue) {
     setState(() {
@@ -85,7 +85,8 @@ class _SearchState extends State<eightSession> {
     setState(() {
       _filteredItems = _allItems.where((item) {
         final matchesName = item.fullName.toLowerCase().contains(query);
-        final matchesSex = _selectedSexForFiltering == null ||
+        final matchesSex = _selectedSexForFiltering == 'All' ||
+            _selectedSexForFiltering == null ||
             _selectedSexForFiltering!.isEmpty ||
             item.sex == _selectedSexForFiltering;
 
@@ -741,7 +742,6 @@ class _SearchState extends State<eightSession> {
             count = 0;
           },
         ),
-
         IconButton(
           icon: Icon(Icons.delete, color: Colors.red),
           onPressed: () {

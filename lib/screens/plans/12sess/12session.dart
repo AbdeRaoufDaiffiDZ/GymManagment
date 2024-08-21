@@ -61,7 +61,7 @@ class _SearchState extends State<twlvSession> {
   String? _selectedSex;
   DateTime? selectedDate;
 
-  final List<String> _sexOptions = ['Male', 'Female'];
+  final List<String> _sexOptions = ['All', 'Male', 'Female'];
 
   void _onSexChanged(String? newValue) {
     setState(() {
@@ -85,7 +85,8 @@ class _SearchState extends State<twlvSession> {
     setState(() {
       _filteredItems = _allItems.where((item) {
         final matchesName = item.fullName.toLowerCase().contains(query);
-        final matchesSex = _selectedSexForFiltering == null ||
+        final matchesSex = _selectedSexForFiltering == 'All' ||
+            _selectedSexForFiltering == null ||
             _selectedSexForFiltering!.isEmpty ||
             item.sex == _selectedSexForFiltering;
 
@@ -95,11 +96,11 @@ class _SearchState extends State<twlvSession> {
   }
 
   void _onSexChangedForFiltering(String? newValue) {
-    setState(() {
-      _selectedSexForFiltering = newValue;
-    });
-    _filterItems(); // Call the filtering method here
-  }
+  setState(() {
+    _selectedSexForFiltering = newValue;
+  });
+  _filterItems(); // Call the filtering method here
+}
 
   void _onSexChangedForDataEntry(String? newValue) {
     setState(() {
@@ -224,7 +225,6 @@ class _SearchState extends State<twlvSession> {
             lastCheckDate: userr.lastCheckDate,
             phoneNumber: _phoneController.text);
 
-      
         session_12_planBloc.add(Event12.UpdateUserEvent(user: userNew));
       } else {
         User_Data newUser = User_Data(
@@ -266,7 +266,7 @@ class _SearchState extends State<twlvSession> {
       _idController.text = user.id;
       _creditController.text = user.credit;
       _sexController.text = user.sex;
-            _selectedSexForDataEntry = user.sex;
+      _selectedSexForDataEntry = user.sex;
 
       _tapisController.text = user.tapis.toString();
 
@@ -745,7 +745,6 @@ class _SearchState extends State<twlvSession> {
             count = 0;
           },
         ),
-
         IconButton(
           icon: Icon(Icons.delete, color: Colors.red),
           onPressed: () {
