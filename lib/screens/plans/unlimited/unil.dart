@@ -175,6 +175,7 @@ class _SearchState extends State<unlimited> {
   void _addProfile(User_Data? user) {
     if (_nameController.text.isNotEmpty &&
         _idController.text.isNotEmpty &&
+        int.tryParse(_creditController.text) != null &&
         _sexController.text.isNotEmpty &&
         _tapisController.text.isNotEmpty &&
         _creditController.text.isNotEmpty &&
@@ -481,7 +482,8 @@ class _SearchState extends State<unlimited> {
                       2: FixedColumnWidth(170),
                       3: FixedColumnWidth(170),
                       4: FixedColumnWidth(170),
-                      5: FixedColumnWidth(220),
+                      5: FixedColumnWidth(170),
+                     6: FixedColumnWidth(220),
                     },
                     children: [
                       TableRow(
@@ -493,6 +495,7 @@ class _SearchState extends State<unlimited> {
                           _tableHeaderCell("Phone Number"),
                           _tableHeaderCell("Sex"),
                           _tableHeaderCell("Days left"),
+                          _tableHeaderCell("Tapis"),
                           _tableHeaderCell("Credit"),
                           _tableHeaderCell(""),
                         ],
@@ -515,6 +518,7 @@ class _SearchState extends State<unlimited> {
                                 .difference(DateTime.now())
                                 .inDays
                                 .toString()),
+                            _tableCell(user.tapis.toString()),
                             _tableCell(user.credit),
                             _tableCellActions(user),
                           ],

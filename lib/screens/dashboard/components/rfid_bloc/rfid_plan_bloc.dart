@@ -71,6 +71,9 @@ class Rfid_PlanBloc extends Bloc<Rfid_PlanEvent, Rfid_PlanState> {
               2: FixedColumnWidth(200),
               3: FixedColumnWidth(100),
               4: FixedColumnWidth(100),
+              5: FixedColumnWidth(100),
+              6: FixedColumnWidth(100),
+              7: FixedColumnWidth(200),
               if (!isUnlimited) 5: FixedColumnWidth(100),
             },
             children: [
@@ -79,11 +82,14 @@ class Rfid_PlanBloc extends Bloc<Rfid_PlanEvent, Rfid_PlanState> {
                   color: Color.fromARGB(255, 243, 200, 169).withOpacity(0.4),
                 ),
                 children: [
+                  _tableHeaderCell("ID"),
                   _tableHeaderCell("Full Name"),
                   _tableHeaderCell("Phone Number"),
                   _tableHeaderCell('Plan'),
+                  _tableHeaderCell('Tapis'),
                   _tableHeaderCell('Credit'),
                   _tableHeaderCell('Days Left'),
+                  _tableHeaderCell('Strating Date'),
                   if (!isUnlimited) _tableHeaderCell("Sessions Left"),
                 ],
               ),
@@ -95,20 +101,22 @@ class Rfid_PlanBloc extends Bloc<Rfid_PlanEvent, Rfid_PlanState> {
                                   0)
                           ? Colors.red.withOpacity(0.3)
                           : Color(0xffFAFAFA)
-                      : user.endDate.difference(DateTime.now()).inDays <= 0
+                      : user.daysLeft <= 3
                           ? Colors.red.withOpacity(0.3)
                           : Color(0xffFAFAFA),
                 ),
                 children: [
+                  _tableCell(user.id),
+
                   _tableCell(user.fullName),
                   _tableCell(user.phoneNumber),
                   _tableCell(user.plan),
+                  _tableCell(user.tapis.toString()),
+
                   _tableCell(user.credit),
 
-                  _tableCell(user.endDate
-                      .difference(DateTime.now())
-                      .inDays
-                      .toString()),
+                  _tableCell(user.daysLeft.toString()),
+                  _tableCell(user.startingDate.toString()),
                   if (!isUnlimited) _tableCell(user.sessionLeft.toString()),
 
                   // _tableCellActions(user),

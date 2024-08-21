@@ -58,19 +58,10 @@ class _SearchState extends State<twlvSession> {
   List<User_Data> _allItems = [];
   List<User_Data> _filteredItems = [];
 
-  String? _selectedSex;
   DateTime? selectedDate;
 
   final List<String> _sexOptions = ['All', 'Male', 'Female'];
   final List<String> _sexOption = ['Male', 'Female'];
-
-  void _onSexChanged(String? newValue) {
-    setState(() {
-      _selectedSex = newValue;
-      _sexController.text = newValue!;
-      _filterItems();
-    });
-  }
 
   @override
   void initState() {
@@ -97,11 +88,11 @@ class _SearchState extends State<twlvSession> {
   }
 
   void _onSexChangedForFiltering(String? newValue) {
-  setState(() {
-    _selectedSexForFiltering = newValue;
-  });
-  _filterItems(); // Call the filtering method here
-}
+    setState(() {
+      _selectedSexForFiltering = newValue;
+    });
+    _filterItems(); // Call the filtering method here
+  }
 
   void _onSexChangedForDataEntry(String? newValue) {
     setState(() {
@@ -208,6 +199,7 @@ class _SearchState extends State<twlvSession> {
     }
     if (_nameController.text.isNotEmpty &&
         _tapisController.text.isNotEmpty &&
+        int.tryParse(_creditController.text) != null &&
         _idController.text.isNotEmpty &&
         _sexController.text.isNotEmpty &&
         _creditController.text.isNotEmpty &&
@@ -245,7 +237,6 @@ class _SearchState extends State<twlvSession> {
 
       setState(() {
         _nameController.clear();
-        _selectedSex = null;
         _idController.clear();
         _creditController.clear();
         _phoneController.clear();
@@ -271,8 +262,6 @@ class _SearchState extends State<twlvSession> {
 
       _tapisController.text = user.tapis.toString();
 
-      _selectedSex = user.sex;
-
       edit = true;
     });
     userr = user;
@@ -291,7 +280,7 @@ class _SearchState extends State<twlvSession> {
         id: user.id,
         fullName: user.fullName,
         plan: user.plan,
-       startingDate: startDate ?? DateTime.now(),
+        startingDate: startDate ?? DateTime.now(),
         endDate: startDate != null
             ? startDate.add(Duration(days: daysNumber))
             : DateTime.now().add(Duration(days: daysNumber)),
@@ -530,13 +519,12 @@ class _SearchState extends State<twlvSession> {
                 _filteredItems
                     .sort((a, b) => a.sessionLeft.compareTo(b.sessionLeft));
                 return Scrollbar(
-                thumbVisibility: true, // Always show the scrollbar thumb
-                controller:
-                    _scrollController, // Attach the controller to the Scrollbar
-
-                child: SingleChildScrollView(
+                  thumbVisibility: true, // Always show the scrollbar thumb
                   controller:
-                      _scrollController,
+                      _scrollController, // Attach the controller to the Scrollbar
+
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
                     scrollDirection: Axis.horizontal,
                     child: Table(
                       columnWidths: {
@@ -546,7 +534,8 @@ class _SearchState extends State<twlvSession> {
                         3: FixedColumnWidth(150),
                         4: FixedColumnWidth(200),
                         5: FixedColumnWidth(100),
-                        6: FixedColumnWidth(200),
+                        6: FixedColumnWidth(100),
+                        7: FixedColumnWidth(200),
                       },
                       children: [
                         TableRow(
@@ -559,6 +548,7 @@ class _SearchState extends State<twlvSession> {
                             _tableHeaderCell("Sex"),
                             _tableHeaderCell("Days left"),
                             _tableHeaderCell("Sessions Left"),
+                            _tableHeaderCell("Tapis"),
                             _tableHeaderCell("Credit"),
                             _tableHeaderCell(""),
                           ],
@@ -589,6 +579,7 @@ class _SearchState extends State<twlvSession> {
                                   .inDays
                                   .toString()),
                               _tableCell(user.sessionLeft.toString()),
+                              _tableCell(user.tapis.toString()),
                               _tableCell(user.credit),
                               _tableCellActions(user),
                             ],

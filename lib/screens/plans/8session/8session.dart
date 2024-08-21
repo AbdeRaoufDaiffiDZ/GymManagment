@@ -200,6 +200,7 @@ class _SearchState extends State<eightSession> {
     if (_nameController.text.isNotEmpty &&
         _tapisController.text.isNotEmpty &&
         _creditController.text.isNotEmpty &&
+        int.tryParse(_creditController.text) != null &&
         _idController.text.isNotEmpty &&
         _sexController.text.isNotEmpty &&
         _phoneController.text.isNotEmpty) {
@@ -521,13 +522,12 @@ class _SearchState extends State<eightSession> {
                 _filteredItems
                     .sort((a, b) => a.sessionLeft.compareTo(b.sessionLeft));
                 return Scrollbar(
-                thumbVisibility: true, // Always show the scrollbar thumb
-                controller:
-                    _scrollController, // Attach the controller to the Scrollbar
-
-                child: SingleChildScrollView(
+                  thumbVisibility: true, // Always show the scrollbar thumb
                   controller:
-                      _scrollController,
+                      _scrollController, // Attach the controller to the Scrollbar
+
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
                     scrollDirection: Axis.horizontal,
                     child: Table(
                       columnWidths: {
@@ -537,7 +537,8 @@ class _SearchState extends State<eightSession> {
                         3: FixedColumnWidth(150),
                         4: FixedColumnWidth(200),
                         5: FixedColumnWidth(100),
-                        6: FixedColumnWidth(200),
+                        6: FixedColumnWidth(100),
+                        7: FixedColumnWidth(200),
                       },
                       children: [
                         TableRow(
@@ -550,6 +551,7 @@ class _SearchState extends State<eightSession> {
                             _tableHeaderCell("Sex"),
                             _tableHeaderCell("Days left"),
                             _tableHeaderCell("Sessions Left"),
+                            _tableHeaderCell("Tapis"),
                             _tableHeaderCell("Credit"),
                             _tableHeaderCell(""),
                           ],
@@ -580,6 +582,7 @@ class _SearchState extends State<eightSession> {
                                   .inDays
                                   .toString()),
                               _tableCell(user.sessionLeft.toString()),
+                              _tableCell(user.tapis.toString()),
                               _tableCell(user.credit),
                               _tableCellActions(user),
                             ],

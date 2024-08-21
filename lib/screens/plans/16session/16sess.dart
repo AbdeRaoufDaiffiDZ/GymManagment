@@ -196,6 +196,7 @@ class _SearchState extends State<sixSession> {
 
     if (_nameController.text.isNotEmpty &&
         _idController.text.isNotEmpty &&
+        int.tryParse(_creditController.text) != null &&
         _sexController.text.isNotEmpty &&
         _tapisController.text.isNotEmpty &&
         _creditController.text.isNotEmpty &&
@@ -537,7 +538,8 @@ class _SearchState extends State<sixSession> {
                         3: FixedColumnWidth(150),
                         4: FixedColumnWidth(200),
                         5: FixedColumnWidth(100),
-                        6: FixedColumnWidth(200),
+                        6: FixedColumnWidth(100),
+                        7: FixedColumnWidth(200),
                       },
                       children: [
                         TableRow(
@@ -550,6 +552,7 @@ class _SearchState extends State<sixSession> {
                             _tableHeaderCell("Sex"),
                             _tableHeaderCell("Days left"),
                             _tableHeaderCell("Sessions Left"),
+                            _tableHeaderCell("tapis"),
                             _tableHeaderCell("Credit"),
                             _tableHeaderCell(""),
                           ],
@@ -580,6 +583,7 @@ class _SearchState extends State<sixSession> {
                                   .inDays
                                   .toString()),
                               _tableCell(user.sessionLeft.toString()),
+                              _tableCell(user.tapis.toString()),
                               _tableCell(user.credit),
                               _tableCellActions(user),
                             ],
