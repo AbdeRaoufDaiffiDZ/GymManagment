@@ -21,6 +21,7 @@ import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited
 import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 int count = 0;
 bool edit = false;
@@ -52,6 +53,7 @@ class _SearchState extends State<unlimited> {
 
   List<User_Data> _allItems = [];
   List<User_Data> _filteredItems = [];
+  DateTime? selectedDate;
 
   String? _selectedSex;
   final List<String> _sexOptions = ['Male', 'Female'];
@@ -251,21 +253,29 @@ class _SearchState extends State<unlimited> {
     userr = user;
   }
 
-  void _renewProfile(User_Data user) {
+  void _renewProfile(User_Data user, String credit, DateTime? startDate) {
     final Unlimited_PlanBloc _unlimited_bloc =
         BlocProvider.of<Unlimited_PlanBloc>(context);
+
+    final DateTime renewalStartDate = startDate ?? DateTime.now();
+    final DateTime renewalEndDate =
+        renewalStartDate.add(Duration(days: daysNumber));
+    final int daysLeft = renewalEndDate.difference(DateTime.now()).inDays;
+
     final renewUser = User_Data(
-        renew: true,
-        sex: user.sex,
-        id: user.id,
-        fullName: user.fullName,
-        plan: user.plan,
-        startingDate: DateTime.now(),
-        endDate: DateTime.now().add(const Duration(days: 30)),
-        credit: user.credit,
-        sessionLeft: 0,
-        lastCheckDate: '',
-        phoneNumber: user.phoneNumber);
+      renew: true,
+      sex: user.sex,
+      id: user.id,
+      fullName: user.fullName,
+      plan: user.plan,
+      startingDate: renewalStartDate,
+      endDate: renewalEndDate,
+      credit: credit,
+      sessionLeft: 0,
+      lastCheckDate: '',
+      phoneNumber: user.phoneNumber,
+    );
+
     _unlimited_bloc.add(Unlimited.UpdateUserEvent(user: renewUser));
   }
 
@@ -537,7 +547,8 @@ class _SearchState extends State<unlimited> {
   }
 
   Widget _inputField(
-      TextEditingController controller, String hint, bool numberOrNot) {
+      TextEditingController controller, String hint, bool numberOrNot,
+      {bool isRenew = false, User_Data? user = null}) {
     return TextFormField(
       controller: controller,
       keyboardType: numberOrNot ? TextInputType.number : null,
@@ -551,8 +562,13 @@ class _SearchState extends State<unlimited> {
         contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       ),
       onFieldSubmitted: (value) {
-        // Call _addProfile() when Enter is pressed.
-        _addProfile(null);
+        if (isRenew && selectedDate != null) {
+          _renewProfile(user!, value, selectedDate);
+          _creditController.clear();
+          Navigator.pop(context);
+        } else {
+          _addProfile(null);
+        }
       },
     );
   }
@@ -595,11 +611,75 @@ class _SearchState extends State<unlimited> {
         IconButton(
           icon: Icon(Icons.refresh, color: Colors.green),
           onPressed: () {
-            _renewProfile(user);
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                DateTime? selectedDate;
+                final TextEditingController _creditController =
+                    TextEditingController();
 
+                return StatefulBuilder(
+                  builder: (BuildContext context, StateSetter setState) {
+                    return AlertDialog(
+                      backgroundColor: Colors.white,
+                      title: Text('Renew Profile'),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _inputField(_creditController, 'Credit', true,
+                              isRenew: true, user: user),
+                          SizedBox(height: 20),
+                          TextButton(
+                            onPressed: () async {
+                              final DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2100),
+                              );
+
+                              if (pickedDate != null &&
+                                  pickedDate != selectedDate) {
+                                setState(() {
+                                  selectedDate = pickedDate;
+                                });
+                              }
+                            },
+                            child: Text(
+                              selectedDate == null
+                                  ? 'Select Start Date'
+                                  : 'Start Date: ${DateFormat('yyyy-MM-dd').format(selectedDate!)}', // Format the date
+                            ),
+                          ),
+                        ],
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            if (selectedDate != null) {
+                              _renewProfile(
+                                  user, _creditController.text, selectedDate);
+                              Navigator.pop(context);
+                            } else {}
+                          },
+                          child: Text('Save'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text('Cancel'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            );
             count = 0;
           },
         ),
+
         IconButton(
           icon: Icon(Icons.delete, color: Colors.red),
           onPressed: () {

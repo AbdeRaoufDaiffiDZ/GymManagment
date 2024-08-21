@@ -256,23 +256,62 @@ class _SearchState extends State<eightSession> {
     userr = user;
   }
 
-  void _renewProfile(User_Data user) {
-    final Unlimited_PlanBloc _unlimited_bloc =
-        BlocProvider.of<Unlimited_PlanBloc>(context);
+   void _renewProfile(User_Data user, String credit) {
+    setState(() {
+      count = 0;
+    });
+    final Session8bloc.Session_8_PlanBloc session_8_planBloc =
+        BlocProvider.of<Session8bloc.Session_8_PlanBloc>(context);
     final renewUser = User_Data(
-        renew: true,
+        tapis: user.tapis,
         sex: user.sex,
+        renew: true,
         id: user.id,
         fullName: user.fullName,
         plan: user.plan,
         startingDate: DateTime.now(),
-        endDate: DateTime.now().add(const Duration(days: 30)),
-        credit: user.credit,
-        sessionLeft: 0,
-        lastCheckDate: '',
+        endDate: DateTime.now().add(Duration(days: daysNumber)),
+        credit: credit,
+        sessionLeft: sessionNumber,
+        lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
         phoneNumber: user.phoneNumber);
-    _unlimited_bloc.add(Unlimited.UpdateUserEvent(user: renewUser));
+    session_8_planBloc.add(Event8.UpdateUserEvent(user: renewUser));
   }
+  void _toggleSessionMark(User_Data user, bool value) {
+    setState(() {
+      user.isSessionMarked = value;
+      count = 0;
+    });
+    User_Data user_data = User_Data(
+        tapis: user.tapis,
+        sex: user.sex,
+        isSessionMarked: user.isSessionMarked,
+        sessionLeft: user.sessionLeft,
+        id: user.id,
+        fullName: user.fullName,
+        plan: user.plan,
+        startingDate: user.startingDate,
+        endDate: user.endDate,
+        credit: user.credit,
+        lastCheckDate: user.lastCheckDate,
+        phoneNumber: user.phoneNumber);
+    if (value) {
+      // Implement the checkbox functionality if needed
+      user_data.isSessionMarked = true;
+      user_data.sessionLeft =
+          user_data.sessionLeft <= 0 ? 0 : user_data.sessionLeft - 1;
+      user_data.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    } else {
+      user_data.isSessionMarked = false;
+      user_data.sessionLeft = user_data.sessionLeft + 1;
+      user_data.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    }
+    final Session8bloc.Session_8_PlanBloc session_8_planBloc =
+        BlocProvider.of<Session8bloc.Session_8_PlanBloc>(context);
+    session_8_planBloc.add(Event8.UpdateUserEvent(user: user_data));
+  }
+
+
 
   void _deleteProfile(User_Data user) {
     final Unlimited_PlanBloc _unlimited_bloc =
@@ -280,12 +319,7 @@ class _SearchState extends State<eightSession> {
     _unlimited_bloc.add(DeleteUserEvent(user: user));
   }
 
-  void _toggleSessionMark(User_Data user, bool value) {
-    setState(() {
-      user.isSessionMarked = value;
-    });
-    // Implement the checkbox functionality if needed
-  }
+
 
   final ScrollController _scrollController = ScrollController();
 
@@ -551,7 +585,8 @@ class _SearchState extends State<eightSession> {
   }
 
   Widget _inputField(
-      TextEditingController controller, String hint, bool numberOrNot) {
+      TextEditingController controller, String hint, bool numberOrNot,
+      {bool isRenew = false, User_Data? user = null}) {
     return TextFormField(
       controller: controller,
       keyboardType: numberOrNot ? TextInputType.number : null,
@@ -566,7 +601,14 @@ class _SearchState extends State<eightSession> {
       ),
       onFieldSubmitted: (value) {
         // Call _addProfile() when Enter is pressed.
-        _addProfile(null);
+        if (isRenew) {
+          _renewProfile(user!, value);
+          _creditController.clear();
+          Navigator.pop(context);
+          
+        } else {
+          _addProfile(null);
+        }
       },
     );
   }
@@ -631,7 +673,15 @@ class _SearchState extends State<eightSession> {
         IconButton(
           icon: Icon(Icons.refresh, color: Colors.green),
           onPressed: () {
-            _renewProfile(user);
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                      backgroundColor: Colors.white,
+                      content: _inputField(_creditController, 'Credit', true,
+                          isRenew: true, user: user));
+                  // Return the Dialog widget here
+                });
           },
         ),
         IconButton(
