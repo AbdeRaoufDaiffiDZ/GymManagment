@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:admin/const/const.dart';
 import 'package:admin/const/loading.dart';
 import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/user_data_entity.dart';
@@ -215,7 +216,11 @@ class _SearchState extends State<sixSession> {
             sessionLeft: userr.sessionLeft,
             lastCheckDate: userr.lastCheckDate,
             phoneNumber: _phoneController.text);
-
+if (userNew.tapis && !userr.tapis) {
+          userNew.credit = userNew.tapis
+              ? (int.parse(userNew.credit) + PlanPrices['tapis']!).toString()
+              : userNew.credit;
+        }
         session_16_planBloc.add(Event16.UpdateUserEvent(user: userNew));
       } else {
         User_Data newUser = User_Data(

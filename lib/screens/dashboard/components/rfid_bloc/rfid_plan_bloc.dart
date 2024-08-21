@@ -72,9 +72,8 @@ class Rfid_PlanBloc extends Bloc<Rfid_PlanEvent, Rfid_PlanState> {
               3: FixedColumnWidth(100),
               4: FixedColumnWidth(100),
               5: FixedColumnWidth(100),
-              6: FixedColumnWidth(100),
-              7: FixedColumnWidth(200),
-              if (!isUnlimited) 8: FixedColumnWidth(100),
+              6: FixedColumnWidth(200),
+              if (!isUnlimited) 7: FixedColumnWidth(200),
             },
             children: [
               TableRow(
@@ -82,7 +81,6 @@ class Rfid_PlanBloc extends Bloc<Rfid_PlanEvent, Rfid_PlanState> {
                   color: Color.fromARGB(255, 243, 200, 169).withOpacity(0.4),
                 ),
                 children: [
-                  _tableHeaderCell("ID"),
                   _tableHeaderCell("Full Name"),
                   _tableHeaderCell("Phone Number"),
                   _tableHeaderCell('Plan'),
@@ -106,7 +104,6 @@ class Rfid_PlanBloc extends Bloc<Rfid_PlanEvent, Rfid_PlanState> {
                           : Color(0xffFAFAFA),
                 ),
                 children: [
-                  _tableCell(user.id),
 
                   _tableCell(user.fullName),
                   _tableCell(user.phoneNumber),

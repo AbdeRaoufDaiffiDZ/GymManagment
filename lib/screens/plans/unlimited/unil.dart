@@ -1,5 +1,7 @@
 // ignore_for_file: deprecated_member_use, unused_element
 
+
+import 'package:admin/const/const.dart';
 import 'package:admin/const/loading.dart';
 import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/user_data_entity.dart';
@@ -19,6 +21,8 @@ import 'package:admin/screens/plans/8session/8session_bloc/bloc/session_8_event.
 import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart'
     as Unlimited;
 import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart';
+import 'package:admin/screens/products_screens/products_bloc/products_bloc.dart';
+import 'package:admin/screens/products_screens/products_bloc/products_blocEvent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -197,6 +201,11 @@ class _SearchState extends State<unlimited> {
             sessionLeft: sessionNumber,
             lastCheckDate: userr.lastCheckDate,
             phoneNumber: _phoneController.text);
+        if (userNew.tapis && !userr.tapis) {
+          userNew.credit = userNew.tapis
+              ? (int.parse(userNew.credit) + PlanPrices['tapis']!).toString()
+              : userNew.credit;
+        }
         _unlimited_bloc.add(Unlimited.UpdateUserEvent(user: userNew));
       } else {
         User_Data newUser = User_Data(
@@ -313,6 +322,7 @@ class _SearchState extends State<unlimited> {
         BlocProvider.of<Session_12_PlanBloc>(context);
     final Expense_PlanBloc expense_planBloc =
         BlocProvider.of<Expense_PlanBloc>(context);
+    final ProductsBloc productsBloc = BlocProvider.of<ProductsBloc>(context);
     return SingleChildScrollView(
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Padding(
@@ -444,6 +454,7 @@ class _SearchState extends State<unlimited> {
                 session_12_planBloc.add(Event12.GetUsersEvent());
                 session_16_planBloc.add(Event16.GetUsersEvent());
                 expense_planBloc.add(Expense.GetExpensesEvent());
+                productsBloc.add(GetProductsEvent());
                 count = 0;
               },
             ),

@@ -306,50 +306,96 @@ class MongoDatabase {
       final collectiongYM = db?.collection(gymCollection);
 
       final data = product.toMap();
-       if (id != null) {
-          UpdateUserUsingRFID(
-              id: id, ISbuyer: true, buyingPrice: product.price);
-        }
-      data.forEach((key, value) async {
-        if (key == "saleRecords") {
-          final List<SaleRecord> sale = value;
-          // where.eq('plan', user.plan).eq("${user.plan}._id", user.id),
-          // modify.set('${user.plan}.\$.$key', value));
-          await collectiongYM?.update(
-              where
-                  .eq('plan', collectionName)
-                  .eq("$collectionName._id", product.id),
-              modify.set('$collectionName.\$.saleRecords',
-                  convertSaleRecordsToMap(sale)));
-        } else {
-          await collectiongYM?.update(
-              where
-                  .eq('plan', collectionName)
-                  .eq("$collectionName._id", product.id),
-              modify.set('$collectionName.\$.$key', value));
-          if (key == 'productPrice') {
-            var gymParam = await GymParamRetrive(collectionName: "Expense");
-            if (gymParam.isRight && id == null) {
-              /////////////////////  check if the data is right
+      if (id != null) {
+        var dataReturn = await UpdateUserUsingRFID(
+            id: id, ISbuyer: true, buyingPrice: product.price);
+        if (dataReturn.isRight) {
+          if (dataReturn.right[2]) {
+            data.forEach((key, value) async {
+              if (key == "saleRecords") {
+                final List<SaleRecord> sale = value;
+                // where.eq('plan', user.plan).eq("${user.plan}._id", user.id),
+                // modify.set('${user.plan}.\$.$key', value));
+                await collectiongYM?.update(
+                    where
+                        .eq('plan', collectionName)
+                        .eq("$collectionName._id", product.id),
+                    modify.set('$collectionName.\$.saleRecords',
+                        convertSaleRecordsToMap(sale)));
+              } else {
+                await collectiongYM?.update(
+                    where
+                        .eq('plan', collectionName)
+                        .eq("$collectionName._id", product.id),
+                    modify.set('$collectionName.\$.$key', value));
+                if (key == 'productPrice') {
+                  var gymParam =
+                      await GymParamRetrive(collectionName: "Expense");
+                  if (gymParam.isRight ) {
+                    /////////////////////  check if the data is right
 
-              gymParam.right.peopleIncome.forEach((element) {
-                /// here we will remove the expense price from the day income
-                /// we will select today total income in order to modify
-                if (DateFormat('yyyy-MM-dd').format(element.dateTime) ==
-                    DateFormat('yyyy-MM-dd').format(DateTime.now())) {
-                  element.dayIncome = element.dayIncome + value.toInt() as int;
+                    gymParam.right.peopleIncome.forEach((element) {
+                      /// here we will remove the expense price from the day income
+                      /// we will select today total income in order to modify
+                      if (DateFormat('yyyy-MM-dd').format(element.dateTime) ==
+                          DateFormat('yyyy-MM-dd').format(DateTime.now())) {
+                        element.dayIncome =
+                            element.dayIncome + value.toInt() as int;
+                      }
+                    });
+
+                    /// here we transform the data to map in order to save it in the databse
+                    final gymData = gymParam.right.toMap();
+                    await collectiongYM?.update(where.eq('plan', "Expense"),
+                        modify.set("GymParam", gymData));
+                  }
                 }
-              });
-
-              /// here we transform the data to map in order to save it in the databse
-              final gymData = gymParam.right.toMap();
-              await collectiongYM?.update(
-                  where.eq('plan', "Expense"), modify.set("GymParam", gymData));
-            }
+              }
+            });
           }
         }
-       
-      });
+      } else {
+        data.forEach((key, value) async {
+          if (key == "saleRecords") {
+            final List<SaleRecord> sale = value;
+            // where.eq('plan', user.plan).eq("${user.plan}._id", user.id),
+            // modify.set('${user.plan}.\$.$key', value));
+            await collectiongYM?.update(
+                where
+                    .eq('plan', collectionName)
+                    .eq("$collectionName._id", product.id),
+                modify.set('$collectionName.\$.saleRecords',
+                    convertSaleRecordsToMap(sale)));
+          } else {
+            await collectiongYM?.update(
+                where
+                    .eq('plan', collectionName)
+                    .eq("$collectionName._id", product.id),
+                modify.set('$collectionName.\$.$key', value));
+            if (key == 'productPrice') {
+              var gymParam = await GymParamRetrive(collectionName: "Expense");
+              if (gymParam.isRight && id == null) {
+                /////////////////////  check if the data is right
+
+                gymParam.right.peopleIncome.forEach((element) {
+                  /// here we will remove the expense price from the day income
+                  /// we will select today total income in order to modify
+                  if (DateFormat('yyyy-MM-dd').format(element.dateTime) ==
+                      DateFormat('yyyy-MM-dd').format(DateTime.now())) {
+                    element.dayIncome =
+                        element.dayIncome + value.toInt() as int;
+                  }
+                });
+
+                /// here we transform the data to map in order to save it in the databse
+                final gymData = gymParam.right.toMap();
+                await collectiongYM?.update(where.eq('plan', "Expense"),
+                    modify.set("GymParam", gymData));
+              }
+            }
+          }
+        });
+      }
 
       return Right(true);
     } catch (e) {
@@ -552,6 +598,7 @@ class MongoDatabase {
       final result = await RetriveDataFDTB();
       bool idFound = false; //
       User_Data? userDataToGet;
+      bool isFromBuyer = false;
       result!.forEach((element) {
         if (element.keys.toList()[1] == 'plan') {
           /////////  here we eliminate some unwanted data
@@ -565,11 +612,13 @@ class MongoDatabase {
               idFound = true;
               //  we check if the user id is the same as the RFID card UID
               if (ISbuyer) {
+                isFromBuyer = true;
                 int oldCredit = int.parse(user['credit']);
                 user['credit'] =
                     (int.parse(user['credit']) + buyingPrice.toInt())
                         .toString();
-                GymData(User_Data.fromMap(user), user['plan'], collectiongYM, oldCredit);
+                GymData(User_Data.fromMap(user), user['plan'], collectiongYM,
+                    oldCredit);
 
                 user.forEach((key, value) async {
                   await collectiongYM?.update(
@@ -627,7 +676,7 @@ class MongoDatabase {
           });
         }
       });
-      List dataReturn = [dataBase_Condition, userDataToGet];
+      List dataReturn = [dataBase_Condition, userDataToGet, isFromBuyer];
       return Right(dataReturn);
     } catch (e) {
       return Left(

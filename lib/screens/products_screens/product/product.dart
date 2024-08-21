@@ -78,7 +78,8 @@ class _ProductDashboardState extends State<ProductDashboard> {
         sold: product.sold,
         priceoverview: product.priceoverview,
         saleRecords: product.saleRecords);
-    productsBloc.add(UpdateProductEvent(product: productEdited,buyer: _buyingController.text));
+    productsBloc.add(UpdateProductEvent(
+        product: productEdited, buyer: _buyingController.text));
 
     setState(() {
       _products[index] = productEdited;
@@ -86,7 +87,7 @@ class _ProductDashboardState extends State<ProductDashboard> {
     });
   }
 
-  void _updateQuantity(Product product, int change,  String? buyerController) {
+  void _updateQuantity(Product product, int change, String? buyerController) {
     final ProductsBloc productsBloc = BlocProvider.of<ProductsBloc>(context);
     int index = _products.indexOf(product);
     if (_products[index].quantity + change >= 0) {
@@ -104,7 +105,8 @@ class _ProductDashboardState extends State<ProductDashboard> {
         _products[index].sold += saleQuantity;
         _products[index].priceoverview += _products[index].price;
       }
-      productsBloc.add(UpdateProductEvent(product: _products[index], buyer: buyerController ));
+      productsBloc.add(UpdateProductEvent(
+          product: _products[index], buyer: buyerController));
     }
     setState(() {
       _filteredProducts = _products;
@@ -129,13 +131,16 @@ class _ProductDashboardState extends State<ProductDashboard> {
 
   @override
   Widget build(BuildContext context) {
+    final ProductsBloc productsBloc = BlocProvider.of<ProductsBloc>(context);
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 100),
+            padding:
+                const EdgeInsets.symmetric(vertical: 25, horizontal: 100),
             child: Container(
               height: 50,
               decoration: BoxDecoration(
@@ -203,6 +208,16 @@ class _ProductDashboardState extends State<ProductDashboard> {
             ),
           ),
           SizedBox(height: 20),
+          IconButton(
+                icon: Icon(
+                  Icons.refresh,
+                  color: Colors.green,
+                ),
+                onPressed: () {
+                  productsBloc.add(GetProductsEvent());
+                  count = 0;
+                },
+              ),
           _productList(),
         ],
       ),
@@ -574,11 +589,13 @@ class _ProductDashboardState extends State<ProductDashboard> {
                               ),
                               IconButton(
                                 icon: Icon(Icons.add, color: Colors.green),
-                                onPressed: () => _updateQuantity(product, 1,_buyingController.text),
+                                onPressed: () => _updateQuantity(
+                                    product, 1, _buyingController.text),
                               ),
                               IconButton(
                                 icon: Icon(Icons.remove, color: Colors.red),
-                                onPressed: () => _updateQuantity(product, -1, _buyingController.text),
+                                onPressed: () => _updateQuantity(
+                                    product, -1, _buyingController.text),
                               ),
                               IconButton(
                                 icon: Icon(Icons.delete, color: Colors.red),
