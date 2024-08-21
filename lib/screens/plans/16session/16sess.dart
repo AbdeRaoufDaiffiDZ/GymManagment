@@ -281,28 +281,25 @@ class _SearchState extends State<sixSession> {
   }
 
   void _renewProfile(User_Data user, String credit, DateTime? startDate) {
+    setState(() {
+      count = 0;
+    });
     final Session16Bloc.Session_16_PlanBloc session_16_planBloc =
         BlocProvider.of<Session16Bloc.Session_16_PlanBloc>(context);
 
-    final DateTime renewalStartDate = startDate ?? DateTime.now();
-    final DateTime renewalEndDate =
-        renewalStartDate.add(Duration(days: daysNumber));
-    final int daysLeft = renewalEndDate.difference(DateTime.now()).inDays;
-
     final renewUser = User_Data(
-      renew: true,
-      sex: user.sex,
-      id: user.id,
-      fullName: user.fullName,
-      plan: user.plan,
-      startingDate: renewalStartDate,
-      endDate: renewalEndDate,
-      credit: credit,
-      sessionLeft: 0,
-      lastCheckDate: '',
-      phoneNumber: user.phoneNumber,
-    );
-
+        tapis: user.tapis,
+        sex: user.sex,
+        renew: true,
+        id: user.id,
+        fullName: user.fullName,
+        plan: user.plan,
+        startingDate: DateTime.now(),
+        endDate: DateTime.now().add(Duration(days: daysNumber)),
+        credit: credit,
+        sessionLeft: sessionNumber,
+        lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+        phoneNumber: user.phoneNumber);
     session_16_planBloc.add(Event16.UpdateUserEvent(user: renewUser));
   }
 

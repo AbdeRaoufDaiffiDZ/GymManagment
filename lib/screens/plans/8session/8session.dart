@@ -55,6 +55,8 @@ class _SearchState extends State<eightSession> {
   final startingDate = DateTime.now();
   final int sessionNumber = 8;
   final int daysNumber = 45;
+  DateTime? selectedDate;
+
   List<User_Data> _allItems = [];
   List<User_Data> _filteredItems = [];
 
@@ -270,12 +272,13 @@ class _SearchState extends State<eightSession> {
     userr = user;
   }
 
-  void _renewProfile(User_Data user, String credit) {
+  void _renewProfile(User_Data user, String credit, DateTime? startDate) {
     setState(() {
       count = 0;
     });
     final Session8bloc.Session_8_PlanBloc session_8_planBloc =
         BlocProvider.of<Session8bloc.Session_8_PlanBloc>(context);
+
     final renewUser = User_Data(
         tapis: user.tapis,
         sex: user.sex,
@@ -613,7 +616,7 @@ class _SearchState extends State<eightSession> {
       onFieldSubmitted: (value) {
         // Call _addProfile() when Enter is pressed.
         if (isRenew) {
-          _renewProfile(user!, value);
+          _renewProfile(user!, value, selectedDate);
           _creditController.clear();
           Navigator.pop(context);
         } else {
@@ -655,22 +658,6 @@ class _SearchState extends State<eightSession> {
   }
 
   Widget _tableCellActions(User_Data user) {
-    if (user.lastCheckDate != null) {
-      if (user.isSessionMarked) {
-        String now = DateFormat('yyyy-MM-dd').format(DateTime.now());
-
-        bool isChecked = isDate1BeforeDate2(user.lastCheckDate!, now);
-
-        if (isChecked) {
-          user.isSessionMarked = false;
-          user.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-
-          checkDate = true;
-          _addProfile(user);
-        }
-      }
-    }
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -678,34 +665,94 @@ class _SearchState extends State<eightSession> {
           icon: Icon(Icons.edit, color: Colors.blue),
           onPressed: () {
             _editProfile(user);
+            count = 0;
           },
         ),
         IconButton(
           icon: Icon(Icons.refresh, color: Colors.green),
           onPressed: () {
             showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
+              context: context,
+              builder: (BuildContext context) {
+                DateTime? selectedDate;
+                final TextEditingController _creditController =
+                    TextEditingController();
+
+                return StatefulBuilder(
+                  builder: (BuildContext context, StateSetter setState) {
+                    return AlertDialog(
                       backgroundColor: Colors.white,
-                      content: _inputField(_creditController, 'Credit', true,
-                          isRenew: true, user: user));
-                  // Return the Dialog widget here
-                });
+                      title: Text('Renew Profile'),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _inputField(_creditController, 'Credit', true,
+                              isRenew: true, user: user),
+                          SizedBox(height: 20),
+                          TextButton(
+                            onPressed: () async {
+                              final DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2100),
+                              );
+
+                              if (pickedDate != null &&
+                                  pickedDate != selectedDate) {
+                                setState(() {
+                                  selectedDate = pickedDate;
+                                });
+                              }
+                            },
+                            child: Text(
+                              selectedDate == null
+                                  ? 'Select Start Date'
+                                  : 'Start Date: ${DateFormat('yyyy-MM-dd').format(selectedDate!)}', // Format the date
+                            ),
+                          ),
+                        ],
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            if (selectedDate != null) {
+                              _renewProfile(
+                                  user, _creditController.text, selectedDate);
+                              Navigator.pop(context);
+                            } else {}
+                          },
+                          child: Text('Save'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text('Cancel'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            );
+            count = 0;
           },
         ),
+
         IconButton(
           icon: Icon(Icons.delete, color: Colors.red),
           onPressed: () {
             _deleteProfile(user);
+            count = 0;
           },
         ),
-        Checkbox(
-          value: user.isSessionMarked,
-          onChanged: (bool? value) {
-            _toggleSessionMark(user, value!);
-          },
-        ),
+        // Checkbox(
+        //   value: user.isSessionMarked,
+        //   onChanged: (bool? value) {
+        //     _toggleSessionMark(user, value!);
+        //   },
+        // ),
       ],
     );
   }
