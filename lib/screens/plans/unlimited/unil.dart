@@ -55,16 +55,7 @@ class _SearchState extends State<unlimited> {
   List<User_Data> _filteredItems = [];
   DateTime? selectedDate;
 
-  String? _selectedSex;
   final List<String> _sexOptions = ['Male', 'Female'];
-
-  void _onSexChanged(String? newValue) {
-    setState(() {
-      _selectedSex = newValue;
-      _sexController.text = newValue!;
-      _filterItems();
-    });
-  }
 
   @override
   void initState() {
@@ -219,15 +210,14 @@ class _SearchState extends State<unlimited> {
         _unlimited_bloc.add(AddUserEvent(user: newUser));
       }
 
-      _nameController.clear();
-      _idController.clear();
-      _creditController.clear();
-      _phoneController.clear();
-      _sexController.clear();
-      _tapisController.text = 'false';
-
       setState(() {
-        _selectedSex = null;
+        _selectedSexForDataEntry = null;
+        _nameController.clear();
+        _idController.clear();
+        _creditController.clear();
+        _phoneController.clear();
+        _sexController.clear();
+        _tapisController.text = 'false';
       });
 
       _filteredItems = _allItems;
@@ -247,7 +237,6 @@ class _SearchState extends State<unlimited> {
       _selectedSexForDataEntry = user.sex;
       _tapisController.text = user.tapis.toString();
 
-      _selectedSex = user.sex;
 
       edit = true;
     });
@@ -261,7 +250,7 @@ class _SearchState extends State<unlimited> {
     final DateTime renewalStartDate = startDate ?? DateTime.now();
     final DateTime renewalEndDate =
         renewalStartDate.add(Duration(days: daysNumber));
-    final int daysLeft = renewalEndDate.difference(DateTime.now()).inDays;
+    // final int daysLeft = renewalEndDate.difference(DateTime.now()).inDays;
 
     final renewUser = User_Data(
       renew: true,

@@ -58,18 +58,9 @@ class _SearchState extends State<twlvSession> {
   List<User_Data> _allItems = [];
   List<User_Data> _filteredItems = [];
 
-  String? _selectedSex;
   DateTime? selectedDate;
 
   final List<String> _sexOptions = ['Male', 'Female'];
-
-  void _onSexChanged(String? newValue) {
-    setState(() {
-      _selectedSex = newValue;
-      _sexController.text = newValue!;
-      _filterItems();
-    });
-  }
 
   @override
   void initState() {
@@ -224,7 +215,6 @@ class _SearchState extends State<twlvSession> {
             lastCheckDate: userr.lastCheckDate,
             phoneNumber: _phoneController.text);
 
-      
         session_12_planBloc.add(Event12.UpdateUserEvent(user: userNew));
       } else {
         User_Data newUser = User_Data(
@@ -244,7 +234,7 @@ class _SearchState extends State<twlvSession> {
 
       setState(() {
         _nameController.clear();
-        _selectedSex = null;
+        _selectedSexForDataEntry = null;
         _idController.clear();
         _creditController.clear();
         _phoneController.clear();
@@ -266,11 +256,9 @@ class _SearchState extends State<twlvSession> {
       _idController.text = user.id;
       _creditController.text = user.credit;
       _sexController.text = user.sex;
-            _selectedSexForDataEntry = user.sex;
+      _selectedSexForDataEntry = user.sex;
 
       _tapisController.text = user.tapis.toString();
-
-      _selectedSex = user.sex;
 
       edit = true;
     });
@@ -745,7 +733,6 @@ class _SearchState extends State<twlvSession> {
             count = 0;
           },
         ),
-
         IconButton(
           icon: Icon(Icons.delete, color: Colors.red),
           onPressed: () {

@@ -56,16 +56,7 @@ class _SearchState extends State<sixSession> {
   List<User_Data> _filteredItems = [];
   DateTime? selectedDate;
 
-  String? _selectedSex;
   final List<String> _sexOptions = ['Male', 'Female'];
-
-  void _onSexChanged(String? newValue) {
-    setState(() {
-      _selectedSex = newValue;
-      _sexController.text = newValue!;
-      _filterItems();
-    });
-  }
 
   @override
   void initState() {
@@ -181,19 +172,46 @@ class _SearchState extends State<sixSession> {
   }
 
   void _addProfile(User_Data? user) {
+    late User_Data userNew;
+    final Session16Bloc.Session_16_PlanBloc session_16_planBloc =
+        BlocProvider.of<Session16Bloc.Session_16_PlanBloc>(context);
+    if (checkDate) {
+      userNew = User_Data(
+          tapis: user!.tapis,
+          sex: user.sex,
+          id: user.id,
+          fullName: user.fullName,
+          plan: user.plan,
+          startingDate: user.startingDate,
+          endDate: user.endDate,
+          credit: user.credit,
+          sessionLeft: user.sessionLeft,
+          lastCheckDate: user.lastCheckDate,
+          phoneNumber: _phoneController.text);
+      session_16_planBloc.add(Event16.UpdateUserEvent(user: userNew));
+    }
+
     if (_nameController.text.isNotEmpty &&
         _idController.text.isNotEmpty &&
         _sexController.text.isNotEmpty &&
         _tapisController.text.isNotEmpty &&
         _creditController.text.isNotEmpty &&
         _phoneController.text.isNotEmpty) {
-      final Unlimited_PlanBloc _unlimited_bloc =
-          BlocProvider.of<Unlimited_PlanBloc>(context);
-      final Session16Bloc.Session_16_PlanBloc session_16_planBloc =
-          BlocProvider.of<Session16Bloc.Session_16_PlanBloc>(context);
-
       if (edit) {
-        // Update existing user logic
+        userNew = User_Data(
+            tapis: _tapisController.text.toLowerCase() == 'true',
+            sex: _sexController.text,
+            id: _idController.text,
+            fullName: _nameController.text,
+            plan: userr.plan,
+            startingDate: userr.startingDate,
+            endDate: userr.endDate,
+            credit: _creditController.text,
+            sessionLeft: userr.sessionLeft,
+            lastCheckDate: userr.lastCheckDate,
+            phoneNumber: _phoneController.text);
+
+        session_16_planBloc.add(Event16.UpdateUserEvent(user: userNew));
       } else {
         User_Data newUser = User_Data(
             sex: _sexController.text,
@@ -205,23 +223,23 @@ class _SearchState extends State<sixSession> {
             credit: _creditController.text,
             id: _idController.text,
             sessionLeft: sessionNumber,
-            lastCheckDate: '',
+            lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
             phoneNumber: _phoneController.text);
-        _unlimited_bloc.add(AddUserEvent(user: newUser));
+        session_16_planBloc.add(Event16.AddUserEvent(user: newUser));
       }
 
       // Refresh the user list
       session_16_planBloc.add(Event16.GetUsersEvent());
 
       // Clear input fields and reset state
-      _nameController.clear();
-      _idController.clear();
-      _creditController.clear();
-      _phoneController.clear();
-      _sexController.clear();
-      _tapisController.text = 'false';
       setState(() {
-        _selectedSex = null;
+        _nameController.clear();
+        _idController.clear();
+        _creditController.clear();
+        _phoneController.clear();
+        _sexController.clear();
+        _tapisController.text = 'false';
+        _selectedSexForDataEntry = null;
       });
       _filteredItems = _allItems;
       count = 0;
@@ -237,11 +255,9 @@ class _SearchState extends State<sixSession> {
       _idController.text = user.id;
       _creditController.text = user.credit;
       _sexController.text = user.sex;
-            _selectedSexForDataEntry = user.sex;
+      _selectedSexForDataEntry = user.sex;
 
       _tapisController.text = user.tapis.toString();
-
-      _selectedSex = user.sex;
 
       edit = true;
     });
@@ -306,9 +322,9 @@ class _SearchState extends State<sixSession> {
   }
 
   void _deleteProfile(User_Data user) {
-    final Unlimited_PlanBloc _unlimited_bloc =
-        BlocProvider.of<Unlimited_PlanBloc>(context);
-    _unlimited_bloc.add(DeleteUserEvent(user: user));
+    final Session16Bloc.Session_16_PlanBloc session_16_planBloc =
+        BlocProvider.of<Session16Bloc.Session_16_PlanBloc>(context);
+    session_16_planBloc.add(Event16.DeleteUserEvent(user: user));
   }
 
   final ScrollController _scrollController = ScrollController();
@@ -323,6 +339,8 @@ class _SearchState extends State<sixSession> {
     _creditController.dispose();
     _phoneController.dispose();
     _tapisController.dispose();
+    _selectedSexForDataEntry = null;
+
     super.dispose();
   }
 
@@ -715,7 +733,6 @@ class _SearchState extends State<sixSession> {
             count = 0;
           },
         ),
-
         IconButton(
           icon: Icon(Icons.delete, color: Colors.red),
           onPressed: () {
@@ -723,12 +740,12 @@ class _SearchState extends State<sixSession> {
             count = 0;
           },
         ),
-        // Checkbox(
-        //   value: user.isSessionMarked,
-        //   onChanged: (bool? value) {
-        //     _toggleSessionMark(user, value!);
-        //   },
-        // ),
+        Checkbox(
+          value: user.isSessionMarked,
+          onChanged: (bool? value) {
+            _toggleSessionMark(user, value!);
+          },
+        ),
       ],
     );
   }
