@@ -57,6 +57,8 @@ class MongoDatabase {
       await collectiongYM?.update(where.eq('plan', user.plan),
           modify.addToSet("${user.plan}", documentToInsert));
 
+          GymData(user, collectionName, collectiongYM, false, 0);
+
       // where.eq('plan', user.plan).eq("${user.plan}._id", user.id),
       // modify.set('${user.plan}.\$.$key', value));
       // await collection?.insert(documentToInsert);
@@ -133,17 +135,7 @@ class MongoDatabase {
 
       final collectiongYM = db?.collection(gymCollection);
 
-      final documentToInsert = {
-        '_id': user.id, // Assigning a string value to '_id'
-        'fullName': user.fullName,
-        'startingDate': user.startingDate,
-        'plan': user.plan,
-        'endDate': user.endDate,
-        'credit': user.credit,
-        'lastCheckDate': user.lastCheckDate,
-        'sessionLeft': user.sessionLeft,
-        'isSessionMarked': user.isSessionMarked
-      };
+      final documentToInsert = user.toMap();
       await collectiongYM?.update(where.eq('plan', user.plan),
           modify.pull("${user.plan}", documentToInsert));
 
