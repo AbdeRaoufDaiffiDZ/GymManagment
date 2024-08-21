@@ -35,7 +35,7 @@ class ProductsBloc extends Bloc<ProductsBlocEvent, ProductsBlocState> {
         }
       } else if (event is UpdateProductEvent) { ////////////////   the widget will not be updated the update will be done in database at same time in the widget data without getting it from databse
         final result = await dataSource.UpdateProductData(
-            product: event.product, collectionName: collectionName, id: event.buyer);
+            product: event.product, collectionName: collectionName, id: event.buyer, context: event.context);
         if (result.isLeft) {
           emit(ErrorState(error: result.left.message));
         }

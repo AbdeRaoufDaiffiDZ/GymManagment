@@ -136,6 +136,5 @@ class Rfid_PlanBloc extends Bloc<Rfid_PlanEvent, Rfid_PlanState> {
   @override
   Future<void> close() async {
     await super.close();
-    MongoDatabase.close();
   }
 }

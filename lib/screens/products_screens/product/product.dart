@@ -79,7 +79,7 @@ class _ProductDashboardState extends State<ProductDashboard> {
         priceoverview: product.priceoverview,
         saleRecords: product.saleRecords);
     productsBloc.add(UpdateProductEvent(
-        product: productEdited, buyer: _buyingController.text));
+        product: productEdited, buyer: _buyingController.text, context: context));
 
     setState(() {
       _products[index] = productEdited;
@@ -106,7 +106,7 @@ class _ProductDashboardState extends State<ProductDashboard> {
         _products[index].priceoverview += _products[index].price;
       }
       productsBloc.add(UpdateProductEvent(
-          product: _products[index], buyer: buyerController));
+          product: _products[index], buyer: buyerController, context: context));
     }
     setState(() {
       _filteredProducts = _products;

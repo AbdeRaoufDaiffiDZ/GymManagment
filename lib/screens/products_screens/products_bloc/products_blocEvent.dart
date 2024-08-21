@@ -31,12 +31,13 @@ class DeleteProductEvent extends ProductsBlocEvent {
 class UpdateProductEvent extends ProductsBlocEvent {
   final Product product;
   final String? buyer;
-  UpdateProductEvent({required this.buyer,
+  final BuildContext context;
+  UpdateProductEvent({required this.buyer,required this.context,
     required this.product,
   });
 
   @override
-  List<Object?> get props => [
+  List<Object?> get props => [context,
         product,
       ];
 }

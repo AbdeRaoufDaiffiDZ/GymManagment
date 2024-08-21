@@ -6,6 +6,7 @@ import 'package:admin/entities/gym_parm_entity.dart';
 import 'package:admin/entities/product_entity.dart';
 import 'package:admin/entities/user_data_entity.dart';
 import 'package:either_dart/either.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
@@ -298,7 +299,8 @@ class MongoDatabase {
   Future<Either<Failure, bool>> UpdateProductData(
       {required Product product,
       required String collectionName,
-      required String? id}) async {
+      required String? id,
+      required BuildContext context}) async {
     try {
       if (db == null) {
         await connect();
@@ -331,7 +333,7 @@ class MongoDatabase {
                 if (key == 'productPrice') {
                   var gymParam =
                       await GymParamRetrive(collectionName: "Expense");
-                  if (gymParam.isRight ) {
+                  if (gymParam.isRight) {
                     /////////////////////  check if the data is right
 
                     gymParam.right.peopleIncome.forEach((element) {
@@ -352,6 +354,10 @@ class MongoDatabase {
                 }
               }
             });
+
+            _showDialog(context, "Product Price Addition Done", Colors.green);
+          } else {
+            _showDialog(context, "Error, Try Again", Colors.red);
           }
         }
       } else {
@@ -682,5 +688,29 @@ class MongoDatabase {
       return Left(
           Failure(key: AppError.DelettingUserError, message: e.toString()));
     }
+  }
+
+  void _showDialog(BuildContext context, String message, Color color) {
+    // Show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // Return the Dialog widget here
+        return AlertDialog(
+            backgroundColor: Colors.white,
+            content: Text(
+              message,
+              style: TextStyle(color: color, fontSize: 20),
+              textAlign: TextAlign.center,
+            ));
+      },
+    );
+
+    // Automatically dismiss after 5 seconds
+    Future.delayed(Duration(seconds: 5), () {
+      if (Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
+    });
   }
 }
