@@ -611,7 +611,9 @@ class _SearchState extends State<eightSession> {
         if (isRenew) {
           _renewProfile(user!, value, selectedDate);
           _creditController.clear();
-          Navigator.pop(context);
+          if (Navigator.canPop(context)) {
+            Navigator.pop(context);
+          }
         } else {
           _addProfile(null);
         }
