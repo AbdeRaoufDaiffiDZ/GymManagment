@@ -189,21 +189,11 @@ class _SearchState extends State<sixSession> {
         _phoneController.text.isNotEmpty) {
       final Unlimited_PlanBloc _unlimited_bloc =
           BlocProvider.of<Unlimited_PlanBloc>(context);
+      final Session16Bloc.Session_16_PlanBloc session_16_planBloc =
+          BlocProvider.of<Session16Bloc.Session_16_PlanBloc>(context);
 
       if (edit) {
-        final userNew = User_Data(
-            tapis: _tapisController.text.toLowerCase() == 'true',
-            sex: userr.sex,
-            id: _idController.text,
-            fullName: _nameController.text,
-            plan: userr.plan,
-            startingDate: userr.startingDate,
-            endDate: userr.endDate,
-            credit: _creditController.text,
-            sessionLeft: sessionNumber,
-            lastCheckDate: userr.lastCheckDate,
-            phoneNumber: _phoneController.text);
-        _unlimited_bloc.add(Unlimited.UpdateUserEvent(user: userNew));
+        // Update existing user logic
       } else {
         User_Data newUser = User_Data(
             sex: _sexController.text,
@@ -220,17 +210,19 @@ class _SearchState extends State<sixSession> {
         _unlimited_bloc.add(AddUserEvent(user: newUser));
       }
 
+      // Refresh the user list
+      session_16_planBloc.add(Event16.GetUsersEvent());
+
+      // Clear input fields and reset state
       _nameController.clear();
       _idController.clear();
       _creditController.clear();
       _phoneController.clear();
       _sexController.clear();
       _tapisController.text = 'false';
-
       setState(() {
         _selectedSex = null;
       });
-
       _filteredItems = _allItems;
       count = 0;
       edit = false;
@@ -289,8 +281,8 @@ class _SearchState extends State<sixSession> {
   }
 
   void _renewProfile(User_Data user, String credit, DateTime? startDate) {
-    final Unlimited_PlanBloc _unlimited_bloc =
-        BlocProvider.of<Unlimited_PlanBloc>(context);
+    final Session16Bloc.Session_16_PlanBloc session_16_planBloc =
+        BlocProvider.of<Session16Bloc.Session_16_PlanBloc>(context);
 
     final DateTime renewalStartDate = startDate ?? DateTime.now();
     final DateTime renewalEndDate =
@@ -311,7 +303,7 @@ class _SearchState extends State<sixSession> {
       phoneNumber: user.phoneNumber,
     );
 
-    _unlimited_bloc.add(Unlimited.UpdateUserEvent(user: renewUser));
+    session_16_planBloc.add(Event16.UpdateUserEvent(user: renewUser));
   }
 
   void _deleteProfile(User_Data user) {

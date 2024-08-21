@@ -183,17 +183,33 @@ class _SearchState extends State<twlvSession> {
   }
 
   void _addProfile(User_Data? user) {
+    late User_Data userNew;
+    final Session12bloc.Session_12_PlanBloc _unlimited_bloc =
+        BlocProvider.of<Session12bloc.Session_12_PlanBloc>(context);
+    if (checkDate) {
+      userNew = User_Data(
+          tapis: user!.tapis,
+          id: user.id,
+          sex: user.sex,
+          fullName: user.fullName,
+          plan: user.plan,
+          startingDate: user.startingDate,
+          endDate: user.endDate,
+          credit: user.credit,
+          sessionLeft: user.sessionLeft,
+          lastCheckDate: user.lastCheckDate,
+          phoneNumber: user.phoneNumber);
+
+      _unlimited_bloc.add(Event12.UpdateUserEvent(user: userNew));
+    }
     if (_nameController.text.isNotEmpty &&
+        _tapisController.text.isNotEmpty &&
         _idController.text.isNotEmpty &&
         _sexController.text.isNotEmpty &&
-        _tapisController.text.isNotEmpty &&
         _creditController.text.isNotEmpty &&
         _phoneController.text.isNotEmpty) {
-      final Unlimited_PlanBloc _unlimited_bloc =
-          BlocProvider.of<Unlimited_PlanBloc>(context);
-
       if (edit) {
-        final userNew = User_Data(
+        userNew = User_Data(
             tapis: _tapisController.text.toLowerCase() == 'true',
             sex: userr.sex,
             id: _idController.text,
@@ -202,14 +218,17 @@ class _SearchState extends State<twlvSession> {
             startingDate: userr.startingDate,
             endDate: userr.endDate,
             credit: _creditController.text,
-            sessionLeft: sessionNumber,
+            sessionLeft: userr.sessionLeft,
             lastCheckDate: userr.lastCheckDate,
             phoneNumber: _phoneController.text);
-        _unlimited_bloc.add(Unlimited.UpdateUserEvent(user: userNew));
+
+        final Session12bloc.Session_12_PlanBloc _unlimited_bloc =
+            BlocProvider.of<Session12bloc.Session_12_PlanBloc>(context);
+        _unlimited_bloc.add(Event12.UpdateUserEvent(user: userNew));
       } else {
         User_Data newUser = User_Data(
-            sex: _sexController.text,
             tapis: _tapisController.text.toLowerCase() == 'true',
+            sex: _sexController.text,
             fullName: _nameController.text,
             plan: plan,
             startingDate: DateTime.now(),
@@ -217,26 +236,25 @@ class _SearchState extends State<twlvSession> {
             credit: _creditController.text,
             id: _idController.text,
             sessionLeft: sessionNumber,
-            lastCheckDate: '',
+            lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
             phoneNumber: _phoneController.text);
-        _unlimited_bloc.add(AddUserEvent(user: newUser));
+        _unlimited_bloc.add(Event12.AddUserEvent(user: newUser));
       }
 
-      _nameController.clear();
-      _idController.clear();
-      _creditController.clear();
-      _phoneController.clear();
-      _sexController.clear();
-      _tapisController.text = 'false';
-
       setState(() {
+        _nameController.clear();
         _selectedSex = null;
+        _idController.clear();
+        _creditController.clear();
+        _phoneController.clear();
+        _sexController.clear();
+        _tapisController.text = 'false';
       });
-
-      _filteredItems = _allItems;
-      count = 0;
-      edit = false;
     }
+    _filteredItems = _allItems;
+    count = 0;
+    edit = false;
+    checkDate = false;
   }
 
   void _editProfile(User_Data user) {
@@ -256,9 +274,6 @@ class _SearchState extends State<twlvSession> {
     userr = user;
   }
 
-  
-
-  
   void _renewProfile(User_Data user, String credit) {
     setState(() {
       count = 0;
@@ -281,14 +296,13 @@ class _SearchState extends State<twlvSession> {
     _unlimited_bloc.add(Event12.UpdateUserEvent(user: renewUser));
   }
 
-
   void _deleteProfile(User_Data user) {
     final Unlimited_PlanBloc _unlimited_bloc =
         BlocProvider.of<Unlimited_PlanBloc>(context);
     _unlimited_bloc.add(DeleteUserEvent(user: user));
   }
 
-   void _toggleSessionMark(User_Data user, bool value) {
+  void _toggleSessionMark(User_Data user, bool value) {
     setState(() {
       user.isSessionMarked = value;
       count = 0;
@@ -321,7 +335,6 @@ class _SearchState extends State<twlvSession> {
         BlocProvider.of<Session12bloc.Session_12_PlanBloc>(context);
     session_12_planBloc.add(Event12.UpdateUserEvent(user: user_data));
   }
-
 
   final ScrollController _scrollController = ScrollController();
 

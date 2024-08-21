@@ -183,17 +183,32 @@ class _SearchState extends State<eightSession> {
   }
 
   void _addProfile(User_Data? user) {
+    late User_Data userNew;
+    final Session8bloc.Session_8_PlanBloc session_8_planBloc =
+        BlocProvider.of<Session8bloc.Session_8_PlanBloc>(context);
+    if (checkDate) {
+      userNew = User_Data(
+          tapis: user!.tapis,
+          sex: user.sex,
+          id: user.id,
+          fullName: user.fullName,
+          plan: user.plan,
+          startingDate: user.startingDate,
+          endDate: user.endDate,
+          credit: user.credit,
+          sessionLeft: user.sessionLeft,
+          lastCheckDate: user.lastCheckDate,
+          phoneNumber: _phoneController.text);
+      session_8_planBloc.add(Event8.UpdateUserEvent(user: userNew));
+    }
     if (_nameController.text.isNotEmpty &&
-        _idController.text.isNotEmpty &&
-        _sexController.text.isNotEmpty &&
         _tapisController.text.isNotEmpty &&
         _creditController.text.isNotEmpty &&
+        _idController.text.isNotEmpty &&
+        _sexController.text.isNotEmpty &&
         _phoneController.text.isNotEmpty) {
-      final Unlimited_PlanBloc _unlimited_bloc =
-          BlocProvider.of<Unlimited_PlanBloc>(context);
-
       if (edit) {
-        final userNew = User_Data(
+        userNew = User_Data(
             tapis: _tapisController.text.toLowerCase() == 'true',
             sex: userr.sex,
             id: _idController.text,
@@ -202,14 +217,15 @@ class _SearchState extends State<eightSession> {
             startingDate: userr.startingDate,
             endDate: userr.endDate,
             credit: _creditController.text,
-            sessionLeft: sessionNumber,
+            sessionLeft: userr.sessionLeft,
             lastCheckDate: userr.lastCheckDate,
             phoneNumber: _phoneController.text);
-        _unlimited_bloc.add(Unlimited.UpdateUserEvent(user: userNew));
+
+        session_8_planBloc.add(Event8.UpdateUserEvent(user: userNew));
       } else {
         User_Data newUser = User_Data(
-            sex: _sexController.text,
             tapis: _tapisController.text.toLowerCase() == 'true',
+            sex: _sexController.text,
             fullName: _nameController.text,
             plan: plan,
             startingDate: DateTime.now(),
@@ -217,26 +233,24 @@ class _SearchState extends State<eightSession> {
             credit: _creditController.text,
             id: _idController.text,
             sessionLeft: sessionNumber,
-            lastCheckDate: '',
+            lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
             phoneNumber: _phoneController.text);
-        _unlimited_bloc.add(AddUserEvent(user: newUser));
+        session_8_planBloc.add(Event8.AddUserEvent(user: newUser));
       }
-
-      _nameController.clear();
-      _idController.clear();
-      _creditController.clear();
-      _phoneController.clear();
-      _sexController.clear();
-      _tapisController.text = 'false';
-
       setState(() {
+        _nameController.clear();
+        _idController.clear();
+        _creditController.clear();
         _selectedSex = null;
+        _phoneController.clear();
+        _sexController.clear();
+        _tapisController.text = 'false';
       });
-
-      _filteredItems = _allItems;
-      count = 0;
-      edit = false;
     }
+    _filteredItems = _allItems;
+    count = 0;
+    edit = false;
+    checkDate = false;
   }
 
   void _editProfile(User_Data user) {
@@ -256,7 +270,7 @@ class _SearchState extends State<eightSession> {
     userr = user;
   }
 
-   void _renewProfile(User_Data user, String credit) {
+  void _renewProfile(User_Data user, String credit) {
     setState(() {
       count = 0;
     });
@@ -277,6 +291,7 @@ class _SearchState extends State<eightSession> {
         phoneNumber: user.phoneNumber);
     session_8_planBloc.add(Event8.UpdateUserEvent(user: renewUser));
   }
+
   void _toggleSessionMark(User_Data user, bool value) {
     setState(() {
       user.isSessionMarked = value;
@@ -311,15 +326,11 @@ class _SearchState extends State<eightSession> {
     session_8_planBloc.add(Event8.UpdateUserEvent(user: user_data));
   }
 
-
-
   void _deleteProfile(User_Data user) {
     final Unlimited_PlanBloc _unlimited_bloc =
         BlocProvider.of<Unlimited_PlanBloc>(context);
     _unlimited_bloc.add(DeleteUserEvent(user: user));
   }
-
-
 
   final ScrollController _scrollController = ScrollController();
 
@@ -605,7 +616,6 @@ class _SearchState extends State<eightSession> {
           _renewProfile(user!, value);
           _creditController.clear();
           Navigator.pop(context);
-          
         } else {
           _addProfile(null);
         }
