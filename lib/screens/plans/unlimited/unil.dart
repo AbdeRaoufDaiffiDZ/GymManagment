@@ -56,7 +56,7 @@ class _SearchState extends State<unlimited> {
   DateTime? selectedDate;
 
   final List<String> _sexOptions = ['All', 'Male', 'Female'];
-  final List<String> _sexOption = ['All', 'Male', 'Female'];
+  final List<String> _sexOption = ['Male', 'Female'];
 
   @override
   void initState() {
@@ -115,7 +115,7 @@ class _SearchState extends State<unlimited> {
         color: Colors.orange,
       ),
       value: _selectedSexForDataEntry,
-      items: _sexOptions.map((String sex) {
+      items: _sexOption.map((String sex) {
         return DropdownMenuItem<String>(
           value: sex,
           child: Text(
