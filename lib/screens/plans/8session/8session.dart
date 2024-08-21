@@ -277,8 +277,10 @@ class _SearchState extends State<eightSession> {
         id: user.id,
         fullName: user.fullName,
         plan: user.plan,
-        startingDate: DateTime.now(),
-        endDate: DateTime.now().add(Duration(days: daysNumber)),
+        startingDate: startDate ?? DateTime.now(),
+        endDate: startDate != null
+            ? startDate.add(Duration(days: daysNumber))
+            : DateTime.now().add(Duration(days: daysNumber)),
         credit: credit,
         sessionLeft: sessionNumber,
         lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),

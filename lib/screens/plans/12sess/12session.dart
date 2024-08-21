@@ -278,8 +278,10 @@ class _SearchState extends State<twlvSession> {
         id: user.id,
         fullName: user.fullName,
         plan: user.plan,
-        startingDate: DateTime.now(),
-        endDate: DateTime.now().add(Duration(days: daysNumber)),
+       startingDate: startDate ?? DateTime.now(),
+        endDate: startDate != null
+            ? startDate.add(Duration(days: daysNumber))
+            : DateTime.now().add(Duration(days: daysNumber)),
         credit: credit,
         sessionLeft: sessionNumber,
         lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
@@ -612,9 +614,10 @@ class _SearchState extends State<twlvSession> {
           _renewProfile(user!, value, selectedDate);
           _creditController.clear();
 
-  if( Navigator.canPop(context))
-{          Navigator.pop(context);
-}           } else {
+          if (Navigator.canPop(context)) {
+            Navigator.pop(context);
+          }
+        } else {
           _addProfile(null);
         }
       },

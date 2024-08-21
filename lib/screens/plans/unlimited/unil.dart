@@ -237,7 +237,6 @@ class _SearchState extends State<unlimited> {
       _selectedSexForDataEntry = user.sex;
       _tapisController.text = user.tapis.toString();
 
-
       edit = true;
     });
     userr = user;
@@ -555,7 +554,9 @@ class _SearchState extends State<unlimited> {
         if (isRenew && selectedDate != null) {
           _renewProfile(user!, value, selectedDate);
           _creditController.clear();
-          Navigator.pop(context);
+          if (Navigator.canPop(context)) {
+            Navigator.pop(context);
+          }
         } else {
           _addProfile(null);
         }
