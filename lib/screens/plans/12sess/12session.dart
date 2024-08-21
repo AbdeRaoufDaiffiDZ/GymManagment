@@ -625,8 +625,9 @@ class _SearchState extends State<twlvSession> {
           _renewProfile(user!, value, selectedDate);
           _creditController.clear();
 
-          Navigator.pop(context);
-        } else {
+  if( Navigator.canPop(context))
+{          Navigator.pop(context);
+}           } else {
           _addProfile(null);
         }
       },
