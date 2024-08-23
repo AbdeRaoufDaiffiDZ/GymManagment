@@ -216,7 +216,7 @@ class _SearchState extends State<sixSession> {
             sessionLeft: userr.sessionLeft,
             lastCheckDate: userr.lastCheckDate,
             phoneNumber: _phoneController.text);
-if (userNew.tapis && !userr.tapis) {
+        if (userNew.tapis && !userr.tapis) {
           userNew.credit = userNew.tapis
               ? (int.parse(userNew.credit) + PlanPrices['tapis']!).toString()
               : userNew.credit;
@@ -224,6 +224,7 @@ if (userNew.tapis && !userr.tapis) {
         session_16_planBloc.add(Event16.UpdateUserEvent(user: userNew));
       } else {
         User_Data newUser = User_Data(
+            isNewUser: true,
             sex: _sexController.text,
             tapis: _tapisController.text.toLowerCase() == 'true',
             fullName: _nameController.text,
@@ -275,10 +276,12 @@ if (userNew.tapis && !userr.tapis) {
   }
 
   void _toggleSessionMark(User_Data user, bool value) {
-    setState(() {
-      user.isSessionMarked = value;
-      count = 0;
-    });
+    if (!user.isUncheck) {
+      setState(() {
+        user.isSessionMarked = value;
+        count = 0;
+      });
+    }
     User_Data user_data = User_Data(
         tapis: user.tapis,
         sex: user.sex,
@@ -292,16 +295,22 @@ if (userNew.tapis && !userr.tapis) {
         credit: user.credit,
         lastCheckDate: user.lastCheckDate,
         phoneNumber: user.phoneNumber);
-    if (value) {
-      // Implement the checkbox functionality if needed
-      user_data.isSessionMarked = true;
-      user_data.sessionLeft =
-          user_data.sessionLeft <= 0 ? 0 : user_data.sessionLeft - 1;
-      user_data.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    if (!user.isUncheck) {
+      if (value) {
+        // Implement the checkbox functionality if needed
+        user_data.isSessionMarked = true;
+        user_data.sessionLeft =
+            user_data.sessionLeft <= 0 ? 0 : user_data.sessionLeft - 1;
+        user_data.lastCheckDate =
+            DateFormat('yyyy-MM-dd').format(DateTime.now());
+      } else {
+        user_data.isSessionMarked = false;
+        user_data.sessionLeft = user_data.sessionLeft + 1;
+        user_data.lastCheckDate =
+            DateFormat('yyyy-MM-dd').format(DateTime.now());
+      }
     } else {
       user_data.isSessionMarked = false;
-      user_data.sessionLeft = user_data.sessionLeft + 1;
-      user_data.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
     }
     final Session16Bloc.Session_16_PlanBloc session_16_planBloc =
         BlocProvider.of<Session16Bloc.Session_16_PlanBloc>(context);
@@ -676,6 +685,15 @@ if (userNew.tapis && !userr.tapis) {
   }
 
   Widget _tableCellActions(User_Data user) {
+    if (user.lastCheckDate != null) {
+      if (user.lastCheckDate !=
+              DateFormat('yyyy-MM-dd').format(DateTime.now()) &&
+          user.isSessionMarked) {
+        user.isUncheck = true;
+        _toggleSessionMark(user, false);
+        count = 0;
+      }
+    }
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

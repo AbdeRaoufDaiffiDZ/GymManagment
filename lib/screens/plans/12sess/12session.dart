@@ -227,6 +227,7 @@ if (userNew.tapis && !userr.tapis) {
         session_12_planBloc.add(Event12.UpdateUserEvent(user: userNew));
       } else {
         User_Data newUser = User_Data(
+          isNewUser:true,
             tapis: _tapisController.text.toLowerCase() == 'true',
             sex: _sexController.text,
             fullName: _nameController.text,
@@ -246,6 +247,8 @@ if (userNew.tapis && !userr.tapis) {
         _idController.clear();
         _creditController.clear();
         _phoneController.clear();
+        _selectedSexForDataEntry = null;
+
         _sexController.clear();
         _tapisController.text = 'false';
       });
@@ -304,10 +307,11 @@ if (userNew.tapis && !userr.tapis) {
   }
 
   void _toggleSessionMark(User_Data user, bool value) {
-    setState(() {
+    if(!user.isUncheck)
+    {setState(() {
       user.isSessionMarked = value;
       count = 0;
-    });
+    });}
     User_Data user_data = User_Data(
         tapis: user.tapis,
         sex: user.sex,
@@ -321,7 +325,7 @@ if (userNew.tapis && !userr.tapis) {
         credit: user.credit,
         lastCheckDate: user.lastCheckDate,
         phoneNumber: user.phoneNumber);
-    if (value) {
+        if(!user.isUncheck){if (value) {
       // Implement the checkbox functionality if needed
       user_data.isSessionMarked = true;
       user_data.sessionLeft =
@@ -331,7 +335,12 @@ if (userNew.tapis && !userr.tapis) {
       user_data.isSessionMarked = false;
       user_data.sessionLeft = user_data.sessionLeft + 1;
       user_data.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    }}
+    else {
+            user_data.isSessionMarked = false;
+
     }
+    
     final Session12bloc.Session_12_PlanBloc session_12_planBloc =
         BlocProvider.of<Session12bloc.Session_12_PlanBloc>(context);
     session_12_planBloc.add(Event12.UpdateUserEvent(user: user_data));
@@ -674,6 +683,13 @@ if (userNew.tapis && !userr.tapis) {
   }
 
   Widget _tableCellActions(User_Data user) {
+    if(user.lastCheckDate != null){
+      if(user.lastCheckDate != DateFormat('yyyy-MM-dd').format(DateTime.now()) && user.isSessionMarked){
+        user.isUncheck = true;
+        _toggleSessionMark(user, false);
+        count = 0;
+      }
+    }
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

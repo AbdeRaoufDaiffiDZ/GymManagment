@@ -227,6 +227,7 @@ class _SearchState extends State<eightSession> {
         session_8_planBloc.add(Event8.UpdateUserEvent(user: userNew));
       } else {
         User_Data newUser = User_Data(
+          isNewUser:true,
             tapis: _tapisController.text.toLowerCase() == 'true',
             sex: _sexController.text,
             fullName: _nameController.text,
@@ -299,10 +300,12 @@ class _SearchState extends State<eightSession> {
   }
 
   void _toggleSessionMark(User_Data user, bool value) {
-    setState(() {
-      user.isSessionMarked = value;
-      count = 0;
-    });
+    if (!user.isUncheck) {
+      setState(() {
+        user.isSessionMarked = value;
+        count = 0;
+      });
+    }
     User_Data user_data = User_Data(
         tapis: user.tapis,
         sex: user.sex,
@@ -316,16 +319,22 @@ class _SearchState extends State<eightSession> {
         credit: user.credit,
         lastCheckDate: user.lastCheckDate,
         phoneNumber: user.phoneNumber);
-    if (value) {
-      // Implement the checkbox functionality if needed
-      user_data.isSessionMarked = true;
-      user_data.sessionLeft =
-          user_data.sessionLeft <= 0 ? 0 : user_data.sessionLeft - 1;
-      user_data.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    if (!user.isUncheck) {
+      if (value) {
+        // Implement the checkbox functionality if needed
+        user_data.isSessionMarked = true;
+        user_data.sessionLeft =
+            user_data.sessionLeft <= 0 ? 0 : user_data.sessionLeft - 1;
+        user_data.lastCheckDate =
+            DateFormat('yyyy-MM-dd').format(DateTime.now());
+      } else {
+        user_data.isSessionMarked = false;
+        user_data.sessionLeft = user_data.sessionLeft + 1;
+        user_data.lastCheckDate =
+            DateFormat('yyyy-MM-dd').format(DateTime.now());
+      }
     } else {
       user_data.isSessionMarked = false;
-      user_data.sessionLeft = user_data.sessionLeft + 1;
-      user_data.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
     }
     final Session8bloc.Session_8_PlanBloc session_8_planBloc =
         BlocProvider.of<Session8bloc.Session_8_PlanBloc>(context);
@@ -675,6 +684,15 @@ class _SearchState extends State<eightSession> {
   }
 
   Widget _tableCellActions(User_Data user) {
+    if (user.lastCheckDate != null) {
+      if (user.lastCheckDate !=
+              DateFormat('yyyy-MM-dd').format(DateTime.now()) &&
+          user.isSessionMarked) {
+        user.isUncheck = true;
+        _toggleSessionMark(user, false);
+        count = 0;
+      }
+    }
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

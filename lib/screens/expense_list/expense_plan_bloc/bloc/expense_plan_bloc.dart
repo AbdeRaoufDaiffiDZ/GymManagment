@@ -45,18 +45,18 @@ class Expense_PlanBloc
               : emit(ErrorState(error: data.left.message));
         }
       }
-      // else if (event is UpdateUserEvent) {
-      //   emit(LoadingState());
-      //   final result = await dataSource.UpdateUserData(user: event.user, collectionName: collectionName, );
-      //   if (result.isLeft) {
-      //     emit(ErrorState(error: result.left.message));
-      //   } else {
-      //     final data = await dataSource.RetriveData(collectionName: collectionName);
-      //     data.isRight
-      //         ? emit(SuccessState(users: data.right))
-      //         : emit(ErrorState(error: data.left.message));
-      //   }
-      // }
+      else if (event is UpdateExpenseEvent) {
+        emit(LoadingState());
+        final result = await dataSource.UpdateExpenseData(collectionName: collectionName, expense: event.expense, oldExpense: event.oldExpense);
+        if (result.isLeft) {
+          emit(ErrorState(error: result.left.message));
+        } else {
+          final data = await dataSource.RetriveExpense(collectionName: collectionName);
+          data.isRight
+              ? emit(SuccessState(expense: data.right.expenses,gymParam: data.right))
+              : emit(ErrorState(error: data.left.message));
+        }
+      }
     });
   }
 

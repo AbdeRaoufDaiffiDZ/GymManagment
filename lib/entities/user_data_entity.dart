@@ -18,10 +18,17 @@ class User_Data extends Equatable {
   int sessionLeft;
   bool isSessionMarked;
   bool isEdit;
-  User_Data({  this.isEdit =false,
+    bool isNewUser;
+
+  bool isUncheck;
+
+  User_Data({
+    this.isEdit = false,
+    this.isUncheck = false,
     this.buyingCredit = 0,
     this.tapis = false,
-    this.renew = false,
+    this.renew = false,    this.isNewUser = false,
+
     required this.phoneNumber,
     required this.lastCheckDate,
     required this.sessionLeft,
@@ -36,7 +43,9 @@ class User_Data extends Equatable {
   });
 
   @override
-  List<Object?> get props => [ isEdit,
+  List<Object?> get props => [isNewUser,
+        isEdit,
+        isUncheck,
         phoneNumber,
         renew,
         sex,

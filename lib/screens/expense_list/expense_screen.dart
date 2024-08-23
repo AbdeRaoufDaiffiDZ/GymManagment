@@ -73,19 +73,26 @@ class _SearchState extends State<expense> {
     });
   }
 
-  void _addProfile(Expense? user) {
-    BlocProvider.of<Expense_PlanBloc>(context);
-
+  void _addProfile(Expense? expense) {
+    final Expense_PlanBloc expense_planBloc =
+        BlocProvider.of<Expense_PlanBloc>(context);
     if (_nameController.text.isNotEmpty && _priceController.text.isNotEmpty) {
-      final Expense_PlanBloc expense_planBloc =
-          BlocProvider.of<Expense_PlanBloc>(context);
+      late Expense expenseNew;
+      if (edit) {
+        expenseNew = Expense(
+            expensePrice: int.parse(_priceController.text),
+            dateTime: DateTime.now(),
+            expenseName: _nameController.text);
+        expense_planBloc
+            .add(UpdateExpenseEvent(expense: expenseNew, oldExpense: userr));
+      } else {
+        expenseNew = Expense(
+            expensePrice: int.parse(_priceController.text),
+            dateTime: DateTime.now(),
+            expenseName: _nameController.text);
+        expense_planBloc.add(AddExpenseEvent(expense: expenseNew));
+      }
 
-      Expense expenseNew = Expense(
-          expensePrice: int.parse(_priceController.text),
-          dateTime: DateTime.now(),
-          expenseName: _nameController.text);
-
-      expense_planBloc.add(AddExpenseEvent(expense: expenseNew));
       _nameController.clear();
       _priceController.clear();
     }

@@ -1,6 +1,5 @@
 // ignore_for_file: deprecated_member_use, unused_element
 
-
 import 'package:admin/const/const.dart';
 import 'package:admin/const/loading.dart';
 import 'package:admin/data/mongo_db.dart';
@@ -209,6 +208,7 @@ class _SearchState extends State<unlimited> {
         _unlimited_bloc.add(Unlimited.UpdateUserEvent(user: userNew));
       } else {
         User_Data newUser = User_Data(
+            isNewUser: true,
             sex: _sexController.text,
             tapis: _tapisController.text.toLowerCase() == 'true',
             fullName: _nameController.text,

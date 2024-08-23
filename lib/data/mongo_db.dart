@@ -417,7 +417,9 @@ class MongoDatabase {
 ////////////////////// gym expense Databse
 
   Future<Either<Failure, String>> UpdateExpenseData(
-      {required String collectionName, required Expense expense}) async {
+      {required String collectionName,
+      required Expense expense,
+      Expense? oldExpense = null}) async {
     try {
       if (db == null) {
         await connect();
@@ -443,7 +445,16 @@ class MongoDatabase {
           /// we will select today total income in order to modify
           if (DateFormat('yyyy-MM-dd').format(element.dateTime) ==
               DateFormat('yyyy-MM-dd').format(DateTime.now())) {
-            element.dayIncome = element.dayIncome - expense.expensePrice;
+            int newexpensePrice = 0;
+            if (oldExpense != null) {
+              if (oldExpense.expensePrice != expense.expensePrice) {
+                newexpensePrice =
+                   -( oldExpense.expensePrice - expense.expensePrice);
+              }
+            } else {
+              newexpensePrice = expense.expensePrice;
+            }
+            element.dayIncome = element.dayIncome - newexpensePrice;
           }
         });
 
@@ -556,10 +567,10 @@ class MongoDatabase {
                 element.dateTime = DateTime.now();
               }
             } else {
-              if (user.renew) {
-                oldCredit = oldCredit + PlanPrices[user.plan]!;
-                money = oldCredit - int.parse(user.credit);
+              oldCredit = oldCredit + PlanPrices[user.plan]!;
+              money = oldCredit - int.parse(user.credit);
 
+              if (user.renew) {
                 if (money <= oldCredit && money > 0) {
                   // here we check if the old credit has been payed or not old - new = old
                   element.dayIncome = element.dayIncome +
@@ -568,6 +579,10 @@ class MongoDatabase {
                 } else {
                   element.dayIncome = element.dayIncome;
                 }
+              } else if (user.isNewUser) {
+                element.dayIncome = element.dayIncome +
+                    money + // here we renew and we add the plan price - what remains from the creadite payment
+                    (user.tapis ? PlanPrices['tapis']! : 0);
               }
 
               element.dateTime = DateTime.now();
@@ -643,8 +658,7 @@ class MongoDatabase {
                       ? dataBase_Condition = 'Abonnment ended'
                       : dataBase_Condition = 'Unlimited Abonnment';
                 } else {
-                  if (user['lastCheckDate'] !=
-                      DateFormat('yyyy-MM-dd').format(DateTime.now())) {
+                  if (user['isSessionMarked'] == false) {
                     user['isSessionMarked'] = true;
                     user['lastCheckDate'] =
                         DateFormat('yyyy-MM-dd').format(DateTime.now());

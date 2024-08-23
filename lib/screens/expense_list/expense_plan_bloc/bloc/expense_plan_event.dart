@@ -29,11 +29,11 @@ class DeleteExpenseEvent extends Expense_PlanEvent {
   List<Object?> get props => [expense];
 }
 
-class UpdateUserEvent extends Expense_PlanEvent {
-   final User_Data user;
-    
-  UpdateUserEvent({required this.user, });
+class UpdateExpenseEvent extends Expense_PlanEvent {
+  final Expense expense;
+  final Expense oldExpense;
+  UpdateExpenseEvent({required this.expense,required this.oldExpense });
 
   @override
-  List<Object?> get props => [user,];
+  List<Object?> get props => [expense,oldExpense];
 }
