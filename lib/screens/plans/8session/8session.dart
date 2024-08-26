@@ -179,10 +179,12 @@ class _SearchState extends State<eightSession> {
     );
   }
 
-  void _addProfile(User_Data? user) {
+  Future<void> _addProfile(User_Data? user) async {
     late User_Data userNew;
     final Session8bloc.Session_8_PlanBloc session_8_planBloc =
         BlocProvider.of<Session8bloc.Session_8_PlanBloc>(context);
+                MongoDatabase mn = MongoDatabase();
+
     if (checkDate) {
       userNew = User_Data(
           tapis: user!.tapis,
@@ -219,10 +221,14 @@ class _SearchState extends State<eightSession> {
             sessionLeft: userr.sessionLeft,
             lastCheckDate: userr.lastCheckDate,
             phoneNumber: _phoneController.text);
-        if (userNew.tapis && !userr.tapis) {
+      if (userNew.tapis && !userr.tapis) {
+  var gymParam = await mn.GymParamRetrive(collectionName: "Expense");
+        if(gymParam.isRight){
           userNew.credit = userNew.tapis
-              ? (int.parse(userNew.credit) + PlanPrices['tapis']!).toString()
+              ? (int.parse(userNew.credit) +gymParam.right.PlanPrices['tapis']!).toString()
               : userNew.credit;
+        }
+          
         }
         session_8_planBloc.add(Event8.UpdateUserEvent(user: userNew));
       } else {

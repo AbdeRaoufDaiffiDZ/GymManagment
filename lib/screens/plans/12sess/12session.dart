@@ -21,6 +21,7 @@ import 'package:admin/screens/plans/8session/8session_bloc/bloc/session_8_event.
 import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart'
     as Unlimited;
 import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart';
+import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -178,10 +179,12 @@ class _SearchState extends State<twlvSession> {
     );
   }
 
-  void _addProfile(User_Data? user) {
+  Future<void> _addProfile(User_Data? user) async {
     late User_Data userNew;
     final Session12bloc.Session_12_PlanBloc session_12_planBloc =
         BlocProvider.of<Session12bloc.Session_12_PlanBloc>(context);
+        MongoDatabase mn = MongoDatabase();
+        
     if (checkDate) {
       userNew = User_Data(
           tapis: user!.tapis,
@@ -220,9 +223,13 @@ class _SearchState extends State<twlvSession> {
             lastCheckDate: userr.lastCheckDate,
             phoneNumber: _phoneController.text);
 if (userNew.tapis && !userr.tapis) {
+  var gymParam = await mn.GymParamRetrive(collectionName: "Expense");
+        if(gymParam.isRight){
           userNew.credit = userNew.tapis
-              ? (int.parse(userNew.credit) + PlanPrices['tapis']!).toString()
+              ? (int.parse(userNew.credit) +gymParam.right.PlanPrices['tapis']!).toString()
               : userNew.credit;
+        }
+          
         }
         session_12_planBloc.add(Event12.UpdateUserEvent(user: userNew));
       } else {

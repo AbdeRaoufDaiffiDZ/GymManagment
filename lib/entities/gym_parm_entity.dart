@@ -7,8 +7,10 @@ class GymParam extends Equatable {
   int totalCredit;
   List<Expense> expenses;
   List<PeopleIncome> peopleIncome;
-
-  GymParam({
+  String password;
+  Map<String, int> PlanPrices;
+  GymParam({required this.PlanPrices,
+    this.password = '1234567890',
     required this.plan,
     required this.totalCredit,
     List<PeopleIncome>? peopleIncome,
@@ -17,18 +19,28 @@ class GymParam extends Equatable {
         expenses = expenses ?? [];
 
   @override
-  List<Object?> get props => [plan, totalCredit, peopleIncome, expenses];
+  List<Object?> get props =>
+      [plan, totalCredit, peopleIncome, expenses, password,PlanPrices];
 
   factory GymParam.fromMap(Map<String, dynamic> map) {
     List peopleIncomesMap = [];
     List expensesMap = [];
+Map<String, int> prices = {};
     if (map['peopleIncome'] != null) {
       peopleIncomesMap = map['peopleIncome'];
     }
     if (map['expenses'] != null) {
       expensesMap = map['expenses'];
     }
+     if (map['planPrices'] != null) {
+      Map<String, dynamic> planprices = map['planPrices'];
+      planprices.forEach((key, value) {
+prices.addAll({key:value});
+      });
+    }
     return GymParam(
+      PlanPrices : prices,
+      password: map['password'] ?? '1234567890',
       totalCredit: map['totalCredit'] ?? 0,
       plan: map['plann'] ?? '',
       expenses: expensesMap.map((e) => Expense.fromMap(e)).toList(),
@@ -46,6 +58,8 @@ class GymParam extends Equatable {
       income.add(element.toMap());
     });
     return {
+      'planPrices':PlanPrices,
+      'password': password,
       'plann': plan,
       'totalCredit': totalCredit,
       'peopleIncome': income,

@@ -1,4 +1,6 @@
 import 'package:admin/const/loading.dart';
+import 'package:admin/entities/gym_parm_entity.dart';
+import 'package:admin/screens/dashboard/components/App%20stats/calculator.dart';
 import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart'
     as Expense;
 import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart';
@@ -46,7 +48,7 @@ class users extends StatelessWidget {
         BlocProvider.of<Expense_PlanBloc>(context);
     ScrollController scrollController = ScrollController();
     ScrollController scrollController2 = ScrollController();
-
+    TextEditingController passwordController = TextEditingController();
     int credit = 0;
     if (totalCreadit.isNotEmpty) {
       totalCreadit.forEach((element) {
@@ -95,13 +97,17 @@ class users extends StatelessWidget {
                   DateFormat('yyyy-MM-dd').format(element.dateTime) ==
                   DateFormat('yyyy-MM-dd').format(DateTime.now()));
               int total_income = 0;
+              late PeopleIncome peopleIncome;
               state.gymParam!.peopleIncome.forEach((element) {
                 total_income = total_income + element.dayIncome;
               });
               if (data.isNotEmpty) {
                 dayIncome = data.first.dayIncome;
+                peopleIncome = data.first;
               } else {
                 dayIncome = 0;
+                peopleIncome = PeopleIncome(
+                    dayIncome: dayIncome, dateTime: DateTime.now());
               }
               int expenses_of_the_day = 0;
               int expenses_Total = 0;
@@ -123,6 +129,33 @@ class users extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       InkWell(
+                        onLongPress: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Dialog(
+                                  backgroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  child: _inputField(
+                                      passwordController,
+                                      'Enter Password',
+                                      state.gymParam!,
+                                      context,
+                                      dayIncome)
+                                  // Container(
+                                  //   width:
+                                  //       MediaQuery.of(context).size.width * 0.5,
+                                  //   height: MediaQuery.of(context).size.height *
+                                  //       0.5,
+                                  //   padding: EdgeInsets.all(16.0),
+                                  //   child: Calculator(Income: dayIncome.toString(),),
+                                  // ),
+                                  );
+                            },
+                          );
+                        },
                         onTap: () {
                           showDialog(
                             context: context,
@@ -341,19 +374,13 @@ class users extends StatelessWidget {
                       ),
                     ],
                   ),
-                  // SizedBox(height: 50),
-                  // userss(
-                  //   pngg: "assets/images/aa.png",
-                  //   text1: nearToexpired.toString(),
-                  //   text2: "Near to Expired",
-                  //   clr: Color(0xff10BD9E),
-                  // ),
+                 
                 ],
               );
-            } else if (state is Unlimited.IinitialState) {
-              _unlimited_bloc.add(GetUsersEvent());
+            } else if (state is Expense.IinitialState) {
+              expense_planBloc.add(Expense.GetExpensesEvent());
               return Loading();
-            } else if (state is Unlimited.ErrorState) {
+            } else if (state is Expense.ErrorState) {
               return Loading();
             } else {
               return Loading();
@@ -724,6 +751,73 @@ class users extends StatelessWidget {
 
   String formatDateTime(DateTime dateTime) {
     return "${dateTime.day}-${dateTime.month}-${dateTime.year}";
+  }
+
+  Widget _inputField(TextEditingController controller, String hint,
+      GymParam gymParam, BuildContext context, int dayIncome) {
+    return TextFormField(
+      obscureText: true, // Obscures the text input
+
+      controller: controller,
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(
+        border: InputBorder.none,
+        hintText: hint,
+        hintStyle: TextStyle(
+          color: Colors.grey[600],
+          fontSize: 16,
+        ),
+        contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      ),
+      onFieldSubmitted: (value) {
+        if (value == gymParam.password) {
+          if (Navigator.canPop(context)) {
+            Navigator.pop(context);
+            controller.clear();
+          }
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return Dialog(
+                backgroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  height: MediaQuery.of(context).size.height * 0.8,
+                  padding: EdgeInsets.all(16.0),
+                  child: Calculator(
+                    Income: dayIncome.toString(),
+                    password: gymParam.password,
+                  ),
+                ),
+              );
+            },
+          );
+        }
+        else {
+                  showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return Dialog(
+                backgroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                child: Container(
+                 
+                  padding: EdgeInsets.all(16.0),
+                  child: Text("Password Error Try again...")
+                  ),
+                
+              );
+            },
+          );
+     
+        }
+      },
+    );
   }
 }
 

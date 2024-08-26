@@ -91,11 +91,13 @@ class MongoDatabase {
           .toList();
 
       if (result.isEmpty) {
-        return Right(GymParam(plan: collectionName, totalCredit: 0));
+        return Right(
+            GymParam(plan: collectionName, totalCredit: 0, PlanPrices: {}));
       }
       final Map<String, dynamic>? gymparam = result[0]['GymParam'];
       if (gymparam == null) {
-        return Right(GymParam(plan: collectionName, totalCredit: 0));
+        return Right(
+            GymParam(plan: collectionName, totalCredit: 0, PlanPrices: {}));
       }
       return Right(GymParam.fromMap(gymparam));
     } catch (e) {
@@ -120,7 +122,7 @@ class MongoDatabase {
 
       final List data =
           result.where((element) => element['plan'] == collectionName).toList();
-      final List users = data[0][collectionName];
+      final List users = data[0][collectionName].toList();
       return Right(users.map((doc) => User_Data.fromMap(doc)).toList());
     } catch (e) {
       return Left(Failure(key: AppError.NotFound, message: e.toString()));
@@ -308,7 +310,7 @@ class MongoDatabase {
       final collectiongYM = db?.collection(gymCollection);
 
       final data = product.toMap();
-      if (id != null) {
+      if (id != null && id != '') {
         var dataReturn = await UpdateUserUsingRFID(
             id: id, ISbuyer: true, buyingPrice: product.price);
         if (dataReturn.isRight) {
@@ -380,18 +382,28 @@ class MongoDatabase {
                 modify.set('$collectionName.\$.$key', value));
             if (key == 'productPrice') {
               var gymParam = await GymParamRetrive(collectionName: "Expense");
-              if (gymParam.isRight && id == null) {
+              if (gymParam.isRight && id == '') {
                 /////////////////////  check if the data is right
-
-                gymParam.right.peopleIncome.forEach((element) {
-                  /// here we will remove the expense price from the day income
-                  /// we will select today total income in order to modify
-                  if (DateFormat('yyyy-MM-dd').format(element.dateTime) ==
-                      DateFormat('yyyy-MM-dd').format(DateTime.now())) {
-                    element.dayIncome =
-                        element.dayIncome + value.toInt() as int;
-                  }
-                });
+                bool todayExist = gymParam.right.peopleIncome
+                    .where((element) =>
+                        DateFormat('yyyy-MM-dd').format(element.dateTime) ==
+                        DateFormat('yyyy-MM-dd').format(DateTime.now()))
+                    .isNotEmpty;
+                if (todayExist) {
+                  gymParam.right.peopleIncome.forEach((element) {
+                    /// here we will remove the expense price from the day income
+                    /// we will select today total income in order to modify
+                    if (DateFormat('yyyy-MM-dd').format(element.dateTime) ==
+                        DateFormat('yyyy-MM-dd').format(DateTime.now())) {
+                      element.dayIncome =
+                          element.dayIncome + value.toInt() as int;
+                    }
+                  });
+                } else {
+                  gymParam.right.peopleIncome.add(PeopleIncome(
+                      dayIncome: value.toInt() as int,
+                      dateTime: DateTime.now()));
+                }
 
                 /// here we transform the data to map in order to save it in the databse
                 final gymData = gymParam.right.toMap();
@@ -449,7 +461,7 @@ class MongoDatabase {
             if (oldExpense != null) {
               if (oldExpense.expensePrice != expense.expensePrice) {
                 newexpensePrice =
-                   -( oldExpense.expensePrice - expense.expensePrice);
+                    -(oldExpense.expensePrice - expense.expensePrice);
               }
             } else {
               newexpensePrice = expense.expensePrice;
@@ -567,7 +579,7 @@ class MongoDatabase {
                 element.dateTime = DateTime.now();
               }
             } else {
-              oldCredit = oldCredit + PlanPrices[user.plan]!;
+              oldCredit = oldCredit + gymParam.right.PlanPrices[user.plan]!;
               money = oldCredit - int.parse(user.credit);
 
               if (user.renew) {
@@ -575,14 +587,14 @@ class MongoDatabase {
                   // here we check if the old credit has been payed or not old - new = old
                   element.dayIncome = element.dayIncome +
                       money + // here we renew and we add the plan price - what remains from the creadite payment
-                      (user.tapis ? PlanPrices['tapis']! : 0);
+                      (user.tapis ? gymParam.right.PlanPrices['tapis']! : 0);
                 } else {
                   element.dayIncome = element.dayIncome;
                 }
               } else if (user.isNewUser) {
                 element.dayIncome = element.dayIncome +
                     money + // here we renew and we add the plan price - what remains from the creadite payment
-                    (user.tapis ? PlanPrices['tapis']! : 0);
+                    (user.tapis ? gymParam.right.PlanPrices['tapis']! : 0);
               }
 
               element.dateTime = DateTime.now();
@@ -590,13 +602,56 @@ class MongoDatabase {
           }
         });
       } else {
-        gymParam.right.peopleIncome.add(PeopleIncome(
-            dateTime: DateTime.now(),
-            dayIncome: PlanPrices[collectionName]! -
-                int.parse(user.credit) +
-                (user.tapis ? PlanPrices['tapis']! : 0)));
+        oldCredit = oldCredit + gymParam.right.PlanPrices[user.plan]!;
+        money = oldCredit - int.parse(user.credit);
+
+        if (money <= oldCredit && money > 0) {
+          gymParam.right.peopleIncome.add(PeopleIncome(
+              dateTime: DateTime.now(),
+              dayIncome: money +
+                  (user.tapis ? gymParam.right.PlanPrices['tapis']! : 0)));
+          // here we check if the old credit has been payed or not old - new = old
+        } else {
+          gymParam.right.peopleIncome
+              .add(PeopleIncome(dateTime: DateTime.now(), dayIncome: 0));
+          // here we check if the old credit has been payed or not old - new = old
+        }
       }
 
+      final gymData = gymParam.right.toMap();
+      await collectiongYM?.update(
+          where.eq('plan', "Expense"), modify.set("GymParam", gymData));
+    }
+  }
+
+//////////////////////////////////////////////////////////////////////
+  ///
+  void EditIncome(String value) async {
+    var gymParam = await GymParamRetrive(collectionName: "Expense");
+    final collectiongYM = db?.collection(gymCollection);
+
+    if (gymParam.isRight) {
+      /////////////////////  check if the data is right
+      bool todayExist = gymParam.right.peopleIncome
+          .where((element) =>
+              DateFormat('yyyy-MM-dd').format(element.dateTime) ==
+              DateFormat('yyyy-MM-dd').format(DateTime.now()))
+          .isNotEmpty;
+      if (todayExist) {
+        gymParam.right.peopleIncome.forEach((element) {
+          /// here we will remove the expense price from the day income
+          /// we will select today total income in order to modify
+          if (DateFormat('yyyy-MM-dd').format(element.dateTime) ==
+              DateFormat('yyyy-MM-dd').format(DateTime.now())) {
+            element.dayIncome = double.parse(value).toInt();
+          }
+        });
+      } else {
+        gymParam.right.peopleIncome.add(PeopleIncome(
+            dayIncome: int.parse(value), dateTime: DateTime.now()));
+      }
+
+      /// here we transform the data to map in order to save it in the databse
       final gymData = gymParam.right.toMap();
       await collectiongYM?.update(
           where.eq('plan', "Expense"), modify.set("GymParam", gymData));
@@ -726,5 +781,122 @@ class MongoDatabase {
         Navigator.pop(context);
       }
     });
+  }
+
+  Future<Either<Failure, String>> eraseAllDate(bool all) async {
+    try {
+      if (db == null) {
+        await connect();
+      }
+
+      final collectiongYM = db?.collection(gymCollection);
+      var data = await RetriveDataFDTB();
+      if (data != null && data.isNotEmpty) {
+        if (all) {
+          data.forEach((element) async {
+            String planname = element['plan'];
+            if (planname == "unlimited" ||
+                planname == "12 session" ||
+                planname == "8 session" ||
+                planname == "16 session") {
+              // element[element['plan']].forEach((user) async {
+              //   await collectiongYM?.update(where.eq('plan', element['plan']),
+              //       modify.pull("${element['plan']}", user));
+              // });
+
+              final List userMap = element[element['plan']];
+              userMap.forEach((usersss) async {
+                await collectiongYM?.update(where.eq('plan', usersss['plan']),
+                    modify.pull('${usersss['plan']}', usersss));
+              });
+            } else if (planname == "Prodcuts") {
+              element[element['plan']].forEach((product) async {
+                await collectiongYM?.update(where.eq('plan', element['plan']),
+                    modify.pull("${element['plan']}", product));
+              });
+            } else if (planname == "Expense") {
+              Map<String, int> prices = {};
+
+              if (element["GymParam"]['planPrices'] != null) {
+                Map<String, dynamic> planprices =
+                    element["GymParam"]['planPrices'];
+                planprices.forEach((key, value) {
+                  prices.addAll({key: value});
+                });
+              }
+              GymParam gymParam = GymParam(
+                  PlanPrices: prices,
+                  password: element["GymParam"]['password'],
+                  plan: planname,
+                  totalCredit: 0);
+              final gymData = gymParam.toMap();
+
+              await collectiongYM?.update(
+                  where.eq('plan', "Expense"), modify.set("GymParam", gymData));
+            }
+
+            // print(element);
+          });
+        } else {
+          data.forEach((element) async {
+            String planname = element['plan'];
+            if (planname == "unlimited" ||
+                planname == "12 session" ||
+                planname == "8 session" ||
+                planname == "16 session") {
+              final List userMap = element[element['plan']];
+              userMap.forEach((elemenNt) {
+                elemenNt["credit"] = "0";
+              });
+              await collectiongYM?.update(where.eq('plan', element['plan']),
+                  modify.set('${element['plan']}', userMap));
+            } else if (planname == "Expense") {
+              Map<String, int> prices = {};
+
+              if (element["GymParam"]['planPrices'] != null) {
+                Map<String, dynamic> planprices =
+                    element["GymParam"]['planPrices'];
+                planprices.forEach((key, value) {
+                  prices.addAll({key: value});
+                });
+              }
+              GymParam gymParam = GymParam(
+                  PlanPrices: prices,
+                  password: element["GymParam"]['password'],
+                  plan: planname,
+                  totalCredit: 0);
+              final gymData = gymParam.toMap();
+
+              await collectiongYM?.update(
+                  where.eq('plan', "Expense"), modify.set("GymParam", gymData));
+            }
+
+            // print(element);
+          });
+        }
+      }
+      return Right('done');
+    } catch (e) {
+      return Left(
+          Failure(key: AppError.DelettingUserError, message: e.toString()));
+    }
+  }
+
+  Future<Either<Failure, String>> ChangePassword(String password) async {
+    try {
+      if (db == null) {
+        await connect();
+      }
+      final collectiongYM = db?.collection(gymCollection);
+      var gymParam = await GymParamRetrive(collectionName: "Expense");
+      gymParam.right.password = password;
+      final gymData = gymParam.right.toMap();
+      await collectiongYM?.update(
+          where.eq('plan', "Expense"), modify.set("GymParam", gymData));
+      return Right('done');
+    } catch (e) {
+      return Left(
+          Failure(key: AppError.DelettingUserError, message: e.toString()));
+    }
   }
 }

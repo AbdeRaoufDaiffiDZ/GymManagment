@@ -175,7 +175,7 @@ class _SearchState extends State<unlimited> {
     );
   }
 
-  void _addProfile(User_Data? user) {
+  Future<void> _addProfile(User_Data? user) async {
     if (_nameController.text.isNotEmpty &&
         _idController.text.isNotEmpty &&
         int.tryParse(_creditController.text) != null &&
@@ -185,6 +185,7 @@ class _SearchState extends State<unlimited> {
         _phoneController.text.isNotEmpty) {
       final Unlimited_PlanBloc _unlimited_bloc =
           BlocProvider.of<Unlimited_PlanBloc>(context);
+        MongoDatabase mn = MongoDatabase();
 
       if (edit) {
         final userNew = User_Data(
@@ -200,10 +201,14 @@ class _SearchState extends State<unlimited> {
             sessionLeft: sessionNumber,
             lastCheckDate: userr.lastCheckDate,
             phoneNumber: _phoneController.text);
-        if (userNew.tapis && !userr.tapis) {
+      if (userNew.tapis && !userr.tapis) {
+  var gymParam = await mn.GymParamRetrive(collectionName: "Expense");
+        if(gymParam.isRight){
           userNew.credit = userNew.tapis
-              ? (int.parse(userNew.credit) + PlanPrices['tapis']!).toString()
+              ? (int.parse(userNew.credit) +gymParam.right.PlanPrices['tapis']!).toString()
               : userNew.credit;
+        }
+          
         }
         _unlimited_bloc.add(Unlimited.UpdateUserEvent(user: userNew));
       } else {
