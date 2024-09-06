@@ -6,7 +6,14 @@ import 'package:math_expressions/math_expressions.dart';
 class Calculator extends StatefulWidget {
   final String Income;
   final String password;
-  const Calculator({super.key, required this.Income, required this.password});
+  final BuildContext Connttexxt;
+  final String gender;
+  const Calculator(
+      {super.key,
+      required this.gender,
+      required this.Connttexxt,
+      required this.Income,
+      required this.password});
   @override
   _CalculatorState createState() => _CalculatorState();
 }
@@ -23,11 +30,12 @@ class _CalculatorState extends State<Calculator> {
     super.initState();
   }
 
-  _changePassCheck(String pass1, String pass2) async {
+  _changePassCheck(String pass1, String pass2, BuildContext conteext) async {
     MongoDatabase mg = MongoDatabase();
 
     if (pass1 == pass2) {
-      final data = await mg.ChangePassword(pass1);
+      final data = await mg.ChangePassword(pass1,
+          context: conteext, gender: widget.gender);
       if (data.isRight && data.right == "done") {
         textController.clear();
         textController2.clear();
@@ -48,20 +56,20 @@ class _CalculatorState extends State<Calculator> {
             );
           },
         );
- Future.delayed(Duration(seconds: 3), () {
-       if (Navigator.canPop(context)) {
-          Navigator.of(context)
-              .pop(); // Close the dialog without doing anything
-               if (Navigator.canPop(context)) {
-          Navigator.of(context)
-              .pop(); // Close the dialog without doing anything
-        }
-         if (Navigator.canPop(context)) {
-          Navigator.of(context)
-              .pop(); // Close the dialog without doing anything
-        }
-        }
-    });       
+        Future.delayed(Duration(seconds: 3), () {
+          if (Navigator.canPop(context)) {
+            Navigator.of(context)
+                .pop(); // Close the dialog without doing anything
+            if (Navigator.canPop(context)) {
+              Navigator.of(context)
+                  .pop(); // Close the dialog without doing anything
+            }
+            if (Navigator.canPop(context)) {
+              Navigator.of(context)
+                  .pop(); // Close the dialog without doing anything
+            }
+          }
+        });
       }
     } else {
       showDialog(
@@ -84,7 +92,7 @@ class _CalculatorState extends State<Calculator> {
     }
   }
 
-  void _buttonPressed(String buttonText) {
+  void _buttonPressed(String buttonText, BuildContext Contttext) {
     MongoDatabase mg = MongoDatabase();
     setState(() {
       if (buttonText == "C") {
@@ -108,7 +116,8 @@ class _CalculatorState extends State<Calculator> {
                 controller: textController,
                 onSubmitted: (value) async {
                   if (textController.text == widget.password) {
-                    final message = await mg.eraseAllDate(false);
+                    final message =
+                        await mg.eraseAllDate(false, context: Contttext, gendeer: widget.gender);
                     if (message.isRight) {
                       if (Navigator.canPop(context)) {
                         Navigator.of(context)
@@ -161,7 +170,7 @@ class _CalculatorState extends State<Calculator> {
                 TextButton(
                   onPressed: () {
                     if (textController.text == widget.password) {
-                      mg.eraseAllDate(false);
+                      mg.eraseAllDate(false, context: Contttext, gendeer: widget.gender);
                     } else {
                       showDialog(
                         context: context,
@@ -202,7 +211,7 @@ class _CalculatorState extends State<Calculator> {
                 controller: textController,
                 onSubmitted: (value) {
                   if (textController.text == widget.password) {
-                    mg.eraseAllDate(true);
+                    mg.eraseAllDate(true, context: Contttext, gendeer: widget.gender);
                   } else {
                     showDialog(
                       context: context,
@@ -239,7 +248,7 @@ class _CalculatorState extends State<Calculator> {
                 TextButton(
                   onPressed: () {
                     if (textController.text == widget.password) {
-                      mg.eraseAllDate(true);
+                      mg.eraseAllDate(true, context: Contttext, gendeer: widget.gender);
                     } else {
                       showDialog(
                         context: context,
@@ -282,7 +291,7 @@ class _CalculatorState extends State<Calculator> {
                     controller: textController,
                     onSubmitted: (value) async {
                       _changePassCheck(
-                          textController.text, textController2.text);
+                          textController.text, textController2.text, Contttext);
                     },
                     decoration: InputDecoration(hintText: "Type password..."),
                   ),
@@ -291,7 +300,7 @@ class _CalculatorState extends State<Calculator> {
                     controller: textController2,
                     onSubmitted: (value) async {
                       _changePassCheck(
-                          textController.text, textController2.text);
+                          textController.text, textController2.text, Contttext);
                     },
                     decoration:
                         InputDecoration(hintText: "Type again the password..."),
@@ -308,7 +317,8 @@ class _CalculatorState extends State<Calculator> {
                 ),
                 TextButton(
                   onPressed: () {
-                    _changePassCheck(textController.text, textController2.text);
+                    _changePassCheck(
+                        textController.text, textController2.text, Contttext);
                   },
                   child: Text('Confirm'),
                 ),
@@ -317,7 +327,9 @@ class _CalculatorState extends State<Calculator> {
           },
         );
       } else if (buttonText == "Ok") {
-        editIncome(_output);
+        _output = _expression.isEmpty ? "0" : _evaluateExpression();
+
+        editIncome(_output, widget.gender);
         Future.delayed(Duration(seconds: 2));
         if (Navigator.canPop(context)) {
           Navigator.pop(context);
@@ -331,15 +343,15 @@ class _CalculatorState extends State<Calculator> {
     });
   }
 
-  void editIncome(String value) {
+  void editIncome(String value, String gender) {
     MongoDatabase mongoDatabase = MongoDatabase();
-    mongoDatabase.EditIncome(value);
+    mongoDatabase.EditIncome(value, context: context, gendeer: gender);
   }
 
   String _evaluateExpression() {
     // This is a simple implementation. In a real-world scenario, you would want to use a more robust math parser.
     try {
-      final result = calculateExpression(_expression).toString();
+      final result = calculateExpression(_expression).toInt().toString();
       return result;
     } catch (e) {
       return "Error";
@@ -413,7 +425,7 @@ class _CalculatorState extends State<Calculator> {
           return Expanded(
             child: MaterialButton(
               color: Colors.grey,
-              onPressed: () => _buttonPressed(buttonText),
+              onPressed: () => _buttonPressed(buttonText, widget.Connttexxt),
               child: Text(
                 buttonText,
                 style: TextStyle(fontSize: 20.0),

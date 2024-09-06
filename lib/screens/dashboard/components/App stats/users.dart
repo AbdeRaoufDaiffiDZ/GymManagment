@@ -1,5 +1,6 @@
 import 'package:admin/const/loading.dart';
 import 'package:admin/entities/gym_parm_entity.dart';
+import 'package:admin/main.dart';
 import 'package:admin/screens/dashboard/components/App%20stats/calculator.dart';
 import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart'
     as Expense;
@@ -49,6 +50,8 @@ class users extends StatelessWidget {
     ScrollController scrollController = ScrollController();
     ScrollController scrollController2 = ScrollController();
     TextEditingController passwordController = TextEditingController();
+    final gender = MyInheritedWidget.of(context)?.geneder;
+
     int credit = 0;
     if (totalCreadit.isNotEmpty) {
       totalCreadit.forEach((element) {
@@ -79,11 +82,15 @@ class users extends StatelessWidget {
                   color: Colors.green,
                 ),
                 onPressed: () {
-                  _unlimited_bloc.add(GetUsersEvent());
-                  session_8_planBloc.add(Event8.GetUsersEvent());
-                  session_12_planBloc.add(Event12.GetUsersEvent());
-                  session_16_planBloc.add(Event16.GetUsersEvent());
-                  expense_planBloc.add(Expense.GetExpensesEvent());
+                  _unlimited_bloc.add(GetUsersEvent(context: context));
+                  session_8_planBloc
+                      .add(Event8.GetUsersEvent(context: context));
+                  session_12_planBloc
+                      .add(Event12.GetUsersEvent(context: context));
+                  session_16_planBloc
+                      .add(Event16.GetUsersEvent(context: context));
+                  expense_planBloc
+                      .add(Expense.GetExpensesEvent(context: context));
                 },
               ),
             ],
@@ -97,17 +104,13 @@ class users extends StatelessWidget {
                   DateFormat('yyyy-MM-dd').format(element.dateTime) ==
                   DateFormat('yyyy-MM-dd').format(DateTime.now()));
               int total_income = 0;
-              late PeopleIncome peopleIncome;
               state.gymParam!.peopleIncome.forEach((element) {
                 total_income = total_income + element.dayIncome;
               });
               if (data.isNotEmpty) {
                 dayIncome = data.first.dayIncome;
-                peopleIncome = data.first;
               } else {
                 dayIncome = 0;
-                peopleIncome = PeopleIncome(
-                    dayIncome: dayIncome, dateTime: DateTime.now());
               }
               int expenses_of_the_day = 0;
               int expenses_Total = 0;
@@ -143,7 +146,8 @@ class users extends StatelessWidget {
                                       'Enter Password',
                                       state.gymParam!,
                                       context,
-                                      dayIncome)
+                                      dayIncome,
+                                      gender)
                                   // Container(
                                   //   width:
                                   //       MediaQuery.of(context).size.width * 0.5,
@@ -374,13 +378,16 @@ class users extends StatelessWidget {
                       ),
                     ],
                   ),
-                 
                 ],
               );
             } else if (state is Expense.IinitialState) {
-              expense_planBloc.add(Expense.GetExpensesEvent());
+              expense_planBloc.add(Expense.GetExpensesEvent(context: context));
               return Loading();
             } else if (state is Expense.ErrorState) {
+              Future.delayed(Duration(seconds: 2), () {
+                expense_planBloc
+                    .add(Expense.GetExpensesEvent(context: context));
+              });
               return Loading();
             } else {
               return Loading();
@@ -472,9 +479,12 @@ class users extends StatelessWidget {
                 ],
               );
             } else if (state is Unlimited.IinitialState) {
-              _unlimited_bloc.add(GetUsersEvent());
               return Loading();
             } else if (state is Unlimited.ErrorState) {
+              Future.delayed(Duration(seconds: 2), () {
+                _unlimited_bloc.add(GetUsersEvent(context: context));
+              });
+
               return Loading();
             } else {
               return Loading();
@@ -560,9 +570,11 @@ class users extends StatelessWidget {
                 ],
               );
             } else if (state is Session8.IinitialState) {
-              _unlimited_bloc.add(GetUsersEvent());
               return Loading();
             } else if (state is Session8.ErrorState) {
+              Future.delayed(Duration(seconds: 2), () {
+                session_8_planBloc.add(Event8.GetUsersEvent(context: context));
+              });
               return Loading();
             } else {
               return Loading();
@@ -648,9 +660,12 @@ class users extends StatelessWidget {
                 ],
               );
             } else if (state is Session12.IinitialState) {
-              _unlimited_bloc.add(GetUsersEvent());
               return Loading();
             } else if (state is Session12.ErrorState) {
+              Future.delayed(Duration(seconds: 2), () {
+                session_12_planBloc
+                    .add(Event12.GetUsersEvent(context: context));
+              });
               return Loading();
             } else {
               return Loading();
@@ -736,9 +751,12 @@ class users extends StatelessWidget {
                 ],
               );
             } else if (state is Session16.IinitialState) {
-              _unlimited_bloc.add(GetUsersEvent());
               return Loading();
             } else if (state is Session16.ErrorState) {
+              Future.delayed(Duration(seconds: 2), () {
+                session_16_planBloc
+                    .add(Event16.GetUsersEvent(context: context));
+              });
               return Loading();
             } else {
               return Loading();
@@ -754,7 +772,7 @@ class users extends StatelessWidget {
   }
 
   Widget _inputField(TextEditingController controller, String hint,
-      GymParam gymParam, BuildContext context, int dayIncome) {
+      GymParam gymParam, BuildContext context, int dayIncome, String? gender) {
     return TextFormField(
       obscureText: true, // Obscures the text input
 
@@ -790,14 +808,15 @@ class users extends StatelessWidget {
                   child: Calculator(
                     Income: dayIncome.toString(),
                     password: gymParam.password,
+                    Connttexxt: context,
+                    gender: gender ?? "",
                   ),
                 ),
               );
             },
           );
-        }
-        else {
-                  showDialog(
+        } else {
+          showDialog(
             context: context,
             builder: (BuildContext context) {
               return Dialog(
@@ -806,15 +825,11 @@ class users extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
                 child: Container(
-                 
-                  padding: EdgeInsets.all(16.0),
-                  child: Text("Password Error Try again...")
-                  ),
-                
+                    padding: EdgeInsets.all(16.0),
+                    child: Text("Password Error Try again...")),
               );
             },
           );
-     
         }
       },
     );

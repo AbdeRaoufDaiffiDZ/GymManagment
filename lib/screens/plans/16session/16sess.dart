@@ -1,6 +1,5 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:admin/const/const.dart';
 import 'package:admin/const/loading.dart';
 import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/user_data_entity.dart';
@@ -57,7 +56,6 @@ class _SearchState extends State<sixSession> {
   List<User_Data> _filteredItems = [];
   DateTime? selectedDate;
 
-  String? _selectedSex;
   final List<String> _sexOptions = ['All', 'Male', 'Female'];
   final List<String> _sexOption = ['Male', 'Female'];
 
@@ -179,7 +177,7 @@ class _SearchState extends State<sixSession> {
     late User_Data userNew;
     final Session16Bloc.Session_16_PlanBloc session_16_planBloc =
         BlocProvider.of<Session16Bloc.Session_16_PlanBloc>(context);
-                MongoDatabase mn = MongoDatabase();
+    MongoDatabase mn = MongoDatabase();
 
     if (checkDate) {
       userNew = User_Data(
@@ -194,7 +192,8 @@ class _SearchState extends State<sixSession> {
           sessionLeft: user.sessionLeft,
           lastCheckDate: user.lastCheckDate,
           phoneNumber: _phoneController.text);
-      session_16_planBloc.add(Event16.UpdateUserEvent(user: userNew));
+      session_16_planBloc
+          .add(Event16.UpdateUserEvent(user: userNew, context: context));
     }
 
     if (_nameController.text.isNotEmpty &&
@@ -218,16 +217,19 @@ class _SearchState extends State<sixSession> {
             sessionLeft: userr.sessionLeft,
             lastCheckDate: userr.lastCheckDate,
             phoneNumber: _phoneController.text);
-       if (userNew.tapis && !userr.tapis) {
-  var gymParam = await mn.GymParamRetrive(collectionName: "Expense");
-        if(gymParam.isRight){
-          userNew.credit = userNew.tapis
-              ? (int.parse(userNew.credit) +gymParam.right.PlanPrices['tapis']!).toString()
-              : userNew.credit;
+        if (userNew.tapis && !userr.tapis) {
+          var gymParam = await mn.GymParamRetrive(
+              collectionName: "Expense", context: context);
+          if (gymParam.isRight) {
+            userNew.credit = userNew.tapis
+                ? (int.parse(userNew.credit) +
+                        gymParam.right.PlanPrices['tapis']!)
+                    .toString()
+                : userNew.credit;
+          }
         }
-          
-        }
-        session_16_planBloc.add(Event16.UpdateUserEvent(user: userNew));
+        session_16_planBloc
+            .add(Event16.UpdateUserEvent(user: userNew, context: context));
       } else {
         User_Data newUser = User_Data(
             isNewUser: true,
@@ -242,11 +244,12 @@ class _SearchState extends State<sixSession> {
             sessionLeft: sessionNumber,
             lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
             phoneNumber: _phoneController.text);
-        session_16_planBloc.add(Event16.AddUserEvent(user: newUser));
+        session_16_planBloc
+            .add(Event16.AddUserEvent(user: newUser, context: context));
       }
 
       // Refresh the user list
-      session_16_planBloc.add(Event16.GetUsersEvent());
+      session_16_planBloc.add(Event16.GetUsersEvent(context: context));
 
       // Clear input fields and reset state
       setState(() {
@@ -320,7 +323,8 @@ class _SearchState extends State<sixSession> {
     }
     final Session16Bloc.Session_16_PlanBloc session_16_planBloc =
         BlocProvider.of<Session16Bloc.Session_16_PlanBloc>(context);
-    session_16_planBloc.add(Event16.UpdateUserEvent(user: user_data));
+    session_16_planBloc
+        .add(Event16.UpdateUserEvent(user: user_data, context: context));
   }
 
   void _renewProfile(User_Data user, String credit, DateTime? startDate) {
@@ -345,13 +349,15 @@ class _SearchState extends State<sixSession> {
         sessionLeft: sessionNumber,
         lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
         phoneNumber: user.phoneNumber);
-    session_16_planBloc.add(Event16.UpdateUserEvent(user: renewUser));
+    session_16_planBloc
+        .add(Event16.UpdateUserEvent(user: renewUser, context: context));
   }
 
   void _deleteProfile(User_Data user) {
     final Session16Bloc.Session_16_PlanBloc session_16_planBloc =
         BlocProvider.of<Session16Bloc.Session_16_PlanBloc>(context);
-    session_16_planBloc.add(Event16.DeleteUserEvent(user: user));
+    session_16_planBloc
+        .add(Event16.DeleteUserEvent(user: user, context: context));
   }
 
   final ScrollController _scrollController = ScrollController();
@@ -512,11 +518,16 @@ class _SearchState extends State<sixSession> {
                   color: Colors.green,
                 ),
                 onPressed: () {
-                  _unlimited_bloc.add(Unlimited.GetUsersEvent());
-                  session_8_planBloc.add(Event8.GetUsersEvent());
-                  session_12_planBloc.add(Event12.GetUsersEvent());
-                  session_16_planBloc.add(Event16.GetUsersEvent());
-                  expense_planBloc.add(Expense.GetExpensesEvent());
+                  _unlimited_bloc
+                      .add(Unlimited.GetUsersEvent(context: context));
+                  session_8_planBloc
+                      .add(Event8.GetUsersEvent(context: context));
+                  session_12_planBloc
+                      .add(Event12.GetUsersEvent(context: context));
+                  session_16_planBloc
+                      .add(Event16.GetUsersEvent(context: context));
+                  expense_planBloc
+                      .add(Expense.GetExpensesEvent(context: context));
                   count = 0;
                 },
               ),
@@ -614,13 +625,17 @@ class _SearchState extends State<sixSession> {
                   ),
                 );
               } else if (state is Session16Bloc.IinitialState) {
-                session_16_planBloc.add(Event16.GetUsersEvent());
+                session_16_planBloc
+                    .add(Event16.GetUsersEvent(context: context));
                 return Loading();
               } else if (state is Session16Bloc.ErrorState) {
-                session_16_planBloc.add(Event16.GetUsersEvent());
+                session_16_planBloc
+                    .add(Event16.GetUsersEvent(context: context));
 
                 return Loading();
               } else {
+                count = 0;
+
                 return Loading();
               }
             }),

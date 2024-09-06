@@ -9,31 +9,37 @@ sealed class Expense_PlanEvent extends Equatable {
 
 class AddExpenseEvent extends Expense_PlanEvent {
   final Expense expense;
-
-  AddExpenseEvent({required this.expense});
+final BuildContext context;
+  AddExpenseEvent({
+    required this.context,required this.expense});
 
   @override
-  List<Object?> get props => [expense];
+  List<Object?> get props => [expense, context];
 }
 
 class GetExpensesEvent extends Expense_PlanEvent {
+  final BuildContext context;
+  GetExpensesEvent({
+    required this.context});
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [context];
 }
 class DeleteExpenseEvent extends Expense_PlanEvent {
   final Expense expense;
-
-  DeleteExpenseEvent({required this.expense});
+final BuildContext context;
+  DeleteExpenseEvent({
+    required this.context,required this.expense});
 
   @override
-  List<Object?> get props => [expense];
+  List<Object?> get props => [expense, context];
 }
 
 class UpdateExpenseEvent extends Expense_PlanEvent {
   final Expense expense;
-  final Expense oldExpense;
-  UpdateExpenseEvent({required this.expense,required this.oldExpense });
+  final Expense oldExpense;final BuildContext context;
+  UpdateExpenseEvent({
+    required this.context,required this.expense,required this.oldExpense });
 
   @override
-  List<Object?> get props => [expense,oldExpense];
+  List<Object?> get props => [expense,oldExpense, context];
 }

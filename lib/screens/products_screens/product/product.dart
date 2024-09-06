@@ -1,5 +1,6 @@
 import 'package:admin/const/loading.dart';
 import 'package:admin/entities/product_entity.dart';
+import 'package:admin/main.dart';
 import 'package:admin/screens/products_screens/product/KK.dart';
 import 'package:admin/screens/products_screens/products_bloc/products_bloc.dart';
 import 'package:admin/screens/products_screens/products_bloc/products_blocEvent.dart';
@@ -55,7 +56,7 @@ class _ProductDashboardState extends State<ProductDashboard> {
         // ignore: deprecated_member_use
         id: mongo.ObjectId().toHexString(),
       );
-      productsBloc.add(AddProductEvent(products: newProduct));
+      productsBloc.add(AddProductEvent(products: newProduct, context: context));
 
       setState(() {
         _products.add(newProduct);
@@ -71,15 +72,19 @@ class _ProductDashboardState extends State<ProductDashboard> {
       int quantity, Product product) {
     final ProductsBloc productsBloc = BlocProvider.of<ProductsBloc>(context);
     Product productEdited = Product(
+        priceoverviewfemme: product.priceoverviewfemme,
         name: name,
         price: price,
         quantity: quantity,
         id: id,
-        sold: product.sold,
+        soldHomme: product.soldHomme,
+        soldFemme: product.soldFemme,
         priceoverview: product.priceoverview,
         saleRecords: product.saleRecords);
     productsBloc.add(UpdateProductEvent(
-        product: productEdited, buyer: _buyingController.text, context: context));
+        product: productEdited,
+        buyer: _buyingController.text,
+        context: context));
 
     setState(() {
       _products[index] = productEdited;
@@ -89,6 +94,8 @@ class _ProductDashboardState extends State<ProductDashboard> {
 
   void _updateQuantity(Product product, int change, String? buyerController) {
     final ProductsBloc productsBloc = BlocProvider.of<ProductsBloc>(context);
+    final gender = MyInheritedWidget.of(context)?.geneder;
+
     int index = _products.indexOf(product);
     if (_products[index].quantity + change >= 0) {
       if (change < 0) {
@@ -102,8 +109,15 @@ class _ProductDashboardState extends State<ProductDashboard> {
       _products[index].quantity += change;
       if (change < 0) {
         int saleQuantity = change.abs();
-        _products[index].sold += saleQuantity;
-        _products[index].priceoverview += _products[index].price;
+        if (gender == "Homme") {
+          _products[index].soldHomme += saleQuantity;
+
+          _products[index].priceoverview += _products[index].price;
+        } else if (gender == "Femme") {
+          _products[index].soldFemme += saleQuantity;
+
+          _products[index].priceoverviewfemme += _products[index].price;
+        }
       }
       productsBloc.add(UpdateProductEvent(
           product: _products[index], buyer: buyerController, context: context));
@@ -117,7 +131,7 @@ class _ProductDashboardState extends State<ProductDashboard> {
   void _removeProduct(Product product) {
     final ProductsBloc productsBloc = BlocProvider.of<ProductsBloc>(context);
 
-    productsBloc.add(DeleteProductEvent(product: product));
+    productsBloc.add(DeleteProductEvent(product: product, context: context));
     _products.remove(product);
 
     setState(() {
@@ -132,15 +146,20 @@ class _ProductDashboardState extends State<ProductDashboard> {
   @override
   Widget build(BuildContext context) {
     final ProductsBloc productsBloc = BlocProvider.of<ProductsBloc>(context);
-
+    final gender = MyInheritedWidget.of(context)?.geneder;
+    bool isHomme = false;
+    if (gender == "Homme") {
+      isHomme = true;
+    } else if (gender == "Femme") {
+      isHomme = false;
+    }
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 25, horizontal: 100),
+            padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 100),
             child: Container(
               height: 50,
               decoration: BoxDecoration(
@@ -209,16 +228,16 @@ class _ProductDashboardState extends State<ProductDashboard> {
           ),
           SizedBox(height: 20),
           IconButton(
-                icon: Icon(
-                  Icons.refresh,
-                  color: Colors.green,
-                ),
-                onPressed: () {
-                  productsBloc.add(GetProductsEvent());
-                  count = 0;
-                },
-              ),
-          _productList(),
+            icon: Icon(
+              Icons.refresh,
+              color: Colors.green,
+            ),
+            onPressed: () {
+              productsBloc.add(GetProductsEvent(context: context));
+              count = 0;
+            },
+          ),
+          _productList(isHomme, gender.toString()),
         ],
       ),
     );
@@ -247,7 +266,7 @@ class _ProductDashboardState extends State<ProductDashboard> {
     );
   }
 
-  Widget _productList() {
+  Widget _productList(bool isHomme, String gender) {
     final ProductsBloc productsBloc = BlocProvider.of<ProductsBloc>(context);
 
     return Center(
@@ -510,7 +529,7 @@ class _ProductDashboardState extends State<ProductDashboard> {
                                       text: TextSpan(
                                         children: [
                                           TextSpan(
-                                            text: 'Sold : ',
+                                            text: 'Sold of $gender : ',
                                             style: TextStyle(
                                               color: Color(0xff202020)
                                                   .withOpacity(0.8),
@@ -519,7 +538,8 @@ class _ProductDashboardState extends State<ProductDashboard> {
                                             ),
                                           ),
                                           TextSpan(
-                                            text: '${product.sold}',
+                                            text:
+                                                '${isHomme ? product.soldHomme : product.soldFemme}',
                                             style: TextStyle(
                                               color: Colors.green,
                                               fontSize: 20,
@@ -533,7 +553,7 @@ class _ProductDashboardState extends State<ProductDashboard> {
                                       text: TextSpan(
                                         children: [
                                           TextSpan(
-                                            text: 'Sale price : ',
+                                            text: 'Sale price for $gender: ',
                                             style: TextStyle(
                                               color: Color(0xff202020)
                                                   .withOpacity(0.8),
@@ -542,7 +562,8 @@ class _ProductDashboardState extends State<ProductDashboard> {
                                             ),
                                           ),
                                           TextSpan(
-                                            text: '${product.priceoverview} DA',
+                                            text:
+                                                '${isHomme ? product.priceoverview : product.priceoverviewfemme} DA',
                                             style: TextStyle(
                                               color: Colors.green,
                                               fontSize: 20,
@@ -612,13 +633,15 @@ class _ProductDashboardState extends State<ProductDashboard> {
             },
           );
         } else if (state is IinitialState) {
-          productsBloc.add(GetProductsEvent());
+          productsBloc.add(GetProductsEvent(context: context));
           return Loading();
         } else if (state is ErrorState) {
-          productsBloc.add(GetProductsEvent());
+          productsBloc.add(GetProductsEvent(context: context));
 
           return Loading();
         } else {
+          count = 0;
+
           return Loading();
         }
       }),

@@ -3,6 +3,7 @@
 import 'package:admin/const/loading.dart';
 import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/gym_parm_entity.dart';
+import 'package:admin/main.dart';
 import 'package:admin/screens/dashboard/components/header.dart';
 import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import '../../../../constants.dart';
 class ExpenseScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final myValue = MyInheritedWidget.of(context)?.geneder;
     return Scaffold(
       backgroundColor: Color(0xffFAFAFA),
       body: SafeArea(
@@ -83,14 +85,15 @@ class _SearchState extends State<expense> {
             expensePrice: int.parse(_priceController.text),
             dateTime: DateTime.now(),
             expenseName: _nameController.text);
-        expense_planBloc
-            .add(UpdateExpenseEvent(expense: expenseNew, oldExpense: userr));
+        expense_planBloc.add(UpdateExpenseEvent(
+            expense: expenseNew, oldExpense: userr, context: context));
       } else {
         expenseNew = Expense(
             expensePrice: int.parse(_priceController.text),
             dateTime: DateTime.now(),
             expenseName: _nameController.text);
-        expense_planBloc.add(AddExpenseEvent(expense: expenseNew));
+        expense_planBloc
+            .add(AddExpenseEvent(expense: expenseNew, context: context));
       }
 
       _nameController.clear();
@@ -114,7 +117,7 @@ class _SearchState extends State<expense> {
   void _deleteProfile(Expense expense) {
     final Expense_PlanBloc _expense_bloc =
         BlocProvider.of<Expense_PlanBloc>(context);
-    _expense_bloc.add(DeleteExpenseEvent(expense: expense));
+    _expense_bloc.add(DeleteExpenseEvent(expense: expense, context: context));
     count = 0;
   }
 
@@ -282,12 +285,14 @@ class _SearchState extends State<expense> {
                   ),
                 );
               } else if (state is IinitialState) {
-                _expense_bloc.add(GetExpensesEvent());
+                _expense_bloc.add(GetExpensesEvent(context: context));
                 return Loading();
               } else if (state is ErrorState) {
-                _expense_bloc.add(GetExpensesEvent());
+                _expense_bloc.add(GetExpensesEvent(context: context));
                 return Loading();
               } else {
+                count = 0;
+
                 return Loading();
               }
             }),

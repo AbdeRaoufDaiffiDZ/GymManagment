@@ -1,3 +1,4 @@
+import 'package:admin/data/http_local_data.dart';
 import 'package:admin/screens/dashboard/components/rfid_bloc/rfid_plan_bloc.dart';
 import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart';
 import 'package:admin/screens/plans/12sess/12session_bloc/bloc/12session_bloc.dart';
@@ -23,6 +24,7 @@ Future<void> setupLocator() async {
   //     locator(), locator(), locator(), locator(), locator()));
 
   locator.registerLazySingleton<MongoDatabase>(() => MongoDatabase());
+  locator.registerLazySingleton<GetDataFromHttp>(() => GetDataFromHttp());
 
   // // external
   // locator.registerLazySingleton(() => http.Client());

@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 
 class User_Data extends Equatable {
   final String phoneNumber;
@@ -18,7 +19,7 @@ class User_Data extends Equatable {
   int sessionLeft;
   bool isSessionMarked;
   bool isEdit;
-    bool isNewUser;
+  bool isNewUser;
 
   bool isUncheck;
 
@@ -27,8 +28,8 @@ class User_Data extends Equatable {
     this.isUncheck = false,
     this.buyingCredit = 0,
     this.tapis = false,
-    this.renew = false,    this.isNewUser = false,
-
+    this.renew = false,
+    this.isNewUser = false,
     required this.phoneNumber,
     required this.lastCheckDate,
     required this.sessionLeft,
@@ -43,7 +44,8 @@ class User_Data extends Equatable {
   });
 
   @override
-  List<Object?> get props => [isNewUser,
+  List<Object?> get props => [
+        isNewUser,
         isEdit,
         isUncheck,
         phoneNumber,
@@ -63,6 +65,20 @@ class User_Data extends Equatable {
       ];
 
   factory User_Data.fromMap(Map<String, dynamic> map) {
+    late DateTime? startingDate;
+    late DateTime? endDate;
+
+    if (map['startingDate'] is String) {
+      startingDate = DateTime.parse(map['startingDate']);
+    } else {
+      startingDate = map['startingDate'];
+    }
+    if (map['endDate'] is String) {
+      endDate = DateTime.parse(map['endDate']);
+    } else {
+      endDate = map['endDate'];
+    }
+
     return User_Data(
       buyingCredit: map['buyingCredit'] ?? 0,
       tapis: map['tapis'] ?? false,
@@ -73,8 +89,8 @@ class User_Data extends Equatable {
       id: map['_id'] ?? '',
       fullName: map['fullName'] ?? '',
       plan: map['plan'] ?? '',
-      startingDate: map['startingDate'] ?? DateTime.now(),
-      endDate: map['endDate'] ?? DateTime.now(),
+      startingDate: startingDate ?? DateTime.now(),
+      endDate: endDate ?? DateTime.now(),
       credit: map['credit'] ?? '',
       isSessionMarked: map['isSessionMarked'] ?? false,
     );
@@ -91,8 +107,8 @@ class User_Data extends Equatable {
       '_id': id,
       'fullName': fullName,
       'plan': plan,
-      'startingDate': startingDate,
-      'endDate': endDate,
+      'startingDate': DateFormat('yyyy-MM-dd').format(startingDate),
+      'endDate': DateFormat('yyyy-MM-dd').format(endDate),
       'credit': credit,
       'isSessionMarked': isSessionMarked,
     };

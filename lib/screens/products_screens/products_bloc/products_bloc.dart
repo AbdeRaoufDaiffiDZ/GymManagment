@@ -16,20 +16,20 @@ class ProductsBloc extends Bloc<ProductsBlocEvent, ProductsBlocState> {
     on<ProductsBlocEvent>((event, emit) async {
       if (event is AddProductEvent) { ////////////////   the widget will not be updated the update will be done in database at same time in the widget data without getting it from databse
         final result = await dataSource.InsertProduct(
-            product: event.products, collectionName: collectionName);
+            product: event.products, collectionName: collectionName, context: event.context);
         if (result.isLeft) {
           emit(ErrorState(error: result.left.message));
         }
       } else if (event is GetProductsEvent) { ////////////////   the widget will be updated by emitting new state when getting data from database
         emit(LoadingState());
         final data =
-            await dataSource.RetriveProducts(collectionName: collectionName);
+            await dataSource.RetriveProducts(collectionName: collectionName, context: event.context);
         data.isRight
             ? emit(SuccessState(products: data.right))
             : emit(ErrorState(error: data.left.message));
       } else if (event is DeleteProductEvent) { ////////////////   the widget will not be updated the update will be done in database at same time in the widget data without getting it from databse
         final result = await dataSource.DeleteProduct(
-            product: event.product, collectionName: collectionName);
+            product: event.product, collectionName: collectionName, context: event.context);
         if (result.isLeft) {
           emit(ErrorState(error: result.left.message));
         }

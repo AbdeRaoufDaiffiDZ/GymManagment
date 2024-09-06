@@ -13,6 +13,9 @@ import 'package:provider/provider.dart';
 import 'components/side_menu.dart';
 
 class MainScreen extends StatefulWidget {
+  final String gender;
+
+  const MainScreen({super.key, required this.gender});
   @override
   _MainScreenState createState() => _MainScreenState();
 }

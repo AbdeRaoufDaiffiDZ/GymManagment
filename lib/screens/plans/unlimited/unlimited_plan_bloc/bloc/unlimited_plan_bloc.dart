@@ -17,28 +17,28 @@ class Unlimited_PlanBloc
     on<Unlimited_PlanEvent>((event, emit) async {
       if (event is AddUserEvent) {
         emit(LoadingState());
-        final result = await dataSource.InsertUser(user: event.user, collectionName: collectionName);
+        final result = await dataSource.InsertUser(user: event.user, collectionName: collectionName, context: event.context);
         if (result.isLeft) {
           emit(ErrorState(error: result.left.message));
         } else {
-          final data = await dataSource.RetriveData(collectionName: collectionName);
+          final data = await dataSource.RetriveData(collectionName: collectionName, context: event.context);
           data.isRight
               ? emit(SuccessState(users: data.right))
               : emit(ErrorState(error: data.left.message));
         }
       } else if (event is GetUsersEvent) {
         emit(LoadingState());
-        final data = await dataSource.RetriveData(collectionName: collectionName);
+        final data = await dataSource.RetriveData(collectionName: collectionName, context: event.context);
         data.isRight
             ? emit(SuccessState(users: data.right))
             : emit(ErrorState(error: data.left.message));
       } else if (event is DeleteUserEvent) {
         emit(LoadingState());
-        final result = await dataSource.DeleteUser(user: event.user, collectionName: collectionName);
+        final result = await dataSource.DeleteUser(user: event.user, collectionName: collectionName, context: event.context);
         if (result.isLeft) {
           emit(ErrorState(error: result.left.message));
         } else {
-          final data = await dataSource.RetriveData(collectionName: collectionName);
+          final data = await dataSource.RetriveData(collectionName: collectionName, context: event.context);
           data.isRight
               ? emit(SuccessState(users: data.right))
               : emit(ErrorState(error: data.left.message));
@@ -46,11 +46,11 @@ class Unlimited_PlanBloc
       }
       else if (event is UpdateUserEvent) {
         emit(LoadingState());
-        final result = await dataSource.UpdateUserData(user: event.user, collectionName: collectionName, );
+        final result = await dataSource.UpdateUserData(user: event.user, collectionName: collectionName, context: event.context );
         if (result.isLeft) {
           emit(ErrorState(error: result.left.message));
         } else {
-          final data = await dataSource.RetriveData(collectionName: collectionName);
+          final data = await dataSource.RetriveData(collectionName: collectionName, context: event.context);
           data.isRight
               ? emit(SuccessState(users: data.right))
               : emit(ErrorState(error: data.left.message));
@@ -62,6 +62,5 @@ class Unlimited_PlanBloc
   @override
   Future<void> close() async {
     await super.close();
-    MongoDatabase.close();
   }
 }

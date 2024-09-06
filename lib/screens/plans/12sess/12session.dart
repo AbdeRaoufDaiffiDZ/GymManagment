@@ -1,6 +1,5 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:admin/const/const.dart';
 import 'package:admin/const/loading.dart';
 import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/user_data_entity.dart';
@@ -21,7 +20,6 @@ import 'package:admin/screens/plans/8session/8session_bloc/bloc/session_8_event.
 import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart'
     as Unlimited;
 import 'package:admin/screens/plans/unlimited/unlimited_plan_bloc/bloc/unlimited_plan_bloc.dart';
-import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -183,8 +181,8 @@ class _SearchState extends State<twlvSession> {
     late User_Data userNew;
     final Session12bloc.Session_12_PlanBloc session_12_planBloc =
         BlocProvider.of<Session12bloc.Session_12_PlanBloc>(context);
-        MongoDatabase mn = MongoDatabase();
-        
+    MongoDatabase mn = MongoDatabase();
+
     if (checkDate) {
       userNew = User_Data(
           tapis: user!.tapis,
@@ -199,7 +197,8 @@ class _SearchState extends State<twlvSession> {
           lastCheckDate: user.lastCheckDate,
           phoneNumber: user.phoneNumber);
 
-      session_12_planBloc.add(Event12.UpdateUserEvent(user: userNew));
+      session_12_planBloc
+          .add(Event12.UpdateUserEvent(user: userNew, context: context));
     }
     if (_nameController.text.isNotEmpty &&
         _tapisController.text.isNotEmpty &&
@@ -210,7 +209,7 @@ class _SearchState extends State<twlvSession> {
         _phoneController.text.isNotEmpty) {
       if (edit) {
         userNew = User_Data(
-          isEdit: true,
+            isEdit: true,
             tapis: _tapisController.text.toLowerCase() == 'true',
             sex: _sexController.text,
             id: _idController.text,
@@ -222,19 +221,22 @@ class _SearchState extends State<twlvSession> {
             sessionLeft: userr.sessionLeft,
             lastCheckDate: userr.lastCheckDate,
             phoneNumber: _phoneController.text);
-if (userNew.tapis && !userr.tapis) {
-  var gymParam = await mn.GymParamRetrive(collectionName: "Expense");
-        if(gymParam.isRight){
-          userNew.credit = userNew.tapis
-              ? (int.parse(userNew.credit) +gymParam.right.PlanPrices['tapis']!).toString()
-              : userNew.credit;
+        if (userNew.tapis && !userr.tapis) {
+          var gymParam = await mn.GymParamRetrive(
+              collectionName: "Expense", context: context);
+          if (gymParam.isRight) {
+            userNew.credit = userNew.tapis
+                ? (int.parse(userNew.credit) +
+                        gymParam.right.PlanPrices['tapis']!)
+                    .toString()
+                : userNew.credit;
+          }
         }
-          
-        }
-        session_12_planBloc.add(Event12.UpdateUserEvent(user: userNew));
+        session_12_planBloc
+            .add(Event12.UpdateUserEvent(user: userNew, context: context));
       } else {
         User_Data newUser = User_Data(
-          isNewUser:true,
+            isNewUser: true,
             tapis: _tapisController.text.toLowerCase() == 'true',
             sex: _sexController.text,
             fullName: _nameController.text,
@@ -246,7 +248,8 @@ if (userNew.tapis && !userr.tapis) {
             sessionLeft: sessionNumber,
             lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
             phoneNumber: _phoneController.text);
-        session_12_planBloc.add(Event12.AddUserEvent(user: newUser));
+        session_12_planBloc
+            .add(Event12.AddUserEvent(user: newUser, context: context));
       }
 
       setState(() {
@@ -304,21 +307,24 @@ if (userNew.tapis && !userr.tapis) {
         sessionLeft: sessionNumber,
         lastCheckDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
         phoneNumber: user.phoneNumber);
-    session_12_planBloc.add(Event12.UpdateUserEvent(user: renewUser));
+    session_12_planBloc
+        .add(Event12.UpdateUserEvent(user: renewUser, context: context));
   }
 
   void _deleteProfile(User_Data user) {
     final Session12bloc.Session_12_PlanBloc session_12_planBloc =
         BlocProvider.of<Session12bloc.Session_12_PlanBloc>(context);
-    session_12_planBloc.add(Event12.DeleteUserEvent(user: user));
+    session_12_planBloc
+        .add(Event12.DeleteUserEvent(user: user, context: context));
   }
 
   void _toggleSessionMark(User_Data user, bool value) {
-    if(!user.isUncheck)
-    {setState(() {
-      user.isSessionMarked = value;
-      count = 0;
-    });}
+    if (!user.isUncheck) {
+      setState(() {
+        user.isSessionMarked = value;
+        count = 0;
+      });
+    }
     User_Data user_data = User_Data(
         tapis: user.tapis,
         sex: user.sex,
@@ -332,25 +338,28 @@ if (userNew.tapis && !userr.tapis) {
         credit: user.credit,
         lastCheckDate: user.lastCheckDate,
         phoneNumber: user.phoneNumber);
-        if(!user.isUncheck){if (value) {
-      // Implement the checkbox functionality if needed
-      user_data.isSessionMarked = true;
-      user_data.sessionLeft =
-          user_data.sessionLeft <= 0 ? 0 : user_data.sessionLeft - 1;
-      user_data.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    if (!user.isUncheck) {
+      if (value) {
+        // Implement the checkbox functionality if needed
+        user_data.isSessionMarked = true;
+        user_data.sessionLeft =
+            user_data.sessionLeft <= 0 ? 0 : user_data.sessionLeft - 1;
+        user_data.lastCheckDate =
+            DateFormat('yyyy-MM-dd').format(DateTime.now());
+      } else {
+        user_data.isSessionMarked = false;
+        user_data.sessionLeft = user_data.sessionLeft + 1;
+        user_data.lastCheckDate =
+            DateFormat('yyyy-MM-dd').format(DateTime.now());
+      }
     } else {
       user_data.isSessionMarked = false;
-      user_data.sessionLeft = user_data.sessionLeft + 1;
-      user_data.lastCheckDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    }}
-    else {
-            user_data.isSessionMarked = false;
-
     }
-    
+
     final Session12bloc.Session_12_PlanBloc session_12_planBloc =
         BlocProvider.of<Session12bloc.Session_12_PlanBloc>(context);
-    session_12_planBloc.add(Event12.UpdateUserEvent(user: user_data));
+    session_12_planBloc
+        .add(Event12.UpdateUserEvent(user: user_data, context: context));
   }
 
   final ScrollController _scrollController = ScrollController();
@@ -509,11 +518,16 @@ if (userNew.tapis && !userr.tapis) {
                   color: Colors.green,
                 ),
                 onPressed: () {
-                  _unlimited_bloc.add(Unlimited.GetUsersEvent());
-                  session_8_planBloc.add(Event8.GetUsersEvent());
-                  session_12_planBloc.add(Event12.GetUsersEvent());
-                  session_16_planBloc.add(Event16.GetUsersEvent());
-                  expense_planBloc.add(Expense.GetExpensesEvent());
+                  _unlimited_bloc
+                      .add(Unlimited.GetUsersEvent(context: context));
+                  session_8_planBloc
+                      .add(Event8.GetUsersEvent(context: context));
+                  session_12_planBloc
+                      .add(Event12.GetUsersEvent(context: context));
+                  session_16_planBloc
+                      .add(Event16.GetUsersEvent(context: context));
+                  expense_planBloc
+                      .add(Expense.GetExpensesEvent(context: context));
                   count = 0;
                 },
               ),
@@ -611,13 +625,17 @@ if (userNew.tapis && !userr.tapis) {
                   ),
                 );
               } else if (state is Session12bloc.IinitialState) {
-                session_12_planBloc.add(Event12.GetUsersEvent());
+                session_12_planBloc
+                    .add(Event12.GetUsersEvent(context: context));
                 return Loading();
               } else if (state is Session12bloc.ErrorState) {
-                session_12_planBloc.add(Event12.GetUsersEvent());
+                session_12_planBloc
+                    .add(Event12.GetUsersEvent(context: context));
 
                 return Loading();
               } else {
+                count = 0;
+
                 return Loading();
               }
             }),
@@ -690,8 +708,10 @@ if (userNew.tapis && !userr.tapis) {
   }
 
   Widget _tableCellActions(User_Data user) {
-    if(user.lastCheckDate != null){
-      if(user.lastCheckDate != DateFormat('yyyy-MM-dd').format(DateTime.now()) && user.isSessionMarked){
+    if (user.lastCheckDate != null) {
+      if (user.lastCheckDate !=
+              DateFormat('yyyy-MM-dd').format(DateTime.now()) &&
+          user.isSessionMarked) {
         user.isUncheck = true;
         _toggleSessionMark(user, false);
         count = 0;

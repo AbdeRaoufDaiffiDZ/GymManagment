@@ -1,6 +1,5 @@
 // ignore_for_file: deprecated_member_use, unused_element
 
-import 'package:admin/const/const.dart';
 import 'package:admin/const/loading.dart';
 import 'package:admin/data/mongo_db.dart';
 import 'package:admin/entities/user_data_entity.dart';
@@ -202,7 +201,7 @@ class _SearchState extends State<unlimited> {
             lastCheckDate: userr.lastCheckDate,
             phoneNumber: _phoneController.text);
       if (userNew.tapis && !userr.tapis) {
-  var gymParam = await mn.GymParamRetrive(collectionName: "Expense");
+  var gymParam = await mn.GymParamRetrive(collectionName: "Expense", context: context);
         if(gymParam.isRight){
           userNew.credit = userNew.tapis
               ? (int.parse(userNew.credit) +gymParam.right.PlanPrices['tapis']!).toString()
@@ -210,7 +209,7 @@ class _SearchState extends State<unlimited> {
         }
           
         }
-        _unlimited_bloc.add(Unlimited.UpdateUserEvent(user: userNew));
+        _unlimited_bloc.add(Unlimited.UpdateUserEvent(user: userNew, context: context));
       } else {
         User_Data newUser = User_Data(
             isNewUser: true,
@@ -225,7 +224,7 @@ class _SearchState extends State<unlimited> {
             sessionLeft: sessionNumber,
             lastCheckDate: '',
             phoneNumber: _phoneController.text);
-        _unlimited_bloc.add(AddUserEvent(user: newUser));
+        _unlimited_bloc.add(AddUserEvent(user: newUser, context: context));
       }
 
       setState(() {
@@ -283,13 +282,13 @@ class _SearchState extends State<unlimited> {
       phoneNumber: user.phoneNumber,
     );
 
-    _unlimited_bloc.add(Unlimited.UpdateUserEvent(user: renewUser));
+    _unlimited_bloc.add(Unlimited.UpdateUserEvent(user: renewUser, context: context));
   }
 
   void _deleteProfile(User_Data user) {
     final Unlimited_PlanBloc _unlimited_bloc =
         BlocProvider.of<Unlimited_PlanBloc>(context);
-    _unlimited_bloc.add(DeleteUserEvent(user: user));
+    _unlimited_bloc.add(DeleteUserEvent(user: user, context: context));
   }
 
   void _toggleSessionMark(User_Data user, bool value) {
@@ -454,12 +453,12 @@ class _SearchState extends State<unlimited> {
                 color: Colors.green,
               ),
               onPressed: () {
-                _unlimited_bloc.add(Unlimited.GetUsersEvent());
-                session_8_planBloc.add(Event8.GetUsersEvent());
-                session_12_planBloc.add(Event12.GetUsersEvent());
-                session_16_planBloc.add(Event16.GetUsersEvent());
-                expense_planBloc.add(Expense.GetExpensesEvent());
-                productsBloc.add(GetProductsEvent());
+                _unlimited_bloc.add(Unlimited.GetUsersEvent(context: context));
+                session_8_planBloc.add(Event8.GetUsersEvent(context: context));
+                session_12_planBloc.add(Event12.GetUsersEvent(context: context));
+                session_16_planBloc.add(Event16.GetUsersEvent(context: context));
+                expense_planBloc.add(Expense.GetExpensesEvent(context: context));
+                productsBloc.add(GetProductsEvent(context: context));
                 count = 0;
               },
             ),
@@ -482,6 +481,7 @@ class _SearchState extends State<unlimited> {
                 _filteredItems = state.users;
                 count++;
               }
+             
               return Scrollbar(
                 thumbVisibility: true, // Always show the scrollbar thumb
                 controller:
@@ -545,11 +545,12 @@ class _SearchState extends State<unlimited> {
                 ),
               );
             } else if (state is Unlimited.IinitialState) {
-              _unlimited_bloc.add(GetUsersEvent());
+              _unlimited_bloc.add(GetUsersEvent(context: context));
               return Loading();
             } else if (state is Unlimited.ErrorState) {
               return Loading();
             } else {
+              count = 0;
               return Loading();
             }
           }),
