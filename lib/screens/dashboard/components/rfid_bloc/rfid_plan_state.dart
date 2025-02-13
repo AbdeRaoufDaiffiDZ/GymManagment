@@ -14,7 +14,8 @@ class IinitialState extends Rfid_PlanState {
 class SuccessState extends Rfid_PlanState {
   final String? done;
   final User_Data? user;
-  SuccessState({required this.done, required this.user});
+  final List<User_Data> usersChecked;
+  SuccessState( {required this.done, required this.user, required this.usersChecked});
 
   @override
   List<Object?> get props => [done,user];

@@ -130,9 +130,7 @@ class MongoDatabase {
       // final collectiongYM = db?.collection(gymCollection);
 
       // final result = await collectiongYM?.find().toList();
-      final dataFDB = (await RetriveDataFDTB(gender!))!;
-
-      final result = dataFDB;
+      final result = (await RetriveDataFDTB(gender!))!;
 
       final List data =
           result.where((element) => element['plan'] == collectionName).toList();
@@ -143,12 +141,10 @@ class MongoDatabase {
         int lastEnter =
             calculateMonthsDifference(user.lastCheckDate, user.endDate);
         if (lastEnter > 3) {
-          print(lastEnter);
           usersList.remove(user);
-          var raouf = await DeleteUser(
+          await DeleteUser(
               collectionName: collectionName, user: user, context: context);
 
-          print(raouf);
         }
       }
       return Right(usersList);
@@ -190,23 +186,21 @@ class MongoDatabase {
       final gender = MyInheritedWidget.of(context)?.geneder;
       final collectiongYM = db?.collection(gymCollection + gender.toString());
 
-      final documentToInsert = user.toMap();
-      var res = await collectiongYM?.update(where.eq('plan', user.plan),
-          modify.pull("${user.plan}", documentToInsert));
-      print(res);
-      // await collection?.remove(where.eq('plan', user.plan).eq("${user.plan}._id", user.id));
-      // // await collection?.deleteOne({
-      // //   '_id': user.id, // Assigning a string value to '_id'
-      // //   'fullName': user.fullName,
-      // //   'startingDate': user.startingDate,
-      // //   'plan': user.plan,
-      // //   'endDate': user.endDate,
-      // //   'credit': user.credit,
-      // //   'lastCheckDate':user.lastCheckDate,
-      // //   'sessionLeft':user.sessionLeft,
-      // //   'isSessionMarked':user.isSessionMarked
-      // // });
+      var document = await collectiongYM?.findOne(
+        where.eq('plan', collectionName),
+      );
 
+      if (document != null) {
+        // Step 2: Modify the nested array
+        var users = document[collectionName] as List;
+        users.removeWhere((userMap) => userMap['_id'] == user.id);
+
+        // Step 3: Update the document back into the database
+        await collectiongYM?.update(
+          where.eq('plan', collectionName),
+          modify.set(collectionName, users),
+        );
+      }
       return Right("user deletting done");
     } catch (e) {
       return Left(
@@ -360,27 +354,21 @@ class MongoDatabase {
       final gender = MyInheritedWidget.of(context)?.geneder;
       final collectiongYM = db?.collection(gymCollection + gender.toString());
 
-      // final documentToInsert = product.toMap();
-      final documentToInsert = {
-        'productName': product.name,
-        'productPrice': product.price,
-        '_id': product.id,
-        'priceoverview': product.priceoverview,
-        'quantityleft': product.quantity,
-        'saleRecords': product.saleRecords,
-        'priceoverviewfemme': product.priceoverviewfemme,
-        'soldHomme': product.soldHomme,
-        'soldFemme': product.soldFemme
-      };
-      await collectiongYM?.update(
-          where
-              .eq('plan', collectionName)
-              .eq('$collectionName._id', product.id),
-          modify.pull(collectionName, documentToInsert));
-      // final collection = db?.collection(collectionName);
+      var document = await collectiongYM?.findOne(
+        where.eq('plan', collectionName),
+      );
 
-      // await collection?.remove(where.eq('_id', product.id));
+      if (document != null) {
+        // Step 2: Modify the nested array
+        var prodcuts = document['Prodcuts'] as List;
+        prodcuts.removeWhere((productMap) => productMap['_id'] == product.id);
 
+        // Step 3: Update the document back into the database
+        await collectiongYM?.update(
+          where.eq('plan', collectionName),
+          modify.set('Prodcuts', prodcuts),
+        );
+      }
       return Right(true);
     } catch (e) {
       return Left(
@@ -828,6 +816,26 @@ class MongoDatabase {
 
 //////////////////////////////////////////////////////////   Rfid card settings
   ///
+  Future<List<User_Data>> todayUsers(
+      // users that passed their RFID cart today
+      {required BuildContext context,
+      bool isCheck = false,
+      required User_Data? user,
+      required String gender}) async {
+    List<User_Data> usersList = [];
+    final collectiongYM =
+        db!.collection(gymCollection + gender + 'SignedToday');
+    if (!isCheck) {
+      collectiongYM.insert(user!.toMap());
+    }
+    await collectiongYM.deleteMany(where.ne(
+        'lastCheckDate', // delete user of the perivuse day
+        DateFormat('yyyy-MM-dd').format(DateTime.now())));
+    final result = await collectiongYM.find().toList();
+    usersList = result.map((doc) => User_Data.fromMap(doc)).toList();
+
+    return usersList;
+  }
 
   Future<Either<Failure, List<dynamic>>> UpdateUserUsingRFID(
       {required String id,
@@ -845,6 +853,8 @@ class MongoDatabase {
       bool idFound = false; //
       User_Data? userDataToGet;
       bool isFromBuyer = false;
+      List<User_Data> listOfcheckUser = [];
+
       result!.forEach((element) {
         if (element.keys.toList()[1] == 'plan') {
           /////////  here we eliminate some unwanted data
@@ -922,7 +932,17 @@ class MongoDatabase {
           });
         }
       });
-      List dataReturn = [dataBase_Condition, userDataToGet, isFromBuyer];
+
+      if (dataBase_Condition == 'session marked') {
+        listOfcheckUser = await todayUsers(
+            context: context, gender: gender, user: userDataToGet!);
+      }
+      List dataReturn = [
+        dataBase_Condition,
+        userDataToGet,
+        isFromBuyer,
+        listOfcheckUser
+      ];
       return Right(dataReturn);
     } catch (e) {
       return Left(

@@ -23,7 +23,7 @@ class Rfid_PlanBloc extends Bloc<Rfid_PlanEvent, Rfid_PlanState> {
             emit(ErrorState(error: result.right[0]));
           } else {
             _showDialog(event.context, result.right[1]);
-            emit(SuccessState(done: result.right[0], user: result.right[1]));
+            emit(SuccessState(done: result.right[0], user: result.right[1], usersChecked:result.right[3]));
           }
         } else if (result.isLeft) {
           emit(ErrorState(error: result.left.message));

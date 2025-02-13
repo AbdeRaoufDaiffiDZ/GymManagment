@@ -1,5 +1,8 @@
+import 'package:admin/data/mongo_db.dart';
+import 'package:admin/entities/user_data_entity.dart';
 import 'package:admin/main.dart';
 import 'package:admin/screens/dashboard/components/App%20stats/dashboard_screen.dart';
+import 'package:admin/screens/dashboard/components/App%20stats/users.dart';
 import 'package:admin/screens/dashboard/components/rfid_bloc/rfid_plan_bloc.dart';
 import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_bloc.dart';
 import 'package:admin/screens/plans/12sess/12session_bloc/bloc/12session_bloc.dart';
@@ -17,9 +20,14 @@ import 'package:admin/screens/expense_list/expense_plan_bloc/bloc/expense_plan_b
     as Expense;
 import 'package:admin/screens/plans/12sess/12session_bloc/bloc/session_12_event.dart'
     as Event12;
-import 'package:admin/screens/dashboard/components/rfid_bloc/rfid_plan_bloc.dart' as RFID;
+import 'package:admin/screens/dashboard/components/rfid_bloc/rfid_plan_bloc.dart'
+    as RFID;
 
 class Dashboard extends StatefulWidget {
+  final String gender;
+
+  const Dashboard({super.key, required this.gender});
+
   @override
   _DashboardState createState() => _DashboardState();
 }
@@ -30,7 +38,6 @@ class _DashboardState extends State<Dashboard> {
   final List<Widget> _pages = [
     DashboardScreen(), // Your actual screens
   ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,6 +50,7 @@ class _DashboardState extends State<Dashboard> {
                 selectedIndex = index;
               });
             },
+            gender: widget.gender,
           ),
           Expanded(
             child: IndexedStack(
@@ -59,8 +67,9 @@ class _DashboardState extends State<Dashboard> {
 class SideMenu extends StatefulWidget {
   final int selectedIndex;
   final Function(int) onItemSelected;
-
-   SideMenu({
+  final String gender;
+  SideMenu({
+    required this.gender,
     Key? key,
     required this.selectedIndex,
     required this.onItemSelected,
@@ -72,6 +81,13 @@ class SideMenu extends StatefulWidget {
 
 class _SideMenuState extends State<SideMenu> {
   final TextEditingController _idController = TextEditingController();
+  ScrollController scrollController = ScrollController();
+  List<User_Data> passedUsers = [];
+  MongoDatabase mongo = MongoDatabase();
+  void checkSIgnedUSers() async {
+    passedUsers = await mongo.todayUsers(
+        context: context, gender: widget.gender, user: null, isCheck: true);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +101,7 @@ class _SideMenuState extends State<SideMenu> {
         BlocProvider.of<Session_12_PlanBloc>(context);
     final Expense_PlanBloc expense_planBloc =
         BlocProvider.of<Expense_PlanBloc>(context);
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -113,11 +130,10 @@ class _SideMenuState extends State<SideMenu> {
                 child: InkWell(
                   onTap: () {
                     Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => GenderSelectionPage()
-                  ),
-                );
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => GenderSelectionPage()),
+                    );
                   },
                   child: Image.asset(
                     "assets/images/gymer.png",
@@ -189,74 +205,188 @@ class _SideMenuState extends State<SideMenu> {
               },
               isSelected: widget.selectedIndex == 6,
             ),
-         Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.2),
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Color.fromARGB(255, 0, 0, 0)
-                                    .withOpacity(0.3), // Color of the border
-                                width: 2.5, // Width of the border
-                              ),
-                            ),
-                          ),
-                          child: _inputField(_idController, 'User id', true),
-                          width: 250,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 5.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.withOpacity(0.2),
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Color.fromARGB(255, 0, 0, 0)
+                              .withOpacity(0.3), // Color of the border
+                          width: 2.5, // Width of the border
                         ),
                       ),
-                      BlocBuilder<Rfid_PlanBloc, Rfid_PlanState>(
-                        builder: (context, state) {
-                          if (state is RFID.SuccessState) {
-                            return Padding(
-                              padding: const EdgeInsets.only(
-                                  top:
-                                      4.0), // Add some spacing between the input and the text
-                              child: Text(
-                                state.done.toString(),
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 14,
-                                  color: Color.fromARGB(255, 0, 153, 0),
-                                ),
-                              ),
-                            );
-                          } else if (state is RFID.ErrorState) {
-                            return Padding(
-                              padding: const EdgeInsets.only(
-                                  top:
-                                      4.0), // Add some spacing between the input and the text
-                              child: Text(
-                                state.error.toString(),
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 14,
-                                  color: Color.fromARGB(255, 153, 0, 0),
-                                ),
-                              ),
-                            );
-                          } else if (state is RFID.LoadingState) {
-                            return Container();
-                          } else {
-                            return Container();
-                          }
-                        },
-                      ),
-                    ],
+                    ),
+                    child: _inputField(_idController, 'User id', true),
+                    width: 250,
                   ),
-         
+                ),
+                BlocBuilder<Rfid_PlanBloc, Rfid_PlanState>(
+                  builder: (context, state) {
+                    if (state is RFID.SuccessState) {
+                      if (state.user != null) {
+                        passedUsers = state.usersChecked;
+                      }
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                            top:
+                                4.0), // Add some spacing between the input and the text
+                        child: Text(
+                          state.done.toString(),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w800,
+                            fontSize: 14,
+                            color: Color.fromARGB(255, 0, 153, 0),
+                          ),
+                        ),
+                      );
+                    } else if (state is RFID.ErrorState) {
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                            top:
+                                4.0), // Add some spacing between the input and the text
+                        child: Text(
+                          state.error.toString(),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w800,
+                            fontSize: 14,
+                            color: Color.fromARGB(255, 153, 0, 0),
+                          ),
+                        ),
+                      );
+                    } else if (state is RFID.LoadingState) {
+                      return Container();
+                    } else {
+                      return Container();
+                    }
+                  },
+                ),
+              ],
+            ),
+            DrawerListTile(
+                title: "من سجل الدخول",
+                svgSrc: "assets/icons/aaz.svg",
+                press: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      backgroundColor: Color(0xffFAFAFA),
+                      title: Column(
+                        children: [
+                          Center(
+                            child: Text(
+                              'قائمة المسجلين',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18),
+                            ),
+                          ),
+                          ListTile(
+                              title: Text(
+                                "الاسم الكامل",
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 16),
+                              ),
+                              trailing: Text('تاريخ انتهاء الاشتراك')),
+                        ],
+                      ),
+                      content: Container(
+                        width: MediaQuery.of(context).size.width *
+                            0.4, // Adjust the width as needed ,
+                        height: MediaQuery.of(context).size.height *
+                            0.4, // Adjust the width as needed
+                        child: Scrollbar(
+                          controller:
+                              scrollController, // Attach the ScrollController
+
+                          thumbVisibility: true,
+                          thickness: 8.0,
+                          radius: Radius.circular(8),
+                          trackVisibility: true,
+                          child: SingleChildScrollView(
+                            controller:
+                                scrollController, // Attach the ScrollController
+
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: passedUsers.isEmpty
+                                  ? [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 8.0),
+                                        child: Text('لم يسجل احد بعد',
+                                            style:
+                                                TextStyle(color: Colors.black)),
+                                      ),
+                                      DrawerListTile(
+                                        title: "تحقق",
+                                        svgSrc: "assets/icons/Search.svg",
+                                        press: checkSIgnedUSers,
+                                        isSelected: widget.selectedIndex == 5,
+                                      ),
+                                    ]
+                                  : passedUsers.map((record) {
+                                      return Column(
+                                        children: [
+                                          Container(
+                                            color: record.sessionLeft == 0
+                                                ? Colors.red
+                                                : record.daysLeft < 1
+                                                    ? Colors.red
+                                                    : null,
+                                            child: ListTile(
+                                              title: Text(
+                                                '${record.fullName}',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 16),
+                                              ),
+                                              trailing: Text(
+                                                  record.endDate.toString()),
+                                            ),
+                                          ),
+                                          Divider(
+                                            color: Colors.grey.shade400,
+                                            thickness: 1,
+                                          ),
+                                        ],
+                                      );
+                                    }).toList(),
+                            ),
+                          ),
+                        ),
+                      ),
+                      actions: [
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Color(0xffFFA05D).withOpacity(0.5),
+                              borderRadius: BorderRadius.circular(12)),
+                          child: TextButton(
+                            onPressed: () {
+                              if (Navigator.canPop(context)) {
+                                Navigator.pop(context);
+                              }
+                              ;
+                            },
+                            child: Text('Close',
+                                style: TextStyle(color: Colors.black)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                isSelected: false),
           ],
         ),
       ),
     );
   }
 
-
-Widget _inputField(
+  Widget _inputField(
       TextEditingController controller, String hint, bool numberOrNot) {
     final Rfid_PlanBloc rfid_planBloc = BlocProvider.of<Rfid_PlanBloc>(context);
 
@@ -274,7 +404,7 @@ Widget _inputField(
       ),
       onEditingComplete: () {
         _rfidCardUserCheck(rfid_planBloc, context);
-          },
+      },
       // onChanged: (value) {
       //   // Call _addProfile() when Enter is pressed.
       //   if (value.length > 4) {
@@ -301,6 +431,8 @@ Widget _inputField(
   @override
   void dispose() {
     _idController.dispose();
+    passedUsers = [];
+
     super.dispose();
   }
 }

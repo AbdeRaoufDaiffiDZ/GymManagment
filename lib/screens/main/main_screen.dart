@@ -37,7 +37,7 @@ class _MainScreenState extends State<MainScreen> {
       key: context.read<MenuAppController>().scaffoldKey,
       drawer: SideMenu(
         selectedIndex: selectedIndex,
-        onItemSelected: onItemSelected,
+        onItemSelected: onItemSelected, gender: widget.gender,
       ),
       body: SafeArea(
         child: Row(
@@ -50,7 +50,7 @@ class _MainScreenState extends State<MainScreen> {
                 // and it takes 1/6 part of the screen
                 child: SideMenu(
                   selectedIndex: selectedIndex,
-                  onItemSelected: onItemSelected,
+                  onItemSelected: onItemSelected, gender: widget.gender,
                 ),
               ),
             Expanded(
