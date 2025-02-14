@@ -144,7 +144,6 @@ class MongoDatabase {
           usersList.remove(user);
           await DeleteUser(
               collectionName: collectionName, user: user, context: context);
-
         }
       }
       return Right(usersList);
@@ -828,12 +827,12 @@ class MongoDatabase {
     if (!isCheck) {
       collectiongYM.insert(user!.toMap());
     }
+
     await collectiongYM.deleteMany(where.ne(
         'lastCheckDate', // delete user of the perivuse day
         DateFormat('yyyy-MM-dd').format(DateTime.now())));
     final result = await collectiongYM.find().toList();
     usersList = result.map((doc) => User_Data.fromMap(doc)).toList();
-
     return usersList;
   }
 
@@ -887,21 +886,17 @@ class MongoDatabase {
                       modify.set('${user['plan']}.\$.$key', value));
                 });
               } else {
-                if (element.keys.toList()[1] == 'unlimited') {
-                  // for unlimited plan has to check to eneding date only
-                  user['endDate'] ==
-                          DateFormat('yyyy-MM-dd').format(DateTime.now())
-                      ? dataBase_Condition = 'Abonnment ended'
-                      : dataBase_Condition = 'Unlimited Abonnment';
-                } else {
-                  if (user['isSessionMarked'] == false) {
+                 if (user['isSessionMarked'] == false) {
                     user['isSessionMarked'] = true;
                     user['lastCheckDate'] =
                         DateFormat('yyyy-MM-dd').format(DateTime.now());
-                    ;
 
-                    user['sessionLeft'] =
-                        user['sessionLeft'] <= 0 ? 0 : user['sessionLeft'] - 1;
+                    if (element.keys.toList()[1] == 'unlimited') {
+                    } else {
+                      user['sessionLeft'] = user['sessionLeft'] <= 0
+                          ? 0
+                          : user['sessionLeft'] - 1;
+                    }
 
                     user.forEach((key, value) async {
                       await collectiongYM?.update(
@@ -921,7 +916,7 @@ class MongoDatabase {
 
                     ///
                   }
-                }
+                
                 userDataToGet = User_Data.fromMap(user);
               }
             } else {}
@@ -933,7 +928,10 @@ class MongoDatabase {
         }
       });
 
-      if (dataBase_Condition == 'session marked') {
+      if (dataBase_Condition == 'user passed before') {
+         listOfcheckUser = await todayUsers(
+            context: context, gender: gender, user: userDataToGet!, isCheck: true);
+      } else {
         listOfcheckUser = await todayUsers(
             context: context, gender: gender, user: userDataToGet!);
       }

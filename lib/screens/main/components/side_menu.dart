@@ -286,11 +286,12 @@ class _SideMenuState extends State<SideMenu> {
                           ),
                           ListTile(
                               title: Text(
-                                "الاسم الكامل",
+                                "نوع الاشتراك + الاسم الكامل",
+                                
                                 style: TextStyle(
                                     color: Colors.black, fontSize: 16),
                               ),
-                              trailing: Text('تاريخ انتهاء الاشتراك')),
+                              trailing: Text(' عدد الحصص   +   تاريخ انتهاء الاشتراك')),
                         ],
                       ),
                       content: Container(
@@ -328,24 +329,23 @@ class _SideMenuState extends State<SideMenu> {
                                         isSelected: widget.selectedIndex == 5,
                                       ),
                                     ]
-                                  : passedUsers.map((record) {
+                                  : passedUsers.reversed.map((record) {
                                       return Column(
                                         children: [
                                           Container(
-                                            color: record.sessionLeft == 0
+                                            color: ((record.plan != "unlimited" && record.sessionLeft == 0) ||
+                                                    record.daysLeft < 1)
                                                 ? Colors.red
-                                                : record.daysLeft < 1
-                                                    ? Colors.red
-                                                    : null,
+                                                : null,
                                             child: ListTile(
                                               title: Text(
-                                                '${record.fullName}',
+                                                '${record.fullName} -- ${record.plan}',
                                                 style: TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 16),
                                               ),
                                               trailing: Text(
-                                                  record.endDate.toString()),
+                                                  '${record.endDate.toString()} -- ${record.sessionLeft}'),
                                             ),
                                           ),
                                           Divider(
